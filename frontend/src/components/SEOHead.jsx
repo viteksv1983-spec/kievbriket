@@ -3,11 +3,12 @@ import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import api from '../api';
+import shopConfig from '../shop.config';
 
 export default function SEOHead({ title, description, keywords, h1, canonical, ogImage, type = 'website', schema, robots, is404 = false }) {
     const location = useLocation();
     const [seoData, setSeoData] = useState(null);
-    const domain = 'https://antreme.kyiv.ua';
+    const domain = shopConfig.domain;
 
     // Fetch SEO data from backend if not provided via props (for static pages)
     useEffect(() => {
@@ -33,9 +34,9 @@ export default function SEOHead({ title, description, keywords, h1, canonical, o
     const data = seoData || {};
 
     // Effective values: Prop > Backend > Default
-    const effectiveTitle = title || data.meta_title || 'Antreme - Торти на замовлення';
-    const effectiveDesc = description || data.meta_description || 'Авторські торти на замовлення у Києві від кондитерської Antreme. Готуємо з 100% натуральних інгредієнтів: весільні, дитячі, корпоративні десерти з адресною доставкою.';
-    const effectiveKeywords = keywords || data.meta_keywords || 'торти, київ, замовлення, десерти';
+    const effectiveTitle = title || data.meta_title || shopConfig.seo.defaultTitle;
+    const effectiveDesc = description || data.meta_description || shopConfig.seo.defaultDescription;
+    const effectiveKeywords = keywords || data.meta_keywords || shopConfig.seo.defaultKeywords;
     const effectiveRobots = robots || data.meta_robots || 'index, follow';
 
     // Construct canonical
@@ -70,7 +71,7 @@ export default function SEOHead({ title, description, keywords, h1, canonical, o
             <meta property="og:description" content={effectiveDesc} />
             <meta property="og:image" content={effectiveOgImage} />
             {!is404 && <meta property="og:url" content={currentFullUrl} />}
-            <meta property="og:site_name" content="Antreme – Кондитерська майстерня" />
+            <meta property="og:site_name" content={shopConfig.seo.ogSiteName} />
 
             {/* Twitter Cards */}
             <meta name="twitter:card" content="summary_large_image" />

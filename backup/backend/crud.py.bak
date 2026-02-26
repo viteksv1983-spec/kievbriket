@@ -4,9 +4,6 @@ from backend import models
 from backend import schemas
 from backend import auth
 
-
-# ─── User CRUD ───────────────────────────────────────────────
-
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -21,61 +18,42 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+def get_cake(db: Session, cake_id: int):
+    return db.query(models.Cake).filter(models.Cake.id == cake_id).first()
 
-# ─── Product CRUD ────────────────────────────────────────────
+def get_cake_by_slug(db: Session, slug: str):
+    return db.query(models.Cake).filter(models.Cake.slug == slug).first()
 
-def get_product(db: Session, product_id: int):
-    return db.query(models.Product).filter(models.Product.id == product_id).first()
-
-def get_product_by_slug(db: Session, slug: str):
-    return db.query(models.Product).filter(models.Product.slug == slug).first()
-
-def get_products(db: Session, skip: int = 0, limit: int = 100, category: Optional[str] = None):
-    query = db.query(models.Product)
+def get_cakes(db: Session, skip: int = 0, limit: int = 100, category: Optional[str] = None):
+    query = db.query(models.Cake)
     if category:
-        query = query.filter(models.Product.category == category)
-    return query.order_by(models.Product.id).offset(skip).limit(limit).all()
+        query = query.filter(models.Cake.category == category)
+    return query.order_by(models.Cake.id).offset(skip).limit(limit).all()
 
-def create_product(db: Session, product: schemas.ProductCreate):
-    db_product = models.Product(**product.dict())
-    db.add(db_product)
+def create_cake(db: Session, cake: schemas.CakeCreate):
+    db_cake = models.Cake(**cake.dict())
+    db.add(db_cake)
     db.commit()
-    db.refresh(db_product)
-    return db_product
-
-def update_product(db: Session, product_id: int, product: schemas.ProductUpdate):
-    db_product = get_product(db, product_id)
-    if not db_product:
-        return None
-    
-    product_data = product.dict(exclude_unset=True)
-    for key, value in product_data.items():
-        setattr(db_product, key, value)
-    
-    db.add(db_product)
-    db.commit()
-    db.refresh(db_product)
-    return db_product
-
-
-# ─── Order CRUD ──────────────────────────────────────────────
+    db.refresh(db_cake)
+    return db_cake
 
 def create_order(db: Session, order: schemas.OrderCreate, user_id: Optional[int] = None):
-    # Calculate total price and validate products
+    # Calculate total price and validate cakes
     total_price = 0.0
     db_items = []
     
     for item in order.items:
-        product = get_product(db, item.cake_id)
-        if not product:
+        cake = get_cake(db, item.cake_id)
+        if not cake:
+            # In a real app, raise HTTPException here or handle gracefully
             continue 
             
         # Calculate price based on weight
-        base_weight_kg = product.weight if product.weight is not None else 1
+        base_weight_kg = cake.weight if cake.weight is not None else 1
         if base_weight_kg > 10:
             base_weight_kg = base_weight_kg / 1000
             
-        price_per_kg = product.price / base_weight_kg
+        price_per_kg = cake.price / base_weight_kg
         item_weight = item.weight if item.weight is not None else base_weight_kg
         item_price = round(price_per_kg * item_weight)
         
@@ -109,7 +87,7 @@ def create_order(db: Session, order: schemas.OrderCreate, user_id: Optional[int]
 
 def get_orders(db: Session, skip: int = 0, limit: int = 100, status: Optional[str] = None):
     from sqlalchemy.orm import joinedload
-    query = db.query(models.Order).options(joinedload(models.Order.items).joinedload(models.OrderItem.product))
+    query = db.query(models.Order).options(joinedload(models.Order.items).joinedload(models.OrderItem.cake))
     
     if status:
         query = query.filter(models.Order.status == status)
@@ -125,17 +103,17 @@ def update_order_status(db: Session, order_id: int, status: str):
     return db_order
 
 def create_quick_order(db: Session, order: schemas.QuickOrderCreate):
-    # Fetch product to get price
-    product = get_product(db, order.cake_id)
-    if not product:
+    # Fetch cake to get price
+    cake = get_cake(db, order.cake_id)
+    if not cake:
         return None
     
     # Calculate total price accounting for weight
-    base_weight_kg = product.weight if product.weight is not None else 1
+    base_weight_kg = cake.weight if cake.weight is not None else 1
     if base_weight_kg > 10:
         base_weight_kg = base_weight_kg / 1000
         
-    price_per_kg = product.price / base_weight_kg
+    price_per_kg = cake.price / base_weight_kg
     item_weight = order.weight if order.weight is not None else base_weight_kg
     item_price = round(price_per_kg * item_weight)
     
@@ -171,8 +149,21 @@ def create_quick_order(db: Session, order: schemas.QuickOrderCreate):
     return db_order
 
 
-# ─── Page CRUD ───────────────────────────────────────────────
+def update_cake(db: Session, cake_id: int, cake: schemas.CakeUpdate):
+    db_cake = get_cake(db, cake_id)
+    if not db_cake:
+        return None
+    
+    cake_data = cake.dict(exclude_unset=True)
+    for key, value in cake_data.items():
+        setattr(db_cake, key, value)
+    
+    db.add(db_cake)
+    db.commit()
+    db.refresh(db_cake)
+    return db_cake
 
+# Page CRUD
 def get_page(db: Session, page_id: int):
     return db.query(models.Page).filter(models.Page.id == page_id).first()
 
@@ -203,9 +194,7 @@ def update_page(db: Session, page_id: int, page: schemas.PageUpdate):
     db.refresh(db_page)
     return db_page
 
-
-# ─── Category Metadata CRUD ─────────────────────────────────
-
+# Category Metadata CRUD
 def get_category_metadata(db: Session, slug: str):
     return db.query(models.CategoryMetadata).filter(models.CategoryMetadata.slug == slug).first()
 

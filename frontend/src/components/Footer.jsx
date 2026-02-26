@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaInstagram, FaFacebook, FaTelegram, FaViber } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import shopConfig from '../shop.config';
 
 
 function Footer() {
@@ -15,14 +16,14 @@ function Footer() {
                     <div className="lg:col-span-1 flex flex-col items-center lg:items-start space-y-2 md:space-y-8">
                         <Link to="/" className="group block text-center lg:text-left">
                             <span className="text-3xl md:text-5xl font-black text-white uppercase tracking-widest drop-shadow-[0_4px_10px_rgba(0,0,0,0.3)] group-hover:text-[#F5C24D] transition-all duration-500 block" style={{ fontFamily: "'Oswald', 'Oswald Fallback', sans-serif" }}>
-                                ANTREME
+                                {shopConfig.name.toUpperCase()}
                             </span>
                         </Link>
 
                         <div className="hidden md:block space-y-6 pt-4 text-sm font-bold tracking-wider">
                             <div className="flex items-center gap-4 group">
                                 <span className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-colors shadow-lg shadow-black/20">✨</span>
-                                <span className="group-hover:text-white transition-colors text-[#F8E9D8]/90">Авторські торти на замовлення</span>
+                                <span className="group-hover:text-white transition-colors text-[#F8E9D8]/90">{shopConfig.tagline}</span>
                             </div>
                             <div className="flex items-center gap-4 group">
                                 <span className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-colors shadow-lg shadow-black/20">📅</span>
@@ -144,9 +145,9 @@ function Footer() {
 
             <div className="bg-[#3A0410] w-full py-5 md:py-6 mt-6 md:mt-16 border-t border-white/5">
                 <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-[9px] md:text-[10px] uppercase tracking-widest gap-2 md:gap-0">
-                    <p className="text-white font-bold opacity-90 drop-shadow-sm">© 2026 Antreme. Всі права захищені.</p>
+                    <p className="text-white font-bold opacity-90 drop-shadow-sm">© {new Date().getFullYear()} {shopConfig.name}. Всі права захищені.</p>
                     <div className="text-[#F5C24D] font-bold italic text-[9px] md:text-[11px] drop-shadow-sm flex items-center justify-center gap-1.5 opacity-100">
-                        Зроблено з <span className="text-sm md:text-base drop-shadow-md brightness-110">❤️</span> у майстерні Antreme
+                        Зроблено з <span className="text-sm md:text-base drop-shadow-md brightness-110">❤️</span> у майстерні {shopConfig.name}
                     </div>
                 </div>
             </div>

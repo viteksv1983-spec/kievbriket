@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api';
+import shopConfig from '../shop.config';
 import { CartContext } from '../context/CartContext';
 import { FILLINGS } from '../constants/fillings';
 import QuickOrderModal from './QuickOrderModal';
@@ -52,7 +53,7 @@ export default function DistrictPage() {
 
     useEffect(() => {
         // Fetch some random/popular cakes for the district page
-        api.get('/cakes/')
+        api.get('/products/')
             .then(res => {
                 const shuffled = [...res.data].sort(() => 0.5 - Math.random());
                 setCakes(shuffled.slice(0, 8)); // Top 8 cakes
@@ -86,9 +87,9 @@ export default function DistrictPage() {
     const schemaData = {
         "@context": "https://schema.org",
         "@type": ["LocalBusiness", "Bakery"],
-        "name": `Кондитерська Antreme - Доставка ${districtData.name}`,
-        "image": "https://antreme.kyiv.ua/og-image.jpg",
-        "url": `https://antreme.kyiv.ua/districts/${district}`,
+        "name": `${shopConfig.name} - Доставка ${districtData.name}`,
+        "image": `${shopConfig.domain}/og-image.jpg`,
+        "url": `${shopConfig.domain}/districts/${district}`,
         "servesCuisine": [
             "Торти на замовлення",
             "Весільні торти",

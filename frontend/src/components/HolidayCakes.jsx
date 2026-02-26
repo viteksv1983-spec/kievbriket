@@ -2,6 +2,7 @@ import { getCategoryUrl } from '../utils/urls';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
+import shopConfig from '../shop.config';
 import { HOLIDAY_SUB_CATEGORIES, CATEGORIES } from '../constants/categories';
 import SEOHead from './SEOHead';
 
@@ -74,7 +75,7 @@ function HolidayCakes() {
                         "@type": "CollectionPage",
                         "name": "Торти на замовлення в Києві",
                         "description": "Замовити торт у Києві від кондитерської Antreme. Весільні, дитячі, святкові та корпоративні торти з доставкою.",
-                        "url": "https://antreme.kyiv.ua/torty-na-zamovlennya/",
+                        "url": `${shopConfig.domain}/torty-na-zamovlennya/`,
                         "hasPart": {
                             "@type": "ItemList",
                             "itemListElement": [

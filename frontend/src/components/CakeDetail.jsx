@@ -4,6 +4,7 @@ import { GET_CATEGORY_NAME } from '../constants/categories';
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api';
+import shopConfig from '../shop.config';
 import { CartContext } from '../context/CartContext';
 import { FILLINGS } from '../constants/fillings';
 import QuickOrderModal from './QuickOrderModal';
@@ -37,7 +38,7 @@ function CakeDetail({ predefinedId, predefinedSlug, expectedCategory, groupType,
 
     useEffect(() => {
         // Build API URL with optional category context validation
-        let url = `/cakes/${identifier}`;
+        let url = `/products/${identifier}`;
         if (expectedCategory) {
             url += `?category=${expectedCategory}`;
         }
@@ -148,18 +149,18 @@ function CakeDetail({ predefinedId, predefinedSlug, expectedCategory, groupType,
         "@context": "https://schema.org/",
         "@type": "Product",
         "name": cake.name,
-        "image": cake.image_url ? (cake.image_url.startsWith('http') ? cake.image_url : `https://antreme.kyiv.ua${cake.image_url}`) : undefined,
+        "image": cake.image_url ? (cake.image_url.startsWith('http') ? cake.image_url : `${shopConfig.domain}${cake.image_url}`) : undefined,
         "description": cake.description,
         "brand": {
             "@type": "Brand",
-            "name": "Antreme"
+            "name": shopConfig.name
         },
         "offers": {
             "@type": "Offer",
             "priceCurrency": "UAH",
             "price": cake.price,
             "availability": cake.is_available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-            "url": `https://antreme.kyiv.ua${productUrl}`
+            "url": `${shopConfig.domain}${productUrl}`
         },
         "aggregateRating": {
             "@type": "AggregateRating",
@@ -174,7 +175,7 @@ function CakeDetail({ predefinedId, predefinedSlug, expectedCategory, groupType,
         "@type": "ListItem",
         "position": 1,
         "name": "Головна",
-        "item": "https://antreme.kyiv.ua/"
+        "item": `${shopConfig.domain}/`
     }];
 
     if (isGroupACake) {
@@ -182,13 +183,13 @@ function CakeDetail({ predefinedId, predefinedSlug, expectedCategory, groupType,
             "@type": "ListItem",
             "position": 2,
             "name": "Торти на замовлення",
-            "item": "https://antreme.kyiv.ua/torty-na-zamovlennya/"
+            "item": `${shopConfig.domain}/torty-na-zamovlennya/`
         });
         breadcrumbItems.push({
             "@type": "ListItem",
             "position": 3,
             "name": categoryLabel,
-            "item": `https://antreme.kyiv.ua${categoryUrl}`
+            "item": `${shopConfig.domain}${categoryUrl}`
         });
         breadcrumbItems.push({
             "@type": "ListItem",
@@ -200,7 +201,7 @@ function CakeDetail({ predefinedId, predefinedSlug, expectedCategory, groupType,
             "@type": "ListItem",
             "position": 2,
             "name": categoryLabel,
-            "item": `https://antreme.kyiv.ua${categoryUrl}`
+            "item": `${shopConfig.domain}${categoryUrl}`
         });
         breadcrumbItems.push({
             "@type": "ListItem",
@@ -785,7 +786,7 @@ function useCarouselData(currentCakeId) {
     const [recentlyViewed, setRecentlyViewed] = useState([]);
 
     useEffect(() => {
-        api.get('/cakes/')
+        api.get('/products/')
             .then(res => {
                 const allCakes = res.data;
                 const others = allCakes.filter(c => c.id !== currentCakeId);

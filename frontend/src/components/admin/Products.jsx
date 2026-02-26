@@ -22,7 +22,7 @@ export default function Products() {
         setLoading(true);
         try {
             const params = category !== 'all' ? { category } : {};
-            const response = await api.get('/cakes/', { params });
+            const response = await api.get('/products/', { params });
             setProducts(response.data);
         } catch (error) {
             console.error("Failed to fetch products", error);

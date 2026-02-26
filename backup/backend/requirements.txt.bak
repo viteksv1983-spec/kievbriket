@@ -12,6 +12,3 @@ google-auth
 requests
 gunicorn
 Pillow
-alembic
-pytest
-httpx

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import SEOHead from './SEOHead';
+import shopConfig from '../shop.config';
 
 // Text reviews from screenshots
 const TEXT_REVIEWS = [
@@ -110,8 +111,8 @@ function Reviews() {
         "@type": "AggregateRating",
         "itemReviewed": {
             "@type": "Bakery",
-            "name": "Antreme",
-            "image": "https://antreme.com.ua/logo.png",
+            "name": shopConfig.name,
+            "image": `${shopConfig.domain}/logo.png`,
             "priceRange": "$$",
             "servesCuisine": [
                 "Торти на замовлення",

@@ -2,7 +2,7 @@ from datetime import datetime
 from pydantic import BaseModel
 from typing import List, Optional
 
-class ProductBase(BaseModel):
+class CakeBase(BaseModel):
     name: str
     description: Optional[str] = None
     price: float
@@ -54,14 +54,14 @@ class Page(PageBase):
     class Config:
         from_attributes = True
 
-class ProductCreate(ProductBase):
+class CakeCreate(CakeBase):
     pass
 
-class Product(ProductBase):
+class Cake(CakeBase):
     id: int
     slug: str
 
-class ProductUpdate(BaseModel):
+class CakeUpdate(BaseModel):
     name: Optional[str] = None
     slug: Optional[str] = None
     description: Optional[str] = None
@@ -116,7 +116,7 @@ class OrderItemCreate(OrderItemBase):
 class OrderItem(OrderItemBase):
     id: int
     order_id: int
-    cake: Optional[Product] = None  # Response still includes product data via "cake" key
+    cake: Optional[Cake] = None
 
     class Config:
         from_attributes = True

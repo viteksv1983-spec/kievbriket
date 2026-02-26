@@ -1,21 +1,51 @@
 @import "tailwindcss";
 
-@theme {
-    --font-sans: 'Montserrat', sans-serif;
-    --font-serif: 'Montserrat', sans-serif;
+/* ═══════════════════════════════════════════════════
+   THEME VARIABLES — Change these for a new store!
+   ═══════════════════════════════════════════════════ */
+:root {
+    /* Primary brand color (buttons, links, accents) */
+    --color-primary: #A0153E;
+    --color-primary-dark: #7b002c;
+    --color-primary-light: #9C142B;
 
-    --color-antreme-red: #A0153E;
-    --color-antreme-gold: #FFD700;
-    --color-antreme-light: #F8F3EE;
-    --color-antreme-accent: #D39A5E;
+    /* Secondary / accent color */
+    --color-accent: #D39A5E;
+    --color-accent-bright: #FFD700;
+    --color-accent-muted: #E8C064;
+
+    /* Backgrounds */
+    --color-bg: #F8F3EE;
+    --color-bg-white: #ffffff;
+    --color-bg-dark: #5E0C1B;
+    --color-bg-footer: #430612;
+
+    /* Text */
+    --color-text: #1a1a1a;
+    --color-text-muted: #4a5568;
+
+    /* Fonts */
+    --font-heading: 'Oswald', 'Oswald Fallback', sans-serif;
+    --font-body: 'Montserrat', 'Montserrat Fallback', sans-serif;
+}
+
+@theme {
+    --font-sans: var(--font-body);
+    --font-serif: var(--font-body);
+
+    --color-antreme-red: var(--color-primary);
+    --color-antreme-gold: var(--color-accent-bright);
+    --color-antreme-light: var(--color-bg);
+    --color-antreme-accent: var(--color-accent);
 }
 
 @layer base {
     body {
-        background-color: var(--color-antreme-light);
-        color: #1a1a1a;
+        background-color: var(--color-bg);
+        color: var(--color-text);
     }
 }
+
 
 /* --- Premium Category Intro Block --- */
 .category-intro {

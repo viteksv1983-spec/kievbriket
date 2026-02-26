@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../api';
+import shopConfig from '../shop.config';
 import { CartContext } from '../context/CartContext';
 import { FILLINGS } from '../constants/fillings';
 import QuickOrderModal from './QuickOrderModal';
@@ -38,7 +39,7 @@ function CakeList({ predefinedCategory, predefinedSlug, groupType }) {
 
     useEffect(() => {
         setLoading(true);
-        api.get('/cakes/', { params: { category } })
+        api.get('/products/', { params: { category } })
             .then(response => {
                 setCakes(response.data);
                 setLoading(false);
@@ -216,7 +217,7 @@ function CakeList({ predefinedCategory, predefinedSlug, groupType }) {
         "@type": "ListItem",
         "position": 1,
         "name": "Головна",
-        "item": "https://antreme.kyiv.ua/"
+        "item": `${shopConfig.domain}/`
     }];
 
     if (category) {
@@ -225,7 +226,7 @@ function CakeList({ predefinedCategory, predefinedSlug, groupType }) {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Торти на замовлення",
-                "item": "https://antreme.kyiv.ua/torty-na-zamovlennya/"
+                "item": `${shopConfig.domain}/torty-na-zamovlennya/`
             });
             breadcrumbs.push({
                 "@type": "ListItem",
@@ -259,7 +260,7 @@ function CakeList({ predefinedCategory, predefinedSlug, groupType }) {
         "itemListElement": processedCakes.map((cake, index) => ({
             "@type": "ListItem",
             "position": index + 1,
-            "url": `https://antreme.kyiv.ua${getProductUrl(cake)}`
+            "url": `${shopConfig.domain}${getProductUrl(cake)}`
         }))
     };
 
@@ -273,13 +274,13 @@ function CakeList({ predefinedCategory, predefinedSlug, groupType }) {
             "name": "Весільні торти на замовлення у Києві",
             "serviceType": "Wedding Cake Custom Design",
             "areaServed": "Kyiv",
-            "provider": "Antreme"
+            "provider": shopConfig.name
         });
         schemaData.push({
             "@context": "https://schema.org",
             "@type": "Product",
             "name": "Весільний торт на замовлення",
-            "brand": "Antreme",
+            "brand": shopConfig.name,
             "offers": {
                 "@type": "Offer",
                 "priceCurrency": "UAH",

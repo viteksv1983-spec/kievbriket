@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { CartContext } from '../context/CartContext';
 import logo from '../assets/logo.webp';
+import shopConfig from '../shop.config';
 
 function Navbar() {
     const { user, logout } = useContext(AuthContext);
@@ -37,8 +38,8 @@ function Navbar() {
                             <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
                                 <img src={logo} alt="ANTREME" className="h-16 md:h-20 w-auto object-contain group-hover:scale-105 transition-transform duration-300" />
                                 <div className="flex flex-col">
-                                    <span className="text-[#5a0020]/80 text-[10px] md:text-xs uppercase tracking-widest font-medium">Кондитерська майстерня</span>
-                                    <span className="text-2xl md:text-3xl font-serif font-bold text-[#5a0020] leading-none tracking-wide group-hover:text-black transition-colors duration-300">Antreme</span>
+                                    <span className="text-[#5a0020]/80 text-[10px] md:text-xs uppercase tracking-widest font-medium">{shopConfig.tagline}</span>
+                                    <span className="text-2xl md:text-3xl font-serif font-bold text-[#5a0020] leading-none tracking-wide group-hover:text-black transition-colors duration-300">{shopConfig.name}</span>
                                 </div>
                             </Link>
 
@@ -119,8 +120,8 @@ function Navbar() {
                             <Link to="/" className="flex items-center gap-2">
                                 <img src={logo} alt="Antreme" className="h-9 w-auto" />
                                 <div className="flex flex-col leading-none">
-                                    <span className="text-[8px] text-[#5a0020]/70 uppercase tracking-wider font-medium">Кондитерська майстерня</span>
-                                    <span className="text-[17px] font-serif font-bold text-[#6A1A24] tracking-tighter">Antreme</span>
+                                    <span className="text-[8px] text-[#5a0020]/70 uppercase tracking-wider font-medium">{shopConfig.tagline}</span>
+                                    <span className="text-[17px] font-serif font-bold text-[#6A1A24] tracking-tighter">{shopConfig.name}</span>
                                 </div>
                             </Link>
                             {/* Правая часть: соцсети + телефон */}
@@ -219,7 +220,7 @@ function Navbar() {
                         <div className="p-6 flex items-center justify-between border-b border-gray-100 bg-[#F6E7D6] sticky top-0 z-10">
                             <div className="flex items-center gap-2">
                                 <img src={logo} alt="Antreme" className="h-8 w-auto" />
-                                <span className="text-xl font-serif font-bold text-[#5a0020]">Antreme</span>
+                                <span className="text-xl font-serif font-bold text-[#5a0020]">{shopConfig.name}</span>
                             </div>
                             <button onClick={() => setIsMenuOpen(false)} aria-label="Закрити меню" className="text-[#5a0020] p-1 ml-4 hover:rotate-90 transition-transform">
                                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">

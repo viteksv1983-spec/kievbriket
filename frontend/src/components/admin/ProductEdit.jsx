@@ -54,7 +54,7 @@ export default function ProductEdit() {
 
         const fetchProduct = async () => {
             try {
-                const response = await api.get(`/cakes/${id}`);
+                const response = await api.get(`/products/${id}`);
                 setFormData({
                     ...response.data,
                     // Ensure fields are not null for inputs
@@ -93,10 +93,10 @@ export default function ProductEdit() {
             };
 
             if (isNew) {
-                await api.post('/cakes/', dataToSave);
+                await api.post('/products/', dataToSave);
                 alert('Товар додано!');
             } else {
-                await api.patch(`/cakes/${id}`, dataToSave, {
+                await api.patch(`/products/${id}`, dataToSave, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 alert('Товар оновлено!');

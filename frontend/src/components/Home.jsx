@@ -2,6 +2,7 @@ import { getCategoryUrl, getProductUrl } from '../utils/urls';
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
+import shopConfig from '../shop.config';
 import logo from '../assets/logo.webp';
 import { CartContext } from '../context/CartContext';
 import QuickOrderModal from './QuickOrderModal';
@@ -116,7 +117,7 @@ function Home() {
 
     useEffect(() => {
         // Fetch all cakes
-        api.get('/cakes/')
+        api.get('/products/')
             .then(response => {
                 setAllCakes(response.data);
                 setFeaturedCakes(response.data.slice(0, 4));
@@ -141,9 +142,9 @@ function Home() {
     const homeSchema = {
         "@context": "https://schema.org",
         "@type": ["LocalBusiness", "Bakery"],
-        "name": "Antreme",
-        "image": "https://antreme.kyiv.ua/og-image.jpg",
-        "url": "https://antreme.kyiv.ua/",
+        "name": shopConfig.name,
+        "image": `${shopConfig.domain}/og-image.jpg`,
+        "url": `${shopConfig.domain}/`,
         "telephone": "+380979081504",
         "priceRange": "₴₴",
         "areaServed": { "@type": "City", "name": "Kyiv" },
@@ -230,14 +231,14 @@ function Home() {
         "@context": "https://schema.org",
         "@type": "Product",
         "name": cake.name,
-        "image": cake.image_url ? (cake.image_url.startsWith('http') ? cake.image_url : `https://antreme.kyiv.ua${cake.image_url}`) : "",
+        "image": cake.image_url ? (cake.image_url.startsWith('http') ? cake.image_url : `${shopConfig.domain}${cake.image_url}`) : "",
         "description": `Авторський торт "${cake.name}" на замовлення в Києві. Індивідуальний дизайн, натуральні інгредієнти.`,
         "offers": {
             "@type": "Offer",
             "price": cake.price,
             "priceCurrency": "UAH",
             "availability": "https://schema.org/InStock",
-            "url": `https://antreme.kyiv.ua${getProductUrl(cake)}`
+            "url": `${shopConfig.domain}${getProductUrl(cake)}`
         }
     }));
 

@@ -3,8 +3,8 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from backend.database import Base
 
-class Product(Base):
-    __tablename__ = "cakes"  # Keep DB table name unchanged!
+class Cake(Base):
+    __tablename__ = "cakes"
 
     id = Column(Integer, primary_key=True, index=True)
     slug = Column(String, unique=True, index=True)
@@ -17,7 +17,7 @@ class Product(Base):
     weight = Column(Float, nullable=True)  # Вага в грамах
     ingredients = Column(String, nullable=True)  # Склад
     shelf_life = Column(String, nullable=True)  # Термін придатності
-    category = Column(String, nullable=True)  # Категорія
+    category = Column(String, nullable=True)  # Категорія (порційний, цілий, святковий)
 
     # SEO Fields
     meta_title = Column(String, nullable=True)
@@ -50,8 +50,6 @@ class Page(Base):
     
     content = Column(String, nullable=True)  # Rich text or JSON content
     content_images = Column(String, nullable=True)  # JSON list of image URLs
-    created_at = Column(DateTime(timezone=True), default=func.now())
-    updated_at = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
 
 class CategoryMetadata(Base):
     __tablename__ = "category_metadata"
@@ -60,8 +58,6 @@ class CategoryMetadata(Base):
     slug = Column(String, unique=True, index=True)
     image_url = Column(String, nullable=True)
     description = Column(String, nullable=True)
-    created_at = Column(DateTime(timezone=True), default=func.now())
-    updated_at = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
 
 class User(Base):
     __tablename__ = "users"
@@ -95,14 +91,14 @@ class OrderItem(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     order_id = Column(Integer, ForeignKey("orders.id"))
-    cake_id = Column(Integer, ForeignKey("cakes.id"))  # FK references table name, not class
-    scale = Column(String, nullable=True)
+    cake_id = Column(Integer, ForeignKey("cakes.id"))
+    scale = Column(String, nullable=True)  # Placeholder in case needed for something else
     quantity = Column(Integer)
     flavor = Column(String, nullable=True)
-    weight = Column(Float, nullable=True)  # Selected weight in kg
+    weight = Column(Float, nullable=True)  # Selected weight in kg (e.g., 1.5)
 
     order = relationship("Order", back_populates="items")
-    product = relationship("Product")  # Was: cake = relationship("Cake")
+    cake = relationship("Cake")
 
 class TelegramSettings(Base):
     __tablename__ = "telegram_settings"

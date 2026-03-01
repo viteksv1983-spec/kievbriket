@@ -1,8 +1,7 @@
 import React from "react";
 import { CheckCircle2 } from "lucide-react";
 import { useReveal } from "../../hooks/useReveal";
-
-const deliveryImg = "https://images.unsplash.com/photo-1605530096090-a4d31cd82288?crop=entropy&cs=tinysrgb&fit=max&fm=webp&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaXJld29vZCUyMGRlbGl2ZXJ5JTIwdHJ1Y2slMjB1bmxvYWRpbmclMjBsb2dzfGVufDF8fHx8MTc3MjIxOTk3NHww&ixlib=rb-4.1.0&q=80&w=1080";
+import deliveryImg from "./assets/trust-delivery.webp";
 
 const points = [
     "Власний автопарк — без затримок",

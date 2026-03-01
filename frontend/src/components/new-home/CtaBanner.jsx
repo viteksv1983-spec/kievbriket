@@ -2,8 +2,7 @@ import React from "react";
 import { ArrowRight, Flame, Phone } from "lucide-react";
 import { useReveal } from "../../hooks/useReveal";
 import shopConfig from '../../shop.config';
-
-const fireplaceImg = "https://images.unsplash.com/photo-1706636875248-e0d4fe6c121e?crop=entropy&cs=tinysrgb&fit=max&fm=webp&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3p5JTIwZmlyZXBsYWNlJTIwZGFyayUyMHJvb20lMjB3YXJtJTIwb3JhbmdlJTIwZmxhbWVzfGVufDF8fHx8MTc3MjIxNjE4NHww&ixlib=rb-4.1.0&q=80&w=1400";
+import fireplaceImg from "./assets/cta-fireplace.webp";
 
 export function CtaBanner() {
     const { ref, visible } = useReveal();

@@ -225,7 +225,7 @@ export function SiteHeader({ onQuickOrderClick }) {
                             <span style={{ display: "block", fontWeight: 900, fontSize: "1.2rem", letterSpacing: "-0.03em" }}>
                                 <span style={{ color: "#ffffff" }}>Київ</span><span style={{ color: "#F97316" }}>Брикет</span>
                             </span>
-                            <span style={{ display: "block", fontSize: "0.62rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.04em", marginTop: 1 }}>
+                            <span style={{ display: "block", fontSize: "0.62rem", color: "rgba(255,255,255,0.65)", letterSpacing: "0.04em", marginTop: 1 }}>
                                 ТОВ «Київ Брикет»
                             </span>
                         </span>

@@ -43,7 +43,7 @@ export function SiteFooter() {
                                 <span style={{ display: "block", fontWeight: 900, fontSize: "1.2rem", letterSpacing: "-0.03em" }}>
                                     <span style={{ color: "#ffffff" }}>Київ</span><span style={{ color: "#F97316" }}>Брикет</span>
                                 </span>
-                                <span style={{ display: "block", fontSize: "0.62rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.04em", marginTop: 1 }}>
+                                <span style={{ display: "block", fontSize: "0.62rem", color: "rgba(255,255,255,0.65)", letterSpacing: "0.04em", marginTop: 1 }}>
                                     ТОВ «Київ Брикет»
                                 </span>
                             </span>
@@ -51,7 +51,7 @@ export function SiteFooter() {
                         <p style={{ fontSize: "0.875rem", color: "var(--c-text2)", lineHeight: 1.7, maxWidth: 280, marginBottom: 12 }}>
                             ТОВ «Київ Брикет» — постачальник твердого палива з доставкою по Києву та Київській області. Дрова, брикети, вугілля з 2013 року.
                         </p>
-                        <p style={{ fontSize: "0.78rem", color: "rgba(249,115,22,0.75)", fontWeight: 600, marginBottom: 20, letterSpacing: "0.01em" }}>
+                        <p style={{ fontSize: "0.78rem", color: "rgba(249,115,22,1)", fontWeight: 600, marginBottom: 20, letterSpacing: "0.01em" }}>
                             Працюємо з фізичними та юридичними особами
                         </p>
                         <div style={{ display: "flex", gap: 10 }}>
@@ -135,7 +135,7 @@ export function SiteFooter() {
                                 >
                                     <Icon size={14} color="var(--c-orange)" style={{ flexShrink: 0, marginTop: 2 }} />
                                     <div>
-                                        <span style={{ display: "block", fontSize: "0.72rem", color: "var(--c-text3)", marginBottom: 1 }}>{label}</span>
+                                        <span style={{ display: "block", fontSize: "0.72rem", color: "var(--c-text2)", marginBottom: 1 }}>{label}</span>
                                         {text}
                                     </div>
                                 </a>

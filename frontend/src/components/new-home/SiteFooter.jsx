@@ -56,12 +56,13 @@ export function SiteFooter() {
                         </p>
                         <div style={{ display: "flex", gap: 10 }}>
                             {[
-                                { Icon: Instagram, href: shopConfig.contact.instagram || "#" },
-                                { Icon: Facebook, href: shopConfig.contact.facebook || "#" },
-                            ].map(({ Icon, href }, i) => (
+                                { Icon: Instagram, href: shopConfig.contact.instagram || "#", label: "Instagram" },
+                                { Icon: Facebook, href: shopConfig.contact.facebook || "#", label: "Facebook" },
+                            ].map(({ Icon, href, label }, i) => (
                                 <a
                                     key={i}
                                     href={href}
+                                    aria-label={`Перейти на сторінку в ${label}`}
                                     style={{
                                         width: 38, height: 38, borderRadius: 9,
                                         background: "var(--c-surface)",

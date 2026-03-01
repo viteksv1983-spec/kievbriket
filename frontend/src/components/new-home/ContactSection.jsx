@@ -161,8 +161,9 @@ export function ContactSection() {
                                 </div>
 
                                 <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                                    <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text2)" }}>Тип палива</label>
+                                    <label htmlFor="contact-fuel" style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text2)" }}>Тип палива</label>
                                     <select
+                                        id="contact-fuel"
                                         value={form.fuel}
                                         onChange={setField("fuel")}
                                         style={{

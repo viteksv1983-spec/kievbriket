@@ -213,8 +213,9 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
                             </div>
                         ) : (
                             <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                                <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>Тип палива</label>
+                                <label htmlFor="ofm-fuel" style={{ fontSize: "0.8rem", fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>Тип палива</label>
                                 <select
+                                    id="ofm-fuel"
                                     value={form.fuel}
                                     onChange={setField("fuel")}
                                     style={{

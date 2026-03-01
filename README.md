@@ -38,3 +38,23 @@ This project is ready for deployment on [Render](https://render.com/).
 
 ## Deployment to GitHub manually (if needed)
 ...
+
+## Automated Backups (SQLite)
+
+This project includes a Python script (`scripts/backup_db.py`) to automatically backup the SQLite database with 14-day rotation.
+
+**To set up via cron (Linux/macOS):**
+```bash
+# Edit cron jobs
+crontab -e
+
+# Add this line to run backup every day at 3:00 AM
+0 3 * * * /path/to/cakeshop/venv/bin/python /path/to/cakeshop/scripts/backup_db.py >> /var/log/cakeshop_backup.log 2>&1
+```
+
+**To set up via Task Scheduler (Windows):**
+1. Open Task Scheduler -> Create Basic Task
+2. Set trigger to "Daily"
+3. Set action to "Start a program"
+4. Program/script: `path\to\venv\Scripts\python.exe`
+5. Add arguments: `path\to\cakeshop\scripts\backup_db.py`

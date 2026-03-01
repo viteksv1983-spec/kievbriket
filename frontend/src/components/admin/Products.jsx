@@ -2,14 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../../api'; // Use centralized api instance
 import { useAuth } from '../../context/AuthContext';
-import { FiEdit2, FiPlus, FiGrid, FiList } from 'react-icons/fi';
+import { FiEdit2, FiPlus, FiGrid, FiList, FiTrash2 } from 'react-icons/fi';
 
-import { CATEGORIES } from '../../constants/categories';
-
-const NAV_CATEGORIES = [
-    { id: 'all', name: 'Усі товари', icon: <FiGrid /> },
-    ...CATEGORIES.map(c => ({ id: c.slug, name: c.name }))
-];
+import { useCategories } from '../../context/CategoryContext';
 
 export default function Products() {
     const [products, setProducts] = useState([]);
@@ -17,17 +12,37 @@ export default function Products() {
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedCategory = searchParams.get('category') || 'all';
     const { token } = useAuth();
+    const { categories } = useCategories();
+
+    const NAV_CATEGORIES = [
+        { id: 'all', name: 'Усі товари', icon: <FiGrid /> },
+        ...categories.map(c => ({ id: c.slug, name: c.name }))
+    ];
 
     const fetchProducts = async (category) => {
         setLoading(true);
         try {
             const params = category !== 'all' ? { category } : {};
             const response = await api.get('/products/', { params });
-            setProducts(response.data);
+            const data = response.data;
+            setProducts(Array.isArray(data) ? data : (data.items || []));
         } catch (error) {
             console.error("Failed to fetch products", error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleDelete = async (productId, productName) => {
+        if (!window.confirm(`Ви впевнені, що хочете видалити товар "${productName}"?`)) return;
+        try {
+            await api.delete(`/products/${productId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setProducts(products.filter(p => p.id !== productId));
+        } catch (error) {
+            console.error("Failed to delete product", error);
+            alert("Помилка при видаленні товару. Можливо у вас немає прав.");
         }
     };
 
@@ -39,7 +54,7 @@ export default function Products() {
         <div className="max-w-6xl">
             {/* Main Content */}
             <div className="flex-grow">
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900">Товари</h1>
                         <p className="text-sm text-gray-500 mt-1">
@@ -50,7 +65,7 @@ export default function Products() {
                     </div>
                     <Link
                         to="/admin/products/new"
-                        className="flex items-center gap-2 bg-[#ffcc00] text-gray-900 px-6 py-3 rounded-xl font-bold hover:bg-[#ffdb4d] transition-all shadow-sm active:scale-95"
+                        className="flex items-center justify-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-orange-600 transition-all shadow-md shadow-orange-200 active:scale-95 w-full sm:w-auto"
                     >
                         <FiPlus className="w-5 h-5" />
                         <span>Додати товар</span>
@@ -102,13 +117,22 @@ export default function Products() {
                                                     </td>
                                                     <td className="px-6 py-4 text-gray-500">{product.weight ? `${product.weight} г` : '-'}</td>
                                                     <td className="px-6 py-4 text-right">
-                                                        <Link
-                                                            to={`/admin/products/edit/${product.id}`}
-                                                            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-blue-50 hover:text-blue-600 font-bold transition-all"
-                                                        >
-                                                            <FiEdit2 className="w-4 h-4" />
-                                                            <span>Редагувати</span>
-                                                        </Link>
+                                                        <div className="flex justify-end gap-2">
+                                                            <Link
+                                                                to={`/admin/products/edit/${product.id}`}
+                                                                className="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-blue-50 hover:text-blue-600 font-bold transition-all"
+                                                                title="Редагувати"
+                                                            >
+                                                                <FiEdit2 className="w-4 h-4" />
+                                                            </Link>
+                                                            <button
+                                                                onClick={() => handleDelete(product.id, product.name)}
+                                                                className="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 text-gray-400 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all font-bold"
+                                                                title="Видалити"
+                                                            >
+                                                                <FiTrash2 className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))
@@ -146,12 +170,20 @@ export default function Products() {
                                                         <span className="font-bold text-gray-900 text-sm">{product.price} <span className="text-[10px] text-gray-400 font-normal">₴</span></span>
                                                         {product.weight && <span className="text-[10px] text-gray-400 px-1.5 py-0.5 bg-gray-100 rounded">{(product.weight >= 10 && product.weight <= 200) ? product.weight + '0 г' : product.weight + ' кг'}</span>}
                                                     </div>
-                                                    <Link
-                                                        to={`/admin/products/edit/${product.id}`}
-                                                        className="p-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-blue-50 transition-colors border border-gray-100"
-                                                    >
-                                                        <FiEdit2 className="w-4 h-4" />
-                                                    </Link>
+                                                    <div className="flex items-center gap-1">
+                                                        <Link
+                                                            to={`/admin/products/edit/${product.id}`}
+                                                            className="p-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors border border-gray-100"
+                                                        >
+                                                            <FiEdit2 className="w-4 h-4" />
+                                                        </Link>
+                                                        <button
+                                                            onClick={() => handleDelete(product.id, product.name)}
+                                                            className="p-2 bg-gray-50 text-gray-400 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors border border-gray-100"
+                                                        >
+                                                            <FiTrash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

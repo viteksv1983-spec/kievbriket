@@ -7,11 +7,21 @@ from sqlalchemy import engine_from_config, pool
 from alembic import context
 
 # Add project root to path so imports work
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import os
+import sys
+
+# Get the path to the 'firewood_backend' directory 
+backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+project_root = os.path.dirname(backend_dir)
+sys.path.insert(0, project_root)
 
 # Import our models and database config
-from backend.database import SQLALCHEMY_DATABASE_URL, engine
-from backend.models import Base
+from backend.src.core.database import SQLALCHEMY_DATABASE_URL, engine
+from backend.src.core.database import Base
+from backend.src.products.models import Product, CategoryMetadata
+from backend.src.users.models import User
+from backend.src.pages.models import Page
+from backend.src.orders.models import Order
 
 # Alembic Config object
 config = context.config

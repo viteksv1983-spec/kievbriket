@@ -1,0 +1,35 @@
+/* ──────────────────────────────────────────────────────────────────────────
+ * Google Fonts: Inter
+ *
+ * Weights audit (src/app/components/):
+ *   400 → body text, base
+ *   500 → labels, secondary text
+ *   600 → captions, pills, small UI
+ *   700 → headings h3, buttons, strong text
+ *   800 → h2 section headings
+ *   900 → h1, display, stat numbers
+ *
+ * display=swap  → FOUT (text visible immediately with fallback, then swap)
+ * preconnect    → injected programmatically in App.tsx via useInsertionEffect
+ * ────────────────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* ── Metric-matched fallback font ────────────────────────────────────────
+ * Adjusts Arial's metrics to match Inter exactly.
+ * Result: text takes the same space before and after swap → no CLS.
+ *
+ * Values calculated with fontaine / capsizecss for Inter vs Arial.
+ * ──────────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Inter-fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
+  ascent-override:  90.20%;
+  descent-override: 22.48%;
+  line-gap-override: 0%;
+  size-adjust: 107.40%;
+}
+
+/* Apply stack: Inter → metric-matched fallback → system */
+body {
+  font-family: 'Inter', 'Inter-fallback', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}

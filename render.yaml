@@ -1,26 +1,25 @@
 services:
-  # Backend service
+  # Backend API (Docker)
   - type: web
-    name: cake-shop-backend
-    runtime: python
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    name: kievbriket-api
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: .
+    plan: free
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: kievbriket-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://kievbriket.vercel.app
+      - key: ALLOWED_HOSTS
+        value: "*"
 
-  # Frontend service
-  - type: web
-    name: cake-shop-frontend
-    runtime: static
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist
-    routingRules:
-      - route: /*
-        rewrite: /index.html
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: cake-shop-backend
-          property: url
+databases:
+  - name: kievbriket-db
+    plan: free
+    databaseName: kievbriket
+    user: kievbriket_user

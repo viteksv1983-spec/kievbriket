@@ -6,67 +6,37 @@ import axios from 'axios';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const API_URL = 'https://cake-shop-backend.onrender.com/cakes/?limit=1000';
-const BASE_URL = 'https://antreme.kyiv.ua';
+// ─── Config ───
+const BASE_URL = 'https://drova.kyiv.ua';
+const API_BASE = process.env.VITE_API_URL || 'http://localhost:8000';
 
-// ─── Group A: Occasion-based (nested under /torty-na-zamovlennya/) ───
-const GROUP_A = {
-    'vesilni': 'wedding',
-    'na-den-narodzhennya': 'birthday',
-    'na-yuviley': 'anniversary',
-    'dytyachi': 'kids',
-    'dlya-hlopchykiv': 'boy',
-    'dlya-divchat': 'girl',
-    'dlya-zhinok': 'for-women',
-    'dlya-cholovikiv': 'for-men',
-    'gender-reveal': 'gender-reveal',
-    'korporatyvni': 'corporate',
-    'sezonni': 'seasonal',
-    'foto-torty': 'photo-cakes',
-    'profesiine-svyato': 'professional',
-    'patriotychni': 'patriotic',
-    'na-khrestyny': 'christening',
-    'za-hobi': 'hobby',
-};
+// ─── Static pages (only these 3 exist) ───
+const STATIC_PAGES = [
+    { path: '/', priority: '1.0', changefreq: 'daily' },
+    { path: '/delivery/', priority: '0.9', changefreq: 'monthly' },
+    { path: '/contacts/', priority: '0.9', changefreq: 'monthly' },
+];
 
-// ─── Group B: Type-based (standalone at root /) ───
-const GROUP_B = {
-    'bento-torty': 'bento',
-    'biskvitni-torty': 'biscuit',
-    'musovi-torty': 'mousse',
-    'kapkeyky': 'cupcakes',
-    'imbirni-pryanyky': 'gingerbread',
-    'nachynky': 'fillings',
-};
+// ─── Category pages (fetched from backend, fallback to hardcoded) ───
+const FALLBACK_CATEGORIES = ['firewood', 'briquettes', 'coal'];
 
-// Reverse map: dbCategory -> { urlSlug, group }
-const dbCatToUrl = {};
-for (const [slug, dbCat] of Object.entries(GROUP_A)) {
-    dbCatToUrl[dbCat] = { slug, group: 'A' };
-}
-for (const [slug, dbCat] of Object.entries(GROUP_B)) {
-    dbCatToUrl[dbCat] = { slug, group: 'B' };
-}
-
-function getProductUrl(cake) {
-    const info = dbCatToUrl[cake.category];
-    if (!info) {
-        console.warn(`[WARNING] Category not mapped in GROUP_A or GROUP_B for product: ${cake.name}`);
-        return null; // Skip unmapped completely, no legacy fallbacks
-    }
-    if (info.group === 'A') return `/torty-na-zamovlennya/${info.slug}/${cake.slug}/`;
-    return `/${info.slug}/${cake.slug}/`;
-}
-
-async function fetchCakes() {
-    console.log(`\n⏳ Запит до ${API_URL} для Sitemap...`);
+async function fetchCategories() {
     try {
-        const response = await axios.get(API_URL, { timeout: 5000 });
-        console.log(`✅ Успішно отримано ${response.data.length} товарів для Sitemap.`);
+        const response = await axios.get(`${API_BASE}/categories/metadata`, { timeout: 5000 });
+        return response.data.map(c => c.slug);
+    } catch {
+        console.log('⚠️ Cannot fetch categories from backend — using fallback list.');
+        return FALLBACK_CATEGORIES;
+    }
+}
+
+async function fetchProducts() {
+    try {
+        const response = await axios.get(`${API_BASE}/products/?limit=1000`, { timeout: 5000 });
+        console.log(`✅ Fetched ${response.data.length} products for sitemap.`);
         return response.data;
     } catch (error) {
-        console.log(`⚠️ УВАГА: Бекенд недоступний або "спить" (Render Free Tier) - ${error.message}.`);
-        console.log(`⏭️ Пропуск динамічних товарів для Sitemap. Базові та SEO-категорії будуть згенеровані.`);
+        console.log(`⚠️ Backend unavailable — skipping product URLs. (${error.message})`);
         return [];
     }
 }
@@ -83,80 +53,61 @@ function urlEntry(loc, priority, changefreq, lastmod) {
 }
 
 async function generateSitemap() {
-    try {
-        console.log('Fetching cakes for sitemap...');
-        const cakes = await fetchCakes();
-        const today = new Date().toISOString().split('T')[0];
-        const urls = new Set();
-        const entries = [];
+    console.log('Generating sitemap for Дрова Київ...');
+    const categories = await fetchCategories();
+    const products = await fetchProducts();
+    const today = new Date().toISOString().split('T')[0];
+    const urls = new Set();
+    const entries = [];
 
-        const addUrl = (path, priority, changefreq, lastmod) => {
-            const full = `${BASE_URL}${path}`;
-            if (urls.has(full)) return;
-            urls.add(full);
-            entries.push({ path, priority, changefreq, lastmod: lastmod || today, full });
-        };
+    const addUrl = (urlPath, priority, changefreq, lastmod) => {
+        const full = `${BASE_URL}${urlPath}`;
+        if (urls.has(full)) return;
+        urls.add(full);
+        entries.push({ path: urlPath, priority, changefreq, lastmod: lastmod || today, full });
+    };
 
-        // === Tier 1: Home (1.0) ===
-        addUrl('/', '1.0', 'daily');
+    // Static pages
+    STATIC_PAGES.forEach(p => addUrl(p.path, p.priority, p.changefreq));
 
-        // === Tier 2: Main pages (0.9) ===
-        // Structural routes end in /
-        ['/dostavka/', '/pro-nas/', '/vidguky/', '/nachynky/', '/torty-na-zamovlennya/'].forEach(p => {
-            addUrl(p, '0.9', 'daily');
-        });
+    // Category pages
+    categories.forEach(slug => {
+        addUrl(`/catalog/${slug}/`, '0.8', 'weekly');
+    });
 
-        // === Tier 3: Category pages (0.8) ===
-        // Group A categories
-        for (const slug of Object.keys(GROUP_A)) {
-            addUrl(`/torty-na-zamovlennya/${slug}/`, '0.8', 'weekly');
-        }
-        // Group B categories
-        for (const slug of Object.keys(GROUP_B)) {
-            addUrl(`/${slug}/`, '0.8', 'weekly');
-        }
+    // Product pages
+    products.forEach(product => {
+        if (!product.slug || !product.category) return;
+        const lastmod = product.updated_at
+            ? new Date(product.updated_at).toISOString().split('T')[0]
+            : today;
+        addUrl(`/catalog/${product.category}/${product.slug}/`, '0.7', 'weekly', lastmod);
+    });
 
-        // === Tier 4: Product pages (0.7) ===
-        cakes.forEach(cake => {
-            if (!cake.slug) return; // Skip products without slugs
-            const url = getProductUrl(cake);
-            if (!url) return; // Skip mismatched 
-            const lastmod = cake.updated_at
-                ? new Date(cake.updated_at).toISOString().split('T')[0]
-                : today;
-            addUrl(url, '0.7', 'weekly', lastmod);
-        });
+    // Sort: priority desc, then alphabetically
+    entries.sort((a, b) => {
+        const pDiff = parseFloat(b.priority) - parseFloat(a.priority);
+        if (pDiff !== 0) return pDiff;
+        return a.path.localeCompare(b.path);
+    });
 
-        // Build XML
-        let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-        sitemap += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+    // Build XML
+    let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    sitemap += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+    entries.forEach(e => {
+        sitemap += urlEntry(e.full, e.priority, e.changefreq, e.lastmod) + '\n';
+    });
+    sitemap += `</urlset>`;
 
-        // Sort by priority desc, then alphabetically
-        entries.sort((a, b) => {
-            const pDiff = parseFloat(b.priority) - parseFloat(a.priority);
-            if (pDiff !== 0) return pDiff;
-            return a.path.localeCompare(b.path);
-        });
-
-        entries.forEach(e => {
-            sitemap += urlEntry(e.full, e.priority, e.changefreq, e.lastmod) + '\n';
-        });
-
-        sitemap += `</urlset>`;
-
-        const publicDir = path.join(__dirname, '..', 'public');
-        if (!fs.existsSync(publicDir)) {
-            fs.mkdirSync(publicDir, { recursive: true });
-        }
-
-        const sitemapPath = path.join(publicDir, 'sitemap.xml');
-        fs.writeFileSync(sitemapPath, sitemap, 'utf8');
-        console.log(`✅ Sitemap generated: ${sitemapPath} (${entries.length} URLs)`);
-        console.log(`   Breakdown: Home=1, Main=${6}, Categories=${Object.keys(GROUP_A).length + Object.keys(GROUP_B).length}, Products=${cakes.filter(c => c.slug).length}`);
-    } catch (error) {
-        console.error('Error generating sitemap:', error);
-        process.exit(1);
+    const publicDir = path.join(__dirname, '..', 'public');
+    if (!fs.existsSync(publicDir)) {
+        fs.mkdirSync(publicDir, { recursive: true });
     }
+
+    const sitemapPath = path.join(publicDir, 'sitemap.xml');
+    fs.writeFileSync(sitemapPath, sitemap, 'utf8');
+    console.log(`✅ Sitemap generated: ${sitemapPath} (${entries.length} URLs)`);
+    console.log(`   Static=${STATIC_PAGES.length}, Categories=${categories.length}, Products=${products.length}`);
 }
 
 generateSitemap();

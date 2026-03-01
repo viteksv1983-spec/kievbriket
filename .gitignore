@@ -11,9 +11,25 @@ dist/
 dist-ssr/
 *.local
 
-# Database
-# backend/sql_app.db
-# sql_app.db
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+backend/logs/
+
+# Media uploads (served by backend, not in repo)
+backend/media/
+
+# Archives & backups
+cakes_archive/
+backend.zip
+*.zip
+
+# Development helpers
+firewood_dev/
+backup/
 
 # IDE
 .vscode/
@@ -24,3 +40,9 @@ dist-ssr/
 # OS
 .DS_Store
 Thumbs.db
+
+# Pytest
+.pytest_cache/
+
+# Gemini agent
+.gemini/

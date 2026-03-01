@@ -1,5 +1,5 @@
 """
-Cake Shop API — Main Application Entry Point.
+KievBriket API — Main Application Entry Point.
 Business logic lives in routers/, auth deps in deps.py.
 """
 import sys
@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Initialize logging
 from backend.logging_config import setup_logging
 setup_logging()
-logger = logging.getLogger("cakeshop.api")
+logger = logging.getLogger("kievbriket.api")
 
 from fastapi import FastAPI, Depends
 from fastapi.staticfiles import StaticFiles
@@ -21,18 +21,35 @@ from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-from backend import models, auto_seed
-from backend.database import SessionLocal, engine, get_db
+from backend import auto_seed
+from backend.src.core.database import SessionLocal, engine, get_db, Base
+from backend.src.users.models import User
+from backend.src.products.models import Product, CategoryMetadata
+from backend.src.orders.models import Order, OrderItem, OrderStatusHistory
+from backend.src.pages.models import Page
+from backend.src.admin.models import TelegramSettings
 
 # Create tables
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Cake Shop API", description="API for checking and ordering cakes", version="0.2.0")
+from backend.src.core.config import settings
+
+app = FastAPI(
+    title=settings.app_name,
+    description="API для замовлення дров, брикетів та вугілля з доставкою по Київській області",
+    version=settings.app_version,
+)
+
+# ─── Error Handlers ─────────────────────────────────────────
+from backend.src.core.errors import setup_error_handlers
+setup_error_handlers(app)
 
 
 # ─── Middleware ──────────────────────────────────────────────
 
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.gzip import GZipMiddleware
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
@@ -47,24 +64,58 @@ class CacheHeadersMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
         path = request.url.path
         if path.startswith("/products") and request.method == "GET":
-            response.headers["Cache-Control"] = "public, max-age=300"
+            response.headers["Cache-Control"] = f"public, max-age={settings.product_cache_ttl}"
             response.headers["Vary"] = "Accept-Encoding"
         elif path.startswith("/static/"):
             response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
         return response
 
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    """Add basic security headers to every response."""
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        return response
+
+# Order matters: outermost middleware is added last
 app.add_middleware(RequestLoggingMiddleware)
+app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(CacheHeadersMiddleware)
+app.add_middleware(GZipMiddleware, minimum_size=500)
+
+# Trusted hosts (skip in dev when "*")
+if settings.allowed_hosts != "*":
+    allowed = [h.strip() for h in settings.allowed_hosts.split(",")]
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed)
+
+# CORS
+cors_origins = [o.strip() for o in settings.cors_origins.split(",")] if settings.cors_origins != "*" else ["*"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
+# ─── Rate Limiting ──────────────────────────────────────────
+
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.errors import RateLimitExceeded
+from backend.src.core.rate_limit import limiter, rate_limit_exceeded_handler
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+
+
 # ─── Static Files ───────────────────────────────────────────
+import mimetypes
+mimetypes.add_type("image/webp", ".webp")
 
 STATIC_DIR = Path(__file__).parent / "static"
 MEDIA_DIR = Path(__file__).parent / "media"
@@ -82,13 +133,72 @@ app.mount("/media", CachedStaticFiles(directory=str(MEDIA_DIR)), name="media")
 
 # ─── Include Routers ────────────────────────────────────────
 
-from backend.routers import products, orders, auth as auth_router, admin
+from fastapi import APIRouter
+from backend.src.products.router import router as products_router
+from backend.src.orders.router import router as orders_router
+from backend.src.users.router import router as users_router
+from backend.src.admin.router import router as admin_router
 
-app.include_router(products.router)
-app.include_router(orders.router)
-app.include_router(auth_router.router)
-app.include_router(admin.router)
+# API v1 — versioned prefix for all API routes
+api_v1 = APIRouter(prefix="/api/v1")
+api_v1.include_router(products_router)
+api_v1.include_router(orders_router)
+api_v1.include_router(users_router)
+api_v1.include_router(admin_router)
+app.include_router(api_v1)
 
+# Backward compatibility — keep old routes working (no prefix)
+app.include_router(products_router)
+app.include_router(orders_router)
+app.include_router(users_router)
+app.include_router(admin_router)
+
+
+# ─── Public Pages Endpoints ─────────────────────────────────
+
+from fastapi import Query as QueryParam
+from backend.src.pages.service import PageService
+from backend.src.pages import schemas as page_schemas
+
+CORE_ROUTES = {'/', '/delivery', '/contacts'}
+
+pages_public_router = APIRouter(tags=["pages"])
+
+@pages_public_router.get("/pages/by-route")
+def get_page_by_route(route: str = QueryParam(...), db: Session = Depends(get_db)):
+    """Public endpoint: fetch a page's content and SEO by its route_path."""
+    page = PageService.get_page_by_route(db, route)
+    if not page:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Page not found")
+    return page
+
+@pages_public_router.get("/pages/custom")
+def list_custom_pages(db: Session = Depends(get_db)):
+    """Public endpoint: list all custom (non-core) pages for navigation/sitemap."""
+    all_pages = PageService.get_pages(db)
+    return [
+        {"route_path": p.route_path, "name": p.name, "meta_title": p.meta_title}
+        for p in all_pages
+        if p.route_path not in CORE_ROUTES
+    ]
+
+app.include_router(pages_public_router)
+
+
+# ─── SEO Endpoints ──────────────────────────────────────────
+
+from fastapi.responses import Response
+from backend.src.core.seo import SitemapService
+
+@app.get("/sitemap.xml", include_in_schema=False)
+def sitemap(db: Session = Depends(get_db)):
+    xml = SitemapService.generate(db)
+    return Response(content=xml, media_type="application/xml")
+
+@app.get("/robots.txt", include_in_schema=False)
+def robots():
+    return Response(content=SitemapService.robots_txt(), media_type="text/plain")
 
 # ─── Startup ────────────────────────────────────────────────
 
@@ -109,7 +219,7 @@ async def startup_event():
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to Cake Shop API"}
+    return {"message": "KievBriket API is running"}
 
 @app.get("/health")
 def health_check():
@@ -117,14 +227,31 @@ def health_check():
 
 @app.get("/health-check")
 async def detailed_health_check(db: Session = Depends(get_db)):
-    product_count = db.query(models.Product).count()
-    pages_count = db.query(models.Page).count()
+    product_count = db.query(Product).count()
+    pages_count = db.query(Page).count()
     return {
         "status": "online",
         "database": "connected",
         "products_count": product_count,
         "pages_count": pages_count,
     }
+
+# ─── SPA Route ──────────────────────────────────────────────
+
+from fastapi.responses import FileResponse
+import os
+
+@app.api_route("/{path_name:path}", methods=["GET"])
+async def catch_all(path_name: str):
+    """
+    Catch-all route to serve the React SPA `index.html`.
+    Any path that doesn't match an API route or static file 
+    will return the React app, allowing React Router to handle it.
+    """
+    index_file = os.path.join(STATIC_DIR, "index.html")
+    if os.path.isfile(index_file):
+        return FileResponse(index_file)
+    return {"message": "KievBriket API (React frontend not built)"}
 
 
 if __name__ == "__main__":

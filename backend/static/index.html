@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#A0153E" />
+
+  <!-- Preconnect to Google Fonts for faster DNS/TLS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Preconnect to backend API for faster first request -->
+  <link rel="preconnect" href="https://backend-gzko.onrender.com" />
+
+  <!-- Preload LCP hero image for mobile (discoverable from HTML) -->
+  <link rel="preload" as="image" type="image/webp" href="/transparent-hero-cake.webp" media="(max-width: 767px)"
+    fetchpriority="high" />
+
+  <!-- Preload critical font file to prevent CLS -->
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="https://fonts.gstatic.com/s/oswald/v53/TK3_WkUHHAIjg75cFRf3bXL8LICs1_FvsUZiZQ.woff2" />
+
+  <!-- Font-face fallback with size-adjust to minimize CLS -->
+  <style>
+    @font-face {
+      font-family: 'Oswald Fallback';
+      src: local('Arial');
+      size-adjust: 85%;
+      ascent-override: 110%;
+      descent-override: 30%;
+      line-gap-override: 0%;
+    }
+
+    @font-face {
+      font-family: 'Montserrat Fallback';
+      src: local('Segoe UI'), local('Arial');
+      size-adjust: 113%;
+      ascent-override: 80%;
+      descent-override: 20%;
+      line-gap-override: 0%;
+    }
+  </style>
+
+  <!-- Non-render-blocking fonts: loads as print, swaps to all on load -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Dancing+Script:wght@400;700&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Dancing+Script:wght@400;700&display=swap"
+      rel="stylesheet" />
+  </noscript>
+
+  <!-- Basic Fallback Title -->
+  <style>
+    /* Inline Preloader CSS to improve FCP */
+    #global-preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #FDFBF7;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999999;
+      transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    }
+
+    #global-preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .custom-loader {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #7b002c;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .preloader-text {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #7b002c;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-7s8MYK2a.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/ui-vendor-Beoeu4GZ.js">
+  <link rel="modulepreload" crossorigin href="/assets/react-vendor-DJuohstB.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-DP-mw9rZ.css">
+
+    <title data-rh="true">Торти на замовлення Київ | Antreme – Кондитерська майстерня</title>
+    <meta name="description" content="Авторські торти на замовлення у Києві від кондитерської Antreme. Готуємо з 100% натуральних інгредієнтів: весільні, бенто-торти, дитячі. Доставка по Києву." data-rh="true" />
+    <link rel="canonical" href="https://antreme.kyiv.ua/" data-rh="true" />
+    <meta name="robots" content="index, follow" data-rh="true" />
+    <meta property="og:type" content="website" data-rh="true" />
+    <meta property="og:title" content="Торти на замовлення Київ | Antreme – Кондитерська майстерня" data-rh="true" />
+    <meta property="og:description" content="Авторські торти на замовлення у Києві від кондитерської Antreme. Готуємо з 100% натуральних інгредієнтів: весільні, бенто-торти, дитячі. Доставка по Києву." data-rh="true" />
+    <meta property="og:url" content="https://antreme.kyiv.ua/" data-rh="true" />
+    <meta property="og:image" content="https://antreme.kyiv.ua/og-image.jpg" data-rh="true" />
+    <meta property="og:site_name" content="Antreme – Кондитерська майстерня" data-rh="true" />
+    <meta name="twitter:card" content="summary_large_image" data-rh="true" />
+    <meta name="twitter:title" content="Торти на замовлення Київ | Antreme – Кондитерська майстерня" data-rh="true" />
+    <meta name="twitter:description" content="Авторські торти на замовлення у Києві від кондитерської Antreme. Готуємо з 100% натуральних інгредієнтів: весільні, бенто-торти, дитячі. Доставка по Києву." data-rh="true" />
+    <meta name="twitter:image" content="https://antreme.kyiv.ua/og-image.jpg" data-rh="true" />
+    <script type="application/ld+json" data-rh="true">[{"@context":"https://schema.org","@type":["LocalBusiness","Bakery"],"name":"Antreme","image":"https://antreme.kyiv.ua/og-image.jpg","url":"https://antreme.kyiv.ua/","telephone":"+380979081504","priceRange":"₴₴","areaServed":{"@type":"City","name":"Kyiv"},"sameAs":["https://www.instagram.com/antreme.kyiv/"],"servesCuisine":["Торти на замовлення","Весільні торти","Дитячі торти","Бенто-торти","Десерти"],"address":{"@type":"PostalAddress","streetAddress":"Харківське шосе, 180/21","addressLocality":"Київ","postalCode":"02091","addressRegion":"Київська область","addressCountry":"UA"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"09:00","closes":"20:00"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Чи можна замовити торт у Києві терміново?","acceptedAnswer":{"@type":"Answer","text":"Залежить від завантаженості та складності замовлення. Прості торти без складного декору ми іноді виконуємо за 2 дні. Уточнюйте наявність через контакти."}},{"@type":"Question","name":"За скільки днів потрібно робити замовлення?","acceptedAnswer":{"@type":"Answer","text":"Мінімальний термін — 3 робочі дні. Для складних весільних тортів рекомендуємо звертатися за 2–4 тижні."}},{"@type":"Question","name":"Чи можна обрати індивідуальну начинку?","acceptedAnswer":{"@type":"Answer","text":"Так, ми погоджуємо склад до виробництва. Пропонуємо 7+ авторських начинок та складаємо індивідуальні комбінації."}},{"@type":"Question","name":"Скільки коштує доставка торта по Києву?","acceptedAnswer":{"@type":"Answer","text":"Доставка розраховується за тарифами таксі (Uklon/Bolt) від нашої кондитерської до вашої адреси. Самовивіз — безкоштовно."}},{"@type":"Question","name":"Чи є варіанти без глютену або для алергіків?","acceptedAnswer":{"@type":"Answer","text":"Розглядаємо такі запити індивідуально. Звертайтесь — обговоримо склад і можливості для вашого випадку."}},{"@type":"Question","name":"Чи працюєте ви з корпоративними замовленнями?","acceptedAnswer":{"@type":"Answer","text":"Так, виготовляємо торти з брендуванням, логотипом або корпоративними кольорами для будь-якого масштабу заходу."}}]}]</script>
+</head>
+
+<body>
+  <div id="global-preloader">
+    <div class="custom-loader"></div>
+    <div class="preloader-text">Завантаження...</div>
+  </div>
+  <div id="root">
+<main>
+<article>
+<h1>Торти на замовлення в Києві — авторська кондитерська Antreme</h1>
+<p>Antreme — це авторська кондитерська в Києві з понад 20-річним досвідом роботи. Ми спеціалізуємося на виготовленні <strong>тортів на замовлення в Києві</strong> для приватних подій, весіль, корпоративів та сімейних свят.</p>
+<h2>20 років досвіду та понад 6000 виконаних замовлень у Києві</h2>
+<p>За роки роботи ми виконали понад 6000 індивідуальних замовлень у Києві. Більше 9000 підписників в Instagram, тисячі реальних фото робіт та живі відгуки.</p>
+<h2>Торти на замовлення Київ — індивідуальний підхід</h2>
+<p>Кожен <strong>торт на замовлення в Києві</strong> проходить погодження дизайну, ваги, начинки та термінів виготовлення. Середній термін виготовлення — від 3 робочих днів.</p>
+<h2>Чому варто замовити торт у Antreme</h2>
+<h3>Натуральні інгредієнти</h3>
+<p>Вершкове масло, бельгійський шоколад, натуральні вершки, сезонні ягоди та фрукти.</p>
+<h3>Індивідуальний дизайн</h3>
+<p>Розробляємо концепцію під стиль заходу: мінімалізм, класика, сучасна геометрія або тематичний декор.</p>
+<h3>Доставка по Києву</h3>
+<p>Доставляємо торти по всіх районах столиці. <a href="/delivery/">Детальніше про доставку →</a></p>
+<h2>Доставка тортів у всі райони Києва</h2>
+<p>Печерськ, Шевченківський, Голосіївський, Солом'янка, Оболонь, Поділ, Дарниця, Позняки, Осокорки, Троєщина, Святошин та інші.</p>
+<h2>Популярні категорії тортів</h2>
+<ul>
+<li><a href="/torty-na-zamovlennya/vesilni/">Весільні торти</a> — багатоярусні конструкції</li>
+<li><a href="/torty-na-zamovlennya/na-den-narodzhennya/">Торти на день народження</a> — індивідуальні написи</li>
+<li><a href="/torty-na-zamovlennya/dytyachi/">Дитячі торти</a> — контроль складу, безпечні барвники</li>
+<li><a href="/bento-torty/">Бенто-торти</a> — компактний формат</li>
+</ul>
+<h2>Начинки</h2>
+<p>Шоколадний трюфель, полуниця з вершками, карамель-банан, лісова ягода, фісташка-малина, лимонний чізкейк, кокос-манго. <a href="/nachynky/">Усі начинки →</a></p>
+<h2>Як замовити торт у Києві</h2>
+<ol>
+<li>Надішліть запит через сайт або месенджер</li>
+<li>Узгодьте деталі замовлення</li>
+<li>Внесіть передоплату для фіксації дати</li>
+<li>Отримайте торт із доставкою або самовивозом</li>
+</ol>
+<h2>Реальні відгуки та портфоліо</h2>
+<p>Понад 6000 замовлень та тисячі фото робіт. <a href="/vidguky/">Переглянути відгуки →</a></p>
+<p><a href="/pro-nas/">Детальніше про нашу кондитерську →</a></p>
+</article>
+<section>
+<h2>Часті запитання</h2>
+<div><h3>Чи можна замовити торт терміново?</h3><p>Так, у деяких випадках можливе виготовлення від 24–48 годин.</p></div>
+<div><h3>Чи можливі безглютенові варіанти?</h3><p>Такі запити розглядаються індивідуально. Напишіть нам.</p></div>
+<div><h3>Яка передоплата?</h3><p>Передоплата фіксує дату виробництва. Відсоток уточнюється при оформленні.</p></div>
+<div><h3>Скільки зберігається торт?</h3><p>У холодильнику 2–5 днів залежно від начинки.</p></div>
+<div><h3>Чи доставляєте по всіх районах Києва?</h3><p>Так — лівий і правий берег. Вартість за тарифами таксі. Самовивіз — безкоштовно.</p></div>
+<div><h3>Чи працюєте з корпоративними замовленнями?</h3><p>Так, виготовляємо торти з брендуванням для будь-якого масштабу заходу.</p></div>
+</section>
+</main></div>
+</body>
+
+</html>

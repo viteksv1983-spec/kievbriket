@@ -1,37 +1,37 @@
-import {
-    GROUP_A_CATEGORIES,
-    GROUP_B_CATEGORIES,
-    isGroupA,
-    isGroupB,
-    getCategoryCanonicalUrl,
-    dbCategoryToSlug
-} from '../constants/seoRoutes';
-
 /**
- * Get the category URL path for any DB category key (e.g. 'bento', 'wedding').
- * Returns the correct Group A or Group B canonical URL.
+ * Get the category URL path for any category slug.
  */
-export const getCategoryUrl = (dbCategory) => {
-    const slug = dbCategoryToSlug(dbCategory);
-    if (!slug) return `/torty-na-zamovlennya/`;
-    return getCategoryCanonicalUrl(slug);
+export const getCategoryUrl = (slug) => {
+    if (!slug) return `/catalog/firewood`;
+    return `/catalog/${slug}`;
 };
 
 /**
- * Get the product detail URL for a given cake object.
- * Uses the cake's `slug` (SEO slug) and `category` (DB key).
+ * Get the product detail URL for a given product object.
  */
-export const getProductUrl = (cake) => {
-    if (!cake || !cake.slug) return null; // No fallback to /cakes/id
+export const getProductUrl = (product) => {
+    if (!product || !product.slug) return null;
+    const catSegment = product.category || 'firewood';
+    return `/catalog/${catSegment}/${product.slug}`;
+};
 
-    const categoryUrlSlug = dbCategoryToSlug(cake.category);
-    if (!categoryUrlSlug) return null; // Unmapped categories cannot have a product url
+/**
+ * Get the fully qualified image URL, safely encoding URI components
+ * to fix broken images with non-ASCII characters in the filename.
+ */
+export const getImageUrl = (imagePath, baseURL) => {
+    if (!imagePath) return '';
+    if (imagePath.startsWith('http') || imagePath.startsWith('blob')) return imagePath;
 
-    if (isGroupA(categoryUrlSlug)) {
-        return `/torty-na-zamovlennya/${categoryUrlSlug}/${cake.slug}/`;
-    }
-    if (isGroupB(categoryUrlSlug)) {
-        return `/${categoryUrlSlug}/${cake.slug}/`;
-    }
-    return null;
+    // Properly encode the path parts (e.g. /media/Кирилична_Назва.webp -> /media/%...webp)
+    const encodedPath = imagePath.split('/').map(part => encodeURIComponent(part)).join('/');
+
+    // Fallback if baseURL is not provided directly
+    const base = baseURL || (import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`);
+
+    // Ensure no double slashes between base and path
+    const cleanBase = base.endsWith('/') ? base.slice(0, -1) : base;
+    const cleanPath = encodedPath.startsWith('/') ? encodedPath : `/${encodedPath}`;
+
+    return `${cleanBase}${cleanPath}`;
 };

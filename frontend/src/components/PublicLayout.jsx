@@ -1,17 +1,32 @@
 import { Outlet } from 'react-router-dom';
-import Navbar from './Navbar';
-import Footer from './Footer';
-import SEOHead from './SEOHead';
+import { useState } from 'react';
+import { SiteHeader } from './new-home/SiteHeader';
+import { SiteFooter } from './new-home/SiteFooter';
+import { OrderFormModal } from './new-home/OrderFormModal';
 
 export default function PublicLayout() {
+    const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+
     return (
-        <div className="min-h-screen flex flex-col bg-[#FDFBF7] font-sans text-gray-900">
-            <SEOHead />
-            <Navbar />
-            <main className="flex-grow">
+        <div
+            className="new-home-scope"
+            style={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                color: 'var(--c-text)',
+                fontFamily: 'var(--font-outfit)',
+            }}
+        >
+            <SiteHeader onQuickOrderClick={() => setIsOrderFormOpen(true)} />
+            <main style={{ flex: 1 }}>
                 <Outlet />
             </main>
-            <Footer />
+            <SiteFooter />
+            <OrderFormModal
+                isOpen={isOrderFormOpen}
+                onClose={() => setIsOrderFormOpen(false)}
+            />
         </div>
     );
 }

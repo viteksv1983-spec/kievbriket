@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import api from '../api';
 
 const QuickOrderModal = ({
-    cake,
+    product,
     isOpen,
     onClose,
     deliveryDate,
@@ -15,7 +15,7 @@ const QuickOrderModal = ({
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
-    if (!isOpen || !cake) return null;
+    if (!isOpen || !product) return null;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,7 +32,7 @@ const QuickOrderModal = ({
             await api.post('/orders/quick', {
                 customer_name: name,
                 customer_phone: phone,
-                cake_id: cake.id,
+                product_id: product.id,
                 quantity: 1,
                 flavor: flavor || null,
                 weight: weight || null,
@@ -75,7 +75,7 @@ const QuickOrderModal = ({
                     <h2 className="text-2xl font-bold text-gray-800">Швидке замовлення</h2>
                     <p className="text-xs text-gray-500 mt-2">
                         Залиште свої контакти і ми зателефонуємо вам для підтвердження: <br />
-                        <span className="font-bold text-gray-700">{cake?.name}</span>
+                        <span className="font-bold text-gray-700">{product?.name}</span>
                     </p>
                     {(deliveryDate || flavor || weight) && (
                         <div className="mt-3 flex flex-wrap justify-center gap-1">

@@ -3,11 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import api from '../../api';
 import { useAuth } from '../../context/AuthContext';
+import { getImageUrl } from '../../utils/urls';
 import { FiSave, FiArrowLeft } from 'react-icons/fi';
 
-import { ALL_CATEGORIES } from '../../constants/categories';
-
-const CATEGORIES = ALL_CATEGORIES;
+import { useCategories } from '../../context/CategoryContext';
 
 const WEIGHT_OPTIONS = [
     { value: 400, label: '400 г (Бенто)' },
@@ -27,17 +26,21 @@ export default function ProductEdit() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { token } = useAuth();
+    const { categories } = useCategories();
     const isNew = !id || id === 'new';
     const [loading, setLoading] = useState(!isNew);
     const [activeTab, setActiveTab] = useState('content'); // 'content' or 'seo'
 
     const [formData, setFormData] = useState({
         name: '',
+        slug: '',
         price: '',
         description: '',
         weight: '',
-        category: '',
         image_url: '',
+        is_available: true,
+        is_deleted: false,
+        variants: [],
         // SEO
         meta_title: '',
         meta_description: '',
@@ -58,10 +61,12 @@ export default function ProductEdit() {
                 setFormData({
                     ...response.data,
                     // Ensure fields are not null for inputs
+                    slug: response.data.slug || '',
                     description: response.data.description || '',
                     weight: response.data.weight || '',
                     category: response.data.category || '',
                     image_url: response.data.image_url || '',
+                    variants: response.data.variants || [],
                     meta_title: response.data.meta_title || '',
                     meta_description: response.data.meta_description || '',
                     h1_heading: response.data.h1_heading || '',
@@ -78,22 +83,46 @@ export default function ProductEdit() {
     }, [id, isNew]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const addVariant = () => {
+        setFormData(prev => ({ ...prev, variants: [...prev.variants, { name: '', price: '' }] }));
+    };
+
+    const updateVariant = (index, field, value) => {
+        const newVariants = [...formData.variants];
+        newVariants[index][field] = value;
+        setFormData(prev => ({ ...prev, variants: newVariants }));
+    };
+
+    const removeVariant = (index) => {
+        setFormData(prev => ({ ...prev, variants: prev.variants.filter((_, i) => i !== index) }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Convert numbers to correct types
+            // Convert numbers to correct types and cleanup variants
+            const cleanedVariants = formData.variants
+                .filter(v => v.name.trim() !== '')
+                .map(v => ({ name: v.name.trim(), price: parseFloat(v.price) || 0 }));
+
             const dataToSave = {
                 ...formData,
                 price: parseFloat(formData.price),
-                weight: formData.weight ? parseFloat(formData.weight) : null
+                weight: formData.weight ? parseFloat(formData.weight) : null,
+                variants: cleanedVariants.length > 0 ? cleanedVariants : null
             };
 
             if (isNew) {
-                await api.post('/products/', dataToSave);
+                await api.post('/products/', dataToSave, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
                 alert('Товар додано!');
             } else {
                 await api.patch(`/products/${id}`, dataToSave, {
@@ -131,23 +160,23 @@ export default function ProductEdit() {
                     <button
                         type="button"
                         onClick={() => setActiveTab('content')}
-                        className={`flex-1 py-4 text-sm font-bold uppercase tracking-wider ${activeTab === 'content' ? 'bg-gray-50 text-antreme-red border-b-2 border-antreme-red' : 'text-gray-500 hover:text-gray-700'}`}
+                        className={`flex-1 flex justify-center py-3 md:py-4 text-[10px] md:text-sm font-bold uppercase tracking-wider text-center ${activeTab === 'content' ? 'bg-gray-50 text-amber-700 border-b-2 border-amber-700' : 'text-gray-500 hover:text-gray-700'}`}
                     >
                         Основна інформація
                     </button>
                     <button
                         type="button"
                         onClick={() => setActiveTab('seo')}
-                        className={`flex-1 py-4 text-sm font-bold uppercase tracking-wider ${activeTab === 'seo' ? 'bg-gray-50 text-antreme-red border-b-2 border-antreme-red' : 'text-gray-500 hover:text-gray-700'}`}
+                        className={`flex-1 flex justify-center py-3 md:py-4 text-[10px] md:text-sm font-bold uppercase tracking-wider text-center ${activeTab === 'seo' ? 'bg-gray-50 text-amber-700 border-b-2 border-amber-700' : 'text-gray-500 hover:text-gray-700'}`}
                     >
                         SEO Налаштування
                     </button>
                 </div>
 
-                <div className="p-8">
+                <div className="p-6 md:p-8">
                     {activeTab === 'content' && (
                         <div className="space-y-6">
-                            <div className="grid grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                 <div>
                                     <label className="block text-sm font-bold text-gray-700 mb-2">Назва</label>
                                     <input
@@ -155,7 +184,19 @@ export default function ProductEdit() {
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-antreme-red focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-gray-700 mb-2">URL slug (авто з назви якщо пусто)</label>
+                                    <input
+                                        type="text"
+                                        name="slug"
+                                        value={formData.slug}
+                                        onChange={handleChange}
+                                        placeholder="napryklad-drova"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent"
                                     />
                                 </div>
                                 <div>
@@ -165,9 +206,24 @@ export default function ProductEdit() {
                                         name="price"
                                         value={formData.price}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-antreme-red focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                                        required
                                     />
                                 </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        name="is_available"
+                                        checked={formData.is_available}
+                                        onChange={handleChange}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-amber-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600"></div>
+                                </label>
+                                <span className="text-sm font-bold text-gray-700">Відображати на сайті (В наявності)</span>
                             </div>
 
                             <div>
@@ -177,18 +233,18 @@ export default function ProductEdit() {
                                     rows="4"
                                     value={formData.description}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-antreme-red focus:border-transparent"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent"
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                 <div>
                                     <label className="block text-sm font-bold text-gray-700 mb-2">Вага</label>
                                     <select
                                         name="weight"
                                         value={formData.weight}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-antreme-red focus:border-transparent cursor-pointer"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent cursor-pointer"
                                     >
                                         <option value="">Оберіть вагу</option>
                                         {WEIGHT_OPTIONS.map(opt => (
@@ -198,18 +254,85 @@ export default function ProductEdit() {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-bold text-gray-700 mb-2">Категорія</label>
-                                    <select
-                                        name="category"
-                                        value={formData.category}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-antreme-red focus:border-transparent cursor-pointer"
-                                    >
-                                        <option value="">Оберіть категорію</option>
-                                        {CATEGORIES.map(cat => (
-                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
-                                        ))}
-                                    </select>
+                                    <div className="flex gap-2 items-center">
+                                        <select
+                                            name="category"
+                                            value={formData.category}
+                                            onChange={handleChange}
+                                            className="flex-1 min-w-0 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent cursor-pointer"
+                                        >
+                                            <option value="">Оберіть категорію</option>
+                                            {categories.map(cat => (
+                                                <option key={cat.slug} value={cat.slug}>{cat.name}</option>
+                                            ))}
+                                        </select>
+                                        <button
+                                            type="button"
+                                            onClick={() => navigate('/admin/categories')}
+                                            className="shrink-0 px-3 py-2 text-sm font-bold text-antreme-red border border-red-200 rounded-lg hover:bg-red-50 transition-colors whitespace-nowrap"
+                                        >
+                                            + Додати
+                                        </button>
+                                    </div>
                                 </div>
+                            </div>
+
+                            <div className="bg-orange-50 p-6 rounded-xl border border-orange-100 mb-6">
+                                <div className="flex justify-between items-center mb-4">
+                                    <div>
+                                        <h3 className="text-lg font-bold text-gray-900">Варіанти товару (Фасування / Види)</h3>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            Якщо товар має декілька видів (наприклад: "В ящиках 2 склм" за 4000 грн, "Рубані" за 2000 грн). Базова ціна вище буде використовуватися як ціна "від".
+                                        </p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={addVariant}
+                                        className="px-4 py-2 bg-white border border-orange-300 text-orange-600 rounded-lg text-sm font-bold shadow-sm hover:bg-orange-100 transition-colors"
+                                    >
+                                        + Додати варіант
+                                    </button>
+                                </div>
+
+                                {formData.variants.length > 0 ? (
+                                    <div className="space-y-3">
+                                        {formData.variants.map((variant, index) => (
+                                            <div key={index} className="flex items-start gap-4 p-4 bg-white border border-orange-200 rounded-lg shadow-sm">
+                                                <div className="flex-1">
+                                                    <label className="block text-xs font-bold text-gray-600 mb-1">Назва варіанту</label>
+                                                    <input
+                                                        type="text"
+                                                        value={variant.name}
+                                                        onChange={(e) => updateVariant(index, 'name', e.target.value)}
+                                                        placeholder='напр: "Рубані"'
+                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent text-sm"
+                                                    />
+                                                </div>
+                                                <div className="w-32">
+                                                    <label className="block text-xs font-bold text-gray-600 mb-1">Ціна (грн)</label>
+                                                    <input
+                                                        type="number"
+                                                        value={variant.price}
+                                                        onChange={(e) => updateVariant(index, 'price', e.target.value)}
+                                                        placeholder="2000"
+                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent text-sm"
+                                                    />
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeVariant(index)}
+                                                    className="mt-6 px-3 py-2 text-red-500 border border-red-200 hover:bg-red-50 rounded-md transition-colors"
+                                                >
+                                                    Видалити
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-6 text-sm text-gray-400 bg-white bg-opacity-50 rounded-lg border border-dashed border-gray-300">
+                                        Не додано жодного варіанту. Цей товар не матиме вибору фасування.
+                                    </div>
+                                )}
                             </div>
 
                             <div>
@@ -217,9 +340,9 @@ export default function ProductEdit() {
                                 <div className="flex flex-col gap-4">
                                     {formData.image_url && (
                                         <div className="flex items-center gap-4">
-                                            <div className="relative w-32 h-32 rounded-lg overflow-hidden border border-gray-200">
+                                            <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden border border-gray-200 shrink-0">
                                                 <img
-                                                    src={formData.image_url.startsWith('http') || formData.image_url.startsWith('blob') ? formData.image_url : `${api.defaults.baseURL}${formData.image_url}`}
+                                                    src={getImageUrl(formData.image_url, api.defaults.baseURL)}
                                                     alt="Preview"
                                                     className="w-full h-full object-cover"
                                                 />
@@ -241,7 +364,7 @@ export default function ProductEdit() {
                                                 value={formData.image_url}
                                                 onChange={handleChange}
                                                 placeholder="Вставте посилання або завантажте файл"
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-antreme-red focus:border-transparent mb-2"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent mb-2"
                                             />
                                             <input
                                                 type="file"
@@ -267,7 +390,7 @@ export default function ProductEdit() {
                                                         alert("Помилка завантаження файлу: " + (typeof detail === 'string' ? detail : "Перевірте підключення або спробуйте увійти знову"));
                                                     }
                                                 }}
-                                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-antreme-red file:text-white hover:file:bg-red-700 cursor-pointer"
+                                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-700 file:text-white hover:file:bg-red-700 cursor-pointer"
                                             />
                                         </div>
                                     </div>
@@ -285,7 +408,7 @@ export default function ProductEdit() {
                                     name="meta_title"
                                     value={formData.meta_title}
                                     onChange={handleChange}
-                                    placeholder="Купити торт Київ..."
+                                    placeholder="Купити дрова Київ..."
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">Рекомендована довжина: 50-60 символів.</p>
@@ -298,7 +421,7 @@ export default function ProductEdit() {
                                     rows="3"
                                     value={formData.meta_description}
                                     onChange={handleChange}
-                                    placeholder="Смачні торти на замовлення..."
+                                    placeholder="Якісні дрова на замовлення..."
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">Рекомендована довжина: 150-160 символів.</p>
@@ -340,10 +463,10 @@ export default function ProductEdit() {
                     )}
                 </div>
 
-                <div className="p-6 bg-gray-50 border-t border-gray-100 flex justify-end">
+                <div className="p-4 md:p-6 bg-gray-50 border-t border-gray-100 flex justify-end">
                     <button
                         type="submit"
-                        className="flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 transition-colors font-bold shadow-lg shadow-green-200"
+                        className="flex items-center justify-center gap-2 w-full md:w-auto bg-orange-500 text-white px-6 py-3 rounded-xl hover:bg-orange-600 transition-all font-bold shadow-md shadow-orange-200 active:scale-95"
                     >
                         <FiSave className="w-5 h-5" />
                         <span>{isNew ? 'Додати товар' : 'Зберегти зміни'}</span>

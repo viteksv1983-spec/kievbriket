@@ -3,6 +3,7 @@ uvicorn
 sqlalchemy
 psycopg2-binary
 pydantic
+pydantic-settings
 python-dotenv
 aiofiles
 python-multipart
@@ -15,3 +16,4 @@ Pillow
 alembic
 pytest
 httpx
+slowapi

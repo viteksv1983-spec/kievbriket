@@ -1,0 +1,467 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ * KYIV BRIKET — Design Token System  ·  Revision 3.0
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * TOKEN HIERARCHY  (3 layers)
+ * ─────────────────────────────────────────────────────────────────────────
+ *  L0  PRIMITIVES    Raw hex — internal source of truth, never used directly
+ *  L1  LIGHTNESS SCALE  --bg-900/800/700/600 — the public elevation system
+ *  L2  SEMANTIC      --color-bg-*, --color-text-*, --gradient-* — meaning
+ *  L3  ALIASES       --c-* backward-compat bridge (migrate, then remove)
+ *
+ * LIGHTNESS SCALE — graphite, HSL(214°, ↓S, ↑L)
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ *  --bg-900  #080C10   H214 S30% L5%   ████░░  deepest floor   (footer)
+ *  --bg-800  #0D1117   H214 S28% L7%   ███░░░  page ground     (sections)
+ *  --bg-700  #161C25   H214 S25% L12%  ██░░░░  elevated cards  (cards)
+ *  --bg-600  #1E2530   H214 S22% L16%  █░░░░░  floating layer  (nested / hover)
+ *
+ *  Lightness step: +2% → +5% → +4%  (perceptually balanced — larger gap
+ *  between page and card ensures clear visual separation on dark screens)
+ *
+ *  Green alternate scale (same structure, shifted hue H128°):
+ *  --bg-section-900  #080F0A   L5%   (SVG art fill)
+ *  --bg-section-800  #0A1A0E   L8%   (alt section background)
+ *  --bg-section-700  #0D1E10   L11%  (cards inside green sections)
+ *  --bg-section-600  #152816   L15%  (hover / nested in green)
+ *
+ * WCAG AA CONTRAST (all text on --bg-800)
+ * ─────────────────────────────────────────────────────────────────────────
+ *  --color-text-primary   #EDE8E0   14.2:1  ✓ AAA
+ *  --color-text-secondary #7D8494    5.1:1  ✓ AA
+ *  --color-text-muted     #4A505F    2.5:1  ✗ decorative / placeholder only
+ *  --color-success        #22C55E    7.9:1  ✓ AAA
+ *  --color-error          #EF4444    4.9:1  ✓ AA
+ *
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+
+  /* ══════════════════════════════════════════════════════════════════════════
+   * L0 · PRIMITIVES
+   * Raw hex values. Define here, reference nowhere else directly.
+   * ══════════════════════════════════════════════════════════════════════════ */
+
+  /* Graphite dark — single hue (H≈214°), saturation decreases as L rises */
+  --_p-dark-900:  #080C10;   /* H214 S30% L5%  */
+  --_p-dark-800:  #0D1117;   /* H214 S28% L7%  */
+  --_p-dark-700:  #161C25;   /* H214 S25% L12% */
+  --_p-dark-600:  #1E2530;   /* H214 S22% L16% */
+
+  /* Green alternate — same step structure, hue H≈128° */
+  --_p-green-900: #080F0A;   /* H128 S30% L5%  — SVG art only */
+  --_p-green-800: #0A1A0E;   /* H128 S28% L8%  — section bg   */
+  --_p-green-700: #0D1E10;   /* H128 S25% L11% — green cards  */
+  --_p-green-600: #152816;   /* H128 S22% L15% — hover        */
+
+  /* Orange brand scale */
+  --_p-orange-400: #FF8C38;  /* display — large numbers only */
+  --_p-orange-500: #FB923C;  /* hover state                  */
+  --_p-orange-600: #F97316;  /* primary                      */
+  --_p-orange-700: #EA580C;  /* active / gradient end        */
+
+  /* Text scale */
+  --_p-text-100:  #EDE8E0;   /* 14.2:1 on bg-800 ✓ AAA */
+  --_p-text-400:  #7D8494;   /*  5.1:1 on bg-800 ✓ AA  */
+  --_p-text-600:  #4A505F;   /*  2.5:1 on bg-800 ✗ decorative */
+
+  /* Status */
+  --_p-success:   #22C55E;   /* 7.9:1 on bg-800 ✓ AAA */
+  --_p-error:     #EF4444;   /* 4.9:1 on bg-800 ✓ AA  */
+
+
+  /* ══════════════════════════════════════════════════════════════════════════
+   * L1 · LIGHTNESS SCALE  —  the public elevation system
+   *
+   * These are the tokens developers and designers reach for first.
+   * Each step represents one elevation tier in the UI.
+   * ══════════════════════════════════════════════════════════════════════════
+   *
+   * ┌──────────────┬───────────┬──────────────────────────────────────────┐
+   * │  Token       │  Value    │  What lives here                         │
+   * ├──────────────┼───────────┼──────────────────────────────────────────┤
+   * │  --bg-900    │  #080C10  │  SiteFooter background. The absolute     │
+   * │              │           │  ground floor — nothing sits below it.   │
+   * │              │           │  Visually heavier than the page itself,  │
+   * │              │           │  creates natural bottom anchor.          │
+   * ├──────────────┼───────────┼──────────────────────────────────────────┤
+   * │  --bg-800    │  #0D1117  │  Default page background: Hero, Benefits,│
+   * │              │           │  Categories, Reviews, Contact, Delivery  │
+   * │              │           │  outer wrapper. The "canvas" of the site.│
+   * ├──────────────┼───────────┼──────────────────────────────────────────┤
+   * │  --bg-700    │  #161C25  │  Cards and primary panels: benefit cards,│
+   * │              │           │  product cards, contact form, review     │
+   * │              │           │  cards, working-hours block, rating pill.│
+   * │              │           │  Anything that "floats" on the canvas.   │
+   * ├──────────────┼───────────┼──────────────────────────────────────────┤
+   * │  --bg-600    │  #1E2530  │  Nested / highest elevation: panels      │
+   * │              │           │  inside cards, hover states of cards,    │
+   * │              │           │  dropdown menus, tooltip backgrounds,    │
+   * │              │           │  focused input backgrounds.              │
+   * └──────────────┴───────────┴──────────────────────────────────────────┘
+   *
+   * Green alternate sections follow the same logic with a shifted hue:
+   *
+   * ┌──────────────────────┬───────────┬──────────────────────────────────┐
+   * │  Token               │  Value    │  What lives here                 │
+   * ├──────────────────────┼───────────┼──────────────────────────────────┤
+   * │  --bg-section-900    │  #080F0A  │  SVG map interior fills (art)    │
+   * │  --bg-section-800    │  #0A1A0E  │  BenefitsSection, TrustBlock,    │
+   * │                      │           │  DeliverySection outer bg        │
+   * │  --bg-section-700    │  #0D1E10  │  Cards inside green sections     │
+   * │                      │           │  (map card, trust cards)         │
+   * │  --bg-section-600    │  #152816  │  Hover state of green cards      │
+   * └──────────────────────┴───────────┴──────────────────────────────────┘
+   *
+   * ══════════════════════════════════════════════════════════════════════════ */
+
+  /* Graphite elevation */
+  --bg-900:  var(--_p-dark-900);   /* #080C10 — SiteFooter            */
+  --bg-800:  var(--_p-dark-800);   /* #0D1117 — Page canvas (default) */
+  --bg-700:  var(--_p-dark-700);   /* #161C25 — Cards & panels        */
+  --bg-600:  var(--_p-dark-600);   /* #1E2530 — Nested / hover        */
+
+  /* Green alt section elevation */
+  --bg-section-900: var(--_p-green-900);  /* #080F0A — SVG art    */
+  --bg-section-800: var(--_p-green-800);  /* #0A1A0E — Section bg */
+  --bg-section-700: var(--_p-green-700);  /* #0D1E10 — Green card */
+  --bg-section-600: var(--_p-green-600);  /* #152816 — Hover      */
+
+
+  /* ══════════════════════════════════════════════════════════════════════════
+   * L2 · SEMANTIC TOKENS
+   * These describe purpose, not appearance.
+   * All values reference the L1 lightness scale — never raw primitives.
+   * ══════════════════════════════════════════════════════════════════════════ */
+
+  /* ── FOUNDATION ── */
+  --color-bg-main:          var(--bg-800);           /* page canvas              */
+  --color-bg-deep:          var(--bg-900);           /* footer / deepest surface */
+  --color-bg-section:       var(--bg-section-800);   /* green alt sections       */
+  --color-bg-elevated:      var(--bg-700);           /* cards, panels            */
+  --color-bg-elevated-2:    var(--bg-600);           /* nested panels, hover     */
+  --color-bg-green-card:    var(--bg-section-700);   /* cards in green sections  */
+  --color-bg-green-hover:   var(--bg-section-600);   /* hover in green sections  */
+
+  /* Overlays — always use bg-800 base, never a different hue */
+  --color-bg-overlay:       rgba(13,17,23,0.92);   /* header scroll, modals */
+  --color-bg-overlay-full:  rgba(13,17,23,0.98);   /* mobile nav full-screen */
+  --color-bg-img-overlay:   rgba(13,17,23,0.80);   /* photo darkening */
+
+  /* ── BORDERS ── */
+  --color-border-subtle:    rgba(255,255,255,0.07);  /* default card border     */
+  --color-border-medium:    rgba(255,255,255,0.12);  /* stronger border         */
+  --color-border-orange:    rgba(249,115,22,0.30);   /* accent border           */
+  --color-border-orange-lg: rgba(249,115,22,0.18);   /* subtle accent border    */
+
+  /* ── CONTENT ── */
+  --color-text-primary:     var(--_p-text-100);   /* #EDE8E0  14.2:1 ✓ AAA */
+  --color-text-secondary:   var(--_p-text-400);   /* #7D8494   5.1:1 ✓ AA  */
+  --color-text-muted:       var(--_p-text-600);   /* #4A505F   2.5:1 ✗ decorative */
+
+  /* ── BRAND ── */
+  --color-accent-primary:   var(--_p-orange-600);   /* #F97316 — buttons, CTA    */
+  --color-accent-hover:     var(--_p-orange-500);   /* #FB923C — hover state     */
+  --color-accent-display:   var(--_p-orange-400);   /* #FF8C38 — large numbers   */
+  --color-accent-dark:      var(--_p-orange-700);   /* #EA580C — active, gradient end */
+
+  --color-accent-soft:      rgba(249,115,22,0.10);  /* badge bg     */
+  --color-accent-subtle:    rgba(249,115,22,0.06);  /* very faint   */
+  --color-accent-glow:      rgba(249,115,22,0.30);  /* shadow glow  */
+  --color-accent-glow-lg:   rgba(249,115,22,0.55);  /* strong glow  */
+
+  /* ── STATUS ── */
+  --color-success:          var(--_p-success);       /* #22C55E — 7.9:1 ✓ AAA */
+  --color-success-bg:       rgba(34,197,94,0.10);
+  --color-success-border:   rgba(34,197,94,0.25);
+  --color-success-glow:     rgba(34,197,94,0.80);
+
+  --color-error:            var(--_p-error);         /* #EF4444 — 4.9:1 ✓ AA  */
+  --color-error-bg:         rgba(239,68,68,0.10);
+  --color-error-border:     rgba(239,68,68,0.25);
+
+  --color-warning:          var(--color-accent-primary);
+
+  /* ── GRADIENT TOKENS ──
+   * All reference semantic tokens — zero raw hex inside gradients.     */
+
+  /* Logo / icon bg / CTA button fill */
+  --gradient-accent: linear-gradient(
+    135deg,
+    var(--color-accent-primary) 0%,
+    var(--color-accent-dark)    100%
+  );
+
+  /* Section bridge: green section → transparent (bg-800 shows through) */
+  --gradient-section-fade: linear-gradient(
+    180deg,
+    var(--color-bg-section) 0%,
+    transparent 100%
+  );
+
+  /* Photo overlay: heavy bottom → light → none */
+  --gradient-img-overlay: linear-gradient(
+    to top,
+    var(--color-bg-img-overlay) 0%,
+    rgba(13,17,23,0.18)         55%,
+    transparent                  100%
+  );
+
+  /* Page-level ambient orange glow (fixed, top-center) */
+  --gradient-ambient: radial-gradient(
+    ellipse 70% 100% at 50% 0%,
+    rgba(249,115,22,0.055) 0%,
+    transparent            70%
+  );
+
+  /* Thin orange hairline between sections */
+  --gradient-orange-line: linear-gradient(
+    90deg,
+    transparent            0%,
+    rgba(249,115,22,0.20)  50%,
+    transparent            100%
+  );
+
+
+  /* ══════════════════════════════════════════════════════════════════════════
+   * L3 · BACKWARD-COMPAT ALIASES  (--c-* names)
+   * Keep existing components working. Migrate one-by-one, then delete.
+   *
+   * ⚠ DO NOT add new --c-* tokens. Use --color-* or --bg-* instead.
+   * ══════════════════════════════════════════════════════════════════════════ */
+  --c-bg:        var(--color-bg-main);
+  --c-surface:   var(--color-bg-elevated);
+  --c-surface2:  var(--color-bg-elevated-2);
+
+  /* Both legacy green aliases now point to the SAME unified token */
+  --c-green-bg:  var(--color-bg-section);   /* was #0A1A0E */
+  --c-green-s:   var(--color-bg-section);   /* was #102016 — UNIFIED */
+
+  --c-orange:    var(--color-accent-primary);
+  --c-orange-lt: var(--color-accent-hover);
+  --c-orange-dk: var(--color-accent-dark);
+
+  --c-text:      var(--color-text-primary);
+  --c-text2:     var(--color-text-secondary);
+  --c-text3:     var(--color-text-muted);
+
+  --c-border:    var(--color-border-subtle);
+  --c-border-o:  var(--color-border-orange);
+
+
+  /* ── Spacing system (8px grid) ───────────────────────────────────────── */
+  --s-section:  6rem;      /* 96px  */
+  --s-header:   3.5rem;    /* 56px  */
+  --s-block:    2rem;      /* 32px  */
+  --s-element:  1.25rem;   /* 20px  */
+  --s-tight:    0.75rem;   /* 12px  */
+  --section-py: var(--s-section);   /* legacy alias */
+
+  /* Radius */
+  --r-card: 14px;
+  --r-btn:  10px;
+}
+
+
+/* ── Mobile spacing overrides (375–480px) ──────────── */
+@media (max-width: 479px) {
+  :root {
+    --s-section:  4rem;    /* 64px  */
+    --s-header:   2.25rem; /* 36px  */
+    --s-block:    1.5rem;  /* 24px  */
+    --s-element:  1rem;    /* 16px  */
+    --s-tight:    0.5rem;  /* 8px   */
+  }
+}
+
+/* ── Tablet ─────────────────────────────────────────── */
+@media (min-width: 480px) and (max-width: 767px) {
+  :root {
+    --s-section:  5rem;    /* 80px  */
+    --s-header:   3rem;    /* 48px  */
+  }
+}
+
+
+/* ── Base ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--color-bg-main);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* ── Typography ────────────────────────────────────── */
+.display {
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  color: var(--color-text-primary);
+}
+.h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+}
+.h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+.body    { font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-secondary); }
+.body-sm { font-size: 0.875rem;  line-height: 1.6; color: var(--color-text-secondary); }
+
+
+/* ── Buttons ───────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-accent-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-btn);
+  padding: 14px 28px;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px var(--color-accent-glow);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--r-btn);
+  padding: 13px 28px;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  text-decoration: none;
+}
+.btn-ghost:hover {
+  border-color: var(--color-border-medium);
+  background: rgba(255,255,255,0.04);
+}
+
+
+/* ── Cards ─────────────────────────────────────────── */
+.card {
+  background: var(--color-bg-elevated);    /* --bg-700 */
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--r-card);
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.card:hover {
+  border-color: var(--color-border-orange);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35), 0 0 0 1px var(--color-accent-soft);
+}
+
+
+/* ── Badge ─────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-accent-soft);
+  border: 1px solid rgba(249,115,22,0.20);
+  color: var(--color-accent-hover);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+
+/* ── Text utilities ─────────────────────────────────── */
+.text-o  { color: var(--color-accent-primary); }
+.text-o2 { color: var(--color-text-secondary); }
+
+
+/* ── Section label ─────────────────────────────────── */
+.section-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent-primary);
+}
+
+
+/* ── Divider line ──────────────────────────────────── */
+.divider { height: 1px; background: var(--color-border-subtle); }
+
+
+/* ── Fade-in animation ─────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up    { animation: fadeUp 0.6s ease both; }
+.fade-up-d1 { animation-delay: 0.1s; }
+.fade-up-d2 { animation-delay: 0.2s; }
+.fade-up-d3 { animation-delay: 0.3s; }
+.fade-up-d4 { animation-delay: 0.4s; }
+.fade-up-d5 { animation-delay: 0.5s; }
+
+
+/* ── Star ──────────────────────────────────────────── */
+.star { color: var(--color-accent-primary); }
+
+
+/* ── Mobile sticky CTA ─────────────────────────────── */
+.sticky-cta {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: calc(100% - 2rem);
+  max-width: 420px;
+}
+
+
+/* ── Scroll reveal ─────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+
+/* ── Glow orb ──────────────────────────────────────── */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+}
+
+
+/* ── Touch device helpers ──────────────────────────── */
+@media (hover: none) {
+  .card:hover { transform: none; }
+}

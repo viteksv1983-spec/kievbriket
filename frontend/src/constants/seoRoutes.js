@@ -8,34 +8,20 @@
  * All category slugs must be validated against these explicit arrays.
  */
 
-// ─── Group A: Nested under /torty-na-zamovlennya/ ───
-export const GROUP_A_CATEGORIES = {
-    'vesilni': { dbCategory: 'wedding', label: 'Весільні торти' },
-    'na-den-narodzhennya': { dbCategory: 'birthday', label: 'Торти на день народження' },
-    'na-yuviley': { dbCategory: 'anniversary', label: 'Торти на ювілей' },
-    'dytyachi': { dbCategory: 'kids', label: 'Дитячі торти' },
-    'dlya-hlopchykiv': { dbCategory: 'boy', label: 'Торти для хлопчиків' },
-    'dlya-divchat': { dbCategory: 'girl', label: 'Торти для дівчаток' },
-    'dlya-zhinok': { dbCategory: 'for-women', label: 'Торти для жінок' },
-    'dlya-cholovikiv': { dbCategory: 'for-men', label: 'Торти для чоловіків' },
-    'gender-reveal': { dbCategory: 'gender-reveal', label: 'Торти Gender Reveal' },
-    'korporatyvni': { dbCategory: 'corporate', label: 'Корпоративні торти' },
-    'sezonni': { dbCategory: 'seasonal', label: 'Сезонні торти' },
-    'foto-torty': { dbCategory: 'photo-cakes', label: 'Фото-торти' },
-    'profesiine-svyato': { dbCategory: 'professional', label: 'Професійне свято' },
-    'patriotychni': { dbCategory: 'patriotic', label: 'Патріотичні торти' },
-    'na-khrestyny': { dbCategory: 'christening', label: 'Торти на хрестини' },
-    'za-hobi': { dbCategory: 'hobby', label: 'Торти за хобі' },
-};
+// ─── Group A: Nested under /torty-na-zamovlennya/ (Not used for firewood) ───
+export const GROUP_A_CATEGORIES = {};
 
 // ─── Group B: Standalone at root level ───
 export const GROUP_B_CATEGORIES = {
-    'bento-torty': { dbCategory: 'bento', label: 'Бенто торти' },
-    'biskvitni-torty': { dbCategory: 'biscuit', label: 'Бісквітні торти' },
-    'musovi-torty': { dbCategory: 'mousse', label: 'Мусові торти' },
-    'kapkeyky': { dbCategory: 'cupcakes', label: 'Капкейки' },
-    'imbirni-pryanyky': { dbCategory: 'gingerbread', label: 'Імбирні пряники' },
-    'nachynky': { dbCategory: 'fillings', label: 'Начинки' },
+    'pine': { dbCategory: 'pine', label: 'Дрова сосна' },
+    'alder': { dbCategory: 'alder', label: 'Дрова вільха' },
+    'birch': { dbCategory: 'birch', label: 'Дрова березові' },
+    'apple': { dbCategory: 'apple', label: 'Дрова яблуні' },
+    'cherry': { dbCategory: 'cherry', label: 'Дрова вишня' },
+    'mix-hardwood': { dbCategory: 'mix-hardwood', label: 'Дуб, граб, береза' },
+    'acacia': { dbCategory: 'acacia', label: 'Дрова акація' },
+    'oak': { dbCategory: 'oak', label: 'Дрова дубові' },
+    'box-oak': { dbCategory: 'box-oak', label: 'Купить дрова [ящик]' }
 };
 
 export const GROUP_A_SLUGS = Object.keys(GROUP_A_CATEGORIES);

@@ -1,176 +1,268 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Truck, Package, Store, Clock, CreditCard, ArrowRight, CheckCircle2, ChevronRight, Flame } from 'lucide-react';
 import SEOHead from './SEOHead';
+import shopConfig from '../shop.config';
+import { OrderFormModal } from './new-home/OrderFormModal';
+import { DeliverySection } from './new-home/DeliverySection';
 
 function Delivery() {
+    const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+
+    const methods = [
+        {
+            Icon: Truck,
+            title: 'Газель',
+            desc: 'до 6 складометрів',
+            price: 'від 600 грн',
+            sub: 'Популярний вибір',
+            highlight: true,
+        },
+        {
+            Icon: Package,
+            title: 'ЗІЛ / Камаз',
+            desc: 'до 15 складометрів',
+            price: 'від 1 200 грн',
+            sub: 'Для великих замовлень',
+            highlight: false,
+        },
+        {
+            Icon: Store,
+            title: 'Самовивіз',
+            desc: shopConfig.contact.address,
+            price: 'Безкоштовно',
+            sub: 'Зі складу в Києві',
+            highlight: false,
+        },
+    ];
+
+    const details = [
+        { Icon: Clock, title: 'Час доставки', text: 'Зазвичай наступного дня. У день замовлення — за наявністю вільного транспорту.' },
+        { Icon: Package, title: "Об'єм", text: "Дрова доставляються щільно укладеними складометрами — чесний об'єм перевіряється перед розвантаженням." },
+        { Icon: CheckCircle2, title: 'Вивантаження', text: 'Базова ціна включає вивантаження біля машини. Складання в дровітню — окремо.' },
+        { Icon: CreditCard, title: 'Оплата', text: "Готівкою або на картку — після перевірки об'єму та якості при доставці. Без передоплати." },
+    ];
+
+    const zones = [
+        { zone: 'Київ (Правий берег)', price: 'від 600 грн', areas: 'Голосіївський, Печерський, Святошинський, Солом\'янський, Шевченківський, Оболонський, Подільський' },
+        { zone: 'Київ (Лівий берег)', price: 'від 700 грн', areas: 'Дарницький, Деснянський, Дніпровський' },
+        { zone: 'Передмістя (до 15 км)', price: 'від 900 грн', areas: 'Вишневе, Крюківщина, Боярка, Ірпінь, Буча, Вишгород, Бровари' },
+        { zone: 'Область (до 40 км)', price: 'від 1 500 грн', areas: 'Обухів, Васильків, Бориспіль, Макарів' },
+    ];
+
     return (
-        <div className="min-h-screen bg-[#FDFBF7]">
+        <div
+            className="new-home-scope"
+            style={{
+                minHeight: '100vh',
+                background: 'var(--c-bg)',
+                color: 'var(--c-text)',
+                fontFamily: 'var(--font-outfit)',
+            }}
+        >
             <SEOHead
-                title="Доставка тортів у Києві – Antreme"
-                description="Швидка та безпечна доставка тортів по Києву. Самовивіз та адресна доставка."
-                ogImage="/og-delivery.jpg"
+                title={`Доставка дров | ${shopConfig.name}`}
+                description="Швидка доставка колотих дров по Києву та Київській області. Власний автопарк вантажівок, чесний об'єм. Від 600 грн."
             />
 
-            {/* Hero Banner */}
-            <div className="relative overflow-hidden py-16 md:py-24 text-center">
-                <div className="relative z-10 container mx-auto px-6">
-                    <div className="text-xs font-bold uppercase tracking-[0.3em] text-[#E8C064] mb-4">Antreme</div>
-                    <h1 className="text-4xl md:text-6xl font-black text-gray-900 uppercase tracking-tight mb-4"
-                        style={{ fontFamily: "'Oswald', 'Oswald Fallback', sans-serif" }}>
-                        Доставка
+            {/* ── Hero ── */}
+            <section style={{
+                position: 'relative',
+                overflow: 'hidden',
+                padding: 'calc(var(--s-section) * 0.75) 0 calc(var(--s-section) * 0.65)',
+                background: 'var(--color-bg-deep)',
+                borderBottom: '1px solid var(--color-border-subtle)',
+            }}>
+                <div style={{
+                    position: 'absolute', top: -80, right: -160,
+                    width: 560, height: 420,
+                    background: 'radial-gradient(ellipse, rgba(249,115,22,0.07) 0%, transparent 70%)',
+                    pointerEvents: 'none',
+                }} />
+                <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem', position: 'relative', zIndex: 1 }}>
+                    <nav style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 'var(--s-element)', fontSize: '0.8125rem', color: 'var(--c-text2)' }}>
+                        <Link to="/" style={{ color: 'var(--c-text2)', textDecoration: 'none', transition: 'color 0.2s' }}
+                            onMouseEnter={e => e.target.style.color = 'var(--c-orange)'}
+                            onMouseLeave={e => e.target.style.color = 'var(--c-text2)'}
+                        >Головна</Link>
+                        <ChevronRight size={13} style={{ opacity: 0.4 }} />
+                        <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Доставка</span>
+                    </nav>
+
+                    <div className="nh-badge" style={{ marginBottom: 'var(--s-tight)', display: 'inline-flex' }}>
+                        <Truck size={13} /> Власний автопарк
+                    </div>
+
+                    <h1 className="h2 fade-up" style={{ marginBottom: 'var(--s-tight)', marginTop: 'var(--s-tight)' }}>
+                        Доставка дров<br />
+                        <span style={{ color: 'var(--c-orange)' }}>по Києву та області</span>
                     </h1>
-                    <div className="w-20 h-1 bg-[#E8C064] mx-auto mb-6 rounded-full" />
-                    <p className="text-gray-500 text-lg max-w-xl mx-auto">
-                        Ваш торт мрії — вже на шляху до вас
+                    <p className="body fade-up fade-up-d1" style={{ maxWidth: 520 }}>
+                        Оперативна доставка власним транспортом. Чесний об'єм та гарантія якості без посередників.
                     </p>
                 </div>
-            </div>
+            </section>
 
-            {/* Delivery Options Cards */}
-            <div className="container mx-auto px-6 pb-16">
-                <div className="max-w-5xl mx-auto">
+            {/* ── Delivery Methods ── */}
+            <section style={{ maxWidth: 1200, margin: '0 auto', padding: 'var(--s-section) 1.5rem 0' }}>
+                <div style={{ textAlign: 'center', marginBottom: 'var(--s-header)' }}>
+                    <p className="section-label" style={{ marginBottom: 'var(--s-tight)' }}>Способи доставки</p>
+                    <h2 className="h2">Оберіть зручний варіант</h2>
+                </div>
 
-                    {/* 3 Method Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-16">
-                        {[
-                            {
-                                icon: '🚗',
-                                title: "Кур'єр по місту",
-                                desc: 'Доставка у зручний для вас час',
-                                price: '100 грн',
-                                sub: 'Безкоштовно від 500 грн',
-                                priceColor: '#E8C064',
-                                highlight: true
-                            },
-                            {
-                                icon: '🏪',
-                                title: 'Самовивіз',
-                                desc: 'Забрати з нашої кондитерської',
-                                price: 'Безкоштовно',
-                                sub: 'вул. Харківське шосе, 180/21',
-                                priceColor: '#22c55e',
-                                highlight: false
-                            },
-                            {
-                                icon: '📦',
-                                title: 'Нова Пошта',
-                                desc: 'Доставка по Україні',
-                                price: 'За тарифами НП',
-                                sub: '1-3 дні',
-                                priceColor: '#E8C064',
-                                highlight: false
-                            }
-                        ].map((item, i) => (
-                            <div key={i} className={`relative group bg-white rounded-2xl md:rounded-3xl p-8 text-center transition-all duration-300 hover:-translate-y-1 border shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)] ${item.highlight
-                                ? 'border-[#E8C064]/40'
-                                : 'border-gray-100'
-                                }`}>
-                                {item.highlight && (
-                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#E8C064] text-white text-xs font-black uppercase tracking-widest rounded-full shadow-sm">
-                                        Популярно
-                                    </div>
-                                )}
-                                <div className="text-5xl mb-5">{item.icon}</div>
-                                <h3 className="text-xl font-black text-gray-900 mb-3 uppercase"
-                                    style={{ fontFamily: "'Oswald', 'Oswald Fallback', sans-serif" }}>{item.title}</h3>
-                                <p className="text-gray-500 mb-5 text-sm">{item.desc}</p>
-                                <div className="text-2xl font-black mb-2" style={{ color: item.priceColor }}>{item.price}</div>
-                                <p className="text-xs text-gray-500">{item.sub}</p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))', gap: '1.25rem' }}>
+                    {methods.map(({ Icon, title, desc, price, sub, highlight }) => (
+                        <div
+                            key={title}
+                            className="nh-card"
+                            style={{
+                                padding: '1.75rem 1.5rem',
+                                textAlign: 'center',
+                                position: 'relative',
+                                border: highlight ? '1px solid var(--color-border-orange)' : '1px solid var(--color-border-subtle)',
+                            }}
+                        >
+                            {highlight && (
+                                <div style={{
+                                    position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)',
+                                    background: 'linear-gradient(135deg, #f97316, #ea580c)',
+                                    color: '#fff', borderRadius: 999, padding: '3px 14px',
+                                    fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
+                                    whiteSpace: 'nowrap',
+                                }}>Популярно</div>
+                            )}
+                            <div style={{
+                                width: 52, height: 52, borderRadius: '50%',
+                                background: 'var(--color-accent-soft)',
+                                border: '1px solid rgba(249,115,22,0.20)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                margin: '0 auto var(--s-element)',
+                            }}>
+                                <Icon size={22} color="var(--c-orange)" />
+                            </div>
+                            <h3 className="h3" style={{ marginBottom: 6 }}>{title}</h3>
+                            <p className="body-sm" style={{ marginBottom: 'var(--s-element)' }}>{desc}</p>
+                            <p style={{ fontSize: '1.375rem', fontWeight: 800, color: 'var(--c-orange)', marginBottom: 4 }}>{price}</p>
+                            <p style={{ fontSize: '0.8rem', color: 'var(--c-text2)' }}>{sub}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* ── Delivery Details ── */}
+            <section style={{ maxWidth: 1200, margin: '0 auto', padding: 'var(--s-section) 1.5rem 0' }}>
+                <div className="nh-card" style={{ padding: '2rem 2.5rem' }}>
+                    <h2 className="h2" style={{ marginBottom: 'var(--s-block)' }}>Особливості доставки</h2>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem' }}>
+                        {details.map(({ Icon, title, text }) => (
+                            <div key={title} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+                                <div style={{
+                                    width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+                                    background: 'var(--color-accent-soft)',
+                                    border: '1px solid rgba(249,115,22,0.20)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                }}>
+                                    <Icon size={18} color="var(--c-orange)" />
+                                </div>
+                                <div>
+                                    <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--c-text)', marginBottom: 4 }}>{title}</h3>
+                                    <p className="body-sm">{text}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
-
-                    {/* Important Info */}
-                    <div className="bg-white rounded-2xl md:rounded-3xl p-8 md:p-12 mb-12 border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
-                        <h2 className="text-2xl font-black text-gray-900 mb-8 uppercase flex items-center gap-3"
-                            style={{ fontFamily: "'Oswald', 'Oswald Fallback', sans-serif" }}>
-                            <span className="w-8 h-1 bg-[#E8C064] rounded-full inline-block" />
-                            Важлива інформація
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {[
-                                { icon: '⏰', title: 'Час доставки', text: 'Щодня з 9:00 до 21:00. Можливість обрати конкретний час при оформленні замовлення.' },
-                                { icon: '📅', title: 'Термін виготовлення', text: 'Стандартні торти - 24 години. Авторські торти - 2-3 дні. Печенье та солодощі - в наявності.' },
-                                { icon: '❄️', title: 'Температурний режим', text: 'Доставка в спеціальних термопакетах з холодоакумуляторами для збереження свіжості.' },
-                                { icon: '💳', title: 'Оплата', text: "Готівкою кур'єру, карткою онлайн або при самовивозі. Безготівковий розрахунок для юр.осіб." }
-                            ].map((item, i) => (
-                                <div key={i} className="flex gap-4">
-                                    <div className="w-12 h-12 rounded-2xl bg-[#FFF8E7] flex items-center justify-center text-2xl flex-shrink-0">
-                                        {item.icon}
-                                    </div>
-                                    <div>
-                                        <h4 className="font-black text-gray-900 mb-1.5 uppercase text-sm tracking-wide"
-                                            style={{ fontFamily: "'Oswald', 'Oswald Fallback', sans-serif" }}>{item.title}</h4>
-                                        <p className="text-gray-500 text-sm leading-relaxed">{item.text}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Delivery Zones Table */}
-                    <div className="mb-14">
-                        <h2 className="text-2xl font-black text-gray-900 text-center uppercase mb-8"
-                            style={{ fontFamily: "'Oswald', 'Oswald Fallback', sans-serif" }}>
-                            Зони доставки по місту
-                        </h2>
-                        <div className="overflow-x-auto bg-white rounded-2xl md:rounded-3xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
-                            <table className="w-full">
-                                <thead>
-                                    <tr className="border-b border-gray-100">
-                                        <th className="px-8 py-5 text-left font-black text-xs uppercase tracking-widest text-[#7A0019]">Район</th>
-                                        <th className="px-8 py-5 text-left font-black text-xs uppercase tracking-widest text-[#7A0019]">Вартість</th>
-                                        <th className="px-8 py-5 text-left font-black text-xs uppercase tracking-widest text-[#7A0019]">Час доставки</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {[
-                                        { zone: 'Центр міста', price: '50 грн', time: '30-60 хв' },
-                                        { zone: 'Спальні райони', price: '100 грн', time: '1-2 години' },
-                                        { zone: 'Передмістя', price: '150 грн', time: '2-3 години' }
-                                    ].map((row, i) => (
-                                        <tr key={i} className="group transition-colors hover:bg-[#FFF8E7]/50 border-b border-gray-50 last:border-0">
-                                            <td className="px-8 py-5 text-gray-900 font-medium">{row.zone}</td>
-                                            <td className="px-8 py-5 font-black text-[#E8C064]">{row.price}</td>
-                                            <td className="px-8 py-5 text-gray-500">{row.time}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                        <p className="text-sm text-gray-400 mt-4 text-center">
-                            * При замовленні від 500 грн — доставка безкоштовна у всі райони міста
-                        </p>
-                    </div>
-
-                    {/* Contact CTA */}
-                    <div className="rounded-2xl md:rounded-3xl p-10 md:p-14 text-center relative overflow-hidden bg-[#7A0019]">
-                        <div className="relative z-10">
-                            <h2 className="text-3xl md:text-5xl font-black text-white uppercase mb-4"
-                                style={{ fontFamily: "'Oswald', 'Oswald Fallback', sans-serif" }}>
-                                Є питання щодо доставки?
-                            </h2>
-                            <p className="text-white/70 text-lg mb-8">
-                                Наші менеджери з радістю допоможуть вам оформити замовлення
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                                <a href="tel:0979081504"
-                                    className="flex items-center gap-2 text-xl font-black text-[#E8C064] hover:text-white transition-colors">
-                                    📞 097 908 15 04
-                                </a>
-                                <span className="text-white/30 hidden sm:block">|</span>
-                                <Link
-                                    to="/torty-na-zamovlennya/"
-                                    className="inline-block px-10 py-4 bg-[#E8C064] hover:bg-[#D4A83C] text-white font-black text-sm uppercase tracking-widest rounded-full transition-all hover:scale-105 shadow-md"
-                                >
-                                    Оформити замовлення
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
+            </section>
+
+            {/* ── Delivery Map section (reuse from homepage) ── */}
+            <DeliverySection />
+
+            {/* ── Zones Table ── */}
+            <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem var(--s-section)' }}>
+                <h2 className="h2" style={{ textAlign: 'center', marginBottom: 'var(--s-block)' }}>
+                    Зони та вартість <span style={{ color: 'var(--c-orange)' }}>(Газель)</span>
+                </h2>
+                <div className="nh-card" style={{ overflow: 'hidden', padding: 0 }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr style={{ borderBottom: '1px solid var(--color-border-subtle)' }}>
+                                {['Зона', 'Вартість доставки', 'Райони / Населені пункти'].map(h => (
+                                    <th key={h} style={{
+                                        padding: '1rem 1.5rem', textAlign: 'left',
+                                        fontSize: '0.7rem', fontWeight: 700, color: 'var(--c-orange)',
+                                        letterSpacing: '0.1em', textTransform: 'uppercase',
+                                    }}>{h}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {zones.map((row, i) => (
+                                <tr key={i} style={{
+                                    borderBottom: i < zones.length - 1 ? '1px solid var(--color-border-subtle)' : 'none',
+                                    transition: 'background 0.2s',
+                                }}
+                                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(249,115,22,0.04)'}
+                                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                                >
+                                    <td style={{ padding: '1rem 1.5rem', fontWeight: 600, color: 'var(--c-text)', whiteSpace: 'nowrap' }}>{row.zone}</td>
+                                    <td style={{ padding: '1rem 1.5rem', fontWeight: 800, color: 'var(--c-orange)', whiteSpace: 'nowrap' }}>{row.price}</td>
+                                    <td style={{ padding: '1rem 1.5rem', color: 'var(--c-text2)', fontSize: '0.875rem' }}>{row.areas}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--c-text2)', textAlign: 'center', marginTop: '1rem', opacity: 0.7 }}>
+                    * Остаточна вартість розраховується індивідуально диспетчером залежно від точної відстані.
+                </p>
+            </section>
+
+            {/* ── CTA Banner ── */}
+            <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem var(--s-section)' }}>
+                <div style={{
+                    borderRadius: 16,
+                    background: 'linear-gradient(135deg, rgba(249,115,22,0.12) 0%, rgba(234,88,12,0.06) 100%)',
+                    border: '1px solid var(--color-border-orange)',
+                    padding: '2.5rem 2rem',
+                    textAlign: 'center',
+                }}>
+                    <h2 className="h2" style={{ marginBottom: '0.75rem' }}>
+                        Розрахувати точну вартість?
+                    </h2>
+                    <p className="body" style={{ maxWidth: 480, margin: '0 auto var(--s-block)' }}>
+                        Зателефонуйте або залиште заявку — ми розрахуємо ціну з урахуванням доставки до вашого будинку.
+                    </p>
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
+                        <a
+                            href={`tel:${shopConfig.contact.phone.replace(/\D/g, '')}`}
+                            style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 8,
+                                color: 'var(--c-orange)', fontWeight: 700, fontSize: '1.125rem',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            📞 {shopConfig.contact.phone}
+                        </a>
+                        <button
+                            onClick={() => setIsOrderFormOpen(true)}
+                            style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 8,
+                                background: 'linear-gradient(135deg, #f97316, #ea580c)',
+                                color: '#fff', fontWeight: 700, fontSize: '0.9375rem',
+                                border: 'none', borderRadius: 10, padding: '14px 28px',
+                                cursor: 'pointer', boxShadow: '0 4px 18px rgba(249,115,22,0.25)',
+                                transition: 'box-shadow 0.2s',
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.boxShadow = '0 6px 26px rgba(249,115,22,0.45)'}
+                            onMouseLeave={e => e.currentTarget.style.boxShadow = '0 4px 18px rgba(249,115,22,0.25)'}
+                        >
+                            Залишити заявку <ArrowRight size={16} />
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <OrderFormModal isOpen={isOrderFormOpen} onClose={() => setIsOrderFormOpen(false)} />
         </div>
     );
 }

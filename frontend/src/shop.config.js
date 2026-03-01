@@ -1,34 +1,32 @@
-/**
- * Shop Configuration — THE ONLY FILE you need to edit for a new store.
- * Change these values and your entire shop adapts automatically.
- */
 const shopConfig = {
     // ─── Brand ────────────────────────────────────────
-    name: "Antreme",
-    tagline: "Торти на замовлення",
-    description: "Авторські торти на замовлення у Києві від кондитерської Antreme. Готуємо з 100% натуральних інгредієнтів.",
-    domain: "https://antreme.kyiv.ua",
-    logo: "/logo.svg",
+    name: "Дрова Київ",
+    tagline: "Якісні дрова з доставкою",
+    description: "Купити колоті дрова з доставкою по Києву та області. Дуб, граб, береза, вільха, сосна. Чесний об'єм та швидка доставка вантажівками.",
+    domain: "https://drova.kyiv.ua", // Update later
+    logo: "/logo.svg", // Replaced text via css/components later if needed
 
     // ─── Contact ──────────────────────────────────────
-    phone: "+380 (63) 619-28-53",
-    email: "antreme.ua@gmail.com",
-    address: "Київ, Україна",
-    instagram: "https://www.instagram.com/antreme_kyiv",
-    telegram: "https://t.me/antreme_kyiv",
+    contact: {
+        phone: "+380 (99) 123-45-67",
+        email: "info@drova.kyiv.ua",
+        address: "Київ та Київська область",
+        instagram: "https://www.instagram.com/drova_kiyv_example",
+        telegram: "https://t.me/drova_kyiv_bot",
+    },
 
     // ─── Commerce ─────────────────────────────────────
     currency: "грн",
     currencySymbol: "₴",
-    deliveryMethods: ["pickup", "delivery"],
-    minOrderAmount: 0,
+    deliveryMethods: ["delivery", "pickup"],
+    minOrderAmount: 1000,
 
     // ─── SEO Defaults ─────────────────────────────────
     seo: {
-        defaultTitle: "Antreme — Торти на замовлення у Києві",
-        defaultDescription: "Авторські торти на замовлення у Києві від кондитерської Antreme. Готуємо з 100% натуральних інгредієнтів: весільні, дитячі, корпоративні десерти з адресною доставкою.",
-        defaultKeywords: "торти, київ, замовлення, десерти, кондитерська",
-        ogSiteName: "Antreme – Кондитерська майстерня",
+        defaultTitle: "Дрова Київ — Купити колоті дрова з доставкою",
+        defaultDescription: "Швидка доставка дров по Києву та області. Дуб, ясен, граб, береза. Без передоплати, точний об'єм. Замовляйте якісні дрова для опалення.",
+        defaultKeywords: "дрова київ, купити дрова, доставка дров, дрова колоті, дубові дрова, дрова ціна",
+        ogSiteName: "Дрова Київ",
     },
 
     // ─── API ──────────────────────────────────────────
@@ -40,19 +38,27 @@ const shopConfig = {
 
     // ─── UI Labels ────────────────────────────────────
     labels: {
-        catalog: "Каталог",
+        catalog: "Каталог дров",
         cart: "Кошик",
-        order: "Замовити",
-        quickOrder: "Замовити в 1 клік",
+        order: "Замовити дрова",
+        quickOrder: "Швидке замовлення",
         delivery: "Доставка та оплата",
         about: "Про нас",
-        reviews: "Відгуки",
+        reviews: "Відгуки клієнтів",
         addToCart: "Додати до кошика",
-        weight: "Вага",
-        price: "Ціна",
-        ingredients: "Склад",
+        weight: "Об'єм (складометрів)",
+        price: "Ціна за 1 скл/м",
+        ingredients: "Порода дерева",
         notAvailable: "Немає в наявності",
+        shelfLife: "Вологість"
     },
+
+    // ─── External Services (Google Cloud, etc.) ───────
+    services: {
+        googleMapsApiKey: "", // Paste your Google Maps API Key here
+        googleAnalyticsId: "", // G-XXXXXXXXXX
+        googleSearchConsoleId: "", // Verification tag
+    }
 };
 
 export default shopConfig;

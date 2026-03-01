@@ -17,8 +17,10 @@ export default function Orders() {
         try {
             const params = status ? { status } : {};
             const response = await api.get('/orders/', { params });
+            // Handle both array and paginated object responses
+            const items = Array.isArray(response.data) ? response.data : (response.data.items || []);
             // Sort by ID desc (newest first)
-            const sorted = response.data.sort((a, b) => b.id - a.id);
+            const sorted = items.sort((a, b) => b.id - a.id);
             setOrders(sorted);
         } catch (error) {
             console.error("Failed to fetch orders", error);
@@ -43,7 +45,7 @@ export default function Orders() {
 
     const handleCopyOrder = (order) => {
         const itemsText = order.items.map(item =>
-            `- ${item.cake?.name || 'Торт'} x${item.quantity}${item.flavor ? ` (${item.flavor})` : ''}${item.weight ? ` [${item.weight}кг]` : ''}`
+            `- ${item.product?.name || 'Дрова'} x${item.quantity}${item.flavor ? ` (${item.flavor})` : ''}${item.weight ? ` [${item.weight}кг]` : ''}`
         ).join('\n');
 
         const text = `📦 ЗАМОВЛЕННЯ #${order.id}\n` +
@@ -144,7 +146,7 @@ export default function Orders() {
                                                 <div key={idx} className="flex items-start gap-1.5 max-w-xs">
                                                     <div className="mt-1.5 w-1 h-1 bg-yellow-400 rounded-full flex-shrink-0"></div>
                                                     <div className="truncate font-bold text-gray-800 text-[11px] leading-tight">
-                                                        {item.cake?.name || `Торт #${item.cake_id}`}
+                                                        {item.product?.name || `Дрова #${item.product_id}`}
                                                         <span className="text-gray-400 ml-1 font-medium italic">×{item.quantity}</span>
                                                     </div>
                                                 </div>
@@ -221,10 +223,10 @@ export default function Orders() {
                                 {order.items && order.items.slice(0, 2).map((item, idx) => (
                                     <div key={idx} className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-xl bg-gray-50 flex-shrink-0 relative overflow-hidden shadow-sm border border-gray-100">
-                                            {item.cake?.image_url ? (
+                                            {item.product?.image_url ? (
                                                 <img
-                                                    src={item.cake.image_url.startsWith('http') ? item.cake.image_url : `${api.defaults.baseURL}${item.cake.image_url}`}
-                                                    alt="cake"
+                                                    src={item.product.image_url.startsWith('http') ? item.product.image_url : `${api.defaults.baseURL}${item.product.image_url}`}
+                                                    alt="product"
                                                     className="w-full h-full object-cover"
                                                 />
                                             ) : (
@@ -234,7 +236,7 @@ export default function Orders() {
                                             )}
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <div className="text-xs font-bold text-gray-900 truncate">{item.cake?.name || `Торт #${item.cake_id}`}</div>
+                                            <div className="text-xs font-bold text-gray-900 truncate">{item.product?.name || `Дрова #${item.product_id}`}</div>
                                             <div className="text-[10px] text-gray-400 font-medium italic mt-0.5">{item.quantity} шт.</div>
                                         </div>
                                     </div>
@@ -371,16 +373,16 @@ export default function Orders() {
                                     {selectedOrder.items.map((item, idx) => (
                                         <div key={idx} className="group relative flex gap-4 p-3 rounded-2xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100">
                                             <div className="w-16 h-16 bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 flex-shrink-0">
-                                                {item.cake?.image_url && (
+                                                {item.product?.image_url && (
                                                     <img
-                                                        src={item.cake.image_url.startsWith('http') ? item.cake.image_url : `${api.defaults.baseURL}${item.cake.image_url}`}
+                                                        src={item.product.image_url.startsWith('http') ? item.product.image_url : `${api.defaults.baseURL}${item.product.image_url}`}
                                                         className="w-full h-full object-cover"
                                                     />
                                                 )}
                                             </div>
                                             <div className="flex-1 min-w-0 py-1">
                                                 <div className="font-bold text-gray-900 text-sm truncate uppercase tracking-tight">
-                                                    {item.cake?.name || 'Торт'}
+                                                    {item.product?.name || 'Дрова'}
                                                 </div>
                                                 <div className="flex flex-wrap gap-1.5 mt-1">
                                                     {item.flavor && (

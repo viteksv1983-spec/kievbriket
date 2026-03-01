@@ -2,7 +2,16 @@ import random
 import logging
 import os
 from sqlalchemy.orm import Session
-from backend import models, schemas, crud
+
+from backend.src.pages.models import Page
+from backend.src.pages.schemas import PageCreate
+from backend.src.pages.service import PageService
+from backend.src.products.models import Product, CategoryMetadata
+from backend.src.products.schemas import ProductCreate
+from backend.src.products.service import ProductService, CategoryMetadataService
+from backend.src.users.models import User
+from backend.src.users.schemas import UserCreate
+from backend.src.users.service import UserService
 
 logger = logging.getLogger("cakeshop.seed")
 
@@ -11,24 +20,13 @@ def _seed_pages(db: Session):
     """Seed default SEO pages if they don't exist yet."""
     default_pages = [
         {"route_path": "/", "name": "Головна сторінка"},
-        {"route_path": "/cakes", "name": "Каталог (Всі торти)"},
-        {"route_path": "/cakes?category=bento", "name": "Категорія: Бенто тортики"},
-        {"route_path": "/cakes?category=biscuit", "name": "Категорія: Бісквітні торти"},
-        {"route_path": "/cakes?category=wedding", "name": "Категорія: Весільні торти"},
-        {"route_path": "/cakes?category=mousse", "name": "Категорія: Мусові торти"},
-        {"route_path": "/cakes?category=cupcakes", "name": "Категорія: Капкейки"},
-        {"route_path": "/cakes?category=gingerbread", "name": "Категорія: Імбирні пряники"},
-        {"route_path": "/fillings", "name": "Начинки"},
         {"route_path": "/delivery", "name": "Доставка та оплата"},
-        {"route_path": "/about", "name": "Про нас"},
-        {"route_path": "/gallery/photo", "name": "Фотогалерея"},
-        {"route_path": "/gallery/video", "name": "Відеогалерея"},
-        {"route_path": "/cart", "name": "Кошик"},
+        {"route_path": "/contacts", "name": "Контакти"},
     ]
     created = 0
     for p in default_pages:
-        if not crud.get_page_by_route(db, p["route_path"]):
-            crud.create_page(db, schemas.PageCreate(**p))
+        if not PageService.get_page_by_route(db, p["route_path"]):
+            PageService.create_page(db, PageCreate(**p))
             created += 1
     if created > 0:
         db.commit()
@@ -44,7 +42,7 @@ def check_and_seed_data(db: Session):
     _seed_pages(db)
 
     # 2. Check if we have any products
-    product_count = db.query(models.Product).count()
+    product_count = db.query(Product).count()
     if product_count > 0:
         logger.info("Database already has %d products. Skipping auto-seeding.", product_count)
         return
@@ -52,56 +50,59 @@ def check_and_seed_data(db: Session):
     logger.info("Database is empty. Starting auto-seeding process...")
 
     # 3. Seed Default Admin User if no users exist
-    user_count = db.query(models.User).count()
+    user_count = db.query(User).count()
     if user_count == 0:
         logger.info("No users found. Creating default admin...")
-        admin_user = schemas.UserCreate(
+        admin_user = UserCreate(
             email="admin",
             password="admin"
         )
-        crud.create_user(db, admin_user)
+        UserService.create_user(db, admin_user)
         logger.info("Default admin created (admin/admin)")
 
     # 4. Seed Category Metadata
-    initial_images = {
-        "birthday": "https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?auto=format&fit=crop&q=80&w=800",
-        "anniversary": "https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&q=80&w=800",
-        "kids": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&q=80&w=800",
-        "wedding": "",
-        "bento": "",
-        "biscuit": "",
-        "mousse": "",
-        "cupcakes": "",
-        "gingerbread": ""
+    initial_categories = {
+        "firewood": {"name": "Дрова", "image_url": "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&q=80&w=800"},
+        "briquettes": {"name": "Паливні брикети", "image_url": "https://images.unsplash.com/photo-1616422312211-5f212267f53a?auto=format&fit=crop&q=80&w=800"},
+        "coal": {"name": "Вугілля", "image_url": "https://images.unsplash.com/photo-1587304859876-0a25695662bb?auto=format&fit=crop&q=80&w=800"},
     }
-    for slug, img_url in initial_images.items():
-        if not crud.get_category_metadata(db, slug):
-            db.add(models.CategoryMetadata(slug=slug, image_url=img_url))
+    for slug, data in initial_categories.items():
+        if not CategoryMetadataService.get_category_metadata(db, slug):
+            db.add(CategoryMetadata(slug=slug, name=data["name"], image_url=data["image_url"]))
 
     # 5. Seed Essential Products (Minimal set for instant WOW)
     categories_data = {
-        "bento": ("Бенто", 450.0, 500.0, ""),
-        "biscuit": ("Бісквітний", 1500.0, 1000.0, ""),
-        "mousse": ("Мусовий", 1100.0, 1200.0, ""),
-        "wedding": ("Весільний", 4000.0, 3500.0, ""),
-        "cupcakes": ("Капкейки", 350.0, 600.0, ""),
-        "gingerbread": ("Пряник", 200.0, 300.0, "")
+        "firewood": [
+            ("Дрова дубові колоті", 1000.0, 1800.0, ""),
+            ("Дрова соснові", 1000.0, 1400.0, ""),
+            ("Дрова грабові", 1000.0, 1900.0, "")
+        ],
+        "briquettes": [
+            ("Брикети RUF (Дуб)", 1000.0, 11000.0, ""),
+            ("Брикети Піні-Кей", 1000.0, 12500.0, ""),
+            ("Брикети Нестро", 1000.0, 10500.0, "")
+        ],
+        "coal": [
+            ("Вугілля Антрацит (Горіх)", 1000.0, 14500.0, ""),
+            ("Вугілля Газове (ГЖ)", 1000.0, 11000.0, ""),
+            ("Вугілля ДГ", 1000.0, 9500.0, "")
+        ]
     }
 
-    for cat_slug, (pref, weight, price, img) in categories_data.items():
-        for i in range(1, 7):  # Seed 6 products per category
-            product = schemas.ProductCreate(
-                name=f"{pref} '{cat_slug.capitalize()} #{i}'",
-                description=f"Найкращий {pref.lower()} для вашого свята. Тільки натуральні інгредієнти.",
+    for cat_slug, products in categories_data.items():
+        for i, (name, weight, price, img) in enumerate(products, start=1):
+            product = ProductCreate(
+                name=name,
+                description=f"Найкраще тверде паливо для вашого котла або печі. Висока тепловіддача та мінімальна вологість.",
                 price=price + random.randint(-50, 50),
                 image_url=img,
                 is_available=True,
                 weight=weight,
-                ingredients="Преміум інгредієнти, свіжі ягоди, бельгійський шоколад",
-                shelf_life="72 години",
+                ingredients="Тверде паливо",
+                shelf_life="Необмежений",
                 category=cat_slug
             )
-            crud.create_product(db, product)
+            ProductService.create_product(db, product)
 
     db.commit()
     logger.info("Auto-seeding completed successfully!")

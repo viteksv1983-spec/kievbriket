@@ -6,7 +6,7 @@ export default function NotFound() {
     return (
         <>
             <SEOHead
-                title="404 — Сторінку не знайдено | Antreme"
+                title="404 — Сторінку не знайдено | Firewood"
                 robots="noindex, follow"
                 is404={true}
             />

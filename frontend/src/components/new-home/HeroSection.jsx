@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Flame, Phone, Star } from 'lucide-react';
-import heroImg from './assets/hero-bg.png';
+import heroImg from './assets/hero-bg.webp';
 import shopConfig from '../../shop.config';
 
 const stats = [

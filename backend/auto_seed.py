@@ -62,13 +62,16 @@ def check_and_seed_data(db: Session):
 
     # 4. Seed Category Metadata
     initial_categories = {
-        "firewood": {"name": "Дрова", "image_url": "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&q=80&w=800"},
-        "briquettes": {"name": "Паливні брикети", "image_url": "https://images.unsplash.com/photo-1616422312211-5f212267f53a?auto=format&fit=crop&q=80&w=800"},
-        "coal": {"name": "Вугілля", "image_url": "https://images.unsplash.com/photo-1587304859876-0a25695662bb?auto=format&fit=crop&q=80&w=800"},
+        "firewood": {"name": "Дрова", "image_url": "https://kievbriket.vercel.app/images/categories/category-firewood.webp"},
+        "briquettes": {"name": "Паливні брикети", "image_url": "https://kievbriket.vercel.app/images/categories/category-briquettes.webp"},
+        "coal": {"name": "Вугілля", "image_url": "https://kievbriket.vercel.app/images/categories/category-coal.webp"},
     }
     for slug, data in initial_categories.items():
-        if not CategoryMetadataService.get_category_metadata(db, slug):
+        cat = CategoryMetadataService.get_category_metadata(db, slug)
+        if not cat:
             db.add(CategoryMetadata(slug=slug, name=data["name"], image_url=data["image_url"]))
+        else:
+            cat.image_url = data["image_url"]
 
     # 5. Seed Essential Products (Minimal set for instant WOW)
     categories_data = {

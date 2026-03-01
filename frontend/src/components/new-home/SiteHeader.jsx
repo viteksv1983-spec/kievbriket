@@ -302,6 +302,7 @@ export function SiteHeader({ onQuickOrderClick }) {
                 <div style={{ height: 64, display: "flex", alignItems: "center", justifyContent: "flex-end", padding: "0 16px", flexShrink: 0 }}>
                     <button
                         onClick={closeMenu}
+                        aria-label="Закрити меню"
                         style={{
                             width: 40, height: 40, borderRadius: 10,
                             background: "rgba(255,255,255,0.06)",

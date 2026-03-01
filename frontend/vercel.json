@@ -77,7 +77,7 @@
     ],
     "rewrites": [
         {
-            "source": "/(login|register|cart|admin|admin/.*)",
+            "source": "/((?!assets|api).*)",
             "destination": "/index.html"
         }
     ]

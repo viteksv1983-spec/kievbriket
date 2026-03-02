@@ -59,8 +59,8 @@ def seed_data():
                 {"name": "Грабові дрова (колоті)", "price": 1900, "weight": 1.0, "desc": "Найбільша тепловіддача, довго горять.", "image": "/media/products/hornbeam.webp", "ingredients": "Граб", "shelf_life": "Сухі"},
                 {"name": "Соснові дрова (колоті)", "price": 1200, "weight": 1.0, "desc": "Легко розпалюються, дають гарний жар.", "image": "/media/products/pine.webp", "ingredients": "Сосна", "shelf_life": "Сухі"},
                 {"name": "Вільхові дрова (колоті)", "price": 1500, "weight": 1.0, "desc": "Ідеальні для бані та каміна, не димлять.", "image": "/media/products/alder.webp", "ingredients": "Вільха", "shelf_life": "Сухі"},
-                {"name": "Березові дрова (колоті)", "price": 1400, "weight": 1.0, "desc": "Популярна порода, рівне горіння та приємний аромат.", "image": "/media/products/pine.webp", "ingredients": "Береза", "shelf_life": "Сухі"},
-                {"name": "Ясенові дрова (колоті)", "price": 2400, "weight": 1.0, "desc": "Преміум порода, максимальна тепловіддача серед листяних.", "image": "/media/products/oak.webp", "ingredients": "Ясен", "shelf_life": "Сухі"},
+                {"name": "Березові дрова (колоті)", "price": 1400, "weight": 1.0, "desc": "Популярна порода, рівне горіння та приємний аромат.", "image": "/media/products/birch.webp", "ingredients": "Береза", "shelf_life": "Сухі"},
+                {"name": "Ясенові дрова (колоті)", "price": 2400, "weight": 1.0, "desc": "Преміум порода, максимальна тепловіддача серед листяних.", "image": "/media/products/ash.webp", "ingredients": "Ясен", "shelf_life": "Сухі"},
             ]
         },
         "briquettes": {

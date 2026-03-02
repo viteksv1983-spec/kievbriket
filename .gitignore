@@ -20,7 +20,10 @@ dist-ssr/
 backend/logs/
 
 # Media uploads (served by backend, not in repo)
-backend/media/
+backend/media/*
+!backend/media/categories/
+!backend/media/products/
+!backend/media/.gitkeep
 
 # Archives & backups
 cakes_archive/

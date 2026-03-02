@@ -237,9 +237,9 @@ function FaqSection() {
 
     return (
         <section ref={ref} style={{ padding: "var(--s-section) 0" }}>
-            <div className="layout-container" style={{ maxWidth: 800 }}>
+            <div className="layout-container">
                 <div className={`reveal ${visible ? "visible" : ""}`} style={{ textAlign: "center", marginBottom: "3rem" }}>
-                    <h2 className="h2">Поширені запитання</h2>
+                    <h2 className="h2" style={{ maxWidth: 800, margin: '0 auto' }}>Поширені запитання</h2>
                 </div>
 
                 <div className={`reveal ${visible ? "visible" : ""}`} style={{ transitionDelay: '0.1s' }}>
@@ -372,7 +372,7 @@ export default function FirewoodCategoryPage({ products, seo, onOrderProduct, ac
             <BenefitsSection />
 
             {/* SEO Text Block */}
-            <section style={{ maxWidth: 900, margin: '0 auto', padding: 'var(--s-section) 1.5rem' }}>
+            <section style={{ maxWidth: 1280, margin: '0 auto', padding: 'var(--s-section) 1.5rem' }}>
                 <h2 className="h2" style={{ marginBottom: '2rem', textAlign: 'center' }}>
                     {activeCategory?.seo_h1 || `Купити ${activeCategory?.name?.toLowerCase() || 'тверде паливо'} у Києві`}
                 </h2>

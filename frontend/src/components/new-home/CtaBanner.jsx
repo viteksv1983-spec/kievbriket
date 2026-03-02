@@ -17,6 +17,9 @@ export function CtaBanner() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                /* Clip boundaries to a max width of 1200px centered, slicing the stretched image */
+                clipPath: "inset(0 calc(max(0px, 50vw - 600px)) round 24px)",
+                marginBottom: "var(--s-section)",
             }}
         >
             <img

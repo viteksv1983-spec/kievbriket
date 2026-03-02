@@ -238,7 +238,7 @@ async def detailed_health_check(db: Session = Depends(get_db)):
 
 # ─── SPA Route ──────────────────────────────────────────────
 
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 import os
 from backend.src.products.service import CategoryMetadataService, ProductService
 from backend.src.pages.service import PageService
@@ -267,6 +267,17 @@ async def catch_all(path_name: str, db: Session = Depends(get_db)):
     # Admin routes
     if path.startswith("/admin"):
         return FileResponse(index_file)
+
+    # Legacy 301 Redirects
+    LEGACY_SLUGS = {"firewood": "drova", "briquettes": "brikety", "coal": "vugillya"}
+    if path.startswith("/catalog/"):
+        parts = path.replace("/catalog/", "", 1).strip("/").split("/")
+        if parts[0] in LEGACY_SLUGS:
+            new_cat = LEGACY_SLUGS[parts[0]]
+            if len(parts) == 1:
+                return RedirectResponse(url=f"/catalog/{new_cat}", status_code=301)
+            else:
+                return RedirectResponse(url=f"/catalog/{new_cat}/{parts[1]}", status_code=301)
 
     # Dynamic Routes Validation
     if path.startswith("/page/"):

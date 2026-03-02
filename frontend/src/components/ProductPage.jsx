@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import { Truck, ChevronRight, Ruler, Scale, Flame, Info, ArrowRight, CheckCircle2, ChevronDown } from 'lucide-react';
 import { useCategories } from '../context/CategoryContext';
 import { getCategoryUrl, getImageUrl } from '../utils/urls';
@@ -17,6 +17,17 @@ export default function ProductPage() {
     const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [openFaq, setOpenFaq] = useState(null);
     const { categories } = useCategories();
+
+    // Legacy redirect
+    const oldSlugMap = {
+        'firewood': 'drova',
+        'briquettes': 'brikety',
+        'coal': 'vugillya'
+    };
+
+    if (oldSlugMap[categorySlug]) {
+        return <Navigate to={`/catalog/${oldSlugMap[categorySlug]}/${productSlug}`} replace />;
+    }
 
     const specs = [
         { icon: <Ruler size={17} color="var(--c-orange)" />, label: 'Довжина', value: '35–40 см' },

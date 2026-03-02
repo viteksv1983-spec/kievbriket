@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { Link, useSearchParams, useParams } from 'react-router-dom';
+import { Link, useSearchParams, useParams, Navigate } from 'react-router-dom';
 import api from '../api';
 import { ArrowRight, ChevronRight, Truck, SlidersHorizontal, MessageCircle } from 'lucide-react';
 import { getProductUrl, getImageUrl } from '../utils/urls';
@@ -9,6 +9,7 @@ import { OrderFormModal } from './new-home/OrderFormModal';
 import FirewoodCategoryPage from './FirewoodCategoryPage';
 import BriquettesCategoryPage from './BriquettesCategoryPage';
 import CoalCategoryPage from './CoalCategoryPage';
+import NotFound from './NotFound';
 
 // ─── per-category SEO content ───────────────────────────────────────────────
 const CATEGORY_SEO = {
@@ -106,6 +107,18 @@ export default function Catalog({ predefinedCategory }) {
 
     const categoryQuery = searchParams.get('category');
     const activeCategorySlug = predefinedCategory || categorySlug || categoryQuery;
+
+    // Legacy redirect
+    const oldSlugMap = {
+        'firewood': 'drova',
+        'briquettes': 'brikety',
+        'coal': 'vugillya'
+    };
+
+    if (oldSlugMap[activeCategorySlug]) {
+        return <Navigate to={`/catalog/${oldSlugMap[activeCategorySlug]}`} replace />;
+    }
+
     const activeCategory = categories.find(c => c.slug === activeCategorySlug);
     const catSeo = CATEGORY_SEO[activeCategorySlug] || DEFAULT_SEO;
 
@@ -137,6 +150,10 @@ export default function Catalog({ predefinedCategory }) {
             })
             .catch(() => setLoading(false));
     }, [activeCategorySlug]);
+
+    if (!activeCategory && !loading) {
+        return <NotFound />;
+    }
 
     const handleOrder = useCallback((product = null) => {
         setOrderProduct(product);

@@ -174,7 +174,7 @@ export function SiteFooter() {
                         display: "flex", justifyContent: "space-between", alignItems: "center",
                         flexWrap: "wrap", gap: 10,
                     }}>
-                        <p style={{ fontSize: "0.8rem", color: "var(--c-text3)" }}>
+                        <p style={{ fontSize: "0.8rem", color: "var(--c-text2)" }}>
                             © 2013–{new Date().getFullYear()} ТОВ «Київ Брикет». Всі права захищені.
                         </p>
                         <div style={{ display: "flex", gap: 20 }}>
@@ -182,18 +182,18 @@ export function SiteFooter() {
                                 onClick={() => setShowPrivacy(true)}
                                 style={{
                                     background: "none", border: "none", padding: 0, cursor: "pointer",
-                                    fontSize: "0.8rem", color: "var(--c-text3)", transition: "color 0.2s", fontFamily: "inherit",
+                                    fontSize: "0.8rem", color: "var(--c-text2)", transition: "color 0.2s", fontFamily: "inherit",
                                 }}
-                                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c-text2)")}
-                                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--c-text3)")}
+                                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c-text)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--c-text2)")}
                             >
                                 Політика конфіденційності
                             </button>
                             <a
                                 href="#"
-                                style={{ fontSize: "0.8rem", color: "var(--c-text3)", textDecoration: "none", transition: "color 0.2s" }}
-                                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c-text2)")}
-                                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--c-text3)")}
+                                style={{ fontSize: "0.8rem", color: "var(--c-text2)", textDecoration: "none", transition: "color 0.2s" }}
+                                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c-text)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--c-text2)")}
                             >
                                 Умови використання
                             </a>

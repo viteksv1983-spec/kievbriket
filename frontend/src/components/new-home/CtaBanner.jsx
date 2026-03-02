@@ -17,9 +17,6 @@ export function CtaBanner() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                maxWidth: 1200,
-                margin: "0 auto var(--s-section) auto",
-                borderRadius: 24,
             }}
         >
             <img
@@ -32,6 +29,7 @@ export function CtaBanner() {
                 style={{
                     position: "absolute", inset: 0, width: "100%", height: "100%",
                     objectFit: "cover",
+                    objectPosition: "center 60%", /* Shift focus down to show the fire logs */
                     filter: "brightness(0.22) saturate(0.75)",
                     zIndex: 0,
                 }}

@@ -18,11 +18,11 @@ const STATIC_PAGES = [
 ];
 
 // ─── Category pages (fetched from backend, fallback to hardcoded) ───
-const FALLBACK_CATEGORIES = ['firewood', 'briquettes', 'coal'];
+const FALLBACK_CATEGORIES = ['drova', 'brikety', 'vugillya'];
 
 async function fetchCategories() {
     try {
-        const response = await axios.get(`${API_BASE}/categories/metadata`, { timeout: 5000 });
+        const response = await axios.get(`${API_BASE}/products/categories`, { timeout: 5000 });
         return response.data.map(c => c.slug);
     } catch {
         console.log('⚠️ Cannot fetch categories from backend — using fallback list.');
@@ -32,9 +32,10 @@ async function fetchCategories() {
 
 async function fetchProducts() {
     try {
-        const response = await axios.get(`${API_BASE}/products/?limit=1000`, { timeout: 5000 });
-        console.log(`✅ Fetched ${response.data.length} products for sitemap.`);
-        return response.data;
+        const response = await axios.get(`${API_BASE}/products/?limit=100`, { timeout: 5000 });
+        const items = Array.isArray(response.data) ? response.data : (response.data.items || []);
+        console.log(`✅ Fetched ${items.length} products for sitemap.`);
+        return items;
     } catch (error) {
         console.log(`⚠️ Backend unavailable — skipping product URLs. (${error.message})`);
         return [];

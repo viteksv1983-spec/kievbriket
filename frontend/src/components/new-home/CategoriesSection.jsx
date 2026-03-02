@@ -9,8 +9,8 @@ function ProductCard({ p, delay }) {
 
     // We assign some fake tags or details since API categories only have name/desc
     // but we try to match them gracefully.
-    const isBriquettes = p.slug === 'briquettes' || p.slug === 'ruf' || p.slug === 'pinikay';
-    const isCoal = p.slug === 'coal' || p.slug === 'coal_ao' || p.slug === 'coal_as';
+    const isBriquettes = p.slug === 'brikety' || p.slug === 'ruf' || p.slug === 'pinikay';
+    const isCoal = p.slug === 'vugillya' || p.slug === 'coal_ao' || p.slug === 'coal_as';
 
     let fakeTags = ["Деревина", "Екологічно"];
     let triggerIcon = <Truck size={13} />;
@@ -168,7 +168,7 @@ export function CategoriesSection({ categories = [] }) {
                             <span style={{ color: "var(--c-orange)" }}>твердого палива</span>
                         </h2>
                     </div>
-                    <Link to="/catalog/firewood" style={{ color: "var(--c-text2)", fontSize: "0.9rem", textDecoration: "none", fontWeight: 500, display: "flex", alignItems: "center", gap: 6 }}
+                    <Link to="/catalog/drova" style={{ color: "var(--c-text2)", fontSize: "0.9rem", textDecoration: "none", fontWeight: 500, display: "flex", alignItems: "center", gap: 6 }}
                         onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c-text)")}
                         onMouseLeave={(e) => (e.currentTarget.style.color = "var(--c-text2)")}
                     >

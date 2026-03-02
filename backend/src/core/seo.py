@@ -15,17 +15,19 @@ class SitemapService:
 
     # Static pages that always exist in the frontend
     STATIC_ROUTES = [
-        ("/", "daily", "1.0"),
-        ("/dostavka/", "monthly", "0.6"),
-        ("/contacts/", "monthly", "0.6"),
-        ("/pro-nas/", "monthly", "0.6"),
+        ("", "daily", "1.0"),
+        ("/catalog/drova", "weekly", "0.8"),
+        ("/catalog/brikety", "weekly", "0.8"),
+        ("/catalog/vugillya", "weekly", "0.8"),
+        ("/delivery", "monthly", "0.6"),
+        ("/contacts", "monthly", "0.6"),
     ]
 
     @staticmethod
     def generate(db: Session, domain: str = None) -> str:
         """Generate a complete sitemap.xml."""
         if not domain:
-            domain = "https://drova-kharkiv.com.ua"
+            domain = "https://kievbriket.com"
         domain = domain.rstrip("/")
 
         urls = []
@@ -36,17 +38,6 @@ class SitemapService:
                 f"{domain}{path}", freq, priority
             ))
 
-        # Category pages — dynamic from DB
-        categories = db.query(CategoryMetadata).all()
-        cat_slug_set = set()
-        for cat in categories:
-            if cat.slug and (cat.is_indexable if hasattr(cat, 'is_indexable') else True):
-                cat_slug_set.add(cat.slug)
-                lastmod = cat.updated_at.strftime("%Y-%m-%d") if cat.updated_at else None
-                urls.append(SitemapService._url_entry(
-                    f"{domain}/catalog/{cat.slug}/", "weekly", "0.8", lastmod
-                ))
-
         # Products with slugs
         products = db.query(Product).filter(
             Product.is_available == True,
@@ -56,9 +47,9 @@ class SitemapService:
 
         for p in products:
             if p.category and p.slug:
-                loc = f"{domain}/catalog/{p.category}/{p.slug}/"
+                loc = f"{domain}/catalog/{p.category}/{p.slug}"
             elif p.slug:
-                loc = f"{domain}/catalog/firewood/{p.slug}/"
+                loc = f"{domain}/catalog/drova/{p.slug}"
             else:
                 continue
             lastmod = p.updated_at.strftime("%Y-%m-%d") if p.updated_at else None
@@ -68,7 +59,7 @@ class SitemapService:
         pages = db.query(Page).all()
         for page in pages:
             if page.route_path and page.route_path != "/":
-                path = page.route_path if page.route_path.endswith("/") else f"{page.route_path}/"
+                path = page.route_path if not page.route_path.endswith("/") else page.route_path[:-1]
                 lastmod = page.updated_at.strftime("%Y-%m-%d") if page.updated_at else None
                 urls.append(SitemapService._url_entry(
                     f"{domain}{path}", "monthly", "0.5", lastmod
@@ -93,13 +84,12 @@ class SitemapService:
     @staticmethod
     def robots_txt(domain: str = None) -> str:
         if not domain:
-            domain = "https://drova-kharkiv.com.ua"
+            domain = "https://kievbriket.com"
         return f"""User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /api/
-Disallow: /token
-Disallow: /seed_db
+Disallow: /admin
+Disallow: /api
+Disallow: /internal routes
 
 Sitemap: {domain}/sitemap.xml
 """

@@ -49,7 +49,7 @@ def seed_data():
         print("Default admin created: admin/admin")
 
     categories = {
-        "firewood": {
+        "drova": {
             "name": "Дрова",
             "description": "Колоті дрова різних порід для опалення та каміна.",
             "image": "/media/categories/firewood.webp",
@@ -63,7 +63,7 @@ def seed_data():
                 {"name": "Ясенові дрова (колоті)", "price": 2400, "weight": 1.0, "desc": "Преміум порода, максимальна тепловіддача серед листяних.", "image": "/media/products/ash.webp", "ingredients": "Ясен", "shelf_life": "Сухі"},
             ]
         },
-        "briquettes": {
+        "brikety": {
             "name": "Паливні брикети",
             "description": "Екологічні паливні брикети типу RUF, Nestro, Pini Kay.",
             "image": "/media/categories/briquettes.webp",
@@ -77,7 +77,7 @@ def seed_data():
                 {"name": "Брикети Pini Kay XL", "price": 9800, "weight": 1000.0, "desc": "Великі брикети Pini Kay для котлів тривалого горіння, 1 тонна.", "image": "/media/products/pinikay.webp", "ingredients": "Тирса твердих порід", "shelf_life": "Необмежений"},
             ]
         },
-        "coal": {
+        "vugillya": {
             "name": "Вугілля",
             "description": "Кам'яне вугілля антрацит та газове.",
             "image": "/media/categories/coal.webp",

@@ -373,15 +373,15 @@ export function SeoIntroSection() {
                         </p>
                         <p>
                             У каталозі представлені{' '}
-                            <Link to="/catalog/firewood"
+                            <Link to="/catalog/drova"
                                 title="Купити колоті дрова з доставкою по Києву"
                                 className="seo-a">колоті дрова</Link>{' '}
                             різних порід,{' '}
-                            <Link to="/catalog/briquettes"
+                            <Link to="/catalog/brikety"
                                 title="Купити паливні брикети"
                                 className="seo-a">паливні брикети</Link>{' '}
                             та{' '}
-                            <Link to="/catalog/coal"
+                            <Link to="/catalog/vugillya"
                                 title="Купити кам'яне вугілля"
                                 className="seo-a">кам'яне вугілля</Link>{' '}
                             з доставкою по Києву та Київській області.
@@ -470,14 +470,14 @@ export function SeoFooterSection() {
                                 </p>
                                 <p>
                                     Ми пропонуємо широкий вибір{' '}
-                                    <Link to="/catalog/firewood"
+                                    <Link to="/catalog/drova"
                                         title="Купити дрова з доставкою по Києву"
                                         className="seo-a">дров</Link>,{' '}
-                                    <Link to="/catalog/briquettes"
+                                    <Link to="/catalog/brikety"
                                         title="Купити паливні брикети"
                                         className="seo-a">паливних брикетів</Link>{' '}
                                     та{' '}
-                                    <Link to="/catalog/coal"
+                                    <Link to="/catalog/vugillya"
                                         title="Купити кам'яне вугілля"
                                         className="seo-a">кам'яного вугілля</Link>{' '}
                                     для ефективного опалення приватних будинків, котлів та камінів.
@@ -501,7 +501,7 @@ export function SeoFooterSection() {
                             </ul>
 
                             {/* CTA */}
-                            <Link to="/catalog/firewood" className="seo-cta-btn">
+                            <Link to="/catalog/drova" className="seo-cta-btn">
                                 Обрати паливо
                                 <ChevronRight size={16} />
                             </Link>
@@ -509,7 +509,7 @@ export function SeoFooterSection() {
 
                         {/* ── RIGHT: Category nav cards ── */}
                         <div className="seo-navcards">
-                            <Link to="/catalog/firewood" className="seo-navcard-link">
+                            <Link to="/catalog/drova" className="seo-navcard-link">
                                 <div className="seo-navcard">
                                     <div className="seo-navcard-icon"><TreePine size={20} /></div>
                                     <div className="seo-navcard-body">
@@ -520,7 +520,7 @@ export function SeoFooterSection() {
                                 </div>
                             </Link>
 
-                            <Link to="/catalog/briquettes" className="seo-navcard-link">
+                            <Link to="/catalog/brikety" className="seo-navcard-link">
                                 <div className="seo-navcard">
                                     <div className="seo-navcard-icon"><Package size={20} /></div>
                                     <div className="seo-navcard-body">
@@ -531,7 +531,7 @@ export function SeoFooterSection() {
                                 </div>
                             </Link>
 
-                            <Link to="/catalog/coal" className="seo-navcard-link">
+                            <Link to="/catalog/vugillya" className="seo-navcard-link">
                                 <div className="seo-navcard">
                                     <div className="seo-navcard-icon"><Flame size={20} /></div>
                                     <div className="seo-navcard-body">

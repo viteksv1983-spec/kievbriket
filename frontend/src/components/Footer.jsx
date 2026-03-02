@@ -86,10 +86,35 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  to="/torty-na-zamovlennya/"
+                  to="/catalog/drova"
                   className="hover:text-amber-100 transition-all duration-300 flex items-center justify-center lg:justify-start gap-2 group text-gray-100"
                 >
-                  Всі дрова
+                  <span className="hidden lg:block opacity-0 group-hover:opacity-100 transition-opacity text-white text-[10px]">
+                    ▶
+                  </span>
+                  Дрова
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/catalog/brikety"
+                  className="hover:text-amber-100 transition-all duration-300 flex items-center justify-center lg:justify-start gap-2 group text-gray-100"
+                >
+                  <span className="hidden lg:block opacity-0 group-hover:opacity-100 transition-opacity text-white text-[10px]">
+                    ▶
+                  </span>
+                  Паливні брикети
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/catalog/vugillya"
+                  className="hover:text-amber-100 transition-all duration-300 flex items-center justify-center lg:justify-start gap-2 group text-gray-100"
+                >
+                  <span className="hidden lg:block opacity-0 group-hover:opacity-100 transition-opacity text-white text-[10px]">
+                    ▶
+                  </span>
+                  Вугілля
                 </Link>
               </li>
               <li>

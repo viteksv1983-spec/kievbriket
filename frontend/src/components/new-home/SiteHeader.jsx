@@ -4,9 +4,9 @@ import { Menu, X, Phone, Flame, ChevronRight, Truck, MapPin, ShoppingCart, Clock
 import shopConfig from '../../shop.config';
 
 const links = [
-    { label: "Дрова", to: "/catalog/firewood", icon: Flame },
-    { label: "Брикети", to: "/catalog/briquettes", icon: ShoppingCart },
-    { label: "Вугілля", to: "/catalog/coal", icon: ShoppingCart },
+    { label: "Дрова", to: "/catalog/drova", icon: Flame },
+    { label: "Брикети", to: "/catalog/brikety", icon: ShoppingCart },
+    { label: "Вугілля", to: "/catalog/vugillya", icon: ShoppingCart },
     { label: "Доставка", to: "/dostavka", icon: Truck },
     { label: "Контакти", to: "/contacts", icon: MapPin },
 ];

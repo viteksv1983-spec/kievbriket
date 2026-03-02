@@ -7,10 +7,12 @@ import { useCategories } from '../context/CategoryContext';
 import SEOHead from './SEOHead';
 import { OrderFormModal } from './new-home/OrderFormModal';
 import FirewoodCategoryPage from './FirewoodCategoryPage';
+import BriquettesCategoryPage from './BriquettesCategoryPage';
+import CoalCategoryPage from './CoalCategoryPage';
 
 // ─── per-category SEO content ───────────────────────────────────────────────
 const CATEGORY_SEO = {
-    firewood: {
+    drova: {
         trustItems: ['Дрова природної вологості', 'Доставка по Києву та області', 'Чесний складометр'],
         benefit: 'Колоті дрова твердих порід для опалення котлів, камінів та відкритого вогнища',
         seoH2: 'Купити дрова з доставкою у Києві',
@@ -26,7 +28,7 @@ const CATEGORY_SEO = {
         `,
         filters: ['Усі', 'Дуб', 'Граб', 'Сосна', 'Береза'],
     },
-    briquettes: {
+    brikety: {
         trustItems: ['RUF, Nestro, Pini Kay', 'Низька вологість < 10%', 'Висока калорійність'],
         benefit: 'Паливні брикети — компактна альтернатива дровам з вищою теплоємністю',
         seoH2: 'Купити паливні брикети з доставкою у Києві',
@@ -40,7 +42,7 @@ const CATEGORY_SEO = {
         `,
         filters: ['Усі', 'RUF', 'Nestro', 'Pini Kay'],
     },
-    coal: {
+    vugillya: {
         trustItems: ['Антрацит та газове вугілля', 'Фасування від 25 кг', 'Доставка по Києву'],
         benefit: 'Вугілля — максимальна тепловіддача для котлів та промислових печей',
         seoH2: 'Купити вугілля з доставкою у Києві',
@@ -176,13 +178,25 @@ export default function Catalog({ predefinedCategory }) {
             )}
 
             {/* ── PREMIUM CATEGORY PAGE (Dynamic for all categories) ── */}
-            <FirewoodCategoryPage
-                products={displayedProducts}
-                seo={seo}
-                onOrderProduct={handleOrder}
-                activeCategory={activeCategory}
-                activeCategorySlug={activeCategorySlug}
-            />
+            {activeCategorySlug === 'brikety' ? (
+                <BriquettesCategoryPage
+                    products={displayedProducts}
+                    onOrderProduct={handleOrder}
+                />
+            ) : activeCategorySlug === 'vugillya' ? (
+                <CoalCategoryPage
+                    products={displayedProducts}
+                    onOrderProduct={handleOrder}
+                />
+            ) : (
+                <FirewoodCategoryPage
+                    products={displayedProducts}
+                    seo={seo}
+                    onOrderProduct={handleOrder}
+                    activeCategory={activeCategory}
+                    activeCategorySlug={activeCategorySlug}
+                />
+            )}
 
             <OrderFormModal
                 isOpen={isOrderFormOpen}

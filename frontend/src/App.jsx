@@ -66,6 +66,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/dostavka" element={<Delivery />} />
+                <Route path="/kontakty" element={<Contacts />} />
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/pro-nas" element={<About />} />
                 <Route path="/page/:slug" element={<DynamicPage />} />

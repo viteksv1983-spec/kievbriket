@@ -240,18 +240,51 @@ async def detailed_health_check(db: Session = Depends(get_db)):
 
 from fastapi.responses import FileResponse
 import os
+from backend.src.products.service import CategoryMetadataService, ProductService
+from backend.src.pages.service import PageService
 
 @app.api_route("/{path_name:path}", methods=["GET"])
-async def catch_all(path_name: str):
+async def catch_all(path_name: str, db: Session = Depends(get_db)):
     """
     Catch-all route to serve the React SPA `index.html`.
     Any path that doesn't match an API route or static file 
     will return the React app, allowing React Router to handle it.
+    IMPORTANT: Returns proper 404 status code for unknown routes to satisfy SEO requirements.
     """
     index_file = os.path.join(STATIC_DIR, "index.html")
-    if os.path.isfile(index_file):
+    if not os.path.isfile(index_file):
+        return {"message": "KievBriket API (React frontend not built)"}
+        
+    path = "/" + path_name.strip("/")
+    if path == "/":
         return FileResponse(index_file)
-    return {"message": "KievBriket API (React frontend not built)"}
+
+    # Known React exact routes
+    valid_exact = {"/", "/delivery", "/contacts", "/dostavka", "/kontakty", "/pro-nas", "/login", "/register", "/cart"}
+    if path in valid_exact:
+        return FileResponse(index_file)
+
+    # Admin routes
+    if path.startswith("/admin"):
+        return FileResponse(index_file)
+
+    # Dynamic Routes Validation
+    if path.startswith("/page/"):
+        page = PageService.get_page_by_route(db, path)
+        if page:
+            return FileResponse(index_file)
+
+    elif path.startswith("/catalog/"):
+        parts = path.replace("/catalog/", "", 1).strip("/").split("/")
+        if len(parts) == 1:
+            if CategoryMetadataService.get_category_metadata(db, parts[0]):
+                return FileResponse(index_file)
+        elif len(parts) == 2:
+            if ProductService.get_product_by_slug(db, parts[1]):
+                return FileResponse(index_file)
+
+    # If no valid match, return index.html but with a 404 status code for SEO
+    return FileResponse(index_file, status_code=404)
 
 
 if __name__ == "__main__":

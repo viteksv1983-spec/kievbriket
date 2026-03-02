@@ -80,7 +80,7 @@ export default function ProductPage() {
         return (
             <div className="new-home-scope" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--c-bg)', fontFamily: 'var(--font-outfit)', gap: '1.5rem' }}>
                 <h1 className="h2">Товар не знайдено</h1>
-                <Link to="/catalog/firewood" style={{
+                <Link to="/catalog/drova" style={{
                     display: 'inline-flex', alignItems: 'center', gap: 8,
                     background: 'linear-gradient(135deg, #f97316, #ea580c)',
                     color: '#fff', fontWeight: 700, borderRadius: 10, padding: '12px 24px',
@@ -127,7 +127,7 @@ export default function ProductPage() {
                     >Головна</Link>
                     <ChevronRight size={13} style={{ opacity: 0.4 }} />
                     <Link
-                        to={category ? getCategoryUrl(category.slug) : '/catalog/firewood'}
+                        to={category ? getCategoryUrl(category.slug) : '/catalog/drova'}
                         style={{ color: 'var(--c-text2)', textDecoration: 'none', transition: 'color 0.2s' }}
                         onMouseEnter={e => e.target.style.color = 'var(--c-orange)'}
                         onMouseLeave={e => e.target.style.color = 'var(--c-text2)'}

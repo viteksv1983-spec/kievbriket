@@ -18,7 +18,7 @@ export function BenefitsSection() {
         <section
             id="about"
             ref={ref}
-            style={{ padding: "var(--s-section) 0", background: "var(--c-bg)" }}
+            style={{ padding: "100px 0", background: "var(--c-bg)" }}
         >
             <div className="layout-container">
                 {/* Header */}

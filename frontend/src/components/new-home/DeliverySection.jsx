@@ -187,7 +187,7 @@ export function DeliverySection() {
         <section
             id="delivery"
             ref={ref}
-            style={{ padding: "var(--s-section) 0", background: "var(--c-bg)", position: "relative" }}
+            style={{ padding: "100px 0", background: "var(--c-bg)", position: "relative" }}
         >
             <div style={{
                 position: "absolute", top: 0, left: 0, right: 0,

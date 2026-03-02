@@ -30,9 +30,9 @@ export const CategoryProvider = ({ children }) => {
             console.error('Failed to fetch categories:', error);
             // Fallback to local if backend is unreachable during dev
             setCategories([
-                { id: 'firewood', slug: 'firewood', name: 'Дрова', title: 'Дрова', description: '', imagePlaceholder: '🪵 Дрова' },
-                { id: 'briquettes', slug: 'briquettes', name: 'Паливні брикети', title: 'Паливні брикети', description: '', imagePlaceholder: '🪵 Брикети' },
-                { id: 'coal', slug: 'coal', name: 'Вугілля', title: 'Вугілля', description: '', imagePlaceholder: '🪵 Вугілля' }
+                { id: 'drova', slug: 'drova', name: 'Дрова', title: 'Дрова', description: '', imagePlaceholder: '🪵 Дрова' },
+                { id: 'brikety', slug: 'brikety', name: 'Паливні брикети', title: 'Паливні брикети', description: '', imagePlaceholder: '🪵 Брикети' },
+                { id: 'vugillya', slug: 'vugillya', name: 'Вугілля', title: 'Вугілля', description: '', imagePlaceholder: '🪵 Вугілля' }
             ]);
         } finally {
             setLoading(false);

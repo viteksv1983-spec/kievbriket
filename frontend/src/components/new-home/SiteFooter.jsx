@@ -5,9 +5,9 @@ import { PrivacyModal } from "./PrivacyModal";
 import shopConfig from '../../shop.config';
 
 const catalog = [
-    { label: "Дрова", to: "/catalog/firewood" },
-    { label: "Паливні брикети", to: "/catalog/briquettes" },
-    { label: "Вугілля", to: "/catalog/coal" },
+    { label: "Дрова", to: "/catalog/drova" },
+    { label: "Паливні брикети", to: "/catalog/brikety" },
+    { label: "Вугілля", to: "/catalog/vugillya" },
     { label: "Доставка", to: "/dostavka" },
     { label: "Контакти", to: "#contact" },
 ];
@@ -28,8 +28,8 @@ export function SiteFooter() {
                     }}
                     className="footer-grid"
                 >
-                    {/* Brand / About */}
-                    <div>
+                    {/* Brand / About - Hidden on mobile */}
+                    <div className="mobile-hidden-block">
                         <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none", marginBottom: 16 }}>
                             <span style={{
                                 width: 38, height: 38, borderRadius: "50%",
@@ -54,30 +54,6 @@ export function SiteFooter() {
                         <p style={{ fontSize: "0.78rem", color: "rgba(249,115,22,1)", fontWeight: 600, marginBottom: 20, letterSpacing: "0.01em" }}>
                             Працюємо з фізичними та юридичними особами
                         </p>
-                        <div style={{ display: "flex", gap: 10 }}>
-                            {[
-                                { Icon: Instagram, href: shopConfig.contact.instagram || "#", label: "Instagram" },
-                                { Icon: Facebook, href: shopConfig.contact.facebook || "#", label: "Facebook" },
-                            ].map(({ Icon, href, label }, i) => (
-                                <a
-                                    key={i}
-                                    href={href}
-                                    aria-label={`Перейти на сторінку в ${label}`}
-                                    style={{
-                                        width: 38, height: 38, borderRadius: 9,
-                                        background: "var(--c-surface)",
-                                        border: "1px solid var(--c-border)",
-                                        display: "flex", alignItems: "center", justifyContent: "center",
-                                        color: "var(--c-text2)", transition: "border-color 0.2s, color 0.2s",
-                                        textDecoration: "none",
-                                    }}
-                                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(249,115,22,0.4)"; e.currentTarget.style.color = "var(--c-orange)"; }}
-                                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--c-border)"; e.currentTarget.style.color = "var(--c-text2)"; }}
-                                >
-                                    <Icon size={16} />
-                                </a>
-                            ))}
-                        </div>
                     </div>
 
                     {/* Каталог */}
@@ -119,16 +95,17 @@ export function SiteFooter() {
                         </p>
                         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                             {[
-                                { Icon: Phone, text: shopConfig.contact.phone, href: `tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`, label: "Відділ продажу" },
-                                { Icon: Phone, text: "+38 099 665 74 77", href: "tel:+380996657477", label: "Відділ продажу" },
-                                { Icon: MapPin, text: "вул. Колекторна, 19, Київ", href: "https://maps.google.com/?q=вул.+Колекторна+19+Київ", label: "Адреса" },
-                                { Icon: Mail, text: "info@kievbriket.com", href: "mailto:info@kievbriket.com", label: "Email" },
-                            ].map(({ Icon, text, href, label }) => (
+                                { Icon: Phone, text: shopConfig.contact.phone, href: `tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`, label: "Відділ продажу", hideOnMobile: false },
+                                { Icon: Phone, text: "+38 099 665 74 77", href: "tel:+380996657477", label: "Відділ продажу", hideOnMobile: false },
+                                { Icon: MapPin, text: "вул. Колекторна, 19, Київ", href: "https://maps.google.com/?q=вул.+Колекторна+19+Київ", label: "Адреса", hideOnMobile: false },
+                                { Icon: Mail, text: "info@kievbriket.com", href: "mailto:info@kievbriket.com", label: "Email", hideOnMobile: true },
+                            ].map(({ Icon, text, href, label, hideOnMobile }) => (
                                 <a
                                     key={text}
                                     href={href}
                                     target={href.startsWith("http") ? "_blank" : undefined}
                                     rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                                    className={hideOnMobile ? "mobile-hidden-block" : ""}
                                     style={{ display: "flex", alignItems: "flex-start", gap: 10, textDecoration: "none", color: "var(--c-text2)", fontSize: "0.875rem", lineHeight: 1.5, transition: "color 0.2s" }}
                                     onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c-text)")}
                                     onMouseLeave={(e) => (e.currentTarget.style.color = "var(--c-text2)")}
@@ -189,14 +166,6 @@ export function SiteFooter() {
                             >
                                 Політика конфіденційності
                             </button>
-                            <a
-                                href="#"
-                                style={{ fontSize: "0.8rem", color: "var(--c-text2)", textDecoration: "none", transition: "color 0.2s" }}
-                                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c-text)")}
-                                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--c-text2)")}
-                            >
-                                Умови використання
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -216,9 +185,12 @@ export function SiteFooter() {
                 /* Mobile: 2 columns, compact */
                 @media (max-width: 540px) {
                     .footer-grid {
-                        grid-template-columns: 1fr 1fr !important;
+                        grid-template-columns: 1.2fr 1fr !important; /* Adjust columns after hiding first one */
                         gap: 1.2rem 1rem !important;
                         padding: 1.5rem 1rem 1.25rem !important;
+                    }
+                    .mobile-hidden-block {
+                        display: none !important;
                     }
                 }
             `}</style>

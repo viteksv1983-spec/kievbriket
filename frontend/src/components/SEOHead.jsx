@@ -41,10 +41,10 @@ export default function SEOHead({ title, description, keywords, h1, canonical, o
 
     // Construct canonical
     const pathForCanonical = canonical || location.pathname;
-    // We must strictly enforce trailing slashes for canonical URLs
+    // We must strictly enforce NO trailing slashes for canonical URLs
     let formattedPath = pathForCanonical;
-    if (formattedPath !== '/' && !formattedPath.endsWith('/')) {
-        formattedPath += '/';
+    if (formattedPath !== '/' && formattedPath.endsWith('/')) {
+        formattedPath = formattedPath.slice(0, -1);
     }
 
     const currentFullUrl = formattedPath.startsWith('http')
@@ -66,6 +66,7 @@ export default function SEOHead({ title, description, keywords, h1, canonical, o
             <meta name="robots" content={effectiveRobots} />
 
             {/* Open Graph */}
+            <meta property="og:locale" content="uk_UA" />
             <meta property="og:type" content={type} />
             <meta property="og:title" content={effectiveTitle} />
             <meta property="og:description" content={effectiveDesc} />

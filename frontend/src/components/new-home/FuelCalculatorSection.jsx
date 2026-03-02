@@ -29,9 +29,9 @@ const INSULATION_LABEL = {
 };
 
 const FUEL_CONVERSION = {
-    firewood: { unit: 'складометрів дров', shortUnit: 'м³ дров', pricePerUnit: 2400, factor: 1 },
-    briquettes: { unit: 'т паливних брикетів', shortUnit: 'т брикетів', pricePerUnit: 8000, factor: 0.45 },
-    coal: { unit: 'т кам\'яного вугілля', shortUnit: 'т вугілля', pricePerUnit: 9000, factor: 0.35 },
+    drova: { unit: 'складометрів дров', shortUnit: 'м³ дров', pricePerUnit: 2400, factor: 1 },
+    brikety: { unit: 'т паливних брикетів', shortUnit: 'т брикетів', pricePerUnit: 8000, factor: 0.45 },
+    vugillya: { unit: 'т кам\'яного вугілля', shortUnit: 'т вугілля', pricePerUnit: 9000, factor: 0.35 },
 };
 
 /* ─── Calculation function ──────────────────────────── */
@@ -51,7 +51,7 @@ function calculate(area, heating, insulation, fuel) {
         }));
 
     return {
-        volume: fuel === 'firewood' ? Math.round(volume) : +(volume.toFixed(1)),
+        volume: fuel === 'drova' ? Math.round(volume) : +(volume.toFixed(1)),
         unit: fuelData.unit,
         cost: Math.round(cost / 100) * 100,
         area,
@@ -75,9 +75,9 @@ const INSULATION_OPTIONS = [
 ];
 
 const FUEL_OPTIONS = [
-    { value: 'firewood', label: 'Дрова', icon: <TreePine size={15} /> },
-    { value: 'briquettes', label: 'Паливні брикети', icon: <Package size={15} /> },
-    { value: 'coal', label: 'Кам\'яне вугілля', icon: <Flame size={15} /> },
+    { value: 'drova', label: 'Дрова', icon: <TreePine size={15} /> },
+    { value: 'brikety', label: 'Паливні брикети', icon: <Package size={15} /> },
+    { value: 'vugillya', label: 'Кам\'яне вугілля', icon: <Flame size={15} /> },
 ];
 
 /* ─── Panel states ──────────────────────────────────── */
@@ -86,13 +86,13 @@ const PANEL_LOADING = 'loading';
 const PANEL_RESULT = 'result';
 
 /* ─── Component ─────────────────────────────────────── */
-export function FuelCalculatorSection({ onQuickOrderClick }) {
+export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'drova' }) {
     const { ref, visible } = useReveal();
 
     const [area, setArea] = useState('');
     const [heating, setHeating] = useState('boiler');
     const [insulation, setInsulation] = useState('medium');
-    const [fuel, setFuel] = useState('firewood');
+    const [fuel, setFuel] = useState(defaultFuelType);
     const [result, setResult] = useState(null);
     const [panelState, setPanelState] = useState(PANEL_PREVIEW);
     const resultRef = useRef(null);
@@ -126,7 +126,7 @@ export function FuelCalculatorSection({ onQuickOrderClick }) {
     return (
         <section
             ref={ref}
-            style={{ padding: 'var(--s-section) 0', background: 'transparent' }}
+            style={{ padding: '100px 0', background: 'transparent' }}
         >
             <div className="layout-container">
 

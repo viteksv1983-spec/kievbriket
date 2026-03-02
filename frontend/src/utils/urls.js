@@ -2,7 +2,7 @@
  * Get the category URL path for any category slug.
  */
 export const getCategoryUrl = (slug) => {
-    if (!slug) return `/catalog/firewood`;
+    if (!slug) return `/catalog/drova`;
     return `/catalog/${slug}`;
 };
 
@@ -11,7 +11,7 @@ export const getCategoryUrl = (slug) => {
  */
 export const getProductUrl = (product) => {
     if (!product || !product.slug) return null;
-    const catSegment = product.category || 'firewood';
+    const catSegment = product.category || 'drova';
     return `/catalog/${catSegment}/${product.slug}`;
 };
 

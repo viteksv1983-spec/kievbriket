@@ -17,7 +17,7 @@ import { BenefitsSection } from './new-home/BenefitsSection';
 function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug }) {
     const { ref, visible } = useReveal();
     return (
-        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', padding: '60px 0', position: 'relative', overflow: 'hidden' }}>
+        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', paddingTop: '40px', paddingBottom: '0', position: 'relative', overflow: 'hidden', marginBottom: '24px' }}>
             {/* Background Glow */}
             <div
                 className="glow-orb"
@@ -28,127 +28,90 @@ function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug })
                 }}
             />
 
-            <div className="layout-container" style={{ zIndex: 1, position: 'relative' }}>
+            <div className="layout-container" style={{ zIndex: 1, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
                 <script type="application/ld+json" dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         "@context": "https://schema.org",
                         "@type": "BreadcrumbList",
                         "itemListElement": [
                             { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://kievbriket.com.ua/" },
-                            { "@type": "ListItem", "position": 2, "name": "Каталог", "item": "https://kievbriket.com.ua/catalog/firewood" },
-                            { "@type": "ListItem", "position": 3, "name": activeCategory?.name || 'Дрова', "item": "https://kievbriket.com.ua/catalog/firewood" }
+                            { "@type": "ListItem", "position": 2, "name": activeCategory?.name || 'Дрова', "item": "https://kievbriket.com.ua/catalog/drova" }
                         ]
                     })
                 }} />
 
                 {/* Breadcrumb */}
                 <nav aria-label="Breadcrumb" className={`reveal ${visible ? 'visible' : ''}`} style={{
-                    display: 'flex', alignItems: 'center', gap: 6,
-                    marginBottom: '1.5rem',
-                    fontSize: '0.8125rem', color: 'var(--c-text2)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 6,
+                    marginBottom: '1rem',
+                    fontSize: '0.8125rem', color: 'rgba(255,255,255,0.4)', width: '100%',
                 }}>
-                    <Link to="/" style={{ color: 'var(--c-text2)', textDecoration: 'none', transition: 'color 0.2s' }}>Головна</Link>
+                    <Link to="/" style={{ color: 'rgba(255,255,255,0.4)', textDecoration: 'none', transition: 'color 0.2s' }}>Головна</Link>
                     <ChevronRight size={13} style={{ opacity: 0.4 }} />
-                    <Link to="/catalog/firewood" style={{ color: 'var(--c-text2)', textDecoration: 'none', transition: 'color 0.2s' }}>Каталог</Link>
-                    <ChevronRight size={13} style={{ opacity: 0.4 }} />
-                    <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>{activeCategory?.name || 'Дрова'}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.8)', fontWeight: 500 }}>{activeCategory?.name || 'Дрова'}</span>
                 </nav>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gap: '3rem', alignItems: 'center' }} className="responsive-grid hero-compact-grid">
+                <div className="hero-text fade-up" style={{
+                    display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left',
+                    width: '100%',
+                    background: 'rgba(255,255,255,0.02)', padding: '2rem 3rem 1.5rem 3rem', borderRadius: '16px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                }}>
+                    <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: '48px', fontWeight: 800, lineHeight: 1.1, marginBottom: '0.25rem', color: '#fff' }}>
+                        Купити <span style={{ color: 'var(--c-orange)' }}>{activeCategory?.name?.toLowerCase() || 'дрова'}</span> у Києві
+                    </h1>
 
-                    {/* Left: Text */}
-                    <div className="hero-text fade-up" style={{ paddingBottom: '1rem' }}>
-                        <div className="nh-badge fade-up" style={{ marginBottom: '1rem' }}>
-                            <Flame size={13} /> ТОВ «Київ Брикет»
-                        </div>
-                        <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: 'clamp(2rem, 3vw, 3rem)', marginBottom: '1rem' }}>
-                            Купити {activeCategory?.name?.toLowerCase() || 'дрова'} у Києві<br />
-                            <span style={{ color: 'var(--c-orange)' }}>з доставкою</span>
-                        </h1>
-                        <p className="body hero-sub fade-up fade-up-d2" style={{ maxWidth: 550, marginBottom: '2rem', fontSize: '1.125rem' }}>
-                            Сухі колоті дрова з доставкою по Києву та області. Дуб, граб, сосна, береза — висока тепловіддача та чесний складометр.
-                        </p>
+                    <p className="body hero-sub fade-up fade-up-d2" style={{ maxWidth: 600, marginBottom: '1.25rem', fontSize: '18px', color: 'var(--c-text2)', lineHeight: 1.6 }}>
+                        Сухі колоті дрова з <Link to="/delivery" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>доставкою по Києву</Link> та області. Дуб, граб, береза та інші породи з чесним складометром. Також пропонуємо <Link to="/catalog/brikety" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>паливні брикети</Link> та <Link to="/catalog/vugillya" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>кам'яне вугілля</Link>.
+                    </p>
 
-                        <div className="hero-ctas fade-up fade-up-d3" style={{ marginBottom: '2rem' }}>
-                            <button onClick={onQuickOrderClick} className="nh-btn-primary hero-btn-main">
-                                Замовити {activeCategory?.name?.toLowerCase() || 'дрова'} <ArrowRight size={16} />
-                            </button>
-                            <a href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`} className="nh-btn-ghost hero-btn-phone" style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.2)' }}>
-                                <Phone size={15} /> Подзвонити
-                            </a>
-                        </div>
+                    <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)', borderBottom: '1px dashed rgba(255,255,255,0.1)', marginBottom: '1rem' }}></div>
 
-                        <div className="hero-trust-row fade-up fade-up-d3" style={{
-                            display: 'flex', gap: '1rem', flexWrap: 'wrap',
-                            fontSize: '0.85rem', color: 'var(--c-text2)'
-                        }}>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span style={{ color: 'var(--c-orange)' }}>✔</span> доставка сьогодні
-                            </span>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span style={{ color: 'var(--c-orange)' }}>✔</span> оплата після отримання
-                            </span>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span style={{ color: 'var(--c-orange)' }}>✔</span> чесний складометр
-                            </span>
-                        </div>
+                    <div className="hero-trust-row fade-up fade-up-d3" style={{
+                        display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'flex-start',
+                        fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', paddingBottom: '0.25rem'
+                    }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> Доставка по Києву за 24 години
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> Чесний складометр
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> Оплата після отримання
+                        </span>
                     </div>
-
-                    {/* Right: Compact Premium Image Card */}
-                    <div className={`reveal ${visible ? 'visible' : ''}`} style={{ transitionDelay: '0.2s', display: 'flex', justifyContent: 'center' }}>
-                        <div style={{
-                            width: '100%',
-                            maxWidth: '380px',
-                            minWidth: '320px',
-                            aspectRatio: '1 / 1.1',
-                            borderRadius: '20px',
-                            overflow: 'hidden',
-                            border: '1px solid rgba(255,255,255,0.08)',
-                            boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-                            position: 'relative',
-                            background: 'var(--c-bg-card)'
-                        }}>
-                            <img
-                                src={activeCategory?.image_url ? getImageUrl(activeCategory.image_url, api.defaults.baseURL) : `/media/categories/${activeCategorySlug || 'firewood'}.webp`}
-                                alt="Купити дрова Київ доставка"
-                                loading="lazy"
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
-                                    filter: 'saturate(1.05) contrast(1.02) brightness(0.98)'
-                                }}
-                                onError={(e) => { e.target.src = '/assets/product-placeholder-wood.webp'; }}
-                            />
-                            {/* Subtle Vignette & Glow overlay to blend with dark ui */}
-                            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle, transparent 50%, rgba(10,14,23,0.3) 150%)', pointerEvents: 'none' }} />
-                        </div>
-                    </div>
-
                 </div>
+
             </div>
-            <style>{`
-                @media(max-width: 900px) {
-                    .responsive-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-                }
-            `}</style>
         </section>
     );
 }
 
-// ─── SEO INTRO (BEFORE PRODUCTS) ──────────────────────────────────
+// ─── SEO INTRO (AFTER PRODUCTS) ──────────────────────────────────
 function FirewoodSeoIntro({ activeCategorySlug }) {
-    if (activeCategorySlug !== 'firewood') return null;
+    if (activeCategorySlug !== 'drova') return null;
 
     return (
-        <section style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem', marginTop: '1rem', marginBottom: '2rem' }}>
-            <div style={{ maxWidth: 900, color: 'var(--c-text2)', lineHeight: 1.7, fontSize: '0.95rem' }}>
-                <h2 className="h3" style={{ marginBottom: '1rem', color: 'var(--c-text)', fontSize: '1.25rem' }}>
+        <section className="layout-container" style={{ paddingBottom: '32px' }}>
+            <div className="nh-card" style={{
+                width: '100%',
+                margin: '64px 0 0 0',
+                padding: '4rem',
+                borderRadius: '24px',
+                background: 'rgba(255,255,255,0.02)'
+            }}>
+                <h2 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '24px', color: 'var(--c-text)' }}>
                     Популярні породи дров у Києві
                 </h2>
-                <p>
-                    Різні породи деревини мають унікальні характеристики горіння. Тверді породи (дуб, граб, ясен) мають найвищу тепловіддачу та довго тліють — ідеально для котлів тривалого горіння. Вільха та береза швидко розпалюються, не димлять і чудово підходять для відкритих камінів, а сосна використовується переважно для стартового розпалу або лазень.
-                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
+                    <p style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(255,255,255,0.8)', margin: 0 }}>
+                        Різні породи деревини мають унікальні характеристики горіння. Тверді породи (дуб, граб, ясен) мають найвищу тепловіддачу та довго тліють — ідеально для котлів тривалого горіння.
+                    </p>
+                    <p style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(255,255,255,0.8)', margin: 0 }}>
+                        Вільха та береза швидко розпалюються, не димлять і чудово підходять для відкритих камінів, а сосна використовується переважно для стартового розпалу або лазень.
+                    </p>
+                </div>
             </div>
         </section>
     );
@@ -170,32 +133,152 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
         return { desc: 'Якісне паливо з високою тепловіддачею.', use: 'Універсальне використання.' };
     };
 
+    const [selectedBreed, setSelectedBreed] = useState('Усі');
+    const [sortOrder, setSortOrder] = useState('popular');
+    const [isSortOpen, setIsSortOpen] = useState(false);
+
+    const filteredProducts = useMemo(() => {
+        let list = [...products];
+        if (selectedBreed !== 'Усі') {
+            list = list.filter(p => p.name.toLowerCase().includes(selectedBreed.toLowerCase()));
+        }
+
+        switch (sortOrder) {
+            case 'price_asc':
+                list.sort((a, b) => {
+                    const priceA = a.variants?.length > 0 ? a.variants[0].price : a.price;
+                    const priceB = b.variants?.length > 0 ? b.variants[0].price : b.price;
+                    return priceA - priceB;
+                });
+                break;
+            case 'price_desc':
+                list.sort((a, b) => {
+                    const priceA = a.variants?.length > 0 ? a.variants[0].price : a.price;
+                    const priceB = b.variants?.length > 0 ? b.variants[0].price : b.price;
+                    return priceB - priceA;
+                });
+                break;
+            case 'popular':
+            default:
+                break;
+        }
+
+        return list;
+    }, [products, selectedBreed, sortOrder]);
+
     return (
         <>
-            <FirewoodSeoIntro activeCategorySlug={activeCategory?.slug} />
-            <section ref={ref} style={{ padding: '0 0 var(--s-section) 0', background: 'var(--c-surface)' }}>
+            <section ref={ref} className="catalog-section" style={{ paddingTop: '0px', paddingBottom: '120px', position: 'relative', zIndex: 10 }}>
                 <div className="layout-container">
-                    <div className={`reveal ${visible ? "visible" : ""}`} style={{ marginBottom: "3rem", textAlign: 'center' }}>
-                        <h2 className="h2" style={{ marginBottom: 12 }}>
-                            Асортимент <span style={{ color: "var(--c-orange)" }}>{activeCategory?.name?.toLowerCase() || 'товарів'}</span>
-                        </h2>
-                        <p style={{ color: 'var(--c-text2)', maxWidth: 600, margin: '0 auto' }}>Оберіть варіант, що найкраще підходить для вашої системи опалення.</p>
+
+                    {/* Filter and Sorting Row */}
+                    <div style={{
+                        position: 'relative', zIndex: 50,
+                        display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between',
+                        marginBottom: '2rem'
+                    }}>
+                        {/* Breed Filter */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                            <span style={{ color: 'var(--c-text2)', fontWeight: 500, marginRight: '8px' }}>Порода:</span>
+                            {['Усі', 'Дуб', 'Граб', 'Сосна', 'Береза'].map(breed => {
+                                const isActive = selectedBreed === breed;
+                                return (
+                                    <button
+                                        key={breed}
+                                        onClick={() => setSelectedBreed(breed)}
+                                        style={{
+                                            padding: '6px 20px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: isActive ? 600 : 400,
+                                            background: isActive ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
+                                            color: isActive ? 'var(--c-orange)' : 'var(--c-text2)',
+                                            border: `1px solid ${isActive ? 'var(--c-orange)' : 'var(--color-border-subtle)'}`,
+                                            cursor: 'pointer', transition: 'all 0.2s'
+                                        }}>{breed}</button>
+                                );
+                            })}
+                        </div>
+
+                        {/* Sorting Dropdown */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 20 }}>
+                            <span style={{ color: 'var(--c-text2)', fontWeight: 500 }}>Сортування:</span>
+                            <div style={{ position: 'relative' }}>
+                                <div
+                                    onClick={() => setIsSortOpen(!isSortOpen)}
+                                    style={{
+                                        position: 'relative', display: 'flex', alignItems: 'center',
+                                        background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
+                                        borderRadius: '8px', padding: '6px 12px', paddingRight: '32px', cursor: 'pointer',
+                                        userSelect: 'none'
+                                    }}>
+                                    <span style={{ color: 'var(--c-text)', fontSize: '0.9rem', fontWeight: 500 }}>
+                                        {sortOrder === 'popular' ? 'За популярністю' : sortOrder === 'price_asc' ? 'Від дешевих до дорогих' : 'Від дорогих до дешевих'}
+                                    </span>
+                                    <ChevronRight size={14} style={{ color: 'var(--c-text2)', position: 'absolute', right: '12px', transform: `rotate(${isSortOpen ? '-90deg' : '90deg'})`, transition: 'transform 0.2s' }} />
+                                </div>
+
+                                {isSortOpen && (
+                                    <div style={{
+                                        position: 'absolute', top: '100%', right: 0, marginTop: '8px',
+                                        background: 'var(--c-surface)', border: '1px solid var(--color-border-subtle)',
+                                        borderRadius: '8px', padding: '8px 0', zIndex: 9999, minWidth: '220px',
+                                        boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+                                    }}>
+                                        <div
+                                            onClick={() => { setSortOrder('popular'); setIsSortOpen(false); }}
+                                            style={{ padding: '8px 16px', cursor: 'pointer', fontSize: '0.9rem', color: sortOrder === 'popular' ? 'var(--c-orange)' : 'var(--c-text)', background: sortOrder === 'popular' ? 'rgba(255,255,255,0.02)' : 'transparent' }}
+                                        >
+                                            За популярністю
+                                        </div>
+                                        <div
+                                            onClick={() => { setSortOrder('price_asc'); setIsSortOpen(false); }}
+                                            style={{ padding: '8px 16px', cursor: 'pointer', fontSize: '0.9rem', color: sortOrder === 'price_asc' ? 'var(--c-orange)' : 'var(--c-text)', background: sortOrder === 'price_asc' ? 'rgba(255,255,255,0.02)' : 'transparent' }}
+                                        >
+                                            Від дешевих до дорогих
+                                        </div>
+                                        <div
+                                            onClick={() => { setSortOrder('price_desc'); setIsSortOpen(false); }}
+                                            style={{ padding: '8px 16px', cursor: 'pointer', fontSize: '0.9rem', color: sortOrder === 'price_desc' ? 'var(--c-orange)' : 'var(--c-text)', background: sortOrder === 'price_desc' ? 'rgba(255,255,255,0.02)' : 'transparent' }}
+                                        >
+                                            Від дорогих до дешевих
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-                        {products.map((product, i) => {
+                    {/* Schema.org Products */}
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{
+                        __html: JSON.stringify(filteredProducts.map(p => ({
+                            "@context": "https://schema.org",
+                            "@type": "Product",
+                            "name": p.name,
+                            "image": getImageUrl(p.image_url, api.defaults.baseURL),
+                            "description": getDetailedDesc(p.name).desc,
+                            "brand": { "@type": "Brand", "name": "КиївБрикет" },
+                            "offers": {
+                                "@type": "Offer",
+                                "price": p.variants?.length > 0 ? p.variants[0].price : p.price,
+                                "priceCurrency": "UAH",
+                                "availability": "https://schema.org/InStock",
+                                "url": `https://kievbriket.com.ua${getProductUrl(p)}`
+                            }
+                        })))
+                    }} />
+
+                    <div className="product-grid">
+                        {filteredProducts.map((product, i) => {
                             const info = getDetailedDesc(product.name);
                             const displayPrice = product.variants?.length > 0 ? product.variants[0].price : product.price;
 
                             return (
-                                <Link key={product.id} to={getProductUrl(product)} style={{ textDecoration: 'none' }}>
-                                    <article
-                                        className={`nh-card reveal ${visible ? 'visible' : ''}`}
+                                <Link key={product.id} to={getProductUrl(product)} className="product-card-link" style={{ textDecoration: 'none' }}>
+                                    <article className={`reveal product-card-hover ${visible ? 'visible' : ''}`}
                                         style={{
                                             display: 'flex', flexDirection: 'column', height: '100%',
                                             transitionDelay: `${i * 0.1}s`,
                                             overflow: 'hidden',
-                                            transition: 'transform 0.3s, box-shadow 0.3s'
+                                            borderRadius: '16px',
+                                            transition: 'transform 0.3s ease, box-shadow 0.3s ease'
                                         }}
                                         onMouseEnter={e => {
                                             e.currentTarget.style.transform = 'translateY(-6px)';
@@ -211,11 +294,23 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                                 src={getImageUrl(product.image_url, api.defaults.baseURL)}
                                                 alt={`${product.name.replace(/[()]/g, '').trim()} Київ`}
                                                 loading="lazy"
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                className="img-zoom"
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
                                             />
                                         </div>
-                                        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                                            <h3 className="h3" style={{ marginBottom: '1rem', flexShrink: 0 }}>{product.name}</h3>
+                                        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
+                                            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', marginBottom: '1rem', flexShrink: 0 }}>
+                                                <h3 className="h3" style={{ margin: 0 }}>{product.name}</h3>
+                                                <div style={{
+                                                    display: 'flex', alignItems: 'center', gap: '4px',
+                                                    background: '#22C55E', color: '#fff',
+                                                    padding: '4px 12px', borderRadius: '40px',
+                                                    fontSize: '0.8rem', fontWeight: 700, flexShrink: 0,
+                                                    boxShadow: '0 0 10px rgba(34,197,94,0.4)'
+                                                }}>
+                                                    ✔ В наявності
+                                                </div>
+                                            </div>
 
                                             <div style={{ flex: 1 }}>
                                                 <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginBottom: '0.5rem', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
@@ -231,12 +326,12 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--color-border-subtle)' }}>
                                                 <div>
                                                     <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{displayPrice}</span>
-                                                    <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginLeft: 4 }}>грн / {activeCategory?.slug === 'coal' || activeCategory?.slug === 'briquettes' ? 'тонну' : 'складометр'}</span>
+                                                    <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginLeft: 4 }}>грн / {activeCategory?.slug === 'vugillya' || activeCategory?.slug === 'brikety' ? 'тонну' : 'складометр'}</span>
                                                 </div>
                                                 <button
-                                                    className="nh-btn-ghost"
-                                                    style={{ border: '1px solid var(--color-border-orange)', padding: '8px 16px', fontSize: '0.875rem' }}
-                                                    onClick={(e) => { e.preventDefault(); onOrderProduct(product); }}
+                                                    className="nh-btn-primary"
+                                                    style={{ padding: '8px 16px', fontSize: '0.875rem', background: 'var(--c-orange)', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}
+                                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); onOrderProduct(product); }}
                                                 >
                                                     Замовити
                                                 </button>
@@ -248,7 +343,37 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                         })}
                     </div>
                 </div>
-            </section>
+                <style>{`
+                    .product-grid {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 24px;
+                        width: 100%;
+                    }
+                    @media (max-width: 1024px) {
+                        .product-grid { grid-template-columns: repeat(2, 1fr); }
+                    }
+                    @media (max-width: 640px) {
+                        .product-grid { grid-template-columns: 1fr; }
+                    }
+                    .product-card-hover:hover .img-zoom {
+                        transform: scale(1.05); /* Zoom image precisely on card hover */
+                    }
+                    .seo-inline-link {
+                        color: var(--c-text);
+                        text-decoration: underline;
+                        text-decoration-color: rgba(255,255,255,0.2);
+                        text-underline-offset: 4px;
+                        transition: all 0.2s ease;
+                    }
+                    .seo-inline-link:hover {
+                        color: var(--c-orange);
+                        text-decoration-color: var(--c-orange);
+                    }
+                `}</style>
+            </section >
+
+            <FirewoodSeoIntro activeCategorySlug={activeCategory?.slug} />
         </>
     );
 }
@@ -268,7 +393,7 @@ function FaqSection() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: "var(--s-section) 0" }}>
+        <section ref={ref} style={{ padding: "100px 0" }}>
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                     "@context": "https://schema.org",
@@ -342,44 +467,46 @@ function FinalCtaBanner({ onQuickOrderClick, activeCategory }) {
     const { ref, visible } = useReveal();
 
     return (
-        <section ref={ref} style={{ padding: "var(--s-section) 1.5rem", maxWidth: 1200, margin: '0 auto', marginBottom: 'var(--s-section)' }}>
-            <div
-                className={`nh-card reveal ${visible ? "visible" : ""}`}
-                style={{
-                    position: 'relative', overflow: 'hidden',
-                    padding: '4rem 2rem', textAlign: 'center',
-                    background: 'linear-gradient(145deg, var(--color-bg-elevated) 0%, rgba(20,25,30,1) 100%)',
-                    border: '1px solid rgba(249,115,22,0.2)'
-                }}
-            >
-                {/* Glow behind the CTA */}
-                <div style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    width: "100%",
-                    height: "100%",
-                    background: "radial-gradient(ellipse 65% 75% at 50% 50%, rgba(249,115,22,0.08) 0%, transparent 70%)",
-                    zIndex: 0,
-                    pointerEvents: "none",
-                }} />
+        <section ref={ref} style={{ padding: "100px 0" }}>
+            <div className="layout-container">
+                <div
+                    className={`nh-card reveal ${visible ? "visible" : ""}`}
+                    style={{
+                        position: 'relative', overflow: 'hidden',
+                        padding: '4rem 2rem', textAlign: 'center',
+                        background: 'linear-gradient(145deg, var(--color-bg-elevated) 0%, rgba(20,25,30,1) 100%)',
+                        border: '1px solid rgba(249,115,22,0.2)'
+                    }}
+                >
+                    {/* Glow behind the CTA */}
+                    <div style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: "100%",
+                        height: "100%",
+                        background: "radial-gradient(ellipse 65% 75% at 50% 50%, rgba(249,115,22,0.08) 0%, transparent 70%)",
+                        zIndex: 0,
+                        pointerEvents: "none",
+                    }} />
 
-                <div style={{ position: 'relative', zIndex: 1, maxWidth: 600, margin: '0 auto' }}>
-                    <h2 className="h2" style={{ fontSize: 'clamp(2rem, 4vw, 2.5rem)', marginBottom: '1rem' }}>
-                        Замовте {activeCategory?.name?.toLowerCase() || 'тверде паливо'} <span style={{ color: 'var(--c-orange)' }}>вже сьогодні</span>
-                    </h2>
-                    <p style={{ color: 'var(--c-text2)', fontSize: '1.125rem', marginBottom: '2.5rem' }}>
-                        Доставка по Києву можлива вже сьогодні. Чесний об'єм та гарантія якості від виробника.
-                    </p>
+                    <div style={{ position: 'relative', zIndex: 1, maxWidth: 600, margin: '0 auto' }}>
+                        <h2 className="h2" style={{ fontSize: 'clamp(2rem, 4vw, 2.5rem)', marginBottom: '1rem' }}>
+                            Замовте {activeCategory?.name?.toLowerCase() || 'тверде паливо'} <span style={{ color: 'var(--c-orange)' }}>вже сьогодні</span>
+                        </h2>
+                        <p style={{ color: 'var(--c-text2)', fontSize: '1.125rem', marginBottom: '2.5rem' }}>
+                            Доставка по Києву можлива вже сьогодні. Чесний об'єм та гарантія якості від виробника.
+                        </p>
 
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                        <button onClick={onQuickOrderClick} className="nh-btn-primary" style={{ padding: '16px 32px', fontSize: '1rem' }}>
-                            Замовити {activeCategory?.name?.toLowerCase() || ''}
-                        </button>
-                        <a href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`} className="nh-btn-ghost" style={{ padding: '16px 32px', fontSize: '1rem', border: '1px solid var(--color-border-medium)' }}>
-                            <Phone size={18} style={{ marginRight: 8 }} /> Подзвонити
-                        </a>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                            <button onClick={onQuickOrderClick} className="nh-btn-primary" style={{ padding: '16px 32px', fontSize: '1rem' }}>
+                                Замовити {activeCategory?.name?.toLowerCase() || ''}
+                            </button>
+                            <a href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`} className="nh-btn-ghost" style={{ padding: '16px 32px', fontSize: '1rem', border: '1px solid var(--color-border-medium)' }}>
+                                <Phone size={18} style={{ marginRight: 8 }} /> Подзвонити
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -420,22 +547,26 @@ export default function FirewoodCategoryPage({ products, seo, onOrderProduct, ac
             <BenefitsSection />
 
             {/* SEO Text Block */}
-            {activeCategorySlug === 'firewood' ? (
+            {activeCategorySlug === 'drova' ? (
                 <FirewoodSeoBlock />
             ) : (
-                <section style={{ maxWidth: 1280, margin: '0 auto', padding: 'var(--s-section) 1.5rem' }}>
-                    <h2 className="h2" style={{ marginBottom: '2rem', textAlign: 'center' }}>
-                        {activeCategory?.seo_h1 || `Купити ${activeCategory?.name?.toLowerCase() || 'тверде паливо'} у Києві`}
-                    </h2>
-                    <div
-                        style={{ maxWidth: 900, margin: '0 auto', color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem' }}
-                        dangerouslySetInnerHTML={{
-                            __html: activeCategory?.seo_text || `
-                            <p>Якісне тверде паливо для опалення будинків, котлів та камінів.</p>
-                            <p>Ми гарантуємо чесний об'єм та швидку доставку по Києву та всій Київській області. Оплата здійснюється тільки після отримання та перевірки на місці — жодних передоплат і ризиків. Доставка можлива день у день!</p>
-                            `
-                        }}
-                    />
+                <section style={{ padding: '100px 0', display: 'flex', justifyContent: 'center' }}>
+                    <div className="layout-container" style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div className="nh-card" style={{ width: '100%', padding: '4rem', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
+                            <h2 className="h2" style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
+                                {activeCategory?.seo_h1 || `Купити ${activeCategory?.name?.toLowerCase() || 'тверде паливо'} у Києві`}
+                            </h2>
+                            <div
+                                style={{ maxWidth: '100%', color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', textAlign: 'left' }}
+                                dangerouslySetInnerHTML={{
+                                    __html: activeCategory?.seo_text || `
+                                    <p>Якісне тверде паливо для опалення будинків, котлів та камінів.</p>
+                                    <p>Ми гарантуємо чесний об'єм та швидку доставку по Києву та всій Київській області. Оплата здійснюється тільки після отримання та перевірки на місці — жодних передоплат і ризиків. Доставка можлива день у день!</p>
+                                    `
+                                }}
+                            />
+                        </div>
+                    </div>
                 </section>
             )}
 
@@ -451,56 +582,68 @@ export default function FirewoodCategoryPage({ products, seo, onOrderProduct, ac
 // ─── CUSTOM FIREWOOD SEO BLOCK ─────────────────────────────────
 function FirewoodSeoBlock() {
     return (
-        <section style={{ maxWidth: 1280, margin: '0 auto', padding: 'var(--s-section) 1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <div className="nh-card" style={{ maxWidth: 900, width: '100%', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
-                <h2 className="h2" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
-                    Купити дрова у Києві
-                </h2>
+        <section style={{ padding: '100px 0', display: 'flex', justifyContent: 'center' }}>
+            <div className="layout-container" style={{ display: 'flex', justifyContent: 'center' }}>
+                <div className="nh-card" style={{ width: '100%', padding: '4rem', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
+                    <h2 className="h2" style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
+                        Купити дрова у Києві
+                    </h2>
 
-                <div style={{ maxWidth: 600, margin: '0 auto', color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%' }}>
-                    <p style={{ marginBottom: '1rem' }}>
-                        Купити дрова з доставкою по Києву та Київській області можна безпосередньо у постачальника. Компанія «КиївБрикет» пропонує колоті дрова різних порід дерева для ефективного опалення приватних будинків, котлів та камінів.
-                    </p>
-                    <p style={{ marginBottom: '1.5rem' }}>
-                        Ми доставляємо дрова дуба, граба, сосни, берези та вільхи. Усі дрова мають низьку вологість та високу тепловіддачу.
-                    </p>
+                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '3rem' }}>
 
-                    <h3 style={{ color: 'var(--c-text)', fontSize: '1.125rem', marginBottom: '1rem', fontWeight: '600' }}>
-                        Популярні породи дров:
-                    </h3>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: '0 0 2rem 0', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-                        {[
-                            'дубові дрова',
-                            'грабові дрова',
-                            'березові дрова',
-                            'соснові дрова',
-                            'вільхові дрова'
-                        ].map((item, i) => (
-                            <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <Flame size={14} color="var(--c-orange)" />
-                                <span>{item}</span>
-                            </li>
-                        ))}
-                    </ul>
-
-                    {/* Internal Links Block */}
-                    <div style={{
-                        paddingTop: '1.5rem',
-                        borderTop: '1px solid var(--color-border-subtle)',
-                        display: 'flex', flexDirection: 'column', gap: '1rem'
-                    }}>
-                        <h4 style={{ color: 'var(--c-text)', fontSize: '1.05rem', margin: 0, fontWeight: '600' }}>Також дивіться:</h4>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-                            <Link to="/catalog/briquettes" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
-                                <span>→</span> Паливні брикети
-                            </Link>
-                            <Link to="/catalog/coal" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
-                                <span>→</span> Кам’яне вугілля
-                            </Link>
-                            <Link to="/delivery" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
-                                <span>→</span> Доставка по Києву
-                            </Link>
+                        <div>
+                            <p style={{ marginBottom: '1.5rem' }}>
+                                Купити дрова з доставкою по Києву та Київській області можна безпосередньо у постачальника. Компанія «КиївБрикет» пропонує колоті дрова різних порід дерева для ефективного опалення приватних будинків, котлів та камінів, а також <Link to="/catalog/brikety" className="seo-inline-link">паливні брикети</Link> та <Link to="/catalog/vugillya" className="seo-inline-link">кам'яне вугілля</Link>.
+                            </p>
+                            <p style={{ marginBottom: 0 }}>
+                                Ми доставляємо дрова дуба, граба, сосни, берези та вільхи. Усі дрова мають низьку вологість та високу тепловіддачу. Працює швидка та зручна <Link to="/delivery" className="seo-inline-link">доставка по Києву</Link> та області.
+                            </p>
                         </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                            <div>
+                                <h3 style={{ color: 'var(--c-text)', fontSize: '1.125rem', marginBottom: '1rem', fontWeight: '600' }}>
+                                    Популярні породи дров:
+                                </h3>
+                                <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.625rem' }}>
+                                    {[
+                                        { name: 'дубові дрова', slug: 'oak' },
+                                        { name: 'грабові дрова', slug: 'hornbeam' },
+                                        { name: 'березові дрова', slug: 'birch' },
+                                        { name: 'соснові дрова', slug: 'pine' },
+                                        { name: 'вільхові дрова', slug: 'alder' }
+                                    ].map((item, i) => (
+                                        <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            <Flame size={14} color="var(--c-orange)" />
+                                            <Link to={`/catalog/drova/${item.slug}`} style={{ color: 'var(--c-text2)', textDecoration: 'underline', textDecorationColor: 'rgba(255,255,255,0.2)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={e => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={e => { e.currentTarget.style.color = 'var(--c-text2)'; e.currentTarget.style.textDecorationColor = 'rgba(255,255,255,0.2)'; }}>
+                                                {item.name}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            {/* Internal Links Block */}
+                            <div style={{
+                                paddingTop: '1.5rem',
+                                borderTop: '1px solid var(--color-border-subtle)',
+                                display: 'flex', flexDirection: 'column', gap: '1rem'
+                            }}>
+                                <h4 style={{ color: 'var(--c-text)', fontSize: '1.05rem', margin: 0, fontWeight: '600' }}>Також дивіться:</h4>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
+                                    <Link to="/catalog/brikety" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
+                                        <span>→</span> Паливні брикети
+                                    </Link>
+                                    <Link to="/catalog/vugillya" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
+                                        <span>→</span> Кам’яне вугілля
+                                    </Link>
+                                    <Link to="/delivery" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
+                                        <span>→</span> Доставка по Києву
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -510,53 +653,54 @@ function FirewoodSeoBlock() {
 
 // ─── POPULAR QUERIES (GRID) ────────────────────────────────────
 function PopularQueriesSection({ activeCategorySlug }) {
-    if (activeCategorySlug !== 'firewood') return null;
+    if (activeCategorySlug !== 'drova') return null;
 
     const queries = [
         "Купити дрова Київ",
-        "Дрова дубові Київ",
-        "Дрова колоті Київ",
+        "Дрова складометр Київ",
         "Дрова машина Київ",
-        "Дрова складометр Київ"
+        "Дрова колоті Київ"
     ];
 
     return (
-        <section style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem var(--s-section) 1.5rem' }}>
-            <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
-                <h3 className="h3" style={{ marginBottom: '1.5rem', fontSize: '1.25rem' }}>Популярні запити</h3>
-                <div style={{
-                    display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem'
-                }}>
-                    {queries.map((q, i) => (
-                        <Link
-                            key={i}
-                            to="/catalog/firewood"
-                            className="popular-link"
-                            style={{
-                                padding: '8px 16px',
-                                background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.08)',
-                                borderRadius: '40px',
-                                color: 'var(--c-text2)',
-                                fontSize: '0.875rem',
-                                textDecoration: 'none',
-                                transition: 'all 0.2s ease',
-                                whiteSpace: 'nowrap'
-                            }}
-                            onMouseEnter={e => {
-                                e.currentTarget.style.background = 'rgba(249,115,22,0.1)';
-                                e.currentTarget.style.borderColor = 'rgba(249,115,22,0.3)';
-                                e.currentTarget.style.color = 'var(--c-orange)';
-                            }}
-                            onMouseLeave={e => {
-                                e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
-                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                                e.currentTarget.style.color = 'var(--c-text2)';
-                            }}
-                        >
-                            {q}
-                        </Link>
-                    ))}
+        <section style={{ padding: '100px 0' }}>
+            <div className="layout-container">
+                <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
+                    <h3 className="h3" style={{ marginBottom: '1.5rem', fontSize: '1.25rem' }}>Популярні запити</h3>
+                    <div style={{
+                        display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem'
+                    }}>
+                        {queries.map((q, i) => (
+                            <Link
+                                key={i}
+                                to="/catalog/drova"
+                                className="popular-link"
+                                style={{
+                                    padding: '8px 16px',
+                                    background: 'rgba(255,255,255,0.03)',
+                                    border: '1px solid rgba(255,255,255,0.08)',
+                                    borderRadius: '40px',
+                                    color: 'var(--c-text2)',
+                                    fontSize: '0.875rem',
+                                    textDecoration: 'none',
+                                    transition: 'all 0.2s ease',
+                                    whiteSpace: 'nowrap'
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.background = 'rgba(249,115,22,0.1)';
+                                    e.currentTarget.style.borderColor = 'rgba(249,115,22,0.3)';
+                                    e.currentTarget.style.color = 'var(--c-orange)';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                                    e.currentTarget.style.color = 'var(--c-text2)';
+                                }}
+                            >
+                                {q}
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>
@@ -565,25 +709,33 @@ function PopularQueriesSection({ activeCategorySlug }) {
 
 // ─── HOW TO CHOOSE FIREWOOD ────────────────────────────────────
 function HowToChooseFirewood({ activeCategorySlug }) {
-    if (activeCategorySlug !== 'firewood') return null;
+    if (activeCategorySlug !== 'drova') return null;
 
     return (
-        <section style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem var(--s-section) 1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <div className="nh-card" style={{ maxWidth: 900, width: '100%', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
-                <h2 className="h2" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
-                    Як вибрати дрова для опалення
-                </h2>
+        <section style={{ padding: '100px 0', display: 'flex', justifyContent: 'center' }}>
+            <div className="layout-container" style={{ display: 'flex', justifyContent: 'center' }}>
+                <div className="nh-card" style={{ width: '100%', padding: '4rem', display: 'flex', flexDirection: 'column' }}>
+                    <h2 className="h2" style={{ marginBottom: '2.5rem' }}>
+                        Як вибрати дрова для опалення
+                    </h2>
 
-                <div style={{ maxWidth: 600, margin: '0 auto', color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%' }}>
-                    <p style={{ marginBottom: '1rem' }}>
-                        Правильний вибір дров залежить від типу вашого опалювального пристрою. <strong>Для твердопаливного котла</strong> найкраще підходять дуб, граб та ясен. Вони мають високу щільність, забезпечують довготривале горіння (тління) і максимальну тепловіддачу.
-                    </p>
-                    <p style={{ marginBottom: '1rem' }}>
-                        <strong>Для закритої печі або відкритого каміна</strong> чудовим вибором стануть береза та вільха. Ці породи легко розпалюються, горять гарним високим полум'ям і, що найважливіше, виділяють мінімум кіптяви та диму, запобігаючи швидкому засміченню димоходу. Сосну найчастіше використовують для лазень або як стартове паливо для розпалу.
-                    </p>
-                    <p style={{ marginBottom: 0 }}>
-                        Окремо варто звернути увагу на <strong>вологість</strong>. Оптимальна вологість дров для ефективного опалення не повинна перевищувати 20-25%. Використання свіжопиляних дров значно знижує ККД котла та призводить до утворення конденсату та сажі.
-                    </p>
+                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2.5rem' }}>
+                        <div>
+                            <p style={{ marginBottom: '1rem' }}>
+                                Правильний вибір дров залежить від типу вашого опалювального пристрою. <strong>Для твердопаливного котла</strong> найкраще підходять дуб, граб та ясен, а також <Link to="/catalog/brikety" className="seo-inline-link">паливні брикети</Link> чи <Link to="/catalog/vugillya" className="seo-inline-link">кам'яне вугілля</Link>. Вони мають високу щільність, забезпечують довготривале горіння (тління) і максимальну тепловіддачу.
+                            </p>
+                        </div>
+                        <div>
+                            <p style={{ marginBottom: '1rem' }}>
+                                <strong>Для закритої печі або відкритого каміна</strong> чудовим вибором стануть береза та вільха. Ці породи легко розпалюються, горять гарним високим полум'ям і, що найважливіше, виділяють мінімум кіптяви та диму, запобігаючи швидкому засміченню димоходу. Сосну найчастіше використовують для лазень або як стартове паливо для розпалу.
+                            </p>
+                        </div>
+                        <div>
+                            <p style={{ marginBottom: 0 }}>
+                                Окремо варто звернути увагу на <strong>вологість</strong>. Оптимальна вологість дров для ефективного опалення не повинна перевищувати 20-25%. Використання свіжопиляних дров значно знижує ККД котла та призводить до утворення конденсату та сажі.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

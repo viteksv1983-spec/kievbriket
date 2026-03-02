@@ -63,7 +63,7 @@ export default function AdminLayout() {
       pine: "🌲",
       alder: "🔥",
       mixed: "🪵",
-      briquettes: "🧱",
+      brikety: "🧱",
     };
     return emojis[slug] || "✨";
   };

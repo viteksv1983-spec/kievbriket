@@ -19,6 +19,9 @@ export const CategoryProvider = ({ children }) => {
                 title: cat.name, // Usually the same as name for firewood
                 description: cat.description || '',
                 seo_text: cat.seo_text || '',
+                seo_h1: cat.seo_h1 || '',
+                meta_title: cat.meta_title || '',
+                meta_description: cat.meta_description || '',
                 image_url: cat.image_url,
                 imagePlaceholder: `🪵 ${cat.name}`
             }));

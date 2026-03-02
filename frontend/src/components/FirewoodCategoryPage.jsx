@@ -17,7 +17,7 @@ import { BenefitsSection } from './new-home/BenefitsSection';
 function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug }) {
     const { ref, visible } = useReveal();
     return (
-        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', padding: 'var(--s-section) 0 4rem', position: 'relative', overflow: 'hidden' }}>
+        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', padding: '60px 0', position: 'relative', overflow: 'hidden' }}>
             {/* Background Glow */}
             <div
                 className="glow-orb"
@@ -44,7 +44,7 @@ function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug })
                 {/* Breadcrumb */}
                 <nav aria-label="Breadcrumb" className={`reveal ${visible ? 'visible' : ''}`} style={{
                     display: 'flex', alignItems: 'center', gap: 6,
-                    marginBottom: '2rem',
+                    marginBottom: '1.5rem',
                     fontSize: '0.8125rem', color: 'var(--c-text2)',
                 }}>
                     <Link to="/" style={{ color: 'var(--c-text2)', textDecoration: 'none', transition: 'color 0.2s' }}>Головна</Link>
@@ -54,88 +54,74 @@ function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug })
                     <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>{activeCategory?.name || 'Дрова'}</span>
                 </nav>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'center' }} className="responsive-grid">
+                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gap: '3rem', alignItems: 'center' }} className="responsive-grid hero-compact-grid">
 
                     {/* Left: Text */}
-                    <div className="hero-text fade-up" style={{ paddingBottom: '2rem' }}>
-                        <div className="nh-badge fade-up">
+                    <div className="hero-text fade-up" style={{ paddingBottom: '1rem' }}>
+                        <div className="nh-badge fade-up" style={{ marginBottom: '1rem' }}>
                             <Flame size={13} /> ТОВ «Київ Брикет»
                         </div>
-                        <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
-                            Купити {activeCategory?.name?.toLowerCase() || 'тверде паливо'} у Києві<br />
+                        <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: 'clamp(2rem, 3vw, 3rem)', marginBottom: '1rem' }}>
+                            Купити {activeCategory?.name?.toLowerCase() || 'дрова'} у Києві<br />
                             <span style={{ color: 'var(--c-orange)' }}>з доставкою</span>
                         </h1>
-                        <p className="body hero-sub fade-up fade-up-d2" style={{ maxWidth: 500 }}>
-                            {activeCategory?.seo_text ?
-                                activeCategory.seo_text.replace(/<[^>]*>/g, '').substring(0, 110) + '...'
-                                : 'Сухе якісне паливо для опалення будинків, котлів і камінів. Доставка по Києву та Київській області.'}
+                        <p className="body hero-sub fade-up fade-up-d2" style={{ maxWidth: 550, marginBottom: '2rem', fontSize: '1.125rem' }}>
+                            Сухі колоті дрова з доставкою по Києву та області. Дуб, граб, сосна, береза — висока тепловіддача та чесний складометр.
                         </p>
 
                         <div className="hero-ctas fade-up fade-up-d3" style={{ marginBottom: '2rem' }}>
                             <button onClick={onQuickOrderClick} className="nh-btn-primary hero-btn-main">
-                                Замовити {activeCategory?.name?.toLowerCase() || ''} <ArrowRight size={16} />
+                                Замовити {activeCategory?.name?.toLowerCase() || 'дрова'} <ArrowRight size={16} />
                             </button>
                             <a href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`} className="nh-btn-ghost hero-btn-phone" style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.2)' }}>
                                 <Phone size={15} /> Подзвонити
                             </a>
                         </div>
 
-                        <div className="hero-trust-row fade-up fade-up-d3">
-                            <span className="hero-trust-item"><span className="hero-trust-check">✔</span>Доставка сьогодні</span>
-                            <span className="hero-trust-sep" />
-                            <span className="hero-trust-item"><span className="hero-trust-check">✔</span>Оплата після отримання</span>
-                            <span className="hero-trust-sep" />
-                            <span className="hero-trust-item"><span className="hero-trust-check">✔</span>Чесний складометр</span>
+                        <div className="hero-trust-row fade-up fade-up-d3" style={{
+                            display: 'flex', gap: '1rem', flexWrap: 'wrap',
+                            fontSize: '0.85rem', color: 'var(--c-text2)'
+                        }}>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span style={{ color: 'var(--c-orange)' }}>✔</span> доставка сьогодні
+                            </span>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span style={{ color: 'var(--c-orange)' }}>✔</span> оплата після отримання
+                            </span>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span style={{ color: 'var(--c-orange)' }}>✔</span> чесний складометр
+                            </span>
                         </div>
                     </div>
 
-                    {/* Right: Premium Image */}
-                    <div className={`reveal ${visible ? 'visible' : ''}`} style={{ transitionDelay: '0.2s', position: 'relative' }}>
+                    {/* Right: Compact Premium Image Card */}
+                    <div className={`reveal ${visible ? 'visible' : ''}`} style={{ transitionDelay: '0.2s', display: 'flex', justifyContent: 'center' }}>
                         <div style={{
-                            aspectRatio: '4/3',
-                            borderRadius: 24,
+                            width: '100%',
+                            maxWidth: '380px',
+                            minWidth: '320px',
+                            aspectRatio: '1 / 1.1',
+                            borderRadius: '20px',
                             overflow: 'hidden',
-                            border: '1px solid rgba(255,255,255,0.1)',
-                            boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
-                            position: 'relative'
+                            border: '1px solid rgba(255,255,255,0.08)',
+                            boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+                            position: 'relative',
+                            background: 'var(--c-bg-card)'
                         }}>
                             <img
                                 src={activeCategory?.image_url ? getImageUrl(activeCategory.image_url, api.defaults.baseURL) : `/media/categories/${activeCategorySlug || 'firewood'}.webp`}
-                                alt="дубові колоті дрова Київ доставка"
-                                loading="eager"
-                                fetchPriority="high"
+                                alt="Купити дрова Київ доставка"
+                                loading="lazy"
                                 style={{
                                     width: '100%',
                                     height: '100%',
                                     objectFit: 'cover',
-                                    filter: 'contrast(1.03) saturate(1.1) brightness(1.02)'
+                                    filter: 'saturate(1.05) contrast(1.02) brightness(0.98)'
                                 }}
                                 onError={(e) => { e.target.src = '/assets/product-placeholder-wood.webp'; }}
                             />
-                            {/* Subtle Vignette & Glow overlay */}
-                            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle, transparent 60%, rgba(0,0,0,0.4) 150%), linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 40%)' }} />
-                        </div>
-                        {/* Floating stat card */}
-                        <div className="nh-card" style={{
-                            position: 'absolute',
-                            bottom: -20,
-                            left: -20,
-                            padding: '1rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 12,
-                            background: 'rgba(15, 20, 25, 0.85)',
-                            backdropFilter: 'blur(12px)',
-                            border: '1px solid rgba(249,115,22,0.3)',
-                            borderRadius: 16
-                        }}>
-                            <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(249,115,22,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--c-orange)' }}>
-                                <Thermometer size={20} />
-                            </div>
-                            <div>
-                                <p style={{ fontSize: '0.75rem', color: 'var(--c-text2)', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Тепловіддача</p>
-                                <p style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', margin: 0 }}>До 2100 ккал/л</p>
-                            </div>
+                            {/* Subtle Vignette & Glow overlay to blend with dark ui */}
+                            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle, transparent 50%, rgba(10,14,23,0.3) 150%)', pointerEvents: 'none' }} />
                         </div>
                     </div>
 

@@ -37,7 +37,9 @@ function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug })
                 }}>
                     <Link to="/" style={{ color: 'var(--c-text2)', textDecoration: 'none', transition: 'color 0.2s' }}>Головна</Link>
                     <ChevronRight size={13} style={{ opacity: 0.4 }} />
-                    <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>{activeCategory?.name || 'Каталог'}</span>
+                    <Link to="/catalog/firewood" style={{ color: 'var(--c-text2)', textDecoration: 'none', transition: 'color 0.2s' }}>Каталог</Link>
+                    <ChevronRight size={13} style={{ opacity: 0.4 }} />
+                    <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>{activeCategory?.name || 'Дрова'}</span>
                 </nav>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'center' }} className="responsive-grid">
@@ -202,14 +204,14 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--color-border-subtle)' }}>
                                             <div>
                                                 <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{displayPrice}</span>
-                                                <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginLeft: 4 }}>грн</span>
+                                                <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginLeft: 4 }}>грн / {activeCategory?.slug === 'coal' || activeCategory?.slug === 'briquettes' ? 'тонну' : 'складометр'}</span>
                                             </div>
                                             <button
                                                 className="nh-btn-ghost"
                                                 style={{ border: '1px solid var(--color-border-orange)', padding: '8px 16px', fontSize: '0.875rem' }}
                                                 onClick={(e) => { e.preventDefault(); onOrderProduct(product); }}
                                             >
-                                                Детальніше
+                                                Замовити
                                             </button>
                                         </div>
                                     </div>
@@ -230,9 +232,11 @@ function FaqSection() {
 
     const faqs = [
         { q: "Які дрова краще для котла?", a: "Для твердопаливного котла найкраще підходять тверді породи деревини: дуб, граб та ясен. Вони мають найвищу тепловіддачу та горять найдовше. Вологість не повинна перевищувати 20-25%." },
-        { q: "Чи можна замовити доставку сьогодні?", a: "Так, при оформленні замовлення в першій половині дня, доставка по Києву можлива в той самий день. По області — зазвичай на наступний день." },
+        { q: "Які дрова найкращі для печі?", a: "Для пічного опалення чудово підходять дрова твердих порід (дуб, граб), які забезпечують тривалий жар. Також часто використовують березові та вільхові дрова, оскільки вони горять рівним красивим полум'ям і менше забивають димохід сажею." },
+        { q: "Чи можна купити дрова з доставкою сьогодні?", a: "Так, за умови оформлення замовлення в першій половині дня, доставка по Києву можлива в той самий день. По області — зазвичай на наступний день." },
         { q: "Скільки коштує машина дров?", a: "Вартість залежить від породи деревини та об'єму кузова (ЗІЛ, Камаз, Газель). Вартість доставки розраховується індивідуально в залежності від вашої адреси." },
-        { q: "Який об'єм дров у машині? (чесний складометр)", a: "Ми ретельно укладаємо поліна на складі. Наприклад, в ЗІЛ поміщається до 6-7 складометрів. Ви можете особисто рулеткою заміряти габарити укладених дров у кузові перед вивантаженням (Довжина × Ширина × Висота = Складометри)." }
+        { q: "Який об'єм дров у машині? (чесний складометр)", a: "Ми ретельно укладаємо поліна на складі. Наприклад, в ЗІЛ поміщається до 6-7 складометрів. Ви можете особисто рулеткою заміряти габарити укладених дров у кузові перед вивантаженням (Довжина × Ширина × Висота = Складометри)." },
+        { q: "Яка вологість дров для опалення?", a: "Ми поставляємо деревину природної та камерної сушки. Оптимальна вологість дров для ефективного горіння становить 15-20%. Саме такі показники дозволяють отримати максимальну тепловіддачу та мінімізувати утворення сажі." }
     ];
 
     return (
@@ -372,25 +376,145 @@ export default function FirewoodCategoryPage({ products, seo, onOrderProduct, ac
             <BenefitsSection />
 
             {/* SEO Text Block */}
-            <section style={{ maxWidth: 1280, margin: '0 auto', padding: 'var(--s-section) 1.5rem' }}>
-                <h2 className="h2" style={{ marginBottom: '2rem', textAlign: 'center' }}>
-                    {activeCategory?.seo_h1 || `Купити ${activeCategory?.name?.toLowerCase() || 'тверде паливо'} у Києві`}
-                </h2>
+            {activeCategorySlug === 'firewood' ? (
+                <FirewoodSeoBlock />
+            ) : (
+                <section style={{ maxWidth: 1280, margin: '0 auto', padding: 'var(--s-section) 1.5rem' }}>
+                    <h2 className="h2" style={{ marginBottom: '2rem', textAlign: 'center' }}>
+                        {activeCategory?.seo_h1 || `Купити ${activeCategory?.name?.toLowerCase() || 'тверде паливо'} у Києві`}
+                    </h2>
+                    <div
+                        style={{ maxWidth: 900, margin: '0 auto', color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem' }}
+                        dangerouslySetInnerHTML={{
+                            __html: activeCategory?.seo_text || `
+                            <p>Якісне тверде паливо для опалення будинків, котлів та камінів.</p>
+                            <p>Ми гарантуємо чесний об'єм та швидку доставку по Києву та всій Київській області. Оплата здійснюється тільки після отримання та перевірки на місці — жодних передоплат і ризиків. Доставка можлива день у день!</p>
+                            `
+                        }}
+                    />
+                </section>
+            )}
 
-                <div
-                    style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem' }}
-                    dangerouslySetInnerHTML={{
-                        __html: activeCategory?.seo_text || `
-                        <p>Якісне тверде паливо для опалення будинків, котлів та камінів.</p>
-                        <p>Ми гарантуємо чесний об'єм та швидку доставку по Києву та всій Київській області. Оплата здійснюється тільки після отримання та перевірки на місці — жодних передоплат і ризиків. Доставка можлива день у день!</p>
-                        `
-                    }}
-                />
-            </section>
+            <PopularQueriesSection activeCategorySlug={activeCategorySlug} />
 
             <FaqSection />
 
             <FinalCtaBanner onQuickOrderClick={() => onOrderProduct(null)} activeCategory={activeCategory} />
         </div>
+    );
+}
+
+// ─── CUSTOM FIREWOOD SEO BLOCK ─────────────────────────────────
+function FirewoodSeoBlock() {
+    return (
+        <section style={{ maxWidth: 1280, margin: '0 auto', padding: 'var(--s-section) 1.5rem', display: 'flex', justifyContent: 'center' }}>
+            <div className="nh-card" style={{ maxWidth: 900, width: '100%', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
+                <h2 className="h2" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+                    Купити дрова у Києві
+                </h2>
+
+                <div style={{ maxWidth: 600, margin: '0 auto', color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%' }}>
+                    <p style={{ marginBottom: '1rem' }}>
+                        Купити дрова з доставкою по Києву та Київській області можна безпосередньо у постачальника. Компанія «КиївБрикет» пропонує колоті дрова різних порід дерева для ефективного опалення приватних будинків, котлів та камінів.
+                    </p>
+                    <p style={{ marginBottom: '1.5rem' }}>
+                        Ми доставляємо дрова дуба, граба, сосни, берези та вільхи. Усі дрова мають низьку вологість та високу тепловіддачу.
+                    </p>
+
+                    <h3 style={{ color: 'var(--c-text)', fontSize: '1.125rem', marginBottom: '1rem', fontWeight: '600' }}>
+                        Популярні породи дров:
+                    </h3>
+                    <ul style={{ listStyleType: 'none', padding: 0, margin: '0 0 2rem 0', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+                        {[
+                            'дубові дрова',
+                            'грабові дрова',
+                            'березові дрова',
+                            'соснові дрова',
+                            'вільхові дрова'
+                        ].map((item, i) => (
+                            <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <Flame size={14} color="var(--c-orange)" />
+                                <span>{item}</span>
+                            </li>
+                        ))}
+                    </ul>
+
+                    {/* Internal Links Block */}
+                    <div style={{
+                        paddingTop: '1.5rem',
+                        borderTop: '1px solid var(--color-border-subtle)',
+                        display: 'flex', flexDirection: 'column', gap: '1rem'
+                    }}>
+                        <h4 style={{ color: 'var(--c-text)', fontSize: '1.05rem', margin: 0, fontWeight: '600' }}>Також дивіться:</h4>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                            <Link to="/catalog/briquettes" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
+                                <span>→</span> Паливні брикети
+                            </Link>
+                            <Link to="/catalog/coal" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
+                                <span>→</span> Кам’яне вугілля
+                            </Link>
+                            <Link to="/delivery" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
+                                <span>→</span> Доставка по Києву
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// ─── POPULAR QUERIES (GRID) ────────────────────────────────────
+function PopularQueriesSection({ activeCategorySlug }) {
+    if (activeCategorySlug !== 'firewood') return null;
+
+    const queries = [
+        "Купити дрова Київ",
+        "Дрова дубові Київ",
+        "Дрова колоті Київ",
+        "Дрова машина Київ",
+        "Дрова складометр Київ"
+    ];
+
+    return (
+        <section style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem var(--s-section) 1.5rem' }}>
+            <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
+                <h3 className="h3" style={{ marginBottom: '1.5rem', fontSize: '1.25rem' }}>Популярні запити</h3>
+                <div style={{
+                    display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem'
+                }}>
+                    {queries.map((q, i) => (
+                        <Link
+                            key={i}
+                            to="/catalog/firewood"
+                            className="popular-link"
+                            style={{
+                                padding: '8px 16px',
+                                background: 'rgba(255,255,255,0.03)',
+                                border: '1px solid rgba(255,255,255,0.08)',
+                                borderRadius: '40px',
+                                color: 'var(--c-text2)',
+                                fontSize: '0.875rem',
+                                textDecoration: 'none',
+                                transition: 'all 0.2s ease',
+                                whiteSpace: 'nowrap'
+                            }}
+                            onMouseEnter={e => {
+                                e.currentTarget.style.background = 'rgba(249,115,22,0.1)';
+                                e.currentTarget.style.borderColor = 'rgba(249,115,22,0.3)';
+                                e.currentTarget.style.color = 'var(--c-orange)';
+                            }}
+                            onMouseLeave={e => {
+                                e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                                e.currentTarget.style.color = 'var(--c-text2)';
+                            }}
+                        >
+                            {q}
+                        </Link>
+                    ))}
+                </div>
+            </div>
+        </section>
     );
 }

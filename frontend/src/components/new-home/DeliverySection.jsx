@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MapPin, Clock, CheckCircle2, ArrowRight } from "lucide-react";
+import { MapPin, Clock, CheckCircle2, ArrowRight, Truck, Star } from "lucide-react";
 import { useReveal } from "../../hooks/useReveal";
 
 const zones = [
@@ -205,9 +205,20 @@ export function DeliverySection() {
                         Доставляємо по{" "}
                         <span style={{ color: "var(--c-orange)" }}>Києву та області</span>
                     </h2>
-                    <p style={{ fontSize: "0.9375rem", color: "var(--c-text2)", maxWidth: 460, margin: "0 auto" }}>
+                    <p style={{ fontSize: "0.9375rem", color: "var(--c-text2)", maxWidth: 460, margin: "0 auto", marginBottom: "1.5rem" }}>
                         Власний автопарк дозволяє нам контролювати терміни і якість доставки без посередників.
                     </p>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '40px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--c-text)' }}>
+                            <CheckCircle2 size={14} color="var(--c-orange)" /> 5000+ доставок
+                        </span>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '40px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--c-text)' }}>
+                            <Star size={14} color="var(--c-orange)" /> 12 років досвіду
+                        </span>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '40px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--c-text)' }}>
+                            <Truck size={14} color="var(--c-orange)" /> власний автопарк
+                        </span>
+                    </div>
                 </div>
 
                 <div

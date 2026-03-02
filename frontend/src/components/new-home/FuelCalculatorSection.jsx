@@ -380,6 +380,14 @@ export function FuelCalculatorSection({ onQuickOrderClick }) {
                                             <Phone size={15} /> Зателефонувати
                                         </a>
                                     </div>
+
+                                    {/* Helper Text */}
+                                    <div style={{ marginTop: '0.5rem', padding: '12px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                                        <span style={{ fontSize: '1.1rem', lineHeight: 1 }}>💡</span>
+                                        <p style={{ fontSize: '0.8125rem', color: 'var(--c-text2)', margin: 0, lineHeight: 1.5 }}>
+                                            <strong style={{ color: 'var(--c-text)' }}>Підказка:</strong><br /> Будинок 100м² зазвичай потребує 6–8 складометрів дров на сезон.
+                                        </p>
+                                    </div>
                                 </div>
                             )}
                         </div>

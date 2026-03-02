@@ -17,7 +17,7 @@ import { BenefitsSection } from './new-home/BenefitsSection';
 function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug }) {
     const { ref, visible } = useReveal();
     return (
-        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', padding: 'var(--s-section) 0 4rem' }}>
+        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', padding: 'var(--s-section) 0 4rem', position: 'relative', overflow: 'hidden' }}>
             {/* Background Glow */}
             <div
                 className="glow-orb"

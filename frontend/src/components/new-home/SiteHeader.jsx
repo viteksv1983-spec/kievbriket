@@ -260,6 +260,7 @@ export function SiteHeader({ onQuickOrderClick }) {
                     <div className="mobile-only" style={{ alignItems: "center", gap: 6 }}>
                         <a
                             href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`}
+                            aria-label="Зателефонувати"
                             style={{
                                 width: 40, height: 40, borderRadius: 10,
                                 background: "rgba(249,115,22,0.1)",

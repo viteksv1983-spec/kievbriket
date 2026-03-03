@@ -13,7 +13,7 @@ const API_BASE = process.env.VITE_API_URL || 'http://localhost:8000';
 // ─── Static pages (only these 3 exist) ───
 const STATIC_PAGES = [
     { path: '/', priority: '1.0', changefreq: 'daily' },
-    { path: '/delivery', priority: '0.9', changefreq: 'monthly' },
+    { path: '/dostavka', priority: '0.9', changefreq: 'monthly' },
     { path: '/contacts', priority: '0.9', changefreq: 'monthly' },
 ];
 

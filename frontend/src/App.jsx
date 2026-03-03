@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import React, { Suspense, useEffect } from 'react';
@@ -14,16 +14,15 @@ import NotFound from './components/NotFound';
 
 
 
-// Lazy-loaded routes (non-critical for initial paint)
-const Catalog = React.lazy(() => import('./components/Catalog'));
-const ProductPage = React.lazy(() => import('./components/ProductPage'));
-const Login = React.lazy(() => import('./components/Login'));
-const Register = React.lazy(() => import('./components/Register'));
-const Cart = React.lazy(() => import('./components/Cart'));
-const Delivery = React.lazy(() => import('./components/Delivery'));
-const Contacts = React.lazy(() => import('./components/Contacts'));
-const About = React.lazy(() => import('./components/About'));
-const DynamicPage = React.lazy(() => import('./components/DynamicPage'));
+import Catalog from './components/Catalog';
+import ProductPage from './components/ProductPage';
+import Login from './components/Login';
+import Register from './components/Register';
+import Cart from './components/Cart';
+import Delivery from './components/Delivery';
+import Contacts from './components/Contacts';
+import About from './components/About';
+import DynamicPage from './components/DynamicPage';
 
 // Admin (lazy — never needed on public pages)
 const AdminLayout = React.lazy(() => import('./components/admin/AdminLayout'));
@@ -52,44 +51,42 @@ function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <Router>
-          <ScrollToTop />
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-[#A0153E] border-t-transparent rounded-full animate-spin" /></div>}>
-            <Routes>
-              <Route element={<PublicLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/catalog/:categorySlug" element={<Catalog />} />
-                <Route path="/catalog/:categorySlug/:productSlug" element={<ProductPage />} />
+        <ScrollToTop />
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-[#A0153E] border-t-transparent rounded-full animate-spin" /></div>}>
+          <Routes>
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/catalog/:categorySlug" element={<Catalog />} />
+              <Route path="/catalog/:categorySlug/:productSlug" element={<ProductPage />} />
 
-                {/* System Pages */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/dostavka" element={<Delivery />} />
-                <Route path="/kontakty" element={<Contacts />} />
-                <Route path="/contacts" element={<Contacts />} />
-                <Route path="/pro-nas" element={<About />} />
-                <Route path="/page/:slug" element={<DynamicPage />} />
+              {/* System Pages */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/dostavka" element={<Delivery />} />
+              <Route path="/kontakty" element={<Contacts />} />
+              <Route path="/contacts" element={<Contacts />} />
+              <Route path="/pro-nas" element={<About />} />
+              <Route path="/page/:slug" element={<DynamicPage />} />
 
-                {/* Catch-all 404 */}
-                <Route path="*" element={<NotFound />} />
+              {/* Catch-all 404 */}
+              <Route path="*" element={<NotFound />} />
+            </Route>
+
+            <Route element={<ProtectedRoute />}>
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Navigate to="orders" replace />} />
+                <Route path="orders" element={<Orders />} />
+                <Route path="products" element={<Products />} />
+                <Route path="products/new" element={<ProductEdit />} />
+                <Route path="products/edit/:id" element={<ProductEdit />} />
+                <Route path="seo" element={<PageEditor />} />
+                <Route path="categories" element={<CategoryManager />} />
+                <Route path="telegram" element={<TelegramSettings />} />
               </Route>
-
-              <Route element={<ProtectedRoute />}>
-                <Route path="/admin" element={<AdminLayout />}>
-                  <Route index element={<Navigate to="orders" replace />} />
-                  <Route path="orders" element={<Orders />} />
-                  <Route path="products" element={<Products />} />
-                  <Route path="products/new" element={<ProductEdit />} />
-                  <Route path="products/edit/:id" element={<ProductEdit />} />
-                  <Route path="seo" element={<PageEditor />} />
-                  <Route path="categories" element={<CategoryManager />} />
-                  <Route path="telegram" element={<TelegramSettings />} />
-                </Route>
-              </Route>
-            </Routes>
-          </Suspense>
-        </Router>
+            </Route>
+          </Routes>
+        </Suspense>
       </CartProvider>
     </AuthProvider>
   );

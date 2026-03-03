@@ -5,185 +5,216 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ─── Config ───
 const domain = 'https://kievbriket.com';
-const siteName = 'КиївБрикет';
 const API_BASE = process.env.VITE_API_URL || 'http://localhost:8000';
 
 const distDir = path.join(__dirname, 'dist');
-if (!fs.existsSync(distDir)) {
-    console.error('Directory "dist" not found. Run "vite build" first.');
+const serverEntryPath = path.join(__dirname, 'dist-server', 'entry-server.js');
+
+if (!fs.existsSync(distDir) || !fs.existsSync(serverEntryPath)) {
+    console.error('Missing dist or dist-server. Run client and server builds first.');
     process.exit(1);
 }
 
 const indexPath = path.join(distDir, 'index.html');
 const baseHtml = fs.readFileSync(indexPath, 'utf-8');
 
-// ─── Utility: Fetch ───
+// Preloader injection cleanup (SSR doesn't need huge preloader delays if content is static) // Actually, keep it but let hydration remove it
+// Convert path imports properly for dynamic JS import on Windows
+const fileUrl = `file:///${serverEntryPath.replace(/\\/g, '/')}`;
+const { render } = await import(fileUrl);
+
 async function fetchJson(url) {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
-    return await res.json();
+    try {
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+        return await res.json();
+    } catch (e) {
+        console.warn(`⚠️ Fetch failed for ${url}: ${e.message}`);
+        return null; // Return null so the caller can handle fallbacks
+    }
 }
 
-// ─── Static Pages ───
 const baseRoutes = [
-    {
-        path: '/',
-        title: 'КиївБрикет — Купити колоті дрова з доставкою по Києву',
-        description: 'Купити колоті дрова з доставкою по Києву та області. Дуб, граб, береза, вільха, сосна. Чесний об\'єм та швидка доставка вантажівками.'
-    },
-    {
-        path: '/delivery',
-        title: 'Доставка дров по Києву та області | КиївБрикет',
-        description: 'Умови доставки та оплати дров по Києву та Київській області. Швидка доставка вантажівками. Самовивіз також доступний.'
-    },
-    {
-        path: '/contacts',
-        title: 'Контакти | КиївБрикет',
-        description: 'Зв\'яжіться з нами для замовлення дров. Режим роботи: щодня 09:00–20:00. Київ та область.'
-    },
-    {
-        path: '/payment',
-        title: 'Оплата | КиївБрикет',
-        description: 'Способи оплати дров, вугілля та брикетів. Готівка при отриманні, переказ на карту, безготівковий розрахунок.'
-    }
+    { path: '/' },
+    { path: '/delivery' },
+    { path: '/contacts' },
+    { path: '/payment' }
 ];
 
-// Fallback categories just in case backend is totally down during build
 const FALLBACK_CATEGORIES = [
-    { slug: 'drova', name: 'Дрова', seo_title: 'Купити дрова в Києві', seo_description: 'Дрова твердих порід з доставкою.' },
-    { slug: 'brikety', name: 'Брикети', seo_title: 'Купити паливні брикети Києві', seo_description: 'Паливні брикети від виробника.' },
-    { slug: 'vugillya', name: 'Вугілля', seo_title: 'Купити вугілля Києві', seo_description: 'Кам\'яне вугілля та антрацит.' }
+    { slug: 'drova' },
+    { slug: 'brikety' },
+    { slug: 'vugillya' }
 ];
 
 async function generatePages() {
-    console.log(`Fetching dynamic data for SSG...`);
+    console.log(`Starting Full SSG via React renderToString...`);
 
-    let categories = [];
-    let products = [];
-
-    try {
-        console.log(`Fetching categories from ${API_BASE}...`);
-        categories = await fetchJson(`${API_BASE}/products/categories`);
-    } catch (e) {
-        console.warn(`⚠️ Failed to fetch categories: ${e.message}. Using fallbacks.`);
+    // 1. Fetch dynamic data with safety try/catch
+    let categories = await fetchJson(`${API_BASE}/products/categories`);
+    if (!categories) {
+        console.warn('Using fallback categories.');
         categories = FALLBACK_CATEGORIES;
     }
 
-    try {
-        console.log(`Fetching products from ${API_BASE}...`);
-        const prodData = await fetchJson(`${API_BASE}/products/?limit=100`);
-        products = Array.isArray(prodData) ? prodData : (prodData.items || []);
-    } catch (e) {
-        console.warn(`⚠️ Failed to fetch products: ${e.message}. Pages will not be generated for products.`);
+    let products = await fetchJson(`${API_BASE}/products/?limit=100`);
+    if (products) {
+        products = Array.isArray(products) ? products : (products.items || []);
+    } else {
+        products = [];
     }
 
-    // Compile ALL routes
     const allRoutes = [...baseRoutes];
 
-    // Add category routes
-    for (const cat of categories) {
-        allRoutes.push({
-            path: `/catalog/${cat.slug}`,
-            title: cat.seo_title || `Купити ${cat.name.toLowerCase()} в Києві`,
-            description: cat.seo_description || `Замовляйте ${cat.name.toLowerCase()} з швидкою доставкою по Києву та області.`
-        });
-    }
-
-    // Add product routes
-    for (const prod of products) {
-        if (!prod.slug || !prod.category) continue;
-        allRoutes.push({
-            path: `/catalog/${prod.category}/${prod.slug}`,
-            title: prod.seo_title || `${prod.name} — Купити в Києві | КиївБрикет`,
-            description: prod.seo_description || `Замовляйте ${prod.name.toLowerCase()} за вигідною ціною. Доставка по Києву та Київській області.`
-        });
-    }
-
-    console.log(`Starting SSG injection for ${allRoutes.length} pages...`);
-
-    allRoutes.forEach(route => {
-        const relativePath = route.path === '/' ? '' : route.path.replace(/^\//, '');
-        const folderPath = path.join(distDir, relativePath);
-
-        if (route.path !== '/') {
-            fs.mkdirSync(folderPath, { recursive: true });
+    categories.forEach(cat => allRoutes.push({ path: `/catalog/${cat.slug}` }));
+    products.forEach(prod => {
+        if (prod.slug && prod.category) {
+            allRoutes.push({ path: `/catalog/${prod.category}/${prod.slug}` });
         }
-
-        let fullUrl = `${domain}${route.path}`;
-        if (fullUrl !== domain + '/' && !fullUrl.endsWith('/')) {
-            fullUrl += '/'; // Canonical should have trailing slash for consistency if we enforce it or match Vercel rules. But wait! We just disabled trailing slash in vercel.json.
-            // Let's NOT add trailing slash to canonical! It should match exactly.
-        }
-
-        // Fix canonical logic based on recent trailingSlash: false rule
-        let canonicalUrl = `${domain}${route.path}`;
-        if (route.path === '/') canonicalUrl = `${domain}/`;
-
-        const ogImageUrl = `${domain}/og-image.jpg`;
-
-        // Clean existing tags to avoid duplicates
-        let html = baseHtml.replace(/<title>[\s\S]*?<\/title>/gi, '');
-        html = html.replace(/<meta[^>]*name="description"[^>]*>/gi, '');
-        html = html.replace(/<link[^>]*rel="canonical"[^>]*>/gi, '');
-        html = html.replace(/<meta[^>]*property="og:[^>]*>/gi, '');
-        html = html.replace(/<meta[^>]*name="twitter:[^>]*>/gi, '');
-
-        const metaTags = `
-    <title data-rh="true">${route.title}</title>
-    <meta name="description" content="${route.description.replace(/"/g, '&quot;')}" data-rh="true" />
-    <link rel="canonical" href="${canonicalUrl}" data-rh="true" />
-    <meta name="robots" content="index, follow" data-rh="true" />
-    <meta property="og:type" content="website" data-rh="true" />
-    <meta property="og:title" content="${route.title}" data-rh="true" />
-    <meta property="og:description" content="${route.description.replace(/"/g, '&quot;')}" data-rh="true" />
-    <meta property="og:url" content="${canonicalUrl}" data-rh="true" />
-    <meta property="og:image" content="${ogImageUrl}" data-rh="true" />
-    <meta property="og:site_name" content="${siteName}" data-rh="true" />
-    <meta name="twitter:card" content="summary_large_image" data-rh="true" />
-    <meta name="twitter:title" content="${route.title}" data-rh="true" />
-    <meta name="twitter:description" content="${route.description.replace(/"/g, '&quot;')}" data-rh="true" />
-    <meta name="twitter:image" content="${ogImageUrl}" data-rh="true" />
-</head>`;
-
-        html = html.replace(/<\/head>/i, metaTags);
-
-        // JSON-LD for homepage only
-        if (route.path === '/') {
-            const jsonLd = JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "LocalBusiness",
-                "name": siteName,
-                "image": ogImageUrl,
-                "url": `${domain}/`,
-                "areaServed": { "@type": "City", "name": "Kyiv" },
-                "address": {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Київ",
-                    "addressCountry": "UA"
-                },
-                "openingHoursSpecification": {
-                    "@type": "OpeningHoursSpecification",
-                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-                    "opens": "09:00",
-                    "closes": "20:00"
-                }
-            });
-            html = html.replace(/<\/head>/i, `    <script type="application/ld+json" data-rh="true">${jsonLd}</script>\n</head>`);
-        }
-
-        const filePath = path.join(folderPath, 'index.html');
-        fs.writeFileSync(filePath, html, 'utf-8');
     });
 
-    // ─── Generate 404.html ───
-    console.log('Generating 404.html...');
-    let html404 = baseHtml.replace(/<title>[\s\S]*?<\/title>/gi, '<title data-rh="true">Сторінку не знайдено (404) | КиївБрикет</title>');
-    html404 = html404.replace(/<\/head>/i, `    <meta name="robots" content="noindex, follow" data-rh="true" />\n</head>`);
-    fs.writeFileSync(path.join(distDir, '404.html'), html404, 'utf-8');
+    console.log(`Injecting ${allRoutes.length} SSG Pages...`);
 
-    console.log(`🎉 Full SSG Generation Complete! Generated ${allRoutes.length} pages + 404.html`);
+    // We don't want the old manual SEO loop anymore, because Helmet generates everything!
+    // But we need to clean ANY existing static tags from baseHtml to prevent duplicates
+    let cleanedHtml = baseHtml;
+    // Remove static <title> if present
+    cleanedHtml = cleanedHtml.replace(/<title[\s\S]*?<\/title>/gi, '');
+    // Clean out <meta> tags EXCEPT viewport/theme-color/charset
+    // Actually, it's safer to just let Helmet inject. Our index.html has NONE except charsets.
+
+    for (const route of allRoutes) {
+        try {
+            // Helmet context buffer
+            const helmetContext = {};
+
+            // Render the React tree for this URL!
+            // SSR provides full <h1>, <section>, SEO text from your components.
+            const appHtml = render(route.path, helmetContext);
+
+            let html = cleanedHtml.replace('<!--ssr-outlet-->', appHtml);
+
+            // Generate Manual Tags using pre-fetched data
+            let manualTags = '';
+            const pathName = route.path;
+
+            if (pathName === '/') {
+                manualTags = `
+                    <title>КиївБрикет — дрова, брикети та вугілля з доставкою по Києву</title>
+                    <meta name="description" content="Купити колоті дрова, паливні брикети та кам'яне вугілля від виробника. Швидка доставка по Києву та Київській області." />
+                    <link rel="canonical" href="${domain}" />
+                    <meta name="robots" content="index, follow" />
+                `;
+            } else if (pathName.startsWith('/catalog/')) {
+                const parts = pathName.split('/');
+                if (parts.length === 3) {
+                    const cSlug = parts[2];
+                    const cat = categories.find(c => c.slug === cSlug);
+                    if (cat) {
+                        const fallbackDesc = cat.seo_text ? cat.seo_text.replace(/<[^>]*>/g, '').substring(0, 160) : '';
+                        manualTags = `
+                            <title>${cat.meta_title || `${cat.name} — купити з доставкою по Києву`}</title>
+                            <meta name="description" content="${cat.meta_description || fallbackDesc}" />
+                            <link rel="canonical" href="${domain}${pathName}" />
+                            <meta name="robots" content="${cat.meta_robots || 'index, follow'}" />
+                            <meta property="og:title" content="${cat.meta_title || cat.name}" />
+                            <meta property="og:image" content="${domain}${cat.og_image || cat.image_url}" />
+                            <meta property="og:url" content="${domain}${pathName}" />
+                            <meta property="og:type" content="website" />
+                        `;
+                        if (cat.schema_json) {
+                            manualTags += `\n<script type="application/ld+json">${typeof cat.schema_json === 'string' ? cat.schema_json : JSON.stringify(cat.schema_json)}</script>`;
+                        }
+                    }
+                } else if (parts.length === 4) {
+                    const pSlug = parts[3];
+                    const prod = products.find(p => p.slug === pSlug);
+                    if (prod) {
+                        const fallbackDesc = prod.description ? prod.description.replace(/<[^>]*>/g, '').substring(0, 160) : '';
+                        manualTags = `
+                            <title>${prod.meta_title || `${prod.name} — купити в Києві`}</title>
+                            <meta name="description" content="${prod.meta_description || fallbackDesc}" />
+                            <link rel="canonical" href="${domain}${pathName}" />
+                            <meta name="robots" content="${prod.meta_robots || 'index, follow'}" />
+                            <meta property="og:title" content="${prod.meta_title || prod.name}" />
+                            <meta property="og:image" content="${domain}${prod.primary_image || prod.image_url || '/og-image.jpg'}" />
+                            <meta property="og:url" content="${domain}${pathName}" />
+                            <meta property="og:type" content="product" />
+                        `;
+                        if (prod.schema_json) {
+                            manualTags += `\n<script type="application/ld+json">${typeof prod.schema_json === 'string' ? prod.schema_json : JSON.stringify(prod.schema_json)}</script>`;
+                        }
+                    }
+                }
+            } else if (pathName === '/contacts' || pathName === '/delivery' || pathName === '/payment') {
+                const pTitle = pathName === '/contacts' ? 'Контакти' : pathName === '/delivery' ? 'Доставка' : 'Оплата';
+                manualTags = `
+                    <title>${pTitle} | КиївБрикет</title>
+                    <meta name="description" content="Інформація про ${pTitle.toLowerCase()} в інтернет-магазині твердого палива КиївБрикет." />
+                    <link rel="canonical" href="${domain}${pathName}" />
+                    <meta name="robots" content="index, follow" />
+                `;
+            }
+
+            // Extract remaining tags from Helmet (like viewport, static context tags, etc.)
+            let helmetTags = '';
+            if (helmetContext.helmet) {
+                const helmetTitle = helmetContext.helmet.title.toString();
+                // Avoid injecting empty title tags from Helmet since we built manualTags
+                if (!helmetTitle.includes('data-rh="true"></title>')) {
+                    helmetTags += helmetTitle;
+                }
+                const helmetMeta = helmetContext.helmet.meta.toString();
+                if (helmetMeta) helmetTags += '\n' + helmetMeta;
+
+                const helmetLink = helmetContext.helmet.link.toString();
+                if (helmetLink) helmetTags += '\n' + helmetLink;
+
+                const helmetScript = helmetContext.helmet.script.toString();
+                if (helmetScript) helmetTags += '\n' + helmetScript;
+            }
+
+            // Inject manualTags + whatever useful helmetTags remain into <head>
+            html = html.replace('</head>', `${manualTags}\n${helmetTags}\n</head>`);
+
+            // Write to dist folder structure
+            const relativePath = route.path === '/' ? '' : route.path.replace(/^\//, '');
+            const folderPath = path.join(distDir, relativePath);
+
+            if (route.path !== '/') {
+                fs.mkdirSync(folderPath, { recursive: true });
+            }
+
+            const filePath = path.join(folderPath, 'index.html');
+            fs.writeFileSync(filePath, html, 'utf-8');
+
+        } catch (err) {
+            console.error(`❌ Error rendering ${route.path}:`, err);
+        }
+    }
+
+    // Generate 404 page (render standard Not Found component)
+    try {
+        const helmetContext404 = {};
+        const appHtml404 = render('/404-forced-error-page', helmetContext404); // unknown route triggers <NotFound>
+        let html404 = cleanedHtml.replace('<!--ssr-outlet-->', appHtml404);
+
+        if (helmetContext404.helmet) {
+            const tags = `
+                ${helmetContext404.helmet.title.toString()}
+                ${helmetContext404.helmet.meta.toString()}
+                ${helmetContext404.helmet.link.toString()}
+            `;
+            html404 = html404.replace('</head>', `${tags}\n</head>`);
+        }
+        fs.writeFileSync(path.join(distDir, '404.html'), html404, 'utf-8');
+        console.log(`✅ Generated 404.html`);
+    } catch (err) {
+        console.error('Failed to generate 404', err);
+    }
+
+    console.log(`🎉 SSG Complete! Generated ${allRoutes.length} static DOM pages.`);
 }
 
 generatePages();

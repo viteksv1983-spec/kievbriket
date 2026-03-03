@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /api
+Disallow: /docs
+
+Sitemap: https://kievbriket.com/sitemap.xml

@@ -6,14 +6,32 @@ import { getCategoryUrl, getImageUrl } from '../utils/urls';
 import api from '../api';
 import { OrderFormModal } from './new-home/OrderFormModal';
 import SEOHead from './SEOHead';
+import { useSSGData } from '../context/SSGDataContext';
 
 export default function ProductPage() {
     const { categorySlug, productSlug } = useParams();
-    const [product, setProduct] = useState(null);
-    const [relatedProducts, setRelatedProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const ssgData = useSSGData();
+
+    // During SSG: find product from pre-fetched data immediately (no loading spinner)
+    const ssgProduct = ssgData?.products
+        ? (() => {
+            const items = Array.isArray(ssgData.products) ? ssgData.products : (ssgData.products.items || []);
+            return items.find(p => p.slug === productSlug) || null;
+        })()
+        : null;
+
+    const ssgRelated = ssgProduct && ssgData?.products
+        ? (() => {
+            const items = Array.isArray(ssgData.products) ? ssgData.products : (ssgData.products.items || []);
+            return items.filter(p => p.category === ssgProduct.category && p.slug !== ssgProduct.slug).slice(0, 3);
+        })()
+        : [];
+
+    const [product, setProduct] = useState(ssgProduct);
+    const [relatedProducts, setRelatedProducts] = useState(ssgRelated);
+    const [loading, setLoading] = useState(!ssgProduct);
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
-    const [selectedVariant, setSelectedVariant] = useState(null);
+    const [selectedVariant, setSelectedVariant] = useState(ssgProduct?.variants?.[0] || null);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [openFaq, setOpenFaq] = useState(null);
     const { categories } = useCategories();
@@ -37,11 +55,13 @@ export default function ProductPage() {
 
     const faqs = product ? [
         { q: `Скільки горять ${product.name.toLowerCase()}?`, a: `Залежить від типу вашого котла чи печі, але завдяки високій щільності та правильній вологості вони забезпечують максимально тривале горіння та високу тепловіддачу.` },
-        { q: 'Який обʼєм складометра?', a: 'Складометр — це щільно укладене паливо в об’ємі 1 метр на 1 метр на 1 метр. Ми завжди гарантуємо чесний об\'єм при завантаженні автомобіля.' },
+        { q: `Який об\u02BCєм складометра?`, a: `Складометр \u2014 це щільно укладене паливо в об\u02BCємі 1 метр на 1 метр на 1 метр. Ми завжди гарантуємо чесний об\u02BCєм при завантаженні автомобіля.` },
         { q: 'Чи можна замовити доставку сьогодні?', a: 'Так! При оформленні замовлення в першій половині дня ми намагаємося доставити власним транспортом в той же день по Києву та області.' }
     ] : [];
 
     useEffect(() => {
+        // Skip fetch if we already have SSG data (first render after hydration)
+        if (ssgProduct && !product?.slug?.length) return;
         window.scrollTo(0, 0);
         setLoading(true);
         setActiveImageIndex(0);

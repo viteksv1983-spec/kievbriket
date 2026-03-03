@@ -89,9 +89,12 @@ async function generatePages() {
             // Helmet context buffer
             const helmetContext = {};
 
+            // SSG data — pass pre-fetched products/categories so components render with real data
+            const ssgData = { products, categories };
+
             // Render the React tree for this URL!
             // SSR provides full <h1>, <section>, SEO text from your components.
-            const appHtml = render(route.path, helmetContext);
+            const appHtml = render(route.path, helmetContext, ssgData);
 
             let html = cleanedHtml.replace('<!--ssr-outlet-->', appHtml);
 

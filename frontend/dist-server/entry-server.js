@@ -852,6 +852,13 @@ const CategoryProvider = ({ children }) => {
   return /* @__PURE__ */ jsx(CategoryContext.Provider, { value: { categories, loading, refreshCategories: fetchCategories }, children });
 };
 const useCategories = () => useContext(CategoryContext);
+const SSGDataContext = createContext(null);
+function SSGDataProvider({ data, children }) {
+  return /* @__PURE__ */ jsx(SSGDataContext.Provider, { value: data, children });
+}
+function useSSGData() {
+  return useContext(SSGDataContext);
+}
 const AuthContext = createContext();
 const useAuth = () => React.useContext(AuthContext);
 const AuthProvider = ({ children }) => {
@@ -7887,11 +7894,20 @@ function Catalog({ predefinedCategory }) {
 }
 function ProductPage() {
   const { categorySlug, productSlug } = useParams();
-  const [product, setProduct] = useState(null);
-  const [relatedProducts, setRelatedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const ssgData = useSSGData();
+  const ssgProduct = ssgData?.products ? (() => {
+    const items2 = Array.isArray(ssgData.products) ? ssgData.products : ssgData.products.items || [];
+    return items2.find((p) => p.slug === productSlug) || null;
+  })() : null;
+  const ssgRelated = ssgProduct && ssgData?.products ? (() => {
+    const items2 = Array.isArray(ssgData.products) ? ssgData.products : ssgData.products.items || [];
+    return items2.filter((p) => p.category === ssgProduct.category && p.slug !== ssgProduct.slug).slice(0, 3);
+  })() : [];
+  const [product, setProduct] = useState(ssgProduct);
+  const [relatedProducts, setRelatedProducts] = useState(ssgRelated);
+  const [loading, setLoading] = useState(!ssgProduct);
   const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
-  const [selectedVariant, setSelectedVariant] = useState(null);
+  const [selectedVariant, setSelectedVariant] = useState(ssgProduct?.variants?.[0] || null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [openFaq, setOpenFaq] = useState(null);
   const { categories } = useCategories();
@@ -7909,10 +7925,11 @@ function ProductPage() {
   ] : [];
   const faqs = product ? [
     { q: `Скільки горять ${product.name.toLowerCase()}?`, a: `Залежить від типу вашого котла чи печі, але завдяки високій щільності та правильній вологості вони забезпечують максимально тривале горіння та високу тепловіддачу.` },
-    { q: "Який обʼєм складометра?", a: "Складометр — це щільно укладене паливо в об’ємі 1 метр на 1 метр на 1 метр. Ми завжди гарантуємо чесний об'єм при завантаженні автомобіля." },
+    { q: `Який обʼєм складометра?`, a: `Складометр — це щільно укладене паливо в обʼємі 1 метр на 1 метр на 1 метр. Ми завжди гарантуємо чесний обʼєм при завантаженні автомобіля.` },
     { q: "Чи можна замовити доставку сьогодні?", a: "Так! При оформленні замовлення в першій половині дня ми намагаємося доставити власним транспортом в той же день по Києву та області." }
   ] : [];
   useEffect(() => {
+    if (ssgProduct && !product?.slug?.length) return;
     window.scrollTo(0, 0);
     setLoading(true);
     setActiveImageIndex(0);
@@ -10607,9 +10624,9 @@ function App() {
     ] }) })
   ] }) });
 }
-function render(url, helmetContext) {
+function render(url, helmetContext, ssgData) {
   return renderToString(
-    /* @__PURE__ */ jsx(React.StrictMode, { children: /* @__PURE__ */ jsx(HelmetProvider, { context: helmetContext, children: /* @__PURE__ */ jsx(CategoryProvider, { children: /* @__PURE__ */ jsx(StaticRouter, { location: url, children: /* @__PURE__ */ jsx(App, {}) }) }) }) })
+    /* @__PURE__ */ jsx(React.StrictMode, { children: /* @__PURE__ */ jsx(HelmetProvider, { context: helmetContext, children: /* @__PURE__ */ jsx(SSGDataProvider, { data: ssgData || null, children: /* @__PURE__ */ jsx(CategoryProvider, { children: /* @__PURE__ */ jsx(StaticRouter, { location: url, children: /* @__PURE__ */ jsx(App, {}) }) }) }) }) })
   );
 }
 export {

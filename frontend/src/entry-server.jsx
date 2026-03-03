@@ -3,17 +3,20 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { CategoryProvider } from './context/CategoryContext.jsx';
+import { SSGDataProvider } from './context/SSGDataContext.jsx';
 import App from './App.jsx';
 
-export function render(url, helmetContext) {
+export function render(url, helmetContext, ssgData) {
     return renderToString(
         <React.StrictMode>
             <HelmetProvider context={helmetContext}>
-                <CategoryProvider>
-                    <StaticRouter location={url}>
-                        <App />
-                    </StaticRouter>
-                </CategoryProvider>
+                <SSGDataProvider data={ssgData || null}>
+                    <CategoryProvider>
+                        <StaticRouter location={url}>
+                            <App />
+                        </StaticRouter>
+                    </CategoryProvider>
+                </SSGDataProvider>
             </HelmetProvider>
         </React.StrictMode>
     );

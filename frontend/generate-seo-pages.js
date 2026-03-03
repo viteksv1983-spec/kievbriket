@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 // ─── Config ───
 const domain = 'https://kievbriket.com';
-const siteName = 'Дрова Київ';
+const siteName = 'КиївБрикет';
 
 const distDir = path.join(__dirname, 'dist');
 if (!fs.existsSync(distDir)) {
@@ -22,17 +22,17 @@ const baseHtml = fs.readFileSync(indexPath, 'utf-8');
 const routes = [
     {
         path: '/',
-        title: 'Дрова Київ — Купити колоті дрова з доставкою по Києву',
+        title: 'КиївБрикет — Купити колоті дрова з доставкою по Києву',
         description: 'Купити колоті дрова з доставкою по Києву та області. Дуб, граб, береза, вільха, сосна. Чесний об\'єм та швидка доставка вантажівками.'
     },
     {
         path: '/delivery',
-        title: 'Доставка дров по Києву та області | Дрова Київ',
+        title: 'Доставка дров по Києву та області | КиївБрикет',
         description: 'Умови доставки та оплати дров по Києву та Київській області. Швидка доставка вантажівками. Самовивіз також доступний.'
     },
     {
         path: '/contacts',
-        title: 'Контакти | Дрова Київ',
+        title: 'Контакти | КиївБрикет',
         description: 'Зв\'яжіться з нами для замовлення дров. Режим роботи: щодня 09:00–20:00. Київ та область.'
     }
 ];
@@ -111,7 +111,7 @@ function generatePages() {
     });
 
     // 404 page
-    let html404 = baseHtml.replace(/<title>[\s\S]*?<\/title>/gi, '<title>Сторінку не знайдено | Дрова Київ</title>');
+    let html404 = baseHtml.replace(/<title>[\s\S]*?<\/title>/gi, '<title>Сторінку не знайдено | КиївБрикет</title>');
     html404 = html404.replace(/<link[^>]*rel="canonical"[^>]*>/gi, '');
     html404 = html404.replace(/<meta[^>]*property="og:[^>]*>/gi, '');
     html404 = html404.replace(/<\/head>/i, `    <meta name="robots" content="noindex, follow" />\n</head>`);

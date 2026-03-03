@@ -54,7 +54,7 @@ function urlEntry(loc, priority, changefreq, lastmod) {
 }
 
 async function generateSitemap() {
-    console.log('Generating sitemap for Дрова Київ...');
+    console.log('Generating sitemap for КиївБрикет...');
     const categories = await fetchCategories();
     const products = await fetchProducts();
     const today = new Date().toISOString().split('T')[0];

@@ -155,11 +155,30 @@ async function generatePages() {
                     <meta name="robots" content="index, follow" />
                 `;
             } else if (pathName === '/contacts' || pathName === '/kontakty') {
+                const contactsSchema = JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "LocalBusiness",
+                    "name": "КиївБрикет",
+                    "url": "https://kievbriket.com",
+                    "telephone": "+380991234567",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": "вул. Колекторна, 19",
+                        "addressLocality": "Київ",
+                        "addressCountry": "UA"
+                    },
+                    "openingHours": "Mo-Su 09:00-20:00",
+                    "areaServed": {
+                        "@type": "City",
+                        "name": "Kyiv"
+                    }
+                });
                 manualTags = `
-                    <title>Контакти | КиївБрикет</title>
+                    <title>Контакти КиївБрикет — телефон, адреса, доставка дров у Києві</title>
                     <meta name="description" content="Контакти інтернет-магазину твердого палива КиївБрикет. Адреса, телефон, графік роботи." />
                     <link rel="canonical" href="${domain}/contacts" />
                     <meta name="robots" content="index, follow" />
+                    <script type="application/ld+json">${contactsSchema}</script>
                 `;
             }
 

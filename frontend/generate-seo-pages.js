@@ -37,9 +37,9 @@ async function fetchJson(url) {
 
 const baseRoutes = [
     { path: '/' },
-    { path: '/delivery' },
+    { path: '/dostavka' },
     { path: '/contacts' },
-    { path: '/payment' }
+    { path: '/kontakty' }
 ];
 
 const FALLBACK_CATEGORIES = [
@@ -147,12 +147,18 @@ async function generatePages() {
                         }
                     }
                 }
-            } else if (pathName === '/contacts' || pathName === '/delivery' || pathName === '/payment') {
-                const pTitle = pathName === '/contacts' ? 'Контакти' : pathName === '/delivery' ? 'Доставка' : 'Оплата';
+            } else if (pathName === '/dostavka') {
                 manualTags = `
-                    <title>${pTitle} | КиївБрикет</title>
-                    <meta name="description" content="Інформація про ${pTitle.toLowerCase()} в інтернет-магазині твердого палива КиївБрикет." />
+                    <title>Доставка дров, брикетів та вугілля по Києву | КиївБрикет</title>
+                    <meta name="description" content="Доставка дров, паливних брикетів та вугілля по Києву та області. Власний автопарк, доставка в день замовлення." />
                     <link rel="canonical" href="${domain}${pathName}" />
+                    <meta name="robots" content="index, follow" />
+                `;
+            } else if (pathName === '/contacts' || pathName === '/kontakty') {
+                manualTags = `
+                    <title>Контакти | КиївБрикет</title>
+                    <meta name="description" content="Контакти інтернет-магазину твердого палива КиївБрикет. Адреса, телефон, графік роботи." />
+                    <link rel="canonical" href="${domain}/contacts" />
                     <meta name="robots" content="index, follow" />
                 `;
             }

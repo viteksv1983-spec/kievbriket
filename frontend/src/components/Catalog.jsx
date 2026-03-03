@@ -70,7 +70,6 @@ export default function Catalog({ predefinedCategory }) {
             h1: cat.seo_h1 || cat.name,
             ogImage: cat.og_image || cat.image_url,
             canonical: cat.canonical_url || undefined,
-            robots: cat.is_indexable === false ? 'noindex, nofollow' : undefined,
         };
     }, [activeCategory]);
 

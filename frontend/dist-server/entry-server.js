@@ -5514,6 +5514,35 @@ function ScrollToTop() {
   }, [pathname, search]);
   return null;
 }
+function GoogleAnalytics() {
+  const [gaId, setGaId] = useState(null);
+  useEffect(() => {
+    api.get("/api/site-settings/ga").then((res) => {
+      const id = res.data?.ga_tracking_id;
+      if (id && id.trim()) {
+        setGaId(id.trim());
+      }
+    }).catch(() => {
+    });
+  }, []);
+  useEffect(() => {
+    if (!gaId) return;
+    if (document.querySelector(`script[src*="googletagmanager.com/gtag"]`)) return;
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+    document.head.appendChild(script);
+    const inlineScript = document.createElement("script");
+    inlineScript.textContent = `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}');
+        `;
+    document.head.appendChild(inlineScript);
+  }, [gaId]);
+  return null;
+}
 function NotFound() {
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     /* @__PURE__ */ jsx(
@@ -5608,7 +5637,7 @@ function HeroCategory$2({ onQuickOrderClick, activeCategory, activeCategorySlug 
         ] }),
         /* @__PURE__ */ jsxs("p", { className: "body hero-sub fade-up fade-up-d2", style: { maxWidth: 600, marginBottom: "1.25rem", fontSize: "18px", color: "var(--c-text2)", lineHeight: 1.6 }, children: [
           "Сухі колоті дрова з ",
-          /* @__PURE__ */ jsx(Link, { to: "/delivery", className: "seo-inline-link", style: { color: "inherit", fontWeight: 500 }, children: "доставкою по Києву" }),
+          /* @__PURE__ */ jsx(Link, { to: "/dostavka", className: "seo-inline-link", style: { color: "inherit", fontWeight: 500 }, children: "доставкою по Києву" }),
           " та області. Дуб, граб, береза та інші породи з чесним складометром. Також пропонуємо ",
           /* @__PURE__ */ jsx(Link, { to: "/catalog/brikety", className: "seo-inline-link", style: { color: "inherit", fontWeight: 500 }, children: "паливні брикети" }),
           " та ",
@@ -6141,7 +6170,7 @@ function FirewoodSeoBlock() {
         ] }),
         /* @__PURE__ */ jsxs("p", { style: { marginBottom: 0 }, children: [
           "Ми доставляємо дрова дуба, граба, сосни, берези та вільхи. Усі дрова мають низьку вологість та високу тепловіддачу. Працює швидка та зручна ",
-          /* @__PURE__ */ jsx(Link, { to: "/delivery", className: "seo-inline-link", children: "доставка по Києву" }),
+          /* @__PURE__ */ jsx(Link, { to: "/dostavka", className: "seo-inline-link", children: "доставка по Києву" }),
           " та області."
         ] })
       ] }),
@@ -6182,7 +6211,7 @@ function FirewoodSeoBlock() {
               /* @__PURE__ */ jsx("span", { children: "→" }),
               " Кам’яне вугілля"
             ] }),
-            /* @__PURE__ */ jsxs(Link, { to: "/delivery", style: { display: "inline-flex", alignItems: "center", gap: 6, color: "var(--c-orange)", textDecoration: "none", fontWeight: 500 }, children: [
+            /* @__PURE__ */ jsxs(Link, { to: "/dostavka", style: { display: "inline-flex", alignItems: "center", gap: 6, color: "var(--c-orange)", textDecoration: "none", fontWeight: 500 }, children: [
               /* @__PURE__ */ jsx("span", { children: "→" }),
               " Доставка по Києву"
             ] })
@@ -8272,7 +8301,7 @@ function ProductPage() {
                       /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Термін доставки:" }),
                       " 1 день"
                     ] }),
-                    /* @__PURE__ */ jsxs(Link, { to: "/delivery", style: { color: "var(--c-orange)", textDecoration: "none", fontSize: "0.875rem", fontWeight: 600, marginTop: "0.25rem", display: "inline-flex", alignItems: "center", gap: 4 }, children: [
+                    /* @__PURE__ */ jsxs(Link, { to: "/dostavka", style: { color: "var(--c-orange)", textDecoration: "none", fontSize: "0.875rem", fontWeight: 600, marginTop: "0.25rem", display: "inline-flex", alignItems: "center", gap: 4 }, children: [
                       "Детальніше про доставку ",
                       /* @__PURE__ */ jsx(ArrowRight, { size: 14 })
                     ] })
@@ -9439,7 +9468,7 @@ function DeliverySeoBlock() {
 function PopularQueriesSection() {
   const { ref, visible } = useReveal();
   const queries = [
-    { name: "доставка дров київ", url: "/delivery" },
+    { name: "доставка дров київ", url: "/dostavka" },
     { name: "доставка брикетів", url: "/catalog/brikety" },
     { name: "доставка вугілля", url: "/catalog/vugillya" },
     { name: "купити дрова доставка", url: "/catalog/drova" }
@@ -9596,7 +9625,7 @@ function FinalCtaBanner$1({ onOrderClick }) {
 }
 function Delivery() {
   const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
-  const { pageData } = usePageSEO("/delivery");
+  const { pageData } = usePageSEO("/dostavka");
   const title = pageData?.meta_title || "Доставка дров, брикетів та вугілля по Києву | КиївБрикет";
   const description = pageData?.meta_description || "Швидка доставка твердого палива (дров, брикетів, вугілля) по Києву та Київській області власним транспортом. Замовляйте сьогодні!";
   const serviceSchema = {
@@ -9625,7 +9654,7 @@ function Delivery() {
       {
         title,
         description,
-        canonical: `${shopConfig.domain}/delivery`,
+        canonical: `${shopConfig.domain}/dostavka`,
         schema: serviceSchema
       }
     ),
@@ -10525,7 +10554,7 @@ function DynamicPage() {
     ] })
   ] });
 }
-const AdminLayout = React.lazy(() => import("./assets/AdminLayout-DXuYKcdn.js"));
+const AdminLayout = React.lazy(() => import("./assets/AdminLayout-DywU__WK.js"));
 const Orders = React.lazy(() => import("./assets/Orders-BBgIk0Tt.js"));
 const Products = React.lazy(() => import("./assets/Products-DZ_d1rOQ.js"));
 const ProductEdit = React.lazy(() => import("./assets/ProductEdit-By4Vq1zQ.js"));
@@ -10533,6 +10562,7 @@ const PageEditor = React.lazy(() => import("./assets/PageEditor-BKYKocbz.js"));
 const CategoryManager = React.lazy(() => import("./assets/CategoryManager-Dr2s_ua6.js"));
 React.lazy(() => import("./assets/SEOPages-Dvk6MJcu.js"));
 const TelegramSettings = React.lazy(() => import("./assets/TelegramSettings-B9sTyGhD.js"));
+const SiteSettingsPage = React.lazy(() => import("./assets/SiteSettingsPage-BO0eqyYt.js"));
 function App() {
   useEffect(() => {
     const preloader = document.getElementById("global-preloader");
@@ -10547,6 +10577,7 @@ function App() {
   }, []);
   return /* @__PURE__ */ jsx(AuthProvider, { children: /* @__PURE__ */ jsxs(CartProvider, { children: [
     /* @__PURE__ */ jsx(ScrollToTop, {}),
+    /* @__PURE__ */ jsx(GoogleAnalytics, {}),
     /* @__PURE__ */ jsx(Suspense, { fallback: /* @__PURE__ */ jsx("div", { className: "min-h-screen flex items-center justify-center", children: /* @__PURE__ */ jsx("div", { className: "w-8 h-8 border-4 border-[#A0153E] border-t-transparent rounded-full animate-spin" }) }), children: /* @__PURE__ */ jsxs(Routes, { children: [
       /* @__PURE__ */ jsxs(Route, { element: /* @__PURE__ */ jsx(PublicLayout, {}), children: [
         /* @__PURE__ */ jsx(Route, { path: "/", element: /* @__PURE__ */ jsx(Home, {}) }),
@@ -10570,7 +10601,8 @@ function App() {
         /* @__PURE__ */ jsx(Route, { path: "products/edit/:id", element: /* @__PURE__ */ jsx(ProductEdit, {}) }),
         /* @__PURE__ */ jsx(Route, { path: "seo", element: /* @__PURE__ */ jsx(PageEditor, {}) }),
         /* @__PURE__ */ jsx(Route, { path: "categories", element: /* @__PURE__ */ jsx(CategoryManager, {}) }),
-        /* @__PURE__ */ jsx(Route, { path: "telegram", element: /* @__PURE__ */ jsx(TelegramSettings, {}) })
+        /* @__PURE__ */ jsx(Route, { path: "telegram", element: /* @__PURE__ */ jsx(TelegramSettings, {}) }),
+        /* @__PURE__ */ jsx(Route, { path: "settings", element: /* @__PURE__ */ jsx(SiteSettingsPage, {}) })
       ] }) })
     ] }) })
   ] }) });

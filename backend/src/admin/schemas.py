@@ -30,3 +30,14 @@ class TelegramSettings(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class SiteSettingsUpdate(BaseModel):
+    ga_tracking_id: Optional[str] = None
+
+class SiteSettings(BaseModel):
+    id: int = 1
+    ga_tracking_id: Optional[str] = None
+
+    class Config:
+        from_attributes = True

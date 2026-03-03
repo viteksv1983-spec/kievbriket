@@ -105,6 +105,22 @@ def test_telegram(db: Session = Depends(get_db), current_user=Depends(get_curren
     send_telegram_notification("✅ Тестове повідомлення від Antreme!", db)
     return {"message": "Test notification sent"}
 
+# --- Site Settings (Google Analytics etc.) ---
+
+@router.get("/admin/site-settings", response_model=admin_schemas.SiteSettings)
+def get_site_settings(db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+    return AdminService.get_site_settings(db)
+
+@router.put("/admin/site-settings", response_model=admin_schemas.SiteSettings)
+def update_site_settings(settings_update: admin_schemas.SiteSettingsUpdate, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+    return AdminService.update_site_settings(db, update_data=settings_update)
+
+# Public endpoint — no auth, only returns GA tracking ID
+@router.get("/api/site-settings/ga")
+def get_ga_tracking_id(db: Session = Depends(get_db)):
+    settings = AdminService.get_site_settings(db)
+    return {"ga_tracking_id": settings.ga_tracking_id}
+
 # --- Upload ---
 
 from backend.src.core.images import ImageProcessor

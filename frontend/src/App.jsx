@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Critical path (Home is the landing page)
 import Home from './components/Home';
 import ScrollToTop from './components/ScrollToTop';
+import GoogleAnalytics from './components/GoogleAnalytics';
 import NotFound from './components/NotFound';
 
 
@@ -33,6 +34,7 @@ const PageEditor = React.lazy(() => import('./components/admin/PageEditor'));
 const CategoryManager = React.lazy(() => import('./components/admin/CategoryManager'));
 const SEOPages = React.lazy(() => import('./components/admin/SEOPages'));
 const TelegramSettings = React.lazy(() => import('./components/admin/TelegramSettings'));
+const SiteSettingsPage = React.lazy(() => import('./components/admin/SiteSettingsPage'));
 
 function App() {
   useEffect(() => {
@@ -52,6 +54,7 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <ScrollToTop />
+        <GoogleAnalytics />
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-[#A0153E] border-t-transparent rounded-full animate-spin" /></div>}>
           <Routes>
             <Route element={<PublicLayout />}>
@@ -83,6 +86,7 @@ function App() {
                 <Route path="seo" element={<PageEditor />} />
                 <Route path="categories" element={<CategoryManager />} />
                 <Route path="telegram" element={<TelegramSettings />} />
+                <Route path="settings" element={<SiteSettingsPage />} />
               </Route>
             </Route>
           </Routes>

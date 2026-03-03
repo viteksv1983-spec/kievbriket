@@ -2,7 +2,7 @@ import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { u as useAuth, a as api, b as useCategories } from "../entry-server.js";
 import { useLocation, Link, Outlet } from "react-router-dom";
-import { FiX, FiMenu, FiShoppingBag, FiPackage, FiGrid, FiImage, FiPlus, FiLayers, FiMessageCircle, FiHome, FiLogOut } from "react-icons/fi";
+import { FiX, FiMenu, FiShoppingBag, FiPackage, FiGrid, FiImage, FiPlus, FiLayers, FiMessageCircle, FiBarChart2, FiHome, FiLogOut } from "react-icons/fi";
 import { Flame } from "lucide-react";
 import "react-dom/server";
 import "react-fast-compare";
@@ -274,6 +274,18 @@ function AdminLayout() {
                   /* @__PURE__ */ jsx("span", { children: "Telegram" })
                 ]
               }
+            ),
+            /* @__PURE__ */ jsxs(
+              Link,
+              {
+                to: "/admin/settings",
+                onClick: () => setIsSidebarOpen(false),
+                className: `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/settings") ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"}`,
+                children: [
+                  /* @__PURE__ */ jsx(FiBarChart2, { className: "w-5 h-5" }),
+                  /* @__PURE__ */ jsx("span", { children: "Google Analytics" })
+                ]
+              }
             )
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "p-4 border-t border-gray-100", children: [
@@ -309,4 +321,4 @@ function AdminLayout() {
 export {
   AdminLayout as default
 };
-//# sourceMappingURL=AdminLayout-DXuYKcdn.js.map
+//# sourceMappingURL=AdminLayout-DywU__WK.js.map

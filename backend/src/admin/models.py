@@ -16,3 +16,10 @@ class TelegramSettings(Base):
     label_3 = Column(String, nullable=True)
     is_active_3 = Column(Boolean, default=True)
     is_active = Column(Boolean, default=True)
+
+
+class SiteSettings(Base):
+    __tablename__ = "site_settings"
+
+    id = Column(Integer, primary_key=True, default=1)
+    ga_tracking_id = Column(String, nullable=True)  # e.g. "G-XXXXXXXXXX" or full gtag script

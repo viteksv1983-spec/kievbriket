@@ -157,20 +157,31 @@ async function generatePages() {
                 `;
             }
 
-            // Extract remaining tags from Helmet (like viewport, static context tags, etc.)
+            // Extract remaining tags from Helmet (like JSON-LD scripts, etc.)
+            // When manualTags are present, skip Helmet's title/meta/link to avoid duplicates
             let helmetTags = '';
             if (helmetContext.helmet) {
-                const helmetTitle = helmetContext.helmet.title.toString();
-                // Avoid injecting empty title tags from Helmet since we built manualTags
-                if (!helmetTitle.includes('data-rh="true"></title>')) {
-                    helmetTags += helmetTitle;
+                // Only use Helmet title if we have NO manual tags
+                if (!manualTags) {
+                    const helmetTitle = helmetContext.helmet.title.toString();
+                    if (helmetTitle && !helmetTitle.includes('data-rh="true"></title>')) {
+                        helmetTags += helmetTitle;
+                    }
                 }
-                const helmetMeta = helmetContext.helmet.meta.toString();
-                if (helmetMeta) helmetTags += '\n' + helmetMeta;
 
-                const helmetLink = helmetContext.helmet.link.toString();
-                if (helmetLink) helmetTags += '\n' + helmetLink;
+                // Filter Helmet meta: skip description/robots/og tags if manual tags cover them
+                if (!manualTags) {
+                    const helmetMeta = helmetContext.helmet.meta.toString();
+                    if (helmetMeta) helmetTags += '\n' + helmetMeta;
+                }
 
+                // Skip Helmet canonical link if we already have manual canonical
+                if (!manualTags) {
+                    const helmetLink = helmetContext.helmet.link.toString();
+                    if (helmetLink) helmetTags += '\n' + helmetLink;
+                }
+
+                // Always inject Helmet scripts (JSON-LD schema etc.)
                 const helmetScript = helmetContext.helmet.script.toString();
                 if (helmetScript) helmetTags += '\n' + helmetScript;
             }

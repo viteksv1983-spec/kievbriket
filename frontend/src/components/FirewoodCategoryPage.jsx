@@ -62,7 +62,7 @@ function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug })
                     </h1>
 
                     <p className="body hero-sub fade-up fade-up-d2" style={{ maxWidth: 600, marginBottom: '1.25rem', fontSize: '18px', color: 'var(--c-text2)', lineHeight: 1.6 }}>
-                        Сухі колоті дрова з <Link to="/delivery" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>доставкою по Києву</Link> та області. Дуб, граб, береза та інші породи з чесним складометром. Також пропонуємо <Link to="/catalog/brikety" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>паливні брикети</Link> та <Link to="/catalog/vugillya" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>кам'яне вугілля</Link>.
+                        Сухі колоті дрова з <Link to="/dostavka" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>доставкою по Києву</Link> та області. Дуб, граб, береза та інші породи з чесним складометром. Також пропонуємо <Link to="/catalog/brikety" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>паливні брикети</Link> та <Link to="/catalog/vugillya" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>кам'яне вугілля</Link>.
                     </p>
 
                     <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)', borderBottom: '1px dashed rgba(255,255,255,0.1)', marginBottom: '1rem' }}></div>
@@ -596,7 +596,7 @@ function FirewoodSeoBlock() {
                                 Купити дрова з доставкою по Києву та Київській області можна безпосередньо у постачальника. Компанія «КиївБрикет» пропонує колоті дрова різних порід дерева для ефективного опалення приватних будинків, котлів та камінів, а також <Link to="/catalog/brikety" className="seo-inline-link">паливні брикети</Link> та <Link to="/catalog/vugillya" className="seo-inline-link">кам'яне вугілля</Link>.
                             </p>
                             <p style={{ marginBottom: 0 }}>
-                                Ми доставляємо дрова дуба, граба, сосни, берези та вільхи. Усі дрова мають низьку вологість та високу тепловіддачу. Працює швидка та зручна <Link to="/delivery" className="seo-inline-link">доставка по Києву</Link> та області.
+                                Ми доставляємо дрова дуба, граба, сосни, берези та вільхи. Усі дрова мають низьку вологість та високу тепловіддачу. Працює швидка та зручна <Link to="/dostavka" className="seo-inline-link">доставка по Києву</Link> та області.
                             </p>
                         </div>
 
@@ -637,7 +637,7 @@ function FirewoodSeoBlock() {
                                     <Link to="/catalog/vugillya" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
                                         <span>→</span> Кам’яне вугілля
                                     </Link>
-                                    <Link to="/delivery" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
+                                    <Link to="/dostavka" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
                                         <span>→</span> Доставка по Києву
                                     </Link>
                                 </div>

@@ -466,7 +466,7 @@ export default function ProductPage() {
                                     <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
                                         <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Термін доставки:</span> 1 день
                                     </p>
-                                    <Link to="/delivery" style={{ color: 'var(--c-orange)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 600, marginTop: '0.25rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                    <Link to="/dostavka" style={{ color: 'var(--c-orange)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 600, marginTop: '0.25rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                                         Детальніше про доставку <ArrowRight size={14} />
                                     </Link>
                                 </div>

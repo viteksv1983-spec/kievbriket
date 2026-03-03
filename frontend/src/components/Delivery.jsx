@@ -288,7 +288,7 @@ function PopularQueriesSection() {
     const { ref, visible } = useReveal();
 
     const queries = [
-        { name: 'доставка дров київ', url: '/delivery' },
+        { name: 'доставка дров київ', url: '/dostavka' },
         { name: 'доставка брикетів', url: '/catalog/brikety' },
         { name: 'доставка вугілля', url: '/catalog/vugillya' },
         { name: 'купити дрова доставка', url: '/catalog/drova' }
@@ -450,7 +450,7 @@ function FinalCtaBanner({ onOrderClick }) {
 export default function Delivery() {
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
 
-    const { pageData } = usePageSEO('/delivery');
+    const { pageData } = usePageSEO('/dostavka');
     const title = pageData?.meta_title || "Доставка дров, брикетів та вугілля по Києву | КиївБрикет";
     const description = pageData?.meta_description || "Швидка доставка твердого палива (дров, брикетів, вугілля) по Києву та Київській області власним транспортом. Замовляйте сьогодні!";
 
@@ -480,7 +480,7 @@ export default function Delivery() {
             <SEOHead
                 title={title}
                 description={description}
-                canonical={`${shopConfig.domain}/delivery`}
+                canonical={`${shopConfig.domain}/dostavka`}
                 schema={serviceSchema}
             />
 

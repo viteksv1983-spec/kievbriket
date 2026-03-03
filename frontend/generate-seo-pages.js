@@ -142,8 +142,33 @@ async function generatePages() {
                             <meta property="og:url" content="${domain}${pathName}" />
                             <meta property="og:type" content="product" />
                         `;
+                        // Product JSON-LD schema
                         if (prod.schema_json) {
                             manualTags += `\n<script type="application/ld+json">${typeof prod.schema_json === 'string' ? prod.schema_json : JSON.stringify(prod.schema_json)}</script>`;
+                        } else {
+                            // Fallback Product schema
+                            const productSchema = JSON.stringify({
+                                "@context": "https://schema.org",
+                                "@type": "Product",
+                                "name": prod.name,
+                                "description": (prod.meta_description || fallbackDesc).substring(0, 300),
+                                "image": prod.primary_image || prod.image_url ? `${domain}${prod.primary_image || prod.image_url}` : `${domain}/og-image.jpg`,
+                                "url": `${domain}${pathName}`,
+                                "brand": {
+                                    "@type": "Brand",
+                                    "name": "КиївБрикет"
+                                },
+                                ...(prod.price ? {
+                                    "offers": {
+                                        "@type": "Offer",
+                                        "price": prod.price,
+                                        "priceCurrency": "UAH",
+                                        "availability": "https://schema.org/InStock",
+                                        "url": `${domain}${pathName}`
+                                    }
+                                } : {})
+                            });
+                            manualTags += `\n<script type="application/ld+json">${productSchema}</script>`;
                         }
                     }
                 }

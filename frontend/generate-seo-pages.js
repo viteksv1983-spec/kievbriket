@@ -111,13 +111,6 @@ function generatePages() {
     });
 
     // 404 page
-    let html404 = baseHtml.replace(/<title>[\s\S]*?<\/title>/gi, '<title>Сторінку не знайдено | КиївБрикет</title>');
-    html404 = html404.replace(/<link[^>]*rel="canonical"[^>]*>/gi, '');
-    html404 = html404.replace(/<meta[^>]*property="og:[^>]*>/gi, '');
-    html404 = html404.replace(/<\/head>/i, `    <meta name="robots" content="noindex, follow" />\n</head>`);
-    fs.writeFileSync(path.join(distDir, '404.html'), html404, 'utf-8');
-    console.log('✅ Created 404.html');
-
     console.log('🎉 SSG SEO Injection complete! (3 static pages only — no legacy routes)');
 }
 

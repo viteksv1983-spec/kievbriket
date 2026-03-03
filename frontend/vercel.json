@@ -74,11 +74,5 @@
                 }
             ]
         }
-    ],
-    "rewrites": [
-        {
-            "source": "/((?!assets|api).*)",
-            "destination": "/index.html"
-        }
     ]
 }

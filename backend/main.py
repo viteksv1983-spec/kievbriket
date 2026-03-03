@@ -50,6 +50,16 @@ setup_error_handlers(app)
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.gzip import GZipMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.responses import RedirectResponse
+
+class TrailingSlashRedirectMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        path = request.url.path
+        if path != "/" and path.endswith("/") and not path.startswith("/api") and not path.startswith("/admin") and not path.startswith("/docs") and not path.startswith("/openapi.json"):
+            url = request.url.replace(path=path.rstrip("/"))
+            return RedirectResponse(url=url, status_code=301)
+        return await call_next(request)
+
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
@@ -81,6 +91,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         return response
 
 # Order matters: outermost middleware is added last
+app.add_middleware(TrailingSlashRedirectMiddleware)
 app.add_middleware(RequestLoggingMiddleware)
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(CacheHeadersMiddleware)

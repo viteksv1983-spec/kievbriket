@@ -13,8 +13,8 @@ const API_BASE = process.env.VITE_API_URL || 'http://localhost:8000';
 // ─── Static pages (only these 3 exist) ───
 const STATIC_PAGES = [
     { path: '/', priority: '1.0', changefreq: 'daily' },
-    { path: '/delivery/', priority: '0.9', changefreq: 'monthly' },
-    { path: '/contacts/', priority: '0.9', changefreq: 'monthly' },
+    { path: '/delivery', priority: '0.9', changefreq: 'monthly' },
+    { path: '/contacts', priority: '0.9', changefreq: 'monthly' },
 ];
 
 // ─── Category pages (fetched from backend, fallback to hardcoded) ───
@@ -73,7 +73,7 @@ async function generateSitemap() {
 
     // Category pages
     categories.forEach(slug => {
-        addUrl(`/catalog/${slug}/`, '0.8', 'weekly');
+        addUrl(`/catalog/${slug}`, '0.8', 'weekly');
     });
 
     // Product pages
@@ -82,7 +82,7 @@ async function generateSitemap() {
         const lastmod = product.updated_at
             ? new Date(product.updated_at).toISOString().split('T')[0]
             : today;
-        addUrl(`/catalog/${product.category}/${product.slug}/`, '0.7', 'weekly', lastmod);
+        addUrl(`/catalog/${product.category}/${product.slug}`, '0.7', 'weekly', lastmod);
     });
 
     // Sort: priority desc, then alphabetically

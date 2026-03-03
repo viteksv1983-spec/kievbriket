@@ -42,3 +42,14 @@
 2026-03-03 15:11:15 WARNING  [cakeshop.errors] HTTP 405: Method Not Allowed — HEAD /products/categories
 2026-03-03 15:40:54 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
 2026-03-03 15:40:56 INFO     [cakeshop.seed] Database already has 18 products. Skipping auto-seeding.
+2026-03-03 18:40:59 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 18:40:59 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 18:51:19 WARNING  [cakeshop.errors] HTTP 401: Incorrect username or password — POST /token
+2026-03-03 19:30:36 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-03 19:30:36 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-03 19:31:50 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-03 19:31:50 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-03 19:31:51 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/telegram
+2026-03-03 19:31:51 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/telegram
+2026-03-03 19:31:58 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 19:31:58 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/

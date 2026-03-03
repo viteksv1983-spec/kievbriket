@@ -1,6 +1,5 @@
 import React from 'react';
 import { ArrowRight, Flame, Phone, Star } from 'lucide-react';
-import heroImg from './assets/hero-bg.webp';
 import shopConfig from '../../shop.config';
 
 const stats = [
@@ -105,7 +104,7 @@ export function HeroSection({ onQuickOrderClick }) {
           {/* ── RIGHT COLUMN — LCP image ── */}
           <div className="hero-img-wrap">
             <img
-              src={heroImg}
+              src="/images/hero-bg.webp"
               alt="Дрова, брикети та вугілля КиївБрикет"
               title="Купити тверде паливо у Києві"
               className="hero-img"

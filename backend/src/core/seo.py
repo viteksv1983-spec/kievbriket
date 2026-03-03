@@ -87,9 +87,10 @@ class SitemapService:
             domain = "https://kievbriket.com"
         return f"""User-agent: *
 Allow: /
+
 Disallow: /admin
 Disallow: /api
-Disallow: /internal routes
+Disallow: /docs
 
 Sitemap: {domain}/sitemap.xml
 """

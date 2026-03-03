@@ -3,13 +3,13 @@ const shopConfig = {
     name: "Дрова Київ",
     tagline: "Якісні дрова з доставкою",
     description: "Купити колоті дрова з доставкою по Києву та області. Дуб, граб, береза, вільха, сосна. Чесний об'єм та швидка доставка вантажівками.",
-    domain: "https://drova.kyiv.ua", // Update later
+    domain: "https://kievbriket.com",
     logo: "/logo.svg", // Replaced text via css/components later if needed
 
     // ─── Contact ──────────────────────────────────────
     contact: {
         phone: "+380 (99) 123-45-67",
-        email: "info@drova.kyiv.ua",
+        email: "info@kievbriket.com",
         address: "Київ та Київська область",
         instagram: "https://www.instagram.com/drova_kiyv_example",
         telegram: "https://t.me/drova_kyiv_bot",

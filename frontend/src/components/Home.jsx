@@ -18,6 +18,7 @@ import { CtaBanner } from './new-home/CtaBanner';
 import { ContactSection } from './new-home/ContactSection';
 import { FuelCalculatorSection } from './new-home/FuelCalculatorSection';
 import { OrderFormModal } from './new-home/OrderFormModal';
+import { usePageSEO } from '../hooks/usePageSEO';
 
 function Home() {
     const { addToCart } = useContext(CartContext);
@@ -25,6 +26,8 @@ function Home() {
     const [featuredCakes, setFeaturedCakes] = useState([]);
     const [allCakes, setAllCakes] = useState([]);
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+
+    const { pageData } = usePageSEO('/');
 
     const handleQuickOrderDefault = () => {
         setIsOrderFormOpen(true);
@@ -138,22 +141,23 @@ function Home() {
     return (
         <>
             <SEOHead
-                title="Дрова, брикети та вугілля з доставкою по Києву | КиївБрикет"
-                description="Купити дрова, паливні брикети та вугілля у Києві. Швидка доставка по Києву та області. Чесний складометр, оплата після отримання."
+                title={pageData?.meta_title || "Дрова, брикети та вугілля з доставкою по Києву | КиївБрикет"}
+                description={pageData?.meta_description || "Купити дрова, паливні брикети та вугілля у Києві. Швидка доставка по Києву та області. Чесний складометр, оплата після отримання."}
                 canonicalUrl={`${shopConfig.domain}/`}
                 schema={combinedSchema}
             />
 
             <HeroSection onQuickOrderClick={handleQuickOrderDefault} />
-            <SeoIntroSection />
             <BenefitsSection />
             <TrustBlock onOrderClick={handleQuickOrderDefault} />
             <CategoriesSection categories={categories} />
             <FuelCalculatorSection onQuickOrderClick={handleQuickOrderDefault} />
             <DeliverySection />
             <ReviewsSection />
-            <SeoFooterSection />
             <FaqSection faqs={faqQuestions} />
+
+            <SeoIntroSection />
+            <SeoFooterSection />
 
             <CtaBanner />
             <ContactSection />

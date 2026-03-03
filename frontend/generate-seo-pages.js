@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // ─── Config ───
-const domain = 'https://drova.kyiv.ua';
+const domain = 'https://kievbriket.com';
 const siteName = 'Дрова Київ';
 
 const distDir = path.join(__dirname, 'dist');

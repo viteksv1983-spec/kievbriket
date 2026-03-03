@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // ─── Config ───
-const BASE_URL = 'https://drova.kyiv.ua';
+const BASE_URL = 'https://kievbriket.com';
 const API_BASE = process.env.VITE_API_URL || 'http://localhost:8000';
 
 // ─── Static pages (only these 3 exist) ───

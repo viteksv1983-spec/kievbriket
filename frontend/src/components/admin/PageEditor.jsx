@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import api from '../../api';
 import { useAuth } from '../../context/AuthContext';
-import { FiSave, FiSettings, FiInfo, FiGlobe, FiChevronDown, FiChevronUp, FiPlus, FiTrash2 } from 'react-icons/fi';
+import { FiSave, FiSettings, FiInfo, FiChevronDown, FiChevronUp, FiPlus, FiTrash2 } from 'react-icons/fi';
 
 // Fixed list: core pages (these always exist)
 const PAGE_CONFIG = {
@@ -20,8 +20,7 @@ export default function PageEditor() {
     const { token } = useAuth();
     const [selectedPage, setSelectedPage] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
-    const [showOg, setShowOg] = useState(false);
-    const [showAdvanced, setShowAdvanced] = useState(false);
+
     const [searchParams, setSearchParams] = useSearchParams();
     const [isCreating, setIsCreating] = useState(false);
     const [newPageData, setNewPageData] = useState({ route_path: '', name: '' });
@@ -48,8 +47,6 @@ export default function PageEditor() {
                 const match = pages.find(p => p.route_path === customRoute);
                 if (match) {
                     setSelectedPage({ ...match });
-                    setShowOg(false);
-                    setShowAdvanced(false);
                 }
                 return;
             }
@@ -60,8 +57,6 @@ export default function PageEditor() {
                 const match = pages.find(p => p.route_path === cfg.route);
                 if (match) {
                     setSelectedPage({ ...match });
-                    setShowOg(false);
-                    setShowAdvanced(false);
                 }
             }
         }
@@ -298,16 +293,8 @@ export default function PageEditor() {
                         />
                         <p className="text-xs text-gray-400 mt-0.5 ml-1">{(selectedPage.meta_description || '').length}/160</p>
                     </div>
-                    <div>
-                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Canonical URL</label>
-                        <input
-                            type="text"
-                            value={selectedPage.canonical_url || ''}
-                            onChange={e => update('canonical_url', e.target.value)}
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-orange-500/10 transition-all text-sm outline-none font-mono"
-                            placeholder="Залиште пустим для автогенерації"
-                        />
-                    </div>
+
+
                     <label className="flex items-center gap-3 cursor-pointer p-3 bg-gray-50 rounded-xl border border-gray-200">
                         <input
                             type="checkbox"
@@ -361,106 +348,8 @@ export default function PageEditor() {
                 </div>
             </div>
 
-            {/* Advanced — collapsible */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <button
-                    type="button"
-                    onClick={() => setShowAdvanced(!showAdvanced)}
-                    className="w-full flex items-center justify-between px-6 py-4 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                    <span>⚙️ Розширені налаштування</span>
-                    {showAdvanced ? <FiChevronUp /> : <FiChevronDown />}
-                </button>
-                {showAdvanced && (
-                    <div className="px-6 pb-6 space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Schema Type</label>
-                                <select
-                                    value={selectedPage.schema_type || cfg.defaultSchemaType}
-                                    onChange={e => update('schema_type', e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none"
-                                >
-                                    <option value="localbusiness">LocalBusiness</option>
-                                    <option value="article">Article</option>
-                                    <option value="webpage">WebPage</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Meta Keywords</label>
-                                <input
-                                    type="text"
-                                    value={selectedPage.meta_keywords || ''}
-                                    onChange={e => update('meta_keywords', e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none"
-                                    placeholder="ключ1, ключ2, ключ3"
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Custom Schema JSON-LD</label>
-                            <textarea
-                                rows="4"
-                                value={selectedPage.custom_schema || ''}
-                                onChange={e => update('custom_schema', e.target.value)}
-                                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none resize-none font-mono"
-                                placeholder='{"@context":"https://schema.org",...}'
-                            />
-                        </div>
-                    </div>
-                )}
-            </div>
 
-            {/* Open Graph — collapsible */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <button
-                    type="button"
-                    onClick={() => setShowOg(!showOg)}
-                    className="w-full flex items-center justify-between px-6 py-4 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                    <span className="flex items-center gap-2">
-                        <FiGlobe className="text-blue-500" />
-                        Open Graph (соцмережі)
-                    </span>
-                    {showOg ? <FiChevronUp /> : <FiChevronDown />}
-                </button>
-                {showOg && (
-                    <div className="px-6 pb-6 space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">OG Title</label>
-                                <input
-                                    type="text"
-                                    value={selectedPage.og_title || ''}
-                                    onChange={e => update('og_title', e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none"
-                                    placeholder="Fallback → Meta Title"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">OG Image</label>
-                                <input
-                                    type="text"
-                                    value={selectedPage.og_image || ''}
-                                    onChange={e => update('og_image', e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none font-mono"
-                                    placeholder="/media/og-image.webp"
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">OG Description</label>
-                            <textarea
-                                rows="2"
-                                value={selectedPage.og_description || ''}
-                                onChange={e => update('og_description', e.target.value)}
-                                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none resize-none"
-                                placeholder="Fallback → Meta Description"
-                            />
-                        </div>
-                    </div>
-                )}
-            </div>
+
         </div>
     );
 }

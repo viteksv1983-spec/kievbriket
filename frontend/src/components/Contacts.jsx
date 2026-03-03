@@ -4,6 +4,7 @@ import { useReveal } from '../hooks/useReveal';
 import shopConfig from '../shop.config';
 import { ArrowRight, ChevronRight, Phone, CheckCircle2, ShieldCheck, MapPin, Truck, Flame, Box, Package, Clock, Loader2 } from 'lucide-react';
 import SEOHead from './SEOHead';
+import { usePageSEO } from '../hooks/usePageSEO';
 import { OrderFormModal } from './new-home/OrderFormModal';
 
 // ─── HERO CONTACTS ────────────────────────────────────────────────
@@ -550,8 +551,9 @@ function FinalCtaBanner({ onOrderClick }) {
 export default function Contacts() {
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
 
-    const title = "Контакти КиївБрикет | Замовити дрова, брикети, вугілля";
-    const description = "Контактна інформація КиївБрикет. Телефони, графік роботи, адреса. Замовляйте дрова, паливні брикети та вугілля з доставкою по Києву та області.";
+    const { pageData } = usePageSEO('/contacts');
+    const title = pageData?.meta_title || "Контакти КиївБрикет | Замовити дрова, брикети, вугілля";
+    const description = pageData?.meta_description || "Контактна інформація КиївБрикет. Телефони, графік роботи, адреса. Замовляйте дрова, паливні брикети та вугілля з доставкою по Києву та області.";
 
     return (
         <div className="new-home-scope" style={{
@@ -564,7 +566,7 @@ export default function Contacts() {
             <SEOHead
                 title={title}
                 description={description}
-                canonical={`https://kievbriket.com.ua/kontakty`}
+                canonical={`https://kievbriket.com/kontakty`}
             />
 
             <HeroContacts onOrderClick={() => setIsOrderFormOpen(true)} />

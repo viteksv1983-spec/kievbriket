@@ -8,6 +8,7 @@ import { FuelCalculatorSection } from './new-home/FuelCalculatorSection';
 import { BenefitsSection } from './new-home/BenefitsSection';
 import { OrderFormModal } from './new-home/OrderFormModal';
 import { DeliverySection } from './new-home/DeliverySection';
+import { usePageSEO } from '../hooks/usePageSEO';
 
 // ─── HERO SECTION ──────────────────────────────────────────────────
 function HeroDelivery({ onOrderClick }) {
@@ -449,8 +450,9 @@ function FinalCtaBanner({ onOrderClick }) {
 export default function Delivery() {
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
 
-    const title = "Доставка дров, брикетів та вугілля по Києву | КиївБрикет";
-    const description = "Швидка доставка твердого палива (дров, брикетів, вугілля) по Києву та Київській області власним транспортом. Замовляйте сьогодні!";
+    const { pageData } = usePageSEO('/delivery');
+    const title = pageData?.meta_title || "Доставка дров, брикетів та вугілля по Києву | КиївБрикет";
+    const description = pageData?.meta_description || "Швидка доставка твердого палива (дров, брикетів, вугілля) по Києву та Київській області власним транспортом. Замовляйте сьогодні!";
 
     const serviceSchema = {
         "@context": "https://schema.org",

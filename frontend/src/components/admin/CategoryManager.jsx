@@ -304,52 +304,7 @@ export default function CategoryManager() {
                                             />
                                             <p className="text-xs text-gray-400 mt-0.5">{formData.meta_description.length}/160</p>
                                         </div>
-                                        <div>
-                                            <label className="block text-xs font-medium text-gray-500 mb-1">Canonical URL</label>
-                                            <input
-                                                type="text"
-                                                className="w-full px-3 py-2 border rounded-lg text-sm font-mono"
-                                                placeholder="/catalog/drova/ або https://site.ua/catalog/drova/"
-                                                value={formData.canonical_url}
-                                                onChange={e => setFormData({ ...formData, canonical_url: e.target.value })}
-                                            />
-                                            <p className="text-xs text-gray-400 mt-0.5">Залиште пустим для автогенерації</p>
-                                        </div>
-                                        <hr className="border-gray-100" />
-                                        <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Open Graph (соцмережі)</p>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-xs font-medium text-gray-500 mb-1">OG Title</label>
-                                                <input
-                                                    type="text"
-                                                    maxLength={255}
-                                                    className="w-full px-3 py-2 border rounded-lg text-sm"
-                                                    placeholder="Заголовок для Facebook/Telegram"
-                                                    value={formData.og_title}
-                                                    onChange={e => setFormData({ ...formData, og_title: e.target.value })}
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-medium text-gray-500 mb-1">OG Image URL</label>
-                                                <input
-                                                    type="text"
-                                                    className="w-full px-3 py-2 border rounded-lg text-sm font-mono"
-                                                    placeholder="/media/image.webp"
-                                                    value={formData.og_image}
-                                                    onChange={e => setFormData({ ...formData, og_image: e.target.value })}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs font-medium text-gray-500 mb-1">OG Description</label>
-                                            <textarea
-                                                className="w-full px-3 py-2 border rounded-lg text-sm"
-                                                rows="2"
-                                                placeholder="Опис для соцмереж"
-                                                value={formData.og_description}
-                                                onChange={e => setFormData({ ...formData, og_description: e.target.value })}
-                                            />
-                                        </div>
+
                                         <hr className="border-gray-100" />
                                         <label className="flex items-center gap-3 cursor-pointer">
                                             <input

@@ -1,1 +1,44 @@
 2026-03-03 01:06:18 WARNING  [cakeshop.errors] Validation error on GET /products/: [{'field': 'query.limit', 'message': 'Input should be less than or equal to 100'}]
+2026-03-03 01:17:04 WARNING  [cakeshop.errors] Validation error on GET /products/: [{'field': 'query.limit', 'message': 'Input should be less than or equal to 100'}]
+2026-03-03 01:27:56 WARNING  [cakeshop.errors] Validation error on GET /products/: [{'field': 'query.limit', 'message': 'Input should be less than or equal to 100'}]
+2026-03-03 13:20:15 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 13:20:48 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 13:25:07 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 13:37:57 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 13:39:45 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 13:39:47 INFO     [cakeshop.seed] Database already has 18 products. Skipping auto-seeding.
+2026-03-03 13:51:53 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 13:51:54 INFO     [cakeshop.seed] Database already has 18 products. Skipping auto-seeding.
+2026-03-03 13:57:48 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 13:59:00 INFO     [cakeshop] Logging initialized — logs dir: c:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 14:00:34 INFO     [cakeshop] Logging initialized — logs dir: c:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 14:00:35 INFO     [cakeshop.seed] Database already has 18 products. Skipping auto-seeding.
+2026-03-03 14:20:00 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:20:00 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:29:03 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:29:03 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:29:06 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:31:16 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 14:31:17 INFO     [cakeshop.seed] Database already has 18 products. Skipping auto-seeding.
+2026-03-03 14:31:45 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:31:45 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:32:13 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:32:13 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:32:36 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:33:01 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:33:01 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:33:24 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:33:24 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:47:50 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 14:47:51 INFO     [cakeshop.seed] Database already has 18 products. Skipping auto-seeding.
+2026-03-03 14:54:39 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 14:54:41 INFO     [cakeshop.seed] Database already has 18 products. Skipping auto-seeding.
+2026-03-03 14:54:41 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:54:41 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:54:41 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:54:41 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:54:42 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:54:42 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 15:11:15 WARNING  [cakeshop.errors] HTTP 405: Method Not Allowed — HEAD /products/categories
+2026-03-03 15:40:54 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-03 15:40:56 INFO     [cakeshop.seed] Database already has 18 products. Skipping auto-seeding.

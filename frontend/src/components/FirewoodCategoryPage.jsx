@@ -34,8 +34,8 @@ function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug })
                         "@context": "https://schema.org",
                         "@type": "BreadcrumbList",
                         "itemListElement": [
-                            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://kievbriket.com.ua/" },
-                            { "@type": "ListItem", "position": 2, "name": activeCategory?.name || 'Дрова', "item": "https://kievbriket.com.ua/catalog/drova" }
+                            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://kievbriket.com/" },
+                            { "@type": "ListItem", "position": 2, "name": activeCategory?.name || 'Дрова', "item": "https://kievbriket.com/catalog/drova" }
                         ]
                     })
                 }} />
@@ -138,9 +138,9 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
     const [isSortOpen, setIsSortOpen] = useState(false);
 
     const filteredProducts = useMemo(() => {
-        let list = [...(products || [])];
+        let list = [...products];
         if (selectedBreed !== 'Усі') {
-            list = list.filter(p => p.name && p.name.toLowerCase().includes(selectedBreed.toLowerCase()));
+            list = list.filter(p => p.name.toLowerCase().includes(selectedBreed.toLowerCase()));
         }
 
         switch (sortOrder) {
@@ -248,19 +248,19 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
 
                     {/* Schema.org Products */}
                     <script type="application/ld+json" dangerouslySetInnerHTML={{
-                        __html: JSON.stringify((filteredProducts || []).map(p => ({
+                        __html: JSON.stringify(filteredProducts.map(p => ({
                             "@context": "https://schema.org",
                             "@type": "Product",
-                            "name": p?.name || "Товар",
-                            "image": p?.image_url ? getImageUrl(p.image_url, api.defaults.baseURL) : undefined,
-                            "description": p?.name ? getDetailedDesc(p.name).desc : "Опис товару",
+                            "name": p.name,
+                            "image": getImageUrl(p.image_url, api.defaults.baseURL),
+                            "description": getDetailedDesc(p.name).desc,
                             "brand": { "@type": "Brand", "name": "КиївБрикет" },
                             "offers": {
                                 "@type": "Offer",
                                 "price": p.variants?.length > 0 ? p.variants[0].price : p.price,
                                 "priceCurrency": "UAH",
                                 "availability": "https://schema.org/InStock",
-                                "url": `https://kievbriket.com.ua${getProductUrl(p)}`
+                                "url": `https://kievbriket.com${getProductUrl(p)}`
                             }
                         })))
                     }} />

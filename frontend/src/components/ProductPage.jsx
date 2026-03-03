@@ -26,19 +26,20 @@ export default function ProductPage() {
     };
 
 
-    const specs = [
-        { icon: <Ruler size={17} color="var(--c-orange)" />, label: 'Довжина', value: '35–40 см' },
-        { icon: <Scale size={17} color="var(--c-orange)" />, label: 'Покол', value: 'Середній' },
-        { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Вологість', value: 'Природна (До 25%)' },
-        { icon: <Info size={17} color="var(--c-orange)" />, label: 'Фасування', value: 'Складометр' },
-    ];
+    // Dynamic Specs
+    const specs = product ? [
+        { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Порода', value: product.name.toLowerCase().includes('дуб') ? 'Дуб' : (product.name.toLowerCase().includes('сосн') ? 'Сосна' : (product.name.toLowerCase().includes('граб') ? 'Граб' : (product.category === 'brikety' ? 'Деревна тирса' : 'Тверді породи'))) },
+        { icon: <CheckCircle2 size={17} color="var(--c-orange)" />, label: 'Тип', value: product.category === 'drova' ? 'Колоті' : (product.category === 'brikety' ? 'Пресовані' : 'Сипуче') },
+        { icon: <Scale size={17} color="var(--c-orange)" />, label: 'Фасування', value: product.category === 'drova' ? 'Складометр' : 'У пакуваннях / піддонах' },
+        { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Вологість', value: product.category === 'drova' ? 'Природна (До 25%)' : 'До 8%' },
+        { icon: <Truck size={17} color="var(--c-orange)" />, label: 'Доставка', value: 'По Києву та області' },
+    ] : [];
 
-    const faqs = [
-        { q: 'Як швидко доставляєте?', a: 'При оформленні замовлення до 12:00 ми намагаємося доставити дрова в той же день. В інших випадках — на наступний день або у зручний для вас час.' },
-        { q: 'Чи можна оплатити після отримання?', a: 'Так, звичайно! Ми не вимагаємо передоплату. Ви оплачуєте замовлення готівкою або на карту тільки після того, як дрова будуть доставлені та ви переконаєтесь у їх якості та об\'ємі.' },
-        { q: 'Скільки дров у складометрі?', a: 'Складометр — це щільно укладені дрова в об’ємі 1 метр на 1 метр на 1 метр (включаючи природні порожнечі між полінами). Ми завжди гарантуємо чесний об\'єм при завантаженні.' },
-        { q: 'Чи доставляєте у приватний сектор?', a: 'Так, ми доставляємо власними маневреними автомобілями у будь-який приватний сектор чи дачний кооператив Київської області.' }
-    ];
+    const faqs = product ? [
+        { q: `Скільки горять ${product.name.toLowerCase()}?`, a: `Залежить від типу вашого котла чи печі, але завдяки високій щільності та правильній вологості вони забезпечують максимально тривале горіння та високу тепловіддачу.` },
+        { q: 'Який обʼєм складометра?', a: 'Складометр — це щільно укладене паливо в об’ємі 1 метр на 1 метр на 1 метр. Ми завжди гарантуємо чесний об\'єм при завантаженні автомобіля.' },
+        { q: 'Чи можна замовити доставку сьогодні?', a: 'Так! При оформленні замовлення в першій половині дня ми намагаємося доставити власним транспортом в той же день по Києву та області.' }
+    ] : [];
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -104,6 +105,53 @@ export default function ProductPage() {
         );
     }
 
+    // Schemas
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Головна", "item": "https://kievbriket.com/" },
+            { "@type": "ListItem", "position": 2, "name": category ? category.name : 'Каталог', "item": `https://kievbriket.com${category ? getCategoryUrl(category.slug) : '/catalog/drova'}` },
+            { "@type": "ListItem", "position": 3, "name": product.name, "item": `https://kievbriket.com/catalog/${categorySlug}/${productSlug}` }
+        ]
+    };
+
+    const productSchema = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": product.name,
+        "image": galleryImages[0] || "",
+        "description": product.description || `Купити ${product.name.toLowerCase()} з доставкою по Києву`,
+        "sku": product.id || String(product.slug),
+        "brand": {
+            "@type": "Brand",
+            "name": "KievBriket"
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": `https://kievbriket.com/catalog/${categorySlug}/${productSlug}`,
+            "priceCurrency": "UAH",
+            "price": displayPrice || 0,
+            "availability": "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition"
+        }
+    };
+
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map(f => ({
+            "@type": "Question",
+            "name": f.q,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": f.a
+            }
+        }))
+    };
+
+    const dynamicTitle = `${product.name} купити Київ | ціна | KievBriket`;
+
     return (
         <div
             className="new-home-scope"
@@ -116,10 +164,11 @@ export default function ProductPage() {
             }}
         >
             <SEOHead
-                title={product.meta_title || product.name}
-                description={product.meta_description || product.description}
+                title={dynamicTitle}
+                description={product.meta_description || product.description || `Замовляйте ${product.name.toLowerCase()} з швидкою доставкою по Києву та області.`}
                 ogImage={product.og_image || product.image_url}
                 canonical={product.canonical_url}
+                schema={[breadcrumbSchema, productSchema, faqSchema]}
             />
 
             {/* ── Breadcrumbs ── */}
@@ -178,6 +227,9 @@ export default function ProductPage() {
                                 <img
                                     src={galleryImages[activeImageIndex]}
                                     alt={product.name}
+                                    width="600"
+                                    height="450"
+                                    loading={activeImageIndex === 0 ? "eager" : "lazy"}
                                     style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
                                     onMouseEnter={e => window.innerWidth > 768 && (e.target.style.transform = 'scale(1.05)')}
                                     onMouseLeave={e => e.target.style.transform = 'scale(1)'}
@@ -204,7 +256,14 @@ export default function ProductPage() {
                                             padding: 0, transition: 'border-color 0.2s',
                                         }}
                                     >
-                                        <img src={src} alt="thumbnail" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <img
+                                            src={src}
+                                            alt={`мініатюра ${idx + 1}`}
+                                            width="80"
+                                            height="80"
+                                            loading="lazy"
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        />
                                     </button>
                                 ))}
                             </div>
@@ -384,6 +443,35 @@ export default function ProductPage() {
                                     )}
                                 </div>
                             </div>
+
+                            {/* ── SECTION 3B: Delivery Info ── */}
+                            <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                    <div style={{
+                                        width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+                                        background: 'var(--color-accent-soft)',
+                                        border: '1px solid rgba(249,115,22,0.15)',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    }}>
+                                        <Truck size={18} color="var(--c-orange)" />
+                                    </div>
+                                    <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', margin: 0 }}>
+                                        Інформація про доставку
+                                    </h2>
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingLeft: 50 }}>
+                                    <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                        <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Локація:</span> Доставка по Києву та області
+                                    </p>
+                                    <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                        <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Термін доставки:</span> 1 день
+                                    </p>
+                                    <Link to="/delivery" style={{ color: 'var(--c-orange)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 600, marginTop: '0.25rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                        Детальніше про доставку <ArrowRight size={14} />
+                                    </Link>
+                                </div>
+                            </div>
+
                         </div>
 
                         {/* ── SECTION 4: FAQ ── */}
@@ -434,14 +522,14 @@ export default function ProductPage() {
                 {/* ── SECTION 5: RELATED PRODUCTS ── */}
                 {relatedProducts.length > 0 && (
                     <div style={{ marginTop: '5rem' }}>
-                        <h2 className="h2" style={{ marginBottom: '2rem' }}>Схожі дрова</h2>
+                        <h2 className="h2" style={{ marginBottom: '2rem' }}>Інші {category?.name?.toLowerCase() || 'дрова'}</h2>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
                             {relatedProducts.map((p, idx) => {
                                 const displayPrice = p.variants?.length > 0 ? p.variants[0].price : p.price;
                                 const isPopular = idx < 2;
 
                                 return (
-                                    <Link key={p.id} to={`/product/${p.slug}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
+                                    <Link key={p.id} to={`/catalog/${categorySlug || p.category}/${p.slug}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
                                         <article className="nh-card catalog-card" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative', flex: 1 }}>
                                             {/* ── IMAGE ── */}
                                             <div style={{ display: 'block', position: 'relative', overflow: 'hidden', aspectRatio: '4/3' }}>
@@ -517,6 +605,33 @@ export default function ProductPage() {
                         </div>
                     </div>
                 )}
+                {/* ── SECTION 6: CROSS-CATEGORY LINKING ── */}
+                <div style={{ marginTop: '5rem', paddingBottom: '2rem' }}>
+                    <h2 className="h2" style={{ marginBottom: '2rem' }}>Інші види палива</h2>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+                        <Link to="/catalog/drova" className="nh-card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', textDecoration: 'none', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
+                            <div>
+                                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--c-text)', margin: 0 }}>Дрова колоті</h3>
+                                <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', margin: '4px 0 0 0' }}>Дуб, граб, сосна</p>
+                            </div>
+                            <ChevronRight size={20} color="var(--c-orange)" />
+                        </Link>
+                        <Link to="/catalog/brikety" className="nh-card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', textDecoration: 'none', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
+                            <div>
+                                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--c-text)', margin: 0 }}>Паливні брикети</h3>
+                                <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', margin: '4px 0 0 0' }}>RUF, Nestro, Pini Kay</p>
+                            </div>
+                            <ChevronRight size={20} color="var(--c-orange)" />
+                        </Link>
+                        <Link to="/catalog/vugillya" className="nh-card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', textDecoration: 'none', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
+                            <div>
+                                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--c-text)', margin: 0 }}>Кам'яне вугілля</h3>
+                                <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', margin: '4px 0 0 0' }}>Антрацит, ДГ</p>
+                            </div>
+                            <ChevronRight size={20} color="var(--c-orange)" />
+                        </Link>
+                    </div>
+                </div>
             </main>
 
             {/* ── responsive grid ── */}

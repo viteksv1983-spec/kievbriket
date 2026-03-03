@@ -149,9 +149,9 @@ function CategoryProducts({ products, onOrderProduct }) {
     const [isSortOpen, setIsSortOpen] = useState(false);
 
     const filteredProducts = useMemo(() => {
-        let list = [...(products || [])];
+        let list = [...products];
         if (selectedType !== 'Усі') {
-            list = list.filter(p => p.name && p.name.toLowerCase().includes(selectedType.toLowerCase()));
+            list = list.filter(p => p.name.toLowerCase().includes(selectedType.toLowerCase()));
         }
 
         switch (sortOrder) {
@@ -258,18 +258,18 @@ function CategoryProducts({ products, onOrderProduct }) {
                 </div>
 
                 <script type="application/ld+json" dangerouslySetInnerHTML={{
-                    __html: JSON.stringify((filteredProducts || []).map(p => ({
+                    __html: JSON.stringify(filteredProducts.map(p => ({
                         "@context": "https://schema.org",
                         "@type": "Product",
-                        "name": p?.name || "Товар",
-                        "image": p?.image_url ? (p.image_url.startsWith('http') ? p.image_url : `https://kievbriket.com.ua${p.image_url}`) : undefined,
-                        "description": p?.description || p?.name || "Опис товару",
+                        "name": p.name,
+                        "image": p.image_url ? (p.image_url.startsWith('http') ? p.image_url : `https://kievbriket.com${p.image_url}`) : undefined,
+                        "description": p.description || p.name,
                         "offers": {
                             "@type": "Offer",
                             "priceCurrency": "UAH",
                             "price": p.price,
                             "availability": "https://schema.org/InStock",
-                            "url": `https://kievbriket.com.ua/catalog/vugillya/${p.slug}`
+                            "url": `https://kievbriket.com/catalog/vugillya/${p.slug}`
                         }
                     })))
                 }} />
@@ -281,7 +281,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                         gap: '24px', transitionDelay: '0.2s',
                     }}
                 >
-                    {(filteredProducts || []).map((product) => (
+                    {filteredProducts.map((product) => (
                         <Link
                             to={`/catalog/vugillya/${product.slug}`}
                             key={product.id}
@@ -306,9 +306,9 @@ function CategoryProducts({ products, onOrderProduct }) {
                                 </div>
 
                                 <div style={{ height: '300px', width: '100%', position: 'relative', overflow: 'hidden', background: '#0a0d14' }}>
-                                    {product?.image_url ? (
+                                    {product.image_url ? (
                                         <img
-                                            src={product?.image_url?.startsWith('http') ? product.image_url : `${api.defaults.baseURL}${product.image_url}`}
+                                            src={product.image_url.startsWith('http') ? product.image_url : `${api.defaults.baseURL}${product.image_url}`}
                                             alt={`${product.name} Київ`}
                                             loading="lazy"
                                             style={{

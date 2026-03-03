@@ -1,1 +1,24 @@
 2026-03-03 01:06:18 WARNING  [cakeshop.errors] Validation error on GET /products/: [{'field': 'query.limit', 'message': 'Input should be less than or equal to 100'}]
+2026-03-03 01:17:04 WARNING  [cakeshop.errors] Validation error on GET /products/: [{'field': 'query.limit', 'message': 'Input should be less than or equal to 100'}]
+2026-03-03 01:27:56 WARNING  [cakeshop.errors] Validation error on GET /products/: [{'field': 'query.limit', 'message': 'Input should be less than or equal to 100'}]
+2026-03-03 14:20:00 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:20:00 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:29:03 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:29:03 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:29:06 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:31:45 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:31:45 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:32:13 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:32:13 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:32:36 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:33:01 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:33:01 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:33:24 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:33:24 WARNING  [cakeshop.errors] Validation error on GET /pages/by-route: [{'field': 'query.route', 'message': 'Field required'}]
+2026-03-03 14:54:41 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:54:41 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:54:41 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:54:41 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:54:42 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 14:54:42 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-03 15:11:15 WARNING  [cakeshop.errors] HTTP 405: Method Not Allowed — HEAD /products/categories

@@ -103,7 +103,7 @@ export default function Catalog({ predefinedCategory }) {
 
     const { categorySlug } = useParams();
     const [searchParams] = useSearchParams();
-    const { categories } = useCategories();
+    const { categories, loading: categoriesLoading } = useCategories();
 
     const categoryQuery = searchParams.get('category');
     const activeCategorySlug = predefinedCategory || categorySlug || categoryQuery;
@@ -115,9 +115,6 @@ export default function Catalog({ predefinedCategory }) {
         'coal': 'vugillya'
     };
 
-    if (oldSlugMap[activeCategorySlug]) {
-        return <Navigate to={`/catalog/${oldSlugMap[activeCategorySlug]}`} replace />;
-    }
 
     const activeCategory = categories.find(c => c.slug === activeCategorySlug);
     const catSeo = CATEGORY_SEO[activeCategorySlug] || DEFAULT_SEO;
@@ -151,9 +148,6 @@ export default function Catalog({ predefinedCategory }) {
             .catch(() => setLoading(false));
     }, [activeCategorySlug]);
 
-    if (!activeCategory && !loading) {
-        return <NotFound />;
-    }
 
     const handleOrder = useCallback((product = null) => {
         setOrderProduct(product);
@@ -172,6 +166,15 @@ export default function Catalog({ predefinedCategory }) {
         }
         return sortProducts(filtered, sortMode);
     }, [products, activeFilter, sortMode]);
+
+    if (oldSlugMap[activeCategorySlug]) {
+        return <Navigate to={`/catalog/${oldSlugMap[activeCategorySlug]}`} replace />;
+    }
+
+    if (!activeCategory && !loading && !categoriesLoading) {
+        return <NotFound />;
+    }
+
 
     return (
         <div

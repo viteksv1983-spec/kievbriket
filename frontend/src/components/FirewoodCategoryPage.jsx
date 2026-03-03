@@ -138,9 +138,9 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
     const [isSortOpen, setIsSortOpen] = useState(false);
 
     const filteredProducts = useMemo(() => {
-        let list = [...products];
+        let list = [...(products || [])];
         if (selectedBreed !== 'Усі') {
-            list = list.filter(p => p.name.toLowerCase().includes(selectedBreed.toLowerCase()));
+            list = list.filter(p => p.name && p.name.toLowerCase().includes(selectedBreed.toLowerCase()));
         }
 
         switch (sortOrder) {
@@ -248,12 +248,12 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
 
                     {/* Schema.org Products */}
                     <script type="application/ld+json" dangerouslySetInnerHTML={{
-                        __html: JSON.stringify(filteredProducts.map(p => ({
+                        __html: JSON.stringify((filteredProducts || []).map(p => ({
                             "@context": "https://schema.org",
                             "@type": "Product",
-                            "name": p.name,
-                            "image": getImageUrl(p.image_url, api.defaults.baseURL),
-                            "description": getDetailedDesc(p.name).desc,
+                            "name": p?.name || "Товар",
+                            "image": p?.image_url ? getImageUrl(p.image_url, api.defaults.baseURL) : undefined,
+                            "description": p?.name ? getDetailedDesc(p.name).desc : "Опис товару",
                             "brand": { "@type": "Brand", "name": "КиївБрикет" },
                             "offers": {
                                 "@type": "Offer",

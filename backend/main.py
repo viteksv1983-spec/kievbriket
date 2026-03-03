@@ -113,6 +113,36 @@ app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
 
 
+# ─── MIGRATION SCRIPT (TEMPORARY) ─────────────────────────────────
+@app.get("/api/migrate-slugs-live")
+def migrate_slugs_live(db: Session = Depends(get_db)):
+    """Temporary endpoint to migrate English category slugs to Ukrainian locally or on Render."""
+    try:
+        slug_map = {
+            "firewood": "drova",
+            "briquettes": "brikety",
+            "coal": "vugillya"
+        }
+        
+        migrated_cats = []
+        for old_slug, new_slug in slug_map.items():
+            # Update CategoryMetadata
+            cat = db.query(CategoryMetadata).filter(CategoryMetadata.slug == old_slug).first()
+            if cat:
+                cat.slug = new_slug
+                migrated_cats.append(new_slug)
+            
+            # Update Products
+            products = db.query(Product).filter(Product.category == old_slug).all()
+            for p in products:
+                p.category = new_slug
+                
+        db.commit()
+        return {"status": "success", "migrated_categories": migrated_cats, "message": "Slugs migrated to Ukrainian"}
+    except Exception as e:
+        db.rollback()
+        return {"status": "error", "message": str(e)}
+
 # ─── Static Files ───────────────────────────────────────────
 import mimetypes
 mimetypes.add_type("image/webp", ".webp")

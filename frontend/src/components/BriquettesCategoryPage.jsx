@@ -145,14 +145,14 @@ function BriquetteTypesSection() {
 // ─── PRODUCT GRID ────────────────────────────────────────────────
 function CategoryProducts({ products, onOrderProduct }) {
     const { ref, visible } = useReveal();
-    const [selectedBreed, setSelectedBreed] = useState('Усі');
+    const [selectedType, setSelectedType] = useState('Усі');
     const [sortOrder, setSortOrder] = useState('popular');
     const [isSortOpen, setIsSortOpen] = useState(false);
 
     const filteredProducts = useMemo(() => {
-        let list = [...products];
-        if (selectedBreed !== 'Усі') {
-            list = list.filter(p => p.name.toLowerCase().includes(selectedBreed.toLowerCase()));
+        let list = [...(products || [])];
+        if (selectedType !== 'Усі') {
+            list = list.filter(p => p.name && p.name.toLowerCase().includes(selectedType.toLowerCase()));
         }
 
         switch (sortOrder) {
@@ -176,7 +176,7 @@ function CategoryProducts({ products, onOrderProduct }) {
         }
 
         return list;
-    }, [products, selectedBreed, sortOrder]);
+    }, [products, selectedType, sortOrder]);
 
     // Removed the aggressive null return to fix disappearing products on direct load.
 
@@ -190,23 +190,23 @@ function CategoryProducts({ products, onOrderProduct }) {
                     display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between',
                     marginBottom: '2rem'
                 }}>
-                    {/* Breed Filter */}
+                    {/* Type Filter */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                        <span style={{ color: 'var(--c-text2)', fontWeight: 500, marginRight: '8px' }}>Порода:</span>
-                        {['Усі', 'Сосна', 'Дуб', 'Мікс'].map(breed => {
-                            const isActive = selectedBreed === breed;
-                            const breedKey = breed === 'Мікс' ? 'мікс' : breed;
+                        <span style={{ color: 'var(--c-text2)', fontWeight: 500, marginRight: '8px' }}>Тип:</span>
+                        {['Усі', 'RUF', 'Pini Kay', 'Nestro'].map(type => {
+                            const isActive = selectedType === type;
+                            const typeKey = type;
                             return (
                                 <button
-                                    key={breed}
-                                    onClick={() => setSelectedBreed(breedKey === 'Усі' ? 'Усі' : breedKey)}
+                                    key={type}
+                                    onClick={() => setSelectedType(typeKey === 'Усі' ? 'Усі' : typeKey)}
                                     style={{
                                         padding: '6px 20px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: isActive ? 600 : 400,
                                         background: isActive ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
                                         color: isActive ? 'var(--c-orange)' : 'var(--c-text2)',
                                         border: `1px solid ${isActive ? 'var(--c-orange)' : 'var(--color-border-subtle)'}`,
                                         cursor: 'pointer', transition: 'all 0.2s'
-                                    }}>{breed}</button>
+                                    }}>{type}</button>
                             );
                         })}
                     </div>
@@ -261,12 +261,12 @@ function CategoryProducts({ products, onOrderProduct }) {
                 </div>
 
                 <script type="application/ld+json" dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(filteredProducts.map(p => ({
+                    __html: JSON.stringify((filteredProducts || []).map(p => ({
                         "@context": "https://schema.org",
                         "@type": "Product",
-                        "name": p.name,
-                        "image": p.image_url ? (p.image_url.startsWith('http') ? p.image_url : `https://kievbriket.com.ua${p.image_url}`) : undefined,
-                        "description": p.description || p.name,
+                        "name": p?.name || "Товар",
+                        "image": p?.image_url ? (p?.image_url?.startsWith('http') ? p.image_url : `https://kievbriket.com.ua${p.image_url}`) : undefined,
+                        "description": p?.description || p?.name || "Опис товар",
                         "offers": {
                             "@type": "Offer",
                             "priceCurrency": "UAH",
@@ -284,7 +284,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                         gap: '24px', transitionDelay: '0.2s',
                     }}
                 >
-                    {filteredProducts.map((product) => (
+                    {(filteredProducts || []).map((product) => (
                         <Link
                             to={`/catalog/brikety/${product.slug}`}
                             key={product.id}
@@ -311,7 +311,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                                 <div style={{ height: '300px', width: '100%', position: 'relative', overflow: 'hidden', background: '#0a0d14' }}>
                                     {product.image_url ? (
                                         <img
-                                            src={product.image_url.startsWith('http') ? product.image_url : `${api.defaults.baseURL}${product.image_url}`}
+                                            src={product?.image_url?.startsWith('http') ? product.image_url : `${api.defaults.baseURL}${product.image_url}`}
                                             alt={`${product.name} Київ`}
                                             loading="lazy"
                                             style={{

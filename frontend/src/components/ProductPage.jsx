@@ -25,9 +25,6 @@ export default function ProductPage() {
         'coal': 'vugillya'
     };
 
-    if (oldSlugMap[categorySlug]) {
-        return <Navigate to={`/catalog/${oldSlugMap[categorySlug]}/${productSlug}`} replace />;
-    }
 
     const specs = [
         { icon: <Ruler size={17} color="var(--c-orange)" />, label: 'Довжина', value: '35–40 см' },
@@ -76,6 +73,10 @@ export default function ProductPage() {
 
     const displayPrice = selectedVariant ? selectedVariant.price : product?.price;
     const isPopular = product?.is_popular || true; // Simulate feature for demo if not provided
+
+    if (oldSlugMap[categorySlug]) {
+        return <Navigate to={`/catalog/${oldSlugMap[categorySlug]}/${productSlug}`} replace />;
+    }
 
 
     if (loading) {

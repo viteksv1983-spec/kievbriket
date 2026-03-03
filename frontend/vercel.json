@@ -76,7 +76,19 @@
     ],
     "rewrites": [
         {
-            "source": "/(.*)",
+            "source": "/admin(.*)",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/login(.*)",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/checkout(.*)",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/cart(.*)",
             "destination": "/index.html"
         }
     ]

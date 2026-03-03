@@ -55,7 +55,14 @@ from fastapi.responses import RedirectResponse
 class TrailingSlashRedirectMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         path = request.url.path
-        if path != "/" and path.endswith("/") and not path.startswith("/api") and not path.startswith("/admin") and not path.startswith("/docs") and not path.startswith("/openapi.json"):
+        
+        # API prefixes that should NEVER be redirected to avoid breaking frontend Axios calls
+        api_prefixes = (
+            "/api", "/admin", "/docs", "/openapi.json", 
+            "/products", "/orders", "/users", "/token", "/pages"
+        )
+        
+        if path != "/" and path.endswith("/") and not path.startswith(api_prefixes):
             url = request.url.replace(path=path.rstrip("/"))
             return RedirectResponse(url=url, status_code=301)
         return await call_next(request)

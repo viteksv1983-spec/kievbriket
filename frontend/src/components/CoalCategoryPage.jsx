@@ -316,15 +316,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                                     height: '100%', overflow: 'hidden', position: 'relative', borderRadius: '16px'
                                 }}
                             >
-                                <div style={{
-                                    position: 'absolute', top: 16, left: 16, zIndex: 10,
-                                    background: 'var(--color-success)', color: '#fff', fontSize: '0.65rem',
-                                    fontWeight: 700, padding: '4px 10px', borderRadius: '4px',
-                                    textTransform: 'uppercase', letterSpacing: '0.05em',
-                                    boxShadow: '0 0 10px rgba(34,197,94,0.3)', display: 'flex', alignItems: 'center', gap: 4
-                                }}>
-                                    <span>✔ В наявності</span>
-                                </div>
+
 
                                 <div className="product-card-image" style={{ height: '300px', width: '100%', position: 'relative', overflow: 'hidden', background: '#0a0d14' }}>
                                     {product.image_url ? (
@@ -354,9 +346,18 @@ function CategoryProducts({ products, onOrderProduct }) {
                                 </div>
 
                                 <div className="product-card-body" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
-                                    <h3 className="product-card-title-static" style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1rem', lineHeight: 1.3 }}>
-                                        {product.name}
-                                    </h3>
+                                    <div className="product-card-title-static" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', marginBottom: '1rem', flexShrink: 0 }}>
+                                        <h3 className="h3" style={{ margin: 0 }}>{product.name}</h3>
+                                        <div style={{
+                                            display: 'flex', alignItems: 'center', gap: '4px',
+                                            background: '#22C55E', color: '#fff',
+                                            padding: '4px 12px', borderRadius: '40px',
+                                            fontSize: '0.8rem', fontWeight: 700, flexShrink: 0,
+                                            boxShadow: '0 0 10px rgba(34,197,94,0.4)'
+                                        }}>
+                                            ✔ В наявності
+                                        </div>
+                                    </div>
 
                                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--c-text2)', fontSize: '0.875rem' }}>
@@ -374,11 +375,9 @@ function CategoryProducts({ products, onOrderProduct }) {
                                         paddingTop: '1.25rem', borderTop: '1px solid var(--color-border-subtle)'
                                     }}>
                                         <div>
-                                            <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'rgba(255,255,255,0.4)', marginBottom: '2px', fontWeight: 600 }}>Ціна за тонну</div>
-                                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                                                <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)', lineHeight: 1 }}>{product.price}</span>
-                                                <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>грн</span>
-                                            </div>
+                                            <span className="category-card-mobile-badge" style={{ display: 'none', color: '#22c55e', fontSize: '0.9rem', fontWeight: 700, marginBottom: 4 }}>✔ В наявності</span>
+                                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{product.price}</span>
+                                            <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginLeft: 4 }}>грн / тонна</span>
                                         </div>
                                         <button
                                             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onOrderProduct(product); }}

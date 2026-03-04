@@ -104,4 +104,8 @@ img {
     .product-card-body .product-card-title-static {
         display: none !important;
     }
+
+    .category-card-mobile-badge {
+        display: block !important;
+    }
 }

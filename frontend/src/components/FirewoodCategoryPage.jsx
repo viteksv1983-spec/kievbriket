@@ -385,6 +385,7 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
 
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--color-border-subtle)' }}>
                                                 <div>
+                                                    <span className="category-card-mobile-badge" style={{ display: 'none', color: '#22c55e', fontSize: '0.9rem', fontWeight: 700, marginBottom: 4 }}>✔ В наявності</span>
                                                     <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{displayPrice}</span>
                                                     <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginLeft: 4 }}>грн / {activeCategory?.slug === 'vugillya' || activeCategory?.slug === 'brikety' ? 'тонну' : 'складометр'}</span>
                                                 </div>

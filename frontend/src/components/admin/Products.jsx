@@ -89,7 +89,7 @@ export default function Products() {
                                             <th className="px-6 py-4">Фото</th>
                                             <th className="px-6 py-4">Назва</th>
                                             <th className="px-6 py-4">Ціна</th>
-                                            <th className="px-6 py-4">Вага</th>
+
                                             <th className="px-6 py-4 text-right">Дії</th>
                                         </tr>
                                     </thead>
@@ -115,7 +115,7 @@ export default function Products() {
                                                         <span className="font-bold text-gray-900">{product.price}</span>
                                                         <span className="text-[10px] text-gray-400 ml-1">₴</span>
                                                     </td>
-                                                    <td className="px-6 py-4 text-gray-500">{product.weight ? `${product.weight} г` : '-'}</td>
+
                                                     <td className="px-6 py-4 text-right">
                                                         <div className="flex justify-end gap-2">
                                                             <Link
@@ -138,7 +138,7 @@ export default function Products() {
                                             ))
                                         ) : (
                                             <tr>
-                                                <td colSpan="6" className="px-6 py-20 text-center text-gray-500">
+                                                <td colSpan="5" className="px-6 py-20 text-center text-gray-500">
                                                     Товарів у цій категорії поки що немає
                                                 </td>
                                             </tr>
@@ -168,7 +168,7 @@ export default function Products() {
                                                 <div className="flex justify-between items-end mt-2">
                                                     <div className="flex items-center gap-2">
                                                         <span className="font-bold text-gray-900 text-sm">{product.price} <span className="text-[10px] text-gray-400 font-normal">₴</span></span>
-                                                        {product.weight && <span className="text-[10px] text-gray-400 px-1.5 py-0.5 bg-gray-100 rounded">{(product.weight >= 10 && product.weight <= 200) ? product.weight + '0 г' : product.weight + ' кг'}</span>}
+
                                                     </div>
                                                     <div className="flex items-center gap-1">
                                                         <Link

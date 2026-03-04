@@ -40,8 +40,7 @@ def create_order(
         product = ProductService.get_product(db, item.cake_id)
         product_name = product.name if product else f"ID {item.cake_id}"
         msg += f"- {product_name} ({item.quantity} шт)\n"
-        if item.weight:
-            msg += f"  Вага: {item.weight} кг\n"
+
         if item.flavor:
             msg += f"  Начинка: {item.flavor}\n"
     msg += f"\n💰 <b>Всього:</b> {db_order.total_price} грн\n"
@@ -66,7 +65,7 @@ def create_quick_order(order: schemas.QuickOrderCreate, db: Session = Depends(ge
         product = ProductService.get_product(db, order.cake_id)
         product_name = product.name if product else f"Товар #{order.cake_id}"
 
-    msg = f"<b>Нове замовлення! (В 1 клік)</b>\n"
+    msg = f"<b>Нове замовлення!</b>\n"
     msg += f"🆔 Номер замовлення: №{db_order.id}\n\n"
     msg += f"👤 <b>Клієнт:</b>\n"
     msg += f"Ім'я: {order.customer_name}\n"
@@ -74,10 +73,13 @@ def create_quick_order(order: schemas.QuickOrderCreate, db: Session = Depends(ge
     msg += f"📦 <b>Товар:</b> {product_name}\n"
     if order.quantity and order.quantity > 1:
         msg += f"  Кількість: {order.quantity}\n"
-    if order.weight:
-        msg += f"  Вага: {order.weight} кг\n"
+
     if order.flavor:
         msg += f"  Варіант: {order.flavor}\n"
+    if order.delivery_method:
+        msg += f"🔥 <b>Тип палива:</b> {order.delivery_method}\n"
+    if order.delivery_date:
+        msg += f"💬 <b>Коментар:</b> {order.delivery_date}\n"
     msg += f"\n💰 <b>Всього:</b> {db_order.total_price} грн\n"
         
     try:

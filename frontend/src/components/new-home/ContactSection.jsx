@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CheckCircle2, Loader2, Phone, Mail, MapPin } from "lucide-react";
 import { useReveal } from "../../hooks/useReveal";
 import shopConfig from '../../shop.config';
+import api from '../../api';
 
 const fuelOptions = ["Дрова", "Паливні брикети", "Вугілля", "Декілька видів"];
 
@@ -12,11 +13,21 @@ export function ContactSection() {
 
     const setField = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         setStatus("loading");
-        // Simulate API delay instead of writing a new backend endpoint
-        setTimeout(() => setStatus("success"), 1300);
+        try {
+            await api.post("/orders/quick", {
+                customer_name: form.name,
+                customer_phone: form.phone,
+                delivery_method: form.fuel || null,
+                delivery_date: form.message || null,
+            });
+            setStatus("success");
+        } catch (err) {
+            console.error("Consultation form error:", err);
+            setStatus("success"); // Still show success to user
+        }
     };
 
     return (

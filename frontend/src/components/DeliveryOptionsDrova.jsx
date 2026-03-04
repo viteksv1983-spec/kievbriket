@@ -24,11 +24,11 @@ export default function DeliveryOptionsDrova() {
 
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
-                    gap: '1.5rem'
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                    gap: '1rem'
                 }}>
                     {[
-                        { title: 'ГАЗель (бортова)', vol: '4–5 складометрів', price: '1500 грн', desc: 'Оптимально для невеликих замовлень дров у межах Києва.', img: 'gazel-dostavka-driv-kyiv.webp' },
+                        { title: 'ГАЗель (бортова)', vol: '4–5 складометрів', price: '1500 грн', desc: 'Оптимально для невеликих замовлень дров.', img: 'gazel-dostavka-driv-kyiv.webp' },
                         { title: 'ЗІЛ самоскид', vol: 'до 4 складометрів', price: '3000 грн', desc: 'Найпопулярніший варіант доставки колотих дров.', img: 'zil-dostavka-driv-kyiv.webp' },
                         { title: 'КАМАЗ самоскид', vol: 'до 8–10 складометрів', price: '4000 грн', desc: 'Підходить для великих замовлень дров.', img: 'kamaz-dostavka-driv-kyiv.webp' }
                     ].map((v, i) => (
@@ -48,21 +48,21 @@ export default function DeliveryOptionsDrova() {
                                 e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
                             }}
                         >
-                            <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: '#fff', padding: '1.5rem' }}>
+                            <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: '#fff', padding: '1rem' }}>
                                 <img
                                     src={getImgUrl(v.img)}
                                     alt={`Доставка дров машиною ${v.title} Київ`}
-                                    width="400" height="225"
+                                    width="200" height="113"
                                     loading="lazy"
                                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                                 />
                             </div>
-                            <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                                <h3 style={{ margin: 0, fontSize: '1.125rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '0.25rem' }}>{v.title}</h3>
-                                <div style={{ fontSize: '0.9rem', color: 'var(--c-text2)', fontWeight: 600, marginBottom: '0.75rem' }}>Обсяг: <span style={{ color: 'var(--c-text)' }}>{v.vol}</span></div>
-                                <p style={{ fontSize: '0.9rem', color: 'var(--c-text2)', lineHeight: 1.5, flex: 1, margin: 0, marginBottom: '1rem' }}>{v.desc}</p>
-                                <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--color-border-subtle)', marginTop: 'auto' }}>
-                                    <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-orange)' }}>{v.price}</span>
+                            <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '0.25rem' }}>{v.title}</h3>
+                                <div style={{ fontSize: '0.85rem', color: 'var(--c-text2)', fontWeight: 600, marginBottom: '0.5rem' }}>Обсяг: <span style={{ color: 'var(--c-text)' }}>{v.vol}</span></div>
+                                <p style={{ fontSize: '0.85rem', color: 'var(--c-text2)', lineHeight: 1.4, flex: 1, margin: 0, marginBottom: '0.75rem' }}>{v.desc}</p>
+                                <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--color-border-subtle)', marginTop: 'auto' }}>
+                                    <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--c-orange)' }}>{v.price}</span>
                                 </div>
                             </div>
                         </div>
@@ -78,8 +78,8 @@ export default function DeliveryOptionsDrova() {
 
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-                    gap: '1.5rem'
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                    gap: '1rem'
                 }}>
                     {[
                         { title: 'Кран-маніпулятор', desc: 'Для складних умов розвантаження дров (вузькі заїзди, паркани, обмежений доступ).', price: 'від 3500 грн', img: 'manipulator-dostavka-kyiv.webp' },
@@ -101,20 +101,20 @@ export default function DeliveryOptionsDrova() {
                                 e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
                             }}
                         >
-                            <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: '#fff' }}>
+                            <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: '#fff', padding: '1rem' }}>
                                 <img
                                     src={getImgUrl(eq.img)}
                                     alt={`Спецтехніка ${eq.title} для розвантаження дров Київ`}
-                                    width="400" height="225"
+                                    width="200" height="113"
                                     loading="lazy"
                                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                                 />
                             </div>
-                            <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                                <h3 style={{ margin: 0, fontSize: '1.125rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '0.75rem' }}>{eq.title}</h3>
-                                <p style={{ fontSize: '0.9rem', color: 'var(--c-text2)', lineHeight: 1.5, flex: 1, margin: 0, marginBottom: '1rem' }}>{eq.desc}</p>
-                                <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--color-border-subtle)', marginTop: 'auto' }}>
-                                    <span style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--c-orange)' }}>{eq.price}</span>
+                            <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '0.5rem' }}>{eq.title}</h3>
+                                <p style={{ fontSize: '0.85rem', color: 'var(--c-text2)', lineHeight: 1.4, flex: 1, margin: 0, marginBottom: '0.75rem' }}>{eq.desc}</p>
+                                <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--color-border-subtle)', marginTop: 'auto' }}>
+                                    <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--c-orange)' }}>{eq.price}</span>
                                 </div>
                             </div>
                         </div>

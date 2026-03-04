@@ -394,7 +394,7 @@ export default function ProductPage() {
                         </div>
 
                         {/* ── SECTION 2 & 3: Characteristics & Description ── */}
-                        <div className="product-info-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginTop: '0.5rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
                             {/* Specs */}
                             <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', rowGap: '1.5rem' }}>
@@ -487,48 +487,52 @@ export default function ProductPage() {
                                 </div>
                             </div>
 
-                            {/* ── SECTION 4: FAQ ── */}
-                            <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
-                                    Часті питання
-                                </h2>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                    {faqs.map((faq, idx) => (
-                                        <div key={idx} style={{
-                                            background: 'var(--color-bg-elevated)',
-                                            border: '1px solid var(--color-border-subtle)',
-                                            borderRadius: 12, overflow: 'hidden',
+                        </div>
+
+
+
+                        {/* ── SECTION 4: FAQ ── */}
+                        <div style={{ marginTop: '1rem' }}>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
+                                Часті питання
+                            </h2>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                {faqs.map((faq, idx) => (
+                                    <div key={idx} style={{
+                                        background: 'var(--color-bg-elevated)',
+                                        border: '1px solid var(--color-border-subtle)',
+                                        borderRadius: 12, overflow: 'hidden',
+                                    }}>
+                                        <button
+                                            onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                                            style={{
+                                                width: '100%', padding: '1.25rem 1.5rem',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                                background: 'transparent', border: 'none', color: 'var(--c-text)',
+                                                fontSize: '1rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left',
+                                            }}
+                                        >
+                                            {faq.q}
+                                            <ChevronDown size={20} color="var(--c-orange)" style={{
+                                                transform: openFaq === idx ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                transition: 'transform 0.3s ease'
+                                            }} />
+                                        </button>
+                                        <div style={{
+                                            maxHeight: openFaq === idx ? 200 : 0,
+                                            padding: openFaq === idx ? '0 1.5rem 1.5rem' : '0 1.5rem',
+                                            opacity: openFaq === idx ? 1 : 0,
+                                            overflow: 'hidden',
+                                            transition: 'all 0.3s ease',
+                                            color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6,
                                         }}>
-                                            <button
-                                                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                                                style={{
-                                                    width: '100%', padding: '1.25rem 1.5rem',
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                                    background: 'transparent', border: 'none', color: 'var(--c-text)',
-                                                    fontSize: '1rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left',
-                                                }}
-                                            >
-                                                {faq.q}
-                                                <ChevronDown size={20} color="var(--c-orange)" style={{
-                                                    transform: openFaq === idx ? 'rotate(180deg)' : 'rotate(0deg)',
-                                                    transition: 'transform 0.3s ease'
-                                                }} />
-                                            </button>
-                                            <div style={{
-                                                maxHeight: openFaq === idx ? 200 : 0,
-                                                padding: openFaq === idx ? '0 1.5rem 1.5rem' : '0 1.5rem',
-                                                opacity: openFaq === idx ? 1 : 0,
-                                                overflow: 'hidden',
-                                                transition: 'all 0.3s ease',
-                                                color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6,
-                                            }}>
-                                                {faq.a}
-                                            </div>
+                                            {faq.a}
                                         </div>
-                                    ))}
-                                </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -676,7 +680,6 @@ export default function ProductPage() {
                     .product-price-block { order: -1; padding-top: 0 !important; border-top: none !important; }
                     main { padding-top: 1rem !important; padding-bottom: 1rem !important; }
                     
-                    }
                     /* Sticky Mobile CTA Container */
                     .product-cta-container {
                         position: fixed;
@@ -691,16 +694,6 @@ export default function ProductPage() {
                     }
                     /* Add padding to bottom to account for the sticky bar */
                     .new-home-scope { padding-bottom: 90px; }
-                }
-
-                /* Layout for Product Info Sections */
-                .product-info-grid {
-                    grid-template-columns: 1fr 1fr;
-                }
-                @media (max-width: 992px) {
-                    .product-info-grid {
-                        grid-template-columns: 1fr;
-                    }
                 }
             `}</style>
 

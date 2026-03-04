@@ -504,6 +504,14 @@ function DeliveryExtendedSeo() {
                                     </div>
 
                                     <div style={{
+                                        display: 'flex', alignItems: 'center', gap: '0.5rem',
+                                        marginBottom: '0.5rem', fontSize: '0.9rem', color: '#22c55e',
+                                    }}>
+                                        <CheckCircle2 size={16} style={{ flexShrink: 0 }} />
+                                        <span>Швидка доставка по Києву</span>
+                                    </div>
+
+                                    <div style={{
                                         display: 'flex', alignItems: 'baseline', gap: '0.25rem',
                                         paddingTop: '0.75rem',
                                         borderTop: '1px dashed rgba(255,255,255,0.08)',

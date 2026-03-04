@@ -17,7 +17,7 @@ export function SiteFooter() {
 
     return (
         <>
-            <footer style={{ background: "var(--color-bg-deep)", borderTop: "1px solid var(--color-border-subtle)" }}>
+            <footer id="contact" style={{ background: "var(--color-bg-deep)", borderTop: "1px solid var(--color-border-subtle)" }}>
                 <div
                     style={{
                         maxWidth: 1200, margin: "0 auto",

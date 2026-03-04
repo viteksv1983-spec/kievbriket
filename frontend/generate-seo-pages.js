@@ -238,7 +238,7 @@ async function generatePages() {
                 }
             } else if (pathName === '/dostavka') {
                 manualTags = `
-                    <title>Доставка дров, брикетів та вугілля по Києву | КиївБрикет</title>
+                    <title>Доставка дров по Києву — брикети та вугілля | КиївБрикет</title>
                     <meta name="description" content="Доставка дров, паливних брикетів та вугілля по Києву та області. Власний автопарк, доставка в день замовлення." />
                     <link rel="canonical" href="${domain}${pathName}" />
                     <meta name="robots" content="index, follow" />

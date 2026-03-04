@@ -545,7 +545,7 @@ function DeliveryExtendedSeo() {
                                 </thead>
                                 <tbody>
                                     {[
-                                        { type: 'ГАЗель', vol: 'до 2 складометрів', price: 'від 1500 грн', desc: 'Швидка доставка невеликих замовлень' },
+                                        { type: 'ГАЗель', vol: '4–5 складометрів', price: 'від 1500 грн', desc: 'Швидка доставка невеликих замовлень' },
                                         { type: 'ЗІЛ', vol: 'до 4 складометрів', price: 'від 3000 грн', desc: 'Оптимально для приватних будинків' },
                                         { type: 'КАМАЗ', vol: 'до 8 складометрів', price: 'від 4000 грн', desc: 'Великі обсяги палива' },
                                         { type: 'Фура', vol: '22–24 складометри', price: 'за домовленістю', desc: 'Поставка напряму з лісгоспу' },
@@ -945,42 +945,28 @@ export default function Delivery() {
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
 
     const { pageData } = usePageSEO('/dostavka');
-    const title = pageData?.meta_title || "Доставка дров, брикетів та вугілля по Києву | КиївБрикет";
+    const title = pageData?.meta_title || "Доставка дров по Києву — брикети та вугілля | КиївБрикет";
     const description = pageData?.meta_description || "Швидка доставка твердого палива (дров, брикетів, вугілля) по Києву та Київській області власним транспортом. Замовляйте сьогодні!";
 
-    const serviceSchema = {
+    const combinedSchema = {
         "@context": "https://schema.org",
-        "@type": "Service",
-        "name": "Доставка твердого палива",
-        "provider": {
-            "@type": "LocalBusiness",
-            "name": shopConfig.name
-        },
-        "areaServed": [
-            { "@type": "City", "name": "Київ" },
-            { "@type": "State", "name": "Київська область" }
-        ],
-        "description": description
-    };
-
-    const deliveryServiceSchema = {
-        "@context": "https://schema.org",
-        "@type": "DeliveryService",
-        "name": "Доставка дров, брикетів та вугілля",
-        "provider": {
-            "@type": "LocalBusiness",
-            "name": "КиївБрикет",
-            "telephone": "+380991234567",
-            "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "вул. Колекторна 19",
-                "addressLocality": "Київ",
-                "addressCountry": "UA"
-            }
+        "@type": "LocalBusiness",
+        "name": "КиївБрикет",
+        "url": "https://kievbriket.com",
+        "telephone": "+380991234567",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "вул. Колекторна, 19",
+            "addressLocality": "Київ",
+            "addressCountry": "UA"
         },
         "areaServed": {
             "@type": "AdministrativeArea",
-            "name": "Київ та Київська область"
+            "name": "Київська область"
+        },
+        "makesOffer": {
+            "@type": "Service",
+            "name": "Доставка дров, брикетів та вугілля"
         }
     };
 
@@ -996,7 +982,7 @@ export default function Delivery() {
                 title={title}
                 description={description}
                 canonical={`${shopConfig.domain}/dostavka`}
-                schema={[serviceSchema, deliveryServiceSchema]}
+                schema={combinedSchema}
             />
 
             <HeroDelivery onOrderClick={() => setIsOrderFormOpen(true)} />
@@ -1031,6 +1017,9 @@ export default function Delivery() {
                             чесний обʼєм палива, швидке завантаження та
                             оперативну доставку дров, брикетів і вугілля
                             для приватних будинків, котелень та підприємств. Якщо вам потрібно <strong>купити дрова з доставкою</strong> або замовити <strong>доставку палива Київ</strong>, обирайте перевіреного постачальника КиївБрикет.
+                        </p>
+                        <p style={{ marginTop: '1rem' }}>
+                            Ми доставляємо колоті дрова різних порід: дуб, граб, ясен, береза. Замовити дрова з доставкою по Києву можна у будь-який район міста. Власний автопарк дозволяє виконувати швидку доставку дров, паливних брикетів та вугілля по всьому Києву та Київській області.
                         </p>
                     </div>
                 </div>

@@ -429,72 +429,104 @@ function DeliveryExtendedSeo() {
             {/* ── SECTION 2: Доставка дров ───────────────────────── */}
             <section style={sectionPad}>
                 <div className="layout-container">
-                    <div className="nh-card" style={cardPad}>
+                    <div style={{ marginBottom: '1rem' }}>
                         <h2 className="h2" style={{ marginBottom: '1rem' }}>
                             Доставка дров по Києву
                         </h2>
-                        <p style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', marginBottom: '2rem' }}>
-                            Доставка <Link to="/catalog/drova" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>дров</Link> здійснюється власним транспортом. Ви можете замовити доставку дров складометром у будь-який район Києва та Київської області. Обирайте тип машини залежно від обсягу замовлення.
+                        <p style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', marginBottom: '2rem', maxWidth: 700 }}>
+                            Доставка <Link to="/catalog/drova" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>дров</Link> здійснюється власним транспортом. Ви можете замовити доставку дров складометром у будь-який район Києва та Київської області.
                         </p>
+                    </div>
 
-                        {/* Vehicle images */}
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
-                            gap: '1rem', marginBottom: '2rem',
-                        }}>
-                            {[
-                                { src: '/images/delivery/gazel-dostavka-driv-kyiv.webp', alt: 'ГАЗель доставка дров Київ', label: 'ГАЗель' },
-                                { src: '/images/delivery/zil-dostavka-driv-kyiv.webp', alt: 'ЗІЛ доставка дров Київ', label: 'ЗІЛ' },
-                                { src: '/images/delivery/kamaz-dostavka-driv-kyiv.webp', alt: 'КАМАЗ доставка дров Київ', label: 'КАМАЗ' },
-                            ].map((img, i) => (
-                                <figure key={i} style={{ margin: 0, textAlign: 'center' }}>
+                    {/* Interactive vehicle cards */}
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+                        gap: '1.5rem',
+                    }}>
+                        {[
+                            { src: '/images/delivery/gazel-dostavka-driv-kyiv.webp', alt: 'ГАЗель доставка дров Київ', name: 'ГАЗель (бус)', volume: '4–5 складометрів', price: '1 000 – 1 500 грн' },
+                            { src: '/images/delivery/zil-dostavka-driv-kyiv.webp', alt: 'ЗІЛ доставка дров Київ', name: 'ЗІЛ самоскид', volume: '4 складометри', price: '2 500 грн' },
+                            { src: '/images/delivery/kamaz-dostavka-driv-kyiv.webp', alt: 'КАМАЗ доставка дров Київ', name: 'КАМАЗ самоскид', volume: '8 складометрів', price: '3 000 грн' },
+                        ].map((card, i) => (
+                            <figure
+                                key={i}
+                                className="nh-card hover-glow"
+                                style={{
+                                    margin: 0, padding: 0, borderRadius: '20px',
+                                    overflow: 'hidden', cursor: 'default',
+                                    transition: 'transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s ease',
+                                    border: '1px solid var(--color-border-subtle)',
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+                                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(249,115,22,0.15), 0 0 0 1px rgba(249,115,22,0.2)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                                    e.currentTarget.style.boxShadow = 'none';
+                                }}
+                            >
+                                {/* Image */}
+                                <div style={{
+                                    position: 'relative', overflow: 'hidden',
+                                    background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(20,25,30,0.4) 100%)',
+                                    padding: '1.5rem 1.5rem 0.5rem',
+                                }}>
                                     <img
-                                        src={img.src}
-                                        alt={img.alt}
+                                        src={card.src}
+                                        alt={card.alt}
                                         width={800}
                                         height={600}
                                         loading="lazy"
                                         style={{
                                             width: '100%', height: 'auto',
+                                            objectFit: 'contain',
                                             borderRadius: '12px',
-                                            border: '1px solid var(--color-border-subtle)',
-                                            objectFit: 'cover',
+                                            transition: 'transform 0.4s ease',
                                         }}
                                     />
-                                    <figcaption style={{
-                                        marginTop: '0.5rem', fontSize: '0.9rem',
-                                        fontWeight: 600, color: 'var(--c-text2)',
-                                    }}>{img.label}</figcaption>
-                                </figure>
-                            ))}
-                        </div>
+                                </div>
 
-                        <div style={{ overflowX: 'auto' }}>
-                            <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, fontSize: '1rem', color: 'var(--c-text)' }}>
-                                <thead>
-                                    <tr>
-                                        <th style={thStyle}>Тип машини</th>
-                                        <th style={thStyle}>Обсяг</th>
-                                        <th style={thStyle}>Ціна доставки</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {[
-                                        { vehicle: 'ГАЗель (бус)', volume: '4–5 складометрів', price: '1 000 – 1 500 грн' },
-                                        { vehicle: 'ЗІЛ самоскид', volume: '4 складометри', price: '2 500 грн' },
-                                        { vehicle: 'КАМАЗ самоскид', volume: '8 складометрів', price: '3 000 грн' },
-                                    ].map((row, idx) => (
-                                        <tr key={idx} style={{ background: idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
-                                            <td style={{ ...tdBase, fontWeight: 700, color: 'var(--c-orange)', whiteSpace: 'nowrap' }}>{row.vehicle}</td>
-                                            <td style={{ ...tdBase, color: 'var(--c-text)' }}>{row.volume}</td>
-                                            <td style={{ ...tdBase, fontWeight: 700, color: 'var(--c-orange)' }}>{row.price}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                {/* Info */}
+                                <figcaption style={{ padding: '1.25rem 1.5rem 1.5rem' }}>
+                                    <h3 style={{
+                                        fontSize: '1.25rem', fontWeight: 800,
+                                        color: 'var(--c-text)', margin: '0 0 0.75rem',
+                                    }}>{card.name}</h3>
+
+                                    <div style={{
+                                        display: 'flex', alignItems: 'center', gap: '0.5rem',
+                                        marginBottom: '0.5rem', fontSize: '0.95rem', color: 'var(--c-text2)',
+                                    }}>
+                                        <Package size={16} style={{ color: 'var(--c-orange)', flexShrink: 0 }} />
+                                        <span>{card.volume}</span>
+                                    </div>
+
+                                    <div style={{
+                                        display: 'flex', alignItems: 'baseline', gap: '0.25rem',
+                                        paddingTop: '0.75rem',
+                                        borderTop: '1px dashed rgba(255,255,255,0.08)',
+                                    }}>
+                                        <span style={{
+                                            fontSize: '1.5rem', fontWeight: 800,
+                                            color: 'var(--c-orange)',
+                                        }}>{card.price}</span>
+                                    </div>
+                                </figcaption>
+                            </figure>
+                        ))}
                     </div>
+
+                    {/* Hidden SEO table — crawlers see structured data */}
+                    <table style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>
+                        <thead><tr><th>Тип машини</th><th>Обсяг</th><th>Ціна доставки</th></tr></thead>
+                        <tbody>
+                            <tr><td>ГАЗель (бус)</td><td>4–5 складометрів</td><td>1 000 – 1 500 грн</td></tr>
+                            <tr><td>ЗІЛ самоскид</td><td>4 складометри</td><td>2 500 грн</td></tr>
+                            <tr><td>КАМАЗ самоскид</td><td>8 складометрів</td><td>3 000 грн</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </section>
 

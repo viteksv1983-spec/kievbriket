@@ -274,7 +274,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
                             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 28px rgba(249,115,22,0.45), 0 8px 24px rgba(0,0,0,0.30)"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 18px rgba(249,115,22,0.25)"; }}
                         >
-                            {status === "loading" ? <><Loader2 size={16} className="animate-spin" /> Надсилаємо...</> : "Замовити консультацію"}
+                            {status === "loading" ? <><Loader2 size={16} className="animate-spin" /> Надсилаємо...</> : "Замовити"}
                         </button>
 
                         <p style={{ fontSize: "0.74rem", color: "rgba(255,255,255,0.30)", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>

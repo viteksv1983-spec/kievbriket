@@ -126,18 +126,9 @@ export function SiteFooter() {
                             Графік роботи
                         </p>
                         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                            {[
-                                { day: "Пн – Пт", time: "09:00 – 20:00" },
-                                { day: "Сб – Нд", time: "09:00 – 20:00" },
-                            ].map((h) => (
-                                <div key={h.day} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                                    <span style={{ fontSize: "0.8rem", color: "var(--c-text2)", width: 55 }}>{h.day}</span>
-                                    <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text)" }}>{h.time}</span>
-                                </div>
-                            ))}
-                            <div style={{ display: "flex", flex: 1, alignItems: "center", gap: 6, marginTop: 4 }}>
-                                <Clock size={12} color="var(--c-orange)" />
-                                <span style={{ fontSize: "0.75rem", color: "var(--c-orange)", fontWeight: 600 }}>Зараз відкрито</span>
+                            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                                <span style={{ fontSize: "0.8rem", color: "var(--c-text2)" }}>Пн — Нд</span>
+                                <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text)" }}>09:00 – 20:00</span>
                             </div>
                         </div>
                     </div>

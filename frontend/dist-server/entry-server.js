@@ -1598,19 +1598,10 @@ function SiteFooter() {
             ] }),
             /* @__PURE__ */ jsxs("div", { children: [
               /* @__PURE__ */ jsx("p", { style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--c-text)", marginBottom: 16, letterSpacing: "0.06em", textTransform: "uppercase" }, children: "Графік роботи" }),
-              /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: 12 }, children: [
-                [
-                  { day: "Пн – Пт", time: "09:00 – 20:00" },
-                  { day: "Сб – Нд", time: "09:00 – 20:00" }
-                ].map((h) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
-                  /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem", color: "var(--c-text2)", width: 55 }, children: h.day }),
-                  /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text)" }, children: h.time })
-                ] }, h.day)),
-                /* @__PURE__ */ jsxs("div", { style: { display: "flex", flex: 1, alignItems: "center", gap: 6, marginTop: 4 }, children: [
-                  /* @__PURE__ */ jsx(Clock, { size: 12, color: "var(--c-orange)" }),
-                  /* @__PURE__ */ jsx("span", { style: { fontSize: "0.75rem", color: "var(--c-orange)", fontWeight: 600 }, children: "Зараз відкрито" })
-                ] })
-              ] })
+              /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: 12 }, children: /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
+                /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem", color: "var(--c-text2)" }, children: "Пн — Нд" }),
+                /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text)" }, children: "09:00 – 20:00" })
+              ] }) })
             ] })
           ]
         }
@@ -1979,7 +1970,7 @@ function OrderFormModal({ isOpen, onClose, product, variant }) {
                 children: status === "loading" ? /* @__PURE__ */ jsxs(Fragment, { children: [
                   /* @__PURE__ */ jsx(Loader2, { size: 16, className: "animate-spin" }),
                   " Надсилаємо..."
-                ] }) : "Замовити консультацію"
+                ] }) : "Замовити"
               }
             ),
             /* @__PURE__ */ jsxs("p", { style: { fontSize: "0.74rem", color: "rgba(255,255,255,0.30)", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }, children: [

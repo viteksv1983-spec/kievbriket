@@ -1617,7 +1617,7 @@ function SiteFooter() {
                 { day: "Неділя", time: "09:00 – 20:00" }
               ].map((h) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }, children: [
                 /* @__PURE__ */ jsx("span", { style: { fontSize: "0.82rem", color: "var(--c-text2)" }, children: h.day }),
-                /* @__PURE__ */ jsx("span", { style: { fontSize: "0.82rem", fontWeight: 600, color: "var(--c-text)", whiteSpace: "nowrap" }, children: h.time })
+                /* @__PURE__ */ jsx("span", { style: { fontSize: "0.82rem", color: "var(--c-text2)", whiteSpace: "nowrap" }, children: h.time })
               ] }, h.day)) })
             ] })
           ]

@@ -145,7 +145,7 @@ export function SiteFooter() {
                             ].map((h) => (
                                 <div key={h.day} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
                                     <span style={{ fontSize: "0.82rem", color: "var(--c-text2)" }}>{h.day}</span>
-                                    <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--c-text)", whiteSpace: "nowrap" }}>{h.time}</span>
+                                    <span style={{ fontSize: "0.82rem", color: "var(--c-text2)", whiteSpace: "nowrap" }}>{h.time}</span>
                                 </div>
                             ))}
                         </div>

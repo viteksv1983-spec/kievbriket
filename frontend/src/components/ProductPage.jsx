@@ -181,6 +181,13 @@ export default function ProductPage() {
                 </nav>
             </div>
 
+            {/* ── Mobile-only Title (above image) ── */}
+            <div className="product-mobile-title" style={{ maxWidth: 1200, margin: '0 auto', padding: '1rem 1.5rem 0' }}>
+                <h1 className="h1" style={{ fontSize: 'clamp(22px, 5vw, 28px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
+                    {product.name}
+                </h1>
+            </div>
+
             {/* ── Main Content ── */}
             <main style={{ maxWidth: 1200, margin: '0 auto', padding: 'var(--s-section) 1.5rem' }}>
                 <div style={{
@@ -253,12 +260,12 @@ export default function ProductPage() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 
                         {/* ── Title & Badges ── */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        <div className="product-desktop-title" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <h1 className="h1" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
                                 {product.name}
                             </h1>
 
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                            <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                                 <span style={{
                                     display: 'inline-flex', alignItems: 'center', gap: 6,
                                     background: 'rgba(34,197,94,0.15)', color: '#22c55e',
@@ -312,16 +319,24 @@ export default function ProductPage() {
                         )}
 
                         {/* ── Price Block & CTA ── */}
-                        <div style={{
+                        <div className="product-price-block" style={{
                             paddingTop: '1.5rem', borderTop: '1px solid var(--color-border-subtle)',
                             display: 'flex', flexDirection: 'column', gap: '1.25rem'
                         }}>
                             <div>
                                 {displayPrice > 1000 && (
-                                    <span style={{ fontSize: '1rem', color: 'var(--c-text2)', textDecoration: 'line-through', fontWeight: 600, display: 'block', marginBottom: 4 }}>
+                                    <span className="product-old-price" style={{ fontSize: '1rem', color: 'var(--c-text2)', textDecoration: 'line-through', fontWeight: 600, display: 'block', marginBottom: 4 }}>
                                         {Math.round(displayPrice * 1.15)} грн
                                     </span>
                                 )}
+                                <span className="product-price-badge" style={{
+                                    display: 'none', alignItems: 'center', gap: 6,
+                                    color: '#22c55e',
+                                    fontSize: '0.9rem', fontWeight: 700,
+                                    marginBottom: 6
+                                }}>
+                                    ✔ В наявності
+                                </span>
                                 <p style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: 0, flexWrap: 'wrap' }}>
                                     <span style={{ fontSize: '34px', fontWeight: 900, color: 'var(--c-orange)', lineHeight: 1 }}>{displayPrice}</span>
                                     <span style={{ fontSize: '20px', fontWeight: 700, color: 'var(--c-orange)' }}>грн</span>
@@ -357,7 +372,7 @@ export default function ProductPage() {
                                     onMouseEnter={e => e.currentTarget.style.boxShadow = '0 8px 28px rgba(249,115,22,0.50)'}
                                     onMouseLeave={e => e.currentTarget.style.boxShadow = '0 4px 20px rgba(249,115,22,0.30)'}
                                 >
-                                    🔥 Замовити дрова
+                                    🔥 {product.category === 'brikety' ? 'Замовити брикети' : product.category === 'vugillya' ? 'Замовити вугілля' : 'Замовити дрова'}
                                 </button>
                             </div>
 
@@ -535,7 +550,7 @@ export default function ProductPage() {
                                                     </span>
                                                 </div>
                                                 {isPopular && (
-                                                    <div style={{ position: 'absolute', top: 12, right: 12, zIndex: 2 }}>
+                                                    <div className="product-popular-badge" style={{ position: 'absolute', top: 12, right: 12, zIndex: 2 }}>
                                                         <span style={{
                                                             display: 'inline-flex', alignItems: 'center', background: 'rgba(249,115,22,0.9)',
                                                             color: '#fff', borderRadius: 999, padding: '4px 10px', fontSize: '0.7rem', fontWeight: 700,
@@ -573,7 +588,7 @@ export default function ProductPage() {
                                                         className="catalog-card-btn"
                                                         onClick={(e) => { e.preventDefault(); setIsOrderFormOpen(true); }}
                                                     >
-                                                        🛒 Замовити
+                                                        🛒 {product.category === 'brikety' ? 'Замовити брикети' : product.category === 'vugillya' ? 'Замовити вугілля' : 'Замовити дрова'}
                                                     </button>
                                                 </div>
                                             </div>
@@ -618,9 +633,22 @@ export default function ProductPage() {
                 /* Hide scrollbar for thumbnails */
                 .product-thumbnails::-webkit-scrollbar { display: none; }
 
+                /* Mobile title: show above image; hide desktop title */
+                .product-mobile-title { display: none; }
+
                 @media (max-width: 768px) {
-                    main > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
+                    .product-mobile-title { display: block !important; }
+                    .product-desktop-title h1 { display: none !important; }
+                    .product-desktop-title { gap: 0.5rem !important; }
+                    .product-badges-row { display: none !important; }
+                    .product-popular-badge { display: none !important; }
+                    .product-old-price { display: none !important; }
+                    .product-price-badge { display: inline-flex !important; }
+                    main > div { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
                     main > div > div:first-child { position: static !important; }
+                    main > div > div:last-child { gap: 1rem !important; }
+                    .product-price-block { order: -1; padding-top: 0 !important; border-top: none !important; }
+                    main { padding-top: 1rem !important; padding-bottom: 1rem !important; }
                     
                     /* Sticky Mobile CTA Container */
                     .product-cta-container {

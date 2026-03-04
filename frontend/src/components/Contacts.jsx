@@ -11,7 +11,7 @@ import { OrderFormModal } from './new-home/OrderFormModal';
 function HeroContacts({ onOrderClick }) {
     const { ref, visible } = useReveal();
     return (
-        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', paddingTop: '104px', paddingBottom: '0', position: 'relative', overflow: 'hidden', marginBottom: '40px' }}>
+        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', paddingTop: 'clamp(15px, 3vw, 104px)', paddingBottom: '0', position: 'relative', overflow: 'hidden', marginBottom: '40px' }}>
             <div
                 className="glow-orb"
                 style={{
@@ -38,7 +38,7 @@ function HeroContacts({ onOrderClick }) {
                     background: 'rgba(255,255,255,0.02)', padding: '2.5rem 3rem 2rem 3rem', borderRadius: '16px',
                     boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
                 }}>
-                    <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: '48px', fontWeight: 800, lineHeight: 1.1, marginBottom: '0.5rem', color: '#fff' }}>
+                    <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: 'clamp(2.5rem, 6vw, 48px)', fontWeight: 800, lineHeight: 1.1, marginBottom: '0.5rem', color: '#fff' }}>
                         Контакти
                     </h1>
                     <p className="hero-subtitle fade-up fade-up-d2" style={{
@@ -79,21 +79,19 @@ function HeroContacts({ onOrderClick }) {
                     </div>
 
                     <div className="hero-benefits fade-up fade-up-d4" style={{
-                        display: 'flex', gap: '24px', flexWrap: 'wrap',
-                        borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '16px', width: '100%'
+                        display: 'flex', gap: 'clamp(0.35rem, 1.5vw, 2rem)', flexWrap: 'wrap', justifyContent: 'flex-start',
+                        borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 'clamp(12px, 3vw, 16px)', width: '100%',
+                        fontSize: 'clamp(0.7rem, 2.8vw, 0.9rem)', color: 'rgba(255,255,255,0.7)'
                     }}>
-                        {[
-                            { icon: <Truck size={20} />, text: 'швидка доставка' },
-                            { icon: <Package size={20} />, text: 'чесний складометр' },
-                            { icon: <ShieldCheck size={20} />, text: 'оплата після отримання' }
-                        ].map((item, idx) => (
-                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)' }}>
-                                <div style={{ color: 'var(--c-orange)', display: 'flex', alignItems: 'center' }}>
-                                    <CheckCircle2 size={16} />
-                                </div>
-                                <span style={{ fontSize: '14px', fontWeight: 500, letterSpacing: '0.02em' }}>{item.text}</span>
-                            </div>
-                        ))}
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> швидка доставка
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> чесний складометр
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> оплата після отримання
+                        </span>
                     </div>
                 </div>
             </div>
@@ -274,7 +272,7 @@ function ContactMap() {
     const { ref, visible } = useReveal();
 
     return (
-        <section ref={ref} style={{ padding: '60px 0' }}>
+        <section ref={ref} style={{ padding: 'clamp(30px, 6vw, 60px) 0' }}>
             <div className="layout-container">
                 <div className={`nh-card reveal ${visible ? 'visible' : ''}`} style={{ padding: '0', borderRadius: '24px', overflow: 'hidden', position: 'relative', border: '1px solid rgba(255,255,255,0.08)' }}>
 
@@ -378,7 +376,7 @@ function WhatWeDeliver() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: '60px 0' }}>
+        <section ref={ref} style={{ padding: 'clamp(30px, 6vw, 60px) 0' }}>
             <div className="layout-container">
                 <div className={`reveal ${visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                     <h2 className="h2" style={{ fontSize: '1.75rem' }}>Що ми доставляємо</h2>
@@ -402,14 +400,14 @@ function WhatWeDeliver() {
 // ─── SEO TEXT ─────────────────────────────────────────────────────
 function ContactsSeoBlock() {
     return (
-        <section style={{ padding: '80px 0', display: 'flex', justifyContent: 'center' }}>
+        <section style={{ padding: 'clamp(40px, 8vw, 80px) 0', display: 'flex', justifyContent: 'center' }}>
             <div className="layout-container" style={{ display: 'flex', justifyContent: 'center' }}>
-                <div className="nh-card" style={{ width: '100%', padding: '4rem', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
+                <div className="nh-card" style={{ width: '100%', padding: 'clamp(1.5rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
                     <h2 className="h2" style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
                         Купити дрова, брикети та вугілля у Києві
                     </h2>
 
-                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '3rem' }}>
+                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '3rem' }}>
                         <div>
                             <p style={{ marginBottom: '1.5rem' }}>
                                 Компанія «КиївБрикет» забезпечує безперебійне постачання твердого палива. Ми спеціалізуємось на <strong>продажу дров</strong>, а також сучасних еко-альтернатив. Ви можете <Link to="/catalog/drova" style={{ color: 'inherit', textDecoration: 'underline', textDecorationColor: 'var(--color-border-medium)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'inherit'; e.currentTarget.style.textDecorationColor = 'var(--color-border-medium)'; }}>купити дрова київ</Link> з безкоштовним розвантаженням та чесним складометром. В наявності дуб, граб, береза та сосна.
@@ -446,7 +444,7 @@ function FaqSection() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: "80px 0" }}>
+        <section ref={ref} style={{ padding: 'clamp(40px, 8vw, 80px) 0' }}>
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                     "@context": "https://schema.org",
@@ -507,13 +505,13 @@ function FinalCtaBanner({ onOrderClick }) {
     const { ref, visible } = useReveal();
 
     return (
-        <section ref={ref} style={{ padding: "100px 0" }}>
+        <section ref={ref} style={{ padding: 'clamp(40px, 10vw, 100px) 0' }}>
             <div className="layout-container">
                 <div
                     className={`nh-card reveal ${visible ? "visible" : ""}`}
                     style={{
                         position: 'relative', overflow: 'hidden',
-                        padding: '4rem 2rem', textAlign: 'center',
+                        padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem)', textAlign: 'center',
                         background: 'linear-gradient(145deg, var(--color-bg-elevated) 0%, rgba(20,25,30,1) 100%)',
                         border: '1px solid rgba(249,115,22,0.2)'
                     }}

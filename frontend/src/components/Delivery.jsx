@@ -14,7 +14,7 @@ import { usePageSEO } from '../hooks/usePageSEO';
 function HeroDelivery({ onOrderClick }) {
     const { ref, visible } = useReveal();
     return (
-        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', paddingTop: '104px', paddingBottom: '0', position: 'relative', overflow: 'hidden', marginBottom: '40px' }}>
+        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', paddingTop: 'clamp(15px, 3vw, 104px)', paddingBottom: '0', position: 'relative', overflow: 'hidden', marginBottom: '40px' }}>
             <div
                 className="glow-orb"
                 style={{
@@ -41,7 +41,7 @@ function HeroDelivery({ onOrderClick }) {
                     background: 'rgba(255,255,255,0.02)', padding: '2.5rem 3rem 2rem 3rem', borderRadius: '16px',
                     boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
                 }}>
-                    <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: '48px', fontWeight: 800, lineHeight: 1.1, marginBottom: '0.5rem', color: '#fff' }}>
+                    <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: 'clamp(2.5rem, 6vw, 48px)', fontWeight: 800, lineHeight: 1.1, marginBottom: '0.5rem', color: '#fff' }}>
                         Доставка дров, брикетів та вугілля <span style={{ color: 'var(--c-orange)' }}>у Києві</span>
                     </h1>
                     <p className="hero-subtitle fade-up fade-up-d2" style={{
@@ -81,21 +81,19 @@ function HeroDelivery({ onOrderClick }) {
                     </div>
 
                     <div className="hero-benefits fade-up fade-up-d4" style={{
-                        display: 'flex', gap: '24px', flexWrap: 'wrap',
-                        borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '16px', width: '100%'
+                        display: 'flex', gap: 'clamp(0.35rem, 1.5vw, 2rem)', flexWrap: 'wrap', justifyContent: 'flex-start',
+                        borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 'clamp(12px, 3vw, 16px)', width: '100%',
+                        fontSize: 'clamp(0.7rem, 2.8vw, 0.9rem)', color: 'rgba(255,255,255,0.7)'
                     }}>
-                        {[
-                            { icon: <Truck size={20} />, text: 'доставка сьогодні' },
-                            { icon: <Package size={20} />, text: 'чесний складометр' },
-                            { icon: <ShieldCheck size={20} />, text: 'оплата після отримання' }
-                        ].map((item, idx) => (
-                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)' }}>
-                                <div style={{ color: 'var(--c-orange)', display: 'flex', alignItems: 'center' }}>
-                                    <CheckCircle2 size={16} />
-                                </div>
-                                <span style={{ fontSize: '14px', fontWeight: 500, letterSpacing: '0.02em' }}>{item.text}</span>
-                            </div>
-                        ))}
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> доставка сьогодні
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> чесний складометр
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> оплата після отримання
+                        </span>
                     </div>
                 </div>
             </div>
@@ -211,7 +209,7 @@ function DeliveryCost() {
                 </div>
 
                 <div className={`reveal ${visible ? 'visible' : ''}`} style={{
-                    display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', transitionDelay: '0.1s'
+                    display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '1.5rem', transitionDelay: '0.1s'
                 }}>
                     {costs.map((item, i) => (
                         <div key={i} className="nh-card hover-glow" style={{
@@ -251,14 +249,14 @@ function DeliveryCost() {
 // ─── SEO CONTENT ──────────────────────────────────────────────────
 function DeliverySeoBlock() {
     return (
-        <section style={{ padding: '100px 0', display: 'flex', justifyContent: 'center' }}>
+        <section style={{ padding: 'clamp(40px, 10vw, 100px) 0', display: 'flex', justifyContent: 'center' }}>
             <div className="layout-container" style={{ display: 'flex', justifyContent: 'center' }}>
-                <div className="nh-card" style={{ width: '100%', padding: '4rem', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
+                <div className="nh-card" style={{ width: '100%', padding: 'clamp(1.5rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
                     <h2 className="h2" style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
                         Доставка дров, брикетів та вугілля у Києві
                     </h2>
 
-                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '3rem' }}>
+                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '3rem' }}>
                         <div>
                             <p style={{ marginBottom: '1.5rem' }}>
                                 Ми доставляємо <Link to="/catalog/drova" style={{ color: 'inherit', textDecoration: 'underline', textDecorationColor: 'var(--color-border-medium)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'inherit'; e.currentTarget.style.textDecorationColor = 'var(--color-border-medium)'; }}>дрова</Link>, <Link to="/catalog/brikety" style={{ color: 'inherit', textDecoration: 'underline', textDecorationColor: 'var(--color-border-medium)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'inherit'; e.currentTarget.style.textDecorationColor = 'var(--color-border-medium)'; }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'inherit', textDecoration: 'underline', textDecorationColor: 'var(--color-border-medium)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'inherit'; e.currentTarget.style.textDecorationColor = 'var(--color-border-medium)'; }}>кам'яне вугілля</Link> по всьому Києву та області надійним транспортом. Обираючи доставку від постачальника, ви отримуєте гарантію точної ваги та прозорих цін без прихованих платежів за вивантаження.
@@ -295,7 +293,7 @@ function PopularQueriesSection() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: '60px 0', borderTop: '1px solid var(--color-border-subtle)', borderBottom: '1px solid var(--color-border-subtle)', background: 'rgba(20,25,30,0.3)' }}>
+        <section ref={ref} style={{ padding: 'clamp(30px, 6vw, 60px) 0', borderTop: '1px solid var(--color-border-subtle)', borderBottom: '1px solid var(--color-border-subtle)', background: 'rgba(20,25,30,0.3)' }}>
             <div className="layout-container">
                 <div className={`reveal ${visible ? 'visible' : ''}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                     <h3 style={{ fontSize: '1.125rem', color: 'var(--c-text)', marginBottom: '1.5rem', fontWeight: '600' }}>
@@ -345,7 +343,7 @@ function FaqSection() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: "100px 0" }}>
+        <section ref={ref} style={{ padding: 'clamp(40px, 10vw, 100px) 0' }}>
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                     "@context": "https://schema.org",
@@ -406,13 +404,13 @@ function FinalCtaBanner({ onOrderClick }) {
     const { ref, visible } = useReveal();
 
     return (
-        <section ref={ref} style={{ padding: "100px 0" }}>
+        <section ref={ref} style={{ padding: 'clamp(40px, 10vw, 100px) 0' }}>
             <div className="layout-container">
                 <div
                     className={`nh-card reveal ${visible ? "visible" : ""}`}
                     style={{
                         position: 'relative', overflow: 'hidden',
-                        padding: '4rem 2rem', textAlign: 'center',
+                        padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem)', textAlign: 'center',
                         background: 'linear-gradient(145deg, var(--color-bg-elevated) 0%, rgba(20,25,30,1) 100%)',
                         border: '1px solid rgba(249,115,22,0.2)'
                     }}

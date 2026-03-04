@@ -13,7 +13,7 @@ import { BenefitsSection } from './new-home/BenefitsSection';
 function HeroCategory({ onQuickOrderClick }) {
     const { ref, visible } = useReveal();
     return (
-        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', paddingTop: '40px', paddingBottom: '0', position: 'relative', overflow: 'hidden', marginBottom: '24px' }}>
+        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', paddingTop: 'clamp(5px, 2vw, 40px)', paddingBottom: '0', position: 'relative', overflow: 'hidden', marginBottom: '24px' }}>
             <div
                 className="glow-orb"
                 style={{
@@ -37,15 +37,15 @@ function HeroCategory({ onQuickOrderClick }) {
                 <div className="hero-text fade-up" style={{
                     display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left',
                     width: '100%',
-                    background: 'rgba(255,255,255,0.02)', padding: '2rem 3rem 1.5rem 3rem', borderRadius: '16px',
+                    background: 'rgba(255,255,255,0.02)', padding: 'clamp(1rem, 3.5vw, 2rem) clamp(0.85rem, 3.5vw, 3rem)', borderRadius: '16px',
                     boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
                 }}>
-                    <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: '48px', fontWeight: 800, lineHeight: 1.1, marginBottom: '0.25rem', color: '#fff' }}>
+                    <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: 'clamp(2rem, 5.5vw, 48px)', fontWeight: 800, lineHeight: 1.1, marginBottom: 'clamp(0.1rem, 1vw, 0.25rem)', color: '#fff' }}>
                         Купити паливні <span style={{ color: 'var(--c-orange)' }}>брикети</span> у Києві
                     </h1>
                     <p className="hero-subtitle fade-up fade-up-d2" style={{
-                        fontSize: '18px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5,
-                        maxWidth: '700px', marginBottom: '1.5rem', fontWeight: 400
+                        fontSize: 'clamp(0.85rem, 3.2vw, 18px)', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5,
+                        maxWidth: '100%', marginBottom: 'clamp(0.65rem, 2.5vw, 1.5rem)', fontWeight: 400
                     }}>
                         RUF, Pini Kay та Nestro. <br />
                         Висока тепловіддача та низька вологість. Доставка по Києву та області.
@@ -81,21 +81,19 @@ function HeroCategory({ onQuickOrderClick }) {
                     </div>
 
                     <div className="hero-benefits fade-up fade-up-d4" style={{
-                        display: 'flex', gap: '24px', flexWrap: 'wrap',
-                        borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '16px', width: '100%'
+                        display: 'flex', gap: 'clamp(0.35rem, 1.5vw, 2rem)', flexWrap: 'wrap', justifyContent: 'flex-start',
+                        borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 'clamp(12px, 3vw, 16px)', width: '100%',
+                        fontSize: 'clamp(0.7rem, 2.8vw, 0.9rem)', color: 'rgba(255,255,255,0.7)'
                     }}>
-                        {[
-                            { icon: <Truck size={20} />, text: 'доставка сьогодні' },
-                            { icon: <ShieldCheck size={20} />, text: 'без передоплати' },
-                            { icon: <Flame size={20} />, text: 'сухе паливо' }
-                        ].map((item, idx) => (
-                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)' }}>
-                                <div style={{ color: 'var(--c-orange)', display: 'flex', alignItems: 'center' }}>
-                                    <CheckCircle2 size={16} />
-                                </div>
-                                <span style={{ fontSize: '14px', fontWeight: 500, letterSpacing: '0.02em' }}>{item.text}</span>
-                            </div>
-                        ))}
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> доставка сьогодні
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> без передоплати
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> сухе паливо
+                        </span>
                     </div>
                 </div>
             </div>
@@ -123,7 +121,7 @@ function BriquetteTypesSection() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: '80px 0 40px' }}>
+        <section ref={ref} style={{ padding: 'clamp(40px, 8vw, 80px) 0 clamp(20px, 4vw, 40px)' }}>
             <div className="layout-container">
                 <div className={`reveal ${visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '3rem' }}>
                     <h2 className="h2">Типи паливних брикетів</h2>
@@ -146,6 +144,7 @@ function BriquetteTypesSection() {
 function CategoryProducts({ products, onOrderProduct }) {
     const { ref, visible } = useReveal();
     const [selectedBreed, setSelectedBreed] = useState('Усі');
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [sortOrder, setSortOrder] = useState('popular');
     const [isSortOpen, setIsSortOpen] = useState(false);
 
@@ -187,43 +186,65 @@ function CategoryProducts({ products, onOrderProduct }) {
                 {/* Filter and Sorting Row */}
                 <div className={`reveal ${visible ? 'visible' : ''}`} style={{
                     position: 'relative', zIndex: 50,
-                    display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between',
+                    display: 'flex', flexWrap: 'nowrap', gap: '0.25rem', alignItems: 'center', justifyContent: 'space-between',
                     marginBottom: '2rem'
                 }}>
-                    {/* Breed Filter */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                        <span style={{ color: 'var(--c-text2)', fontWeight: 500, marginRight: '8px' }}>Порода:</span>
-                        {['Усі', 'Сосна', 'Дуб', 'Мікс'].map(breed => {
-                            const isActive = selectedBreed === breed;
-                            const breedKey = breed === 'Мікс' ? 'мікс' : breed;
-                            return (
-                                <button
-                                    key={breed}
-                                    onClick={() => setSelectedBreed(breedKey === 'Усі' ? 'Усі' : breedKey)}
-                                    style={{
-                                        padding: '6px 20px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: isActive ? 600 : 400,
-                                        background: isActive ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
-                                        color: isActive ? 'var(--c-orange)' : 'var(--c-text2)',
-                                        border: `1px solid ${isActive ? 'var(--c-orange)' : 'var(--color-border-subtle)'}`,
-                                        cursor: 'pointer', transition: 'all 0.2s'
-                                    }}>{breed}</button>
-                            );
-                        })}
+                    {/* Breed Filter Dropdown */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)', zIndex: 25, flexShrink: 1, minWidth: 0 }}>
+                        <span style={{ color: 'var(--c-text2)', fontWeight: 500, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)', whiteSpace: 'nowrap' }}>Порода:</span>
+                        <div style={{ position: 'relative', flexShrink: 1, minWidth: 0 }}>
+                            <div
+                                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                style={{
+                                    position: 'relative', display: 'flex', alignItems: 'center',
+                                    background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
+                                    borderRadius: '8px', padding: '6px 10px', paddingRight: '24px', cursor: 'pointer',
+                                    userSelect: 'none', minWidth: '60px', maxWidth: '120px'
+                                }}>
+                                <span style={{ color: 'var(--c-text)', fontSize: 'clamp(0.8rem, 2.5vw, 0.9rem)', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                    {selectedBreed}
+                                </span>
+                                <ChevronRight size={14} style={{ color: 'var(--c-text2)', position: 'absolute', right: '8px', transform: `rotate(${isFilterOpen ? '-90deg' : '90deg'})`, transition: 'transform 0.2s' }} />
+                            </div>
+
+                            {isFilterOpen && (
+                                <div style={{
+                                    position: 'absolute', top: '100%', left: 0, marginTop: '8px',
+                                    background: 'var(--c-surface)', border: '1px solid var(--color-border-subtle)',
+                                    borderRadius: '8px', padding: '8px 0', zIndex: 9999, minWidth: '160px',
+                                    boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+                                }}>
+                                    {['Усі', 'Сосна', 'Дуб', 'Мікс'].map(breed => {
+                                        const isActive = selectedBreed === breed;
+                                        const breedKey = breed === 'Мікс' ? 'мікс' : breed;
+                                        return (
+                                            <div
+                                                key={breed}
+                                                onClick={() => { setSelectedBreed(breedKey === 'Усі' ? 'Усі' : breedKey); setIsFilterOpen(false); }}
+                                                style={{ padding: '8px 16px', cursor: 'pointer', fontSize: '0.9rem', color: isActive ? 'var(--c-orange)' : 'var(--c-text)', background: isActive ? 'rgba(255,255,255,0.02)' : 'transparent' }}
+                                            >
+                                                {breed}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Sorting Dropdown */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 20 }}>
-                        <span style={{ color: 'var(--c-text2)', fontWeight: 500 }}>Сортування:</span>
-                        <div style={{ position: 'relative' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)', zIndex: 20, flexShrink: 1, minWidth: 0 }}>
+                        <span style={{ color: 'var(--c-text2)', fontWeight: 500, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)', whiteSpace: 'nowrap' }}>Сортування:</span>
+                        <div style={{ position: 'relative', flexShrink: 1, minWidth: 0 }}>
                             <div
                                 onClick={() => setIsSortOpen(!isSortOpen)}
                                 style={{
                                     position: 'relative', display: 'flex', alignItems: 'center',
                                     background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
-                                    borderRadius: '8px', padding: '6px 12px', paddingRight: '32px', cursor: 'pointer',
-                                    userSelect: 'none'
+                                    borderRadius: '8px', padding: '6px 10px', paddingRight: '24px', cursor: 'pointer',
+                                    userSelect: 'none', maxWidth: '180px'
                                 }}>
-                                <span style={{ color: 'var(--c-text)', fontSize: '0.9rem', fontWeight: 500 }}>
+                                <span style={{ color: 'var(--c-text)', fontSize: 'clamp(0.8rem, 2.5vw, 0.9rem)', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                     {sortOrder === 'popular' ? 'За популярністю' : sortOrder === 'price_asc' ? 'Від дешевих до дорогих' : 'Від дорогих до дешевих'}
                                 </span>
                                 <ChevronRight size={14} style={{ color: 'var(--c-text2)', position: 'absolute', right: '12px', transform: `rotate(${isSortOpen ? '-90deg' : '90deg'})`, transition: 'transform 0.2s' }} />
@@ -280,7 +301,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                 <div
                     className={`product-grid reveal ${visible ? 'visible' : ''}`}
                     style={{
-                        display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                        display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
                         gap: '24px', transitionDelay: '0.2s',
                     }}
                 >
@@ -308,7 +329,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                                     <span>✔ В наявності</span>
                                 </div>
 
-                                <div style={{ height: '300px', width: '100%', position: 'relative', overflow: 'hidden', background: '#0a0d14' }}>
+                                <div className="product-card-image" style={{ height: '300px', width: '100%', position: 'relative', overflow: 'hidden', background: '#0a0d14' }}>
                                     {product.image_url ? (
                                         <img
                                             src={product.image_url.startsWith('http') ? product.image_url : `${api.defaults.baseURL}${product.image_url}`}
@@ -330,10 +351,13 @@ function CategoryProducts({ products, onOrderProduct }) {
                                         background: 'linear-gradient(to top, rgba(10,13,20,0.8) 0%, transparent 60%)',
                                         pointerEvents: 'none'
                                     }} />
+                                    <h3 className="product-card-title-overlay" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', lineHeight: 1.3 }}>
+                                        {product.name}
+                                    </h3>
                                 </div>
 
-                                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
-                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1rem', lineHeight: 1.3 }}>
+                                <div className="product-card-body" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
+                                    <h3 className="product-card-title-static" style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1rem', lineHeight: 1.3 }}>
                                         {product.name}
                                     </h3>
 
@@ -427,14 +451,14 @@ function ComparisonTable() {
 // ─── SEO CONTENT ──────────────────────────────────────────────────
 function BriquettesSeoBlock() {
     return (
-        <section style={{ padding: '100px 0', display: 'flex', justifyContent: 'center' }}>
+        <section style={{ padding: 'clamp(40px, 10vw, 100px) 0', display: 'flex', justifyContent: 'center' }}>
             <div className="layout-container" style={{ display: 'flex', justifyContent: 'center' }}>
-                <div className="nh-card" style={{ width: '100%', padding: '4rem', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
+                <div className="nh-card" style={{ width: '100%', padding: 'clamp(1.5rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
                     <h2 className="h2" style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
                         Купити паливні брикети у Києві
                     </h2>
 
-                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '3rem' }}>
+                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '3rem' }}>
                         <div>
                             <p style={{ marginBottom: '1.5rem' }}>
                                 Паливні брикети — це сучасна та високоефективна альтернатива традиційним <Link to="/catalog/drova" style={{ color: 'inherit', textDecoration: 'underline', textDecorationColor: 'var(--color-border-medium)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'inherit'; e.currentTarget.style.textDecorationColor = 'var(--color-border-medium)'; }}>дровам</Link>. Вони виготовляються шляхом пресування тирси, тріски та інших деревних відходів без додавання будь-якої хімії. Завдяки високому тиску при виробництві, брикети мають надзвичайно низьку вологість (до 8%) та величезну щільність, що робить їх безпечнішою та чистішою альтернативою, ніж <Link to="/catalog/vugillya" style={{ color: 'inherit', textDecoration: 'underline', textDecorationColor: 'var(--color-border-medium)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'inherit'; e.currentTarget.style.textDecorationColor = 'var(--color-border-medium)'; }}>кам'яне вугілля</Link>.
@@ -468,7 +492,7 @@ function CrossCategoryBlock() {
                     <h3 style={{ fontSize: '1.25rem', color: 'var(--c-text)', marginBottom: '1.5rem', fontWeight: '700' }}>
                         Також дивіться
                     </h3>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem', overflowX: 'auto', paddingBottom: '8px', WebkitOverflowScrolling: 'touch', justifyContent: 'center' }}>
                         <Link
                             to="/catalog/drova"
                             style={{
@@ -516,13 +540,13 @@ function PopularQueriesSection() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: '60px 0', borderTop: '1px solid var(--color-border-subtle)', borderBottom: '1px solid var(--color-border-subtle)', background: 'rgba(20,25,30,0.3)' }}>
+        <section ref={ref} style={{ padding: 'clamp(30px, 6vw, 60px) 0', borderTop: '1px solid var(--color-border-subtle)', borderBottom: '1px solid var(--color-border-subtle)', background: 'rgba(20,25,30,0.3)' }}>
             <div className="layout-container">
                 <div className={`reveal ${visible ? 'visible' : ''}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                     <h3 style={{ fontSize: '1.125rem', color: 'var(--c-text)', marginBottom: '1.5rem', fontWeight: '600' }}>
                         Популярні запити:
                     </h3>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem', overflowX: 'auto', paddingBottom: '8px', WebkitOverflowScrolling: 'touch', justifyContent: 'center' }}>
                         {queries.map((q, idx) => (
                             <Link
                                 key={idx}
@@ -566,7 +590,7 @@ function FaqSection() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: "100px 0" }}>
+        <section ref={ref} style={{ padding: 'clamp(40px, 10vw, 100px) 0' }}>
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                     "@context": "https://schema.org",
@@ -627,13 +651,13 @@ function FinalCtaBanner({ onQuickOrderClick }) {
     const { ref, visible } = useReveal();
 
     return (
-        <section ref={ref} style={{ padding: "100px 0" }}>
+        <section ref={ref} style={{ padding: 'clamp(40px, 10vw, 100px) 0' }}>
             <div className="layout-container">
                 <div
                     className={`nh-card reveal ${visible ? "visible" : ""}`}
                     style={{
                         position: 'relative', overflow: 'hidden',
-                        padding: '4rem 2rem', textAlign: 'center',
+                        padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem)', textAlign: 'center',
                         background: 'linear-gradient(145deg, var(--color-bg-elevated) 0%, rgba(20,25,30,1) 100%)',
                         border: '1px solid rgba(249,115,22,0.2)'
                     }}

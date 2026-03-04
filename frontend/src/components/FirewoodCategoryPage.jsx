@@ -17,7 +17,7 @@ import { BenefitsSection } from './new-home/BenefitsSection';
 function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug }) {
     const { ref, visible } = useReveal();
     return (
-        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', paddingTop: '40px', paddingBottom: '0', position: 'relative', overflow: 'hidden', marginBottom: '24px' }}>
+        <section ref={ref} className="hero-section" style={{ minHeight: 'auto', paddingTop: 'clamp(5px, 2vw, 40px)', paddingBottom: '0', position: 'relative', overflow: 'hidden', marginBottom: '24px' }}>
             {/* Background Glow */}
             <div
                 className="glow-orb"
@@ -54,30 +54,59 @@ function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug })
                 <div className="hero-text fade-up" style={{
                     display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left',
                     width: '100%',
-                    background: 'rgba(255,255,255,0.02)', padding: '2rem 3rem 1.5rem 3rem', borderRadius: '16px',
+                    background: 'rgba(255,255,255,0.02)', padding: 'clamp(1rem, 3.5vw, 2rem) clamp(0.85rem, 3.5vw, 3rem)', borderRadius: '16px',
                     boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
                 }}>
-                    <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: '48px', fontWeight: 800, lineHeight: 1.1, marginBottom: '0.25rem', color: '#fff' }}>
+                    <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: 'clamp(2rem, 5.5vw, 48px)', fontWeight: 800, lineHeight: 1.1, marginBottom: 'clamp(0.1rem, 1vw, 0.25rem)', color: '#fff' }}>
                         Купити <span style={{ color: 'var(--c-orange)' }}>{activeCategory?.name?.toLowerCase() || 'дрова'}</span> у Києві
                     </h1>
 
-                    <p className="body hero-sub fade-up fade-up-d2" style={{ maxWidth: 600, marginBottom: '1.25rem', fontSize: '18px', color: 'var(--c-text2)', lineHeight: 1.6 }}>
+                    <p className="body hero-sub fade-up fade-up-d2" style={{ maxWidth: 600, marginBottom: 'clamp(0.65rem, 2.5vw, 1.25rem)', fontSize: 'clamp(0.85rem, 3.2vw, 18px)', color: 'var(--c-text2)', lineHeight: 1.5 }}>
                         Сухі колоті дрова з <Link to="/dostavka" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>доставкою по Києву</Link> та області. Дуб, граб, береза та інші породи з чесним складометром. Також пропонуємо <Link to="/catalog/brikety" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>паливні брикети</Link> та <Link to="/catalog/vugillya" className="seo-inline-link" style={{ color: 'inherit', fontWeight: 500 }}>кам'яне вугілля</Link>.
                     </p>
 
-                    <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)', borderBottom: '1px dashed rgba(255,255,255,0.1)', marginBottom: '1rem' }}></div>
+                    <div className="hero-actions fade-up fade-up-d3" style={{ display: 'flex', gap: '16px', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                        <button
+                            onClick={onQuickOrderClick}
+                            className="btn-glow"
+                            style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '8px',
+                                background: 'var(--c-orange)', color: '#fff', padding: '16px 32px',
+                                borderRadius: '12px', fontSize: '16px', fontWeight: 700,
+                                border: 'none', cursor: 'pointer', transition: 'all 0.3s ease'
+                            }}
+                        >
+                            Замовити дрова
+                            <ArrowRight size={20} />
+                        </button>
+                        <a
+                            href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`}
+                            style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '8px',
+                                background: 'rgba(255,255,255,0.05)', color: '#fff', padding: '16px 32px',
+                                borderRadius: '12px', fontSize: '16px', fontWeight: 600,
+                                textDecoration: 'none', border: '1px solid rgba(255,255,255,0.1)',
+                                transition: 'all 0.3s ease'
+                            }}
+                        >
+                            <Phone size={20} />
+                            Подзвонити
+                        </a>
+                    </div>
+
+                    <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)', borderBottom: '1px dashed rgba(255,255,255,0.1)', marginBottom: 'clamp(0.5rem, 1.8vw, 1rem)' }}></div>
 
                     <div className="hero-trust-row fade-up fade-up-d3" style={{
-                        display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'flex-start',
-                        fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', paddingBottom: '0.25rem'
+                        display: 'flex', gap: 'clamp(0.35rem, 1.5vw, 2rem)', flexWrap: 'wrap', justifyContent: 'flex-start',
+                        fontSize: 'clamp(0.7rem, 2.8vw, 0.9rem)', color: 'rgba(255,255,255,0.7)', paddingBottom: '0.25rem'
                     }}>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
                             <span style={{ color: '#22C55E' }}>✔</span> Доставка по Києву за 24 години
                         </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
                             <span style={{ color: '#22C55E' }}>✔</span> Чесний складометр
                         </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
                             <span style={{ color: '#22C55E' }}>✔</span> Оплата після отримання
                         </span>
                     </div>
@@ -97,14 +126,14 @@ function FirewoodSeoIntro({ activeCategorySlug }) {
             <div className="nh-card" style={{
                 width: '100%',
                 margin: '64px 0 0 0',
-                padding: '4rem',
+                padding: 'clamp(1.5rem, 5vw, 4rem)',
                 borderRadius: '24px',
                 background: 'rgba(255,255,255,0.02)'
             }}>
                 <h2 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '24px', color: 'var(--c-text)' }}>
                     Популярні породи дров у Києві
                 </h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '2rem' }}>
                     <p style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(255,255,255,0.8)', margin: 0 }}>
                         Різні породи деревини мають унікальні характеристики горіння. Тверді породи (дуб, граб, ясен) мають найвищу тепловіддачу та довго тліють — ідеально для котлів тривалого горіння.
                     </p>
@@ -134,6 +163,7 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
     };
 
     const [selectedBreed, setSelectedBreed] = useState('Усі');
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [sortOrder, setSortOrder] = useState('popular');
     const [isSortOpen, setIsSortOpen] = useState(false);
 
@@ -174,42 +204,64 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                     {/* Filter and Sorting Row */}
                     <div style={{
                         position: 'relative', zIndex: 50,
-                        display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between',
+                        display: 'flex', flexWrap: 'nowrap', gap: '0.25rem', alignItems: 'center', justifyContent: 'space-between',
                         marginBottom: '2rem'
                     }}>
-                        {/* Breed Filter */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                            <span style={{ color: 'var(--c-text2)', fontWeight: 500, marginRight: '8px' }}>Порода:</span>
-                            {['Усі', 'Дуб', 'Граб', 'Сосна', 'Береза'].map(breed => {
-                                const isActive = selectedBreed === breed;
-                                return (
-                                    <button
-                                        key={breed}
-                                        onClick={() => setSelectedBreed(breed)}
-                                        style={{
-                                            padding: '6px 20px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: isActive ? 600 : 400,
-                                            background: isActive ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
-                                            color: isActive ? 'var(--c-orange)' : 'var(--c-text2)',
-                                            border: `1px solid ${isActive ? 'var(--c-orange)' : 'var(--color-border-subtle)'}`,
-                                            cursor: 'pointer', transition: 'all 0.2s'
-                                        }}>{breed}</button>
-                                );
-                            })}
+                        {/* Breed Filter Dropdown */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)', zIndex: 25, flexShrink: 1, minWidth: 0 }}>
+                            <span style={{ color: 'var(--c-text2)', fontWeight: 500, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)', whiteSpace: 'nowrap' }}>Порода:</span>
+                            <div style={{ position: 'relative', flexShrink: 1, minWidth: 0 }}>
+                                <div
+                                    onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                    style={{
+                                        position: 'relative', display: 'flex', alignItems: 'center',
+                                        background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
+                                        borderRadius: '8px', padding: '6px 10px', paddingRight: '24px', cursor: 'pointer',
+                                        userSelect: 'none', minWidth: '60px', maxWidth: '120px'
+                                    }}>
+                                    <span style={{ color: 'var(--c-text)', fontSize: 'clamp(0.8rem, 2.5vw, 0.9rem)', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                        {selectedBreed}
+                                    </span>
+                                    <ChevronRight size={14} style={{ color: 'var(--c-text2)', position: 'absolute', right: '8px', transform: `rotate(${isFilterOpen ? '-90deg' : '90deg'})`, transition: 'transform 0.2s' }} />
+                                </div>
+
+                                {isFilterOpen && (
+                                    <div style={{
+                                        position: 'absolute', top: '100%', left: 0, marginTop: '8px',
+                                        background: 'var(--c-surface)', border: '1px solid var(--color-border-subtle)',
+                                        borderRadius: '8px', padding: '8px 0', zIndex: 9999, minWidth: '160px',
+                                        boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+                                    }}>
+                                        {['Усі', 'Дуб', 'Граб', 'Сосна', 'Береза'].map(breed => {
+                                            const isActive = selectedBreed === breed;
+                                            return (
+                                                <div
+                                                    key={breed}
+                                                    onClick={() => { setSelectedBreed(breed); setIsFilterOpen(false); }}
+                                                    style={{ padding: '8px 16px', cursor: 'pointer', fontSize: '0.9rem', color: isActive ? 'var(--c-orange)' : 'var(--c-text)', background: isActive ? 'rgba(255,255,255,0.02)' : 'transparent' }}
+                                                >
+                                                    {breed}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         {/* Sorting Dropdown */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 20 }}>
-                            <span style={{ color: 'var(--c-text2)', fontWeight: 500 }}>Сортування:</span>
-                            <div style={{ position: 'relative' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)', zIndex: 20, flexShrink: 1, minWidth: 0 }}>
+                            <span style={{ color: 'var(--c-text2)', fontWeight: 500, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)', whiteSpace: 'nowrap' }}>Сортування:</span>
+                            <div style={{ position: 'relative', flexShrink: 1, minWidth: 0 }}>
                                 <div
                                     onClick={() => setIsSortOpen(!isSortOpen)}
                                     style={{
                                         position: 'relative', display: 'flex', alignItems: 'center',
                                         background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
-                                        borderRadius: '8px', padding: '6px 12px', paddingRight: '32px', cursor: 'pointer',
-                                        userSelect: 'none'
+                                        borderRadius: '8px', padding: '6px 10px', paddingRight: '24px', cursor: 'pointer',
+                                        userSelect: 'none', maxWidth: '180px'
                                     }}>
-                                    <span style={{ color: 'var(--c-text)', fontSize: '0.9rem', fontWeight: 500 }}>
+                                    <span style={{ color: 'var(--c-text)', fontSize: 'clamp(0.8rem, 2.5vw, 0.9rem)', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                         {sortOrder === 'popular' ? 'За популярністю' : sortOrder === 'price_asc' ? 'Від дешевих до дорогих' : 'Від дорогих до дешевих'}
                                     </span>
                                     <ChevronRight size={14} style={{ color: 'var(--c-text2)', position: 'absolute', right: '12px', transform: `rotate(${isSortOpen ? '-90deg' : '90deg'})`, transition: 'transform 0.2s' }} />
@@ -289,7 +341,7 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                             e.currentTarget.style.boxShadow = 'none';
                                         }}
                                     >
-                                        <div style={{ aspectRatio: '4/3', width: '100%', overflow: 'hidden' }}>
+                                        <div className="product-card-image" style={{ aspectRatio: '4/3', width: '100%', overflow: 'hidden', position: 'relative' }}>
                                             <img
                                                 src={getImageUrl(product.image_url, api.defaults.baseURL)}
                                                 alt={`${product.name.replace(/[()]/g, '').trim()} Київ`}
@@ -297,9 +349,17 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                                 className="img-zoom"
                                                 style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
                                             />
+                                            <div style={{
+                                                position: 'absolute', inset: 0,
+                                                background: 'linear-gradient(to top, rgba(10,13,20,0.8) 0%, transparent 60%)',
+                                                pointerEvents: 'none'
+                                            }} />
+                                            <h3 className="product-card-title-overlay" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', lineHeight: 1.3 }}>
+                                                {product.name}
+                                            </h3>
                                         </div>
-                                        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
-                                            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', marginBottom: '1rem', flexShrink: 0 }}>
+                                        <div className="product-card-body" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
+                                            <div className="product-card-title-static" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', marginBottom: '1rem', flexShrink: 0 }}>
                                                 <h3 className="h3" style={{ margin: 0 }}>{product.name}</h3>
                                                 <div style={{
                                                     display: 'flex', alignItems: 'center', gap: '4px',
@@ -393,7 +453,7 @@ function FaqSection() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: "100px 0" }}>
+        <section ref={ref} style={{ padding: 'clamp(40px, 10vw, 100px) 0' }}>
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                     "@context": "https://schema.org",
@@ -467,13 +527,13 @@ function FinalCtaBanner({ onQuickOrderClick, activeCategory }) {
     const { ref, visible } = useReveal();
 
     return (
-        <section ref={ref} style={{ padding: "100px 0" }}>
+        <section ref={ref} style={{ padding: 'clamp(40px, 10vw, 100px) 0' }}>
             <div className="layout-container">
                 <div
                     className={`nh-card reveal ${visible ? "visible" : ""}`}
                     style={{
                         position: 'relative', overflow: 'hidden',
-                        padding: '4rem 2rem', textAlign: 'center',
+                        padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem)', textAlign: 'center',
                         background: 'linear-gradient(145deg, var(--color-bg-elevated) 0%, rgba(20,25,30,1) 100%)',
                         border: '1px solid rgba(249,115,22,0.2)'
                     }}
@@ -550,9 +610,9 @@ export default function FirewoodCategoryPage({ products, seo, onOrderProduct, ac
             {activeCategorySlug === 'drova' ? (
                 <FirewoodSeoBlock />
             ) : (
-                <section style={{ padding: '100px 0', display: 'flex', justifyContent: 'center' }}>
+                <section style={{ padding: 'clamp(40px, 10vw, 100px) 0', display: 'flex', justifyContent: 'center' }}>
                     <div className="layout-container" style={{ display: 'flex', justifyContent: 'center' }}>
-                        <div className="nh-card" style={{ width: '100%', padding: '4rem', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
+                        <div className="nh-card" style={{ width: '100%', padding: 'clamp(1.5rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
                             <h2 className="h2" style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
                                 {activeCategory?.seo_h1 || `Купити ${activeCategory?.name?.toLowerCase() || 'тверде паливо'} у Києві`}
                             </h2>
@@ -582,14 +642,14 @@ export default function FirewoodCategoryPage({ products, seo, onOrderProduct, ac
 // ─── CUSTOM FIREWOOD SEO BLOCK ─────────────────────────────────
 function FirewoodSeoBlock() {
     return (
-        <section style={{ padding: '100px 0', display: 'flex', justifyContent: 'center' }}>
+        <section style={{ padding: 'clamp(40px, 10vw, 100px) 0', display: 'flex', justifyContent: 'center' }}>
             <div className="layout-container" style={{ display: 'flex', justifyContent: 'center' }}>
-                <div className="nh-card" style={{ width: '100%', padding: '4rem', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
+                <div className="nh-card" style={{ width: '100%', padding: 'clamp(1.5rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column', borderRadius: '24px' }}>
                     <h2 className="h2" style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
                         Купити дрова у Києві
                     </h2>
 
-                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '3rem' }}>
+                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '3rem' }}>
 
                         <div>
                             <p style={{ marginBottom: '1.5rem' }}>
@@ -663,7 +723,7 @@ function PopularQueriesSection({ activeCategorySlug }) {
     ];
 
     return (
-        <section style={{ padding: '100px 0' }}>
+        <section style={{ padding: 'clamp(40px, 10vw, 100px) 0' }}>
             <div className="layout-container">
                 <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
                     <h3 className="h3" style={{ marginBottom: '1.5rem', fontSize: '1.25rem' }}>Популярні запити</h3>
@@ -712,14 +772,14 @@ function HowToChooseFirewood({ activeCategorySlug }) {
     if (activeCategorySlug !== 'drova') return null;
 
     return (
-        <section style={{ padding: '100px 0', display: 'flex', justifyContent: 'center' }}>
+        <section style={{ padding: 'clamp(40px, 10vw, 100px) 0', display: 'flex', justifyContent: 'center' }}>
             <div className="layout-container" style={{ display: 'flex', justifyContent: 'center' }}>
-                <div className="nh-card" style={{ width: '100%', padding: '4rem', display: 'flex', flexDirection: 'column' }}>
+                <div className="nh-card" style={{ width: '100%', padding: 'clamp(1.5rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column' }}>
                     <h2 className="h2" style={{ marginBottom: '2.5rem' }}>
                         Як вибрати дрова для опалення
                     </h2>
 
-                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2.5rem' }}>
+                    <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '2.5rem' }}>
                         <div>
                             <p style={{ marginBottom: '1rem' }}>
                                 Правильний вибір дров залежить від типу вашого опалювального пристрою. <strong>Для твердопаливного котла</strong> найкраще підходять дуб, граб та ясен, а також <Link to="/catalog/brikety" className="seo-inline-link">паливні брикети</Link> чи <Link to="/catalog/vugillya" className="seo-inline-link">кам'яне вугілля</Link>. Вони мають високу щільність, забезпечують довготривале горіння (тління) і максимальну тепловіддачу.

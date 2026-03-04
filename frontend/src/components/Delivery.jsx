@@ -42,13 +42,13 @@ function HeroDelivery({ onOrderClick }) {
                     boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
                 }}>
                     <h1 className="display hero-h1 fade-up fade-up-d1" style={{ fontSize: 'clamp(2.5rem, 6vw, 48px)', fontWeight: 800, lineHeight: 1.1, marginBottom: '0.5rem', color: '#fff' }}>
-                        Доставка дров, брикетів та вугілля <span style={{ color: 'var(--c-orange)' }}>у Києві</span>
+                        Доставка дров, брикетів та вугілля <span style={{ color: 'var(--c-orange)' }}>по Києву та області</span>
                     </h1>
                     <p className="hero-subtitle fade-up fade-up-d2" style={{
                         fontSize: '18px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5,
                         maxWidth: '700px', marginBottom: '2rem', fontWeight: 400
                     }}>
-                        Швидка доставка твердого палива по Києву та Київській області власним транспортом.
+                        Доставка власним транспортом: Газель, ЗІЛ, КАМАЗ, маніпулятор. Швидко, надійно, із розвантаженням.
                     </p>
 
                     <div className="hero-actions fade-up fade-up-d3" style={{ display: 'flex', gap: '16px', marginBottom: '2rem', flexWrap: 'wrap' }}>
@@ -409,71 +409,52 @@ function DeliveryExtendedSeo() {
     const onEnter = (e) => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; };
     const onLeave = (e) => { e.currentTarget.style.color = 'inherit'; e.currentTarget.style.textDecorationColor = 'var(--color-border-medium)'; };
 
-    const checkStyle = { color: '#22c55e', marginRight: '8px', fontWeight: 700 };
-    const listItemStyle = {
-        padding: '1rem 1.25rem', borderRadius: '12px',
-        background: 'rgba(255,255,255,0.02)',
-        border: '1px solid var(--color-border-subtle)',
-        display: 'flex', alignItems: 'center',
-        fontSize: '1.05rem', color: 'var(--c-text)',
+    const thStyle = {
+        padding: '1rem 1.25rem', textAlign: 'left',
+        fontWeight: 700, fontSize: '0.85rem',
+        color: 'var(--c-text2)', textTransform: 'uppercase',
+        letterSpacing: '0.05em',
+        borderBottom: '2px solid var(--c-orange)',
+        background: 'rgba(249,115,22,0.04)',
     };
+    const tdBase = {
+        padding: '1rem 1.25rem',
+        borderBottom: '1px solid var(--color-border-subtle)',
+    };
+    const sectionPad = { padding: 'clamp(40px, 8vw, 80px) 0 0' };
+    const cardPad = { padding: 'clamp(1.5rem, 5vw, 3.5rem)', borderRadius: '24px' };
 
     return (
         <>
-            {/* SECTION 1: Доставка дров по Києву та області */}
-            <section style={{ padding: 'clamp(40px, 8vw, 80px) 0 0' }}>
+            {/* ── SECTION 2: Доставка дров ───────────────────────── */}
+            <section style={sectionPad}>
                 <div className="layout-container">
-                    <div className="nh-card" style={{ padding: 'clamp(1.5rem, 5vw, 3.5rem)', borderRadius: '24px' }}>
-                        <h2 className="h2" style={{ marginBottom: '1.5rem' }}>
-                            Доставка дров по Києву та області
+                    <div className="nh-card" style={cardPad}>
+                        <h2 className="h2" style={{ marginBottom: '1rem' }}>
+                            Доставка дров по Києву
                         </h2>
-                        <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem' }}>
-                            <p style={{ marginBottom: '1rem' }}>
-                                Ми доставляємо <Link to="/catalog/drova" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>дрова</Link>, <Link to="/catalog/brikety" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>вугілля</Link> по Києву та Київській області власним транспортом.
-                            </p>
-                            <p style={{ margin: 0 }}>
-                                Можлива доставка в день замовлення або на наступний день.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* SECTION 2: Машини доставки — HTML table for SEO */}
-            <section style={{ padding: 'clamp(40px, 8vw, 80px) 0 0' }}>
-                <div className="layout-container">
-                    <div className="nh-card" style={{ padding: 'clamp(1.5rem, 5vw, 3.5rem)', borderRadius: '24px' }}>
-                        <h2 className="h2" style={{ marginBottom: '2rem' }}>
-                            Машини доставки
-                        </h2>
+                        <p style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', marginBottom: '2rem' }}>
+                            Доставка <Link to="/catalog/drova" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>дров</Link> здійснюється власним транспортом. Ви можете замовити доставку дров складометром у будь-який район Києва та Київської області. Обирайте тип машини залежно від обсягу замовлення.
+                        </p>
                         <div style={{ overflowX: 'auto' }}>
                             <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, fontSize: '1rem', color: 'var(--c-text)' }}>
                                 <thead>
                                     <tr>
-                                        {['Тип машини', 'Обсяг', 'Особливості'].map((h, i) => (
-                                            <th key={i} style={{
-                                                padding: '1rem 1.25rem', textAlign: 'left',
-                                                fontWeight: 700, fontSize: '0.85rem',
-                                                color: 'var(--c-text2)', textTransform: 'uppercase',
-                                                letterSpacing: '0.05em',
-                                                borderBottom: '2px solid var(--c-orange)',
-                                                background: 'rgba(249,115,22,0.04)',
-                                            }}>{h}</th>
-                                        ))}
+                                        <th style={thStyle}>Тип машини</th>
+                                        <th style={thStyle}>Обсяг</th>
+                                        <th style={thStyle}>Ціна доставки</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {[
-                                        { vehicle: 'ГАЗель', volume: 'до 2 складометрів', feature: 'Швидка доставка' },
-                                        { vehicle: 'ЗІЛ', volume: 'до 4 складометрів', feature: 'Оптимально для приватних будинків' },
-                                        { vehicle: 'КАМАЗ', volume: 'до 10 складометрів', feature: 'Великі обсяги' },
-                                        { vehicle: 'Гідроборт', volume: '—', feature: 'Доставка з розвантаженням' },
-                                        { vehicle: 'Кран-маніпулятор', volume: '—', feature: 'Розвантаження у складних місцях' },
+                                        { vehicle: 'ГАЗель (бус)', volume: '4–5 складометрів', price: '1 000 – 1 500 грн' },
+                                        { vehicle: 'ЗІЛ самоскид', volume: '4 складометри', price: '2 500 грн' },
+                                        { vehicle: 'КАМАЗ самоскид', volume: '8 складометрів', price: '3 000 грн' },
                                     ].map((row, idx) => (
-                                        <tr key={idx} style={{ background: idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', transition: 'background 0.2s' }}>
-                                            <td style={{ padding: '1rem 1.25rem', fontWeight: 700, borderBottom: '1px solid var(--color-border-subtle)', color: 'var(--c-orange)', whiteSpace: 'nowrap' }}>{row.vehicle}</td>
-                                            <td style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--color-border-subtle)', color: 'var(--c-text)' }}>{row.volume}</td>
-                                            <td style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--color-border-subtle)', color: 'var(--c-text2)' }}>{row.feature}</td>
+                                        <tr key={idx} style={{ background: idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
+                                            <td style={{ ...tdBase, fontWeight: 700, color: 'var(--c-orange)', whiteSpace: 'nowrap' }}>{row.vehicle}</td>
+                                            <td style={{ ...tdBase, color: 'var(--c-text)' }}>{row.volume}</td>
+                                            <td style={{ ...tdBase, fontWeight: 700, color: 'var(--c-orange)' }}>{row.price}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -483,45 +464,141 @@ function DeliveryExtendedSeo() {
                 </div>
             </section>
 
-            {/* SECTION 3: Мінімальне замовлення */}
-            <section style={{ padding: 'clamp(40px, 8vw, 80px) 0 0' }}>
+            {/* ── SECTION 3: Доставка брикетів ───────────────────── */}
+            <section style={sectionPad}>
                 <div className="layout-container">
-                    <div className="nh-card" style={{ padding: 'clamp(1.5rem, 5vw, 3.5rem)', borderRadius: '24px' }}>
-                        <h2 className="h2" style={{ marginBottom: '1rem' }}>
-                            Мінімальне замовлення
+                    <div className="nh-card" style={cardPad}>
+                        <h2 className="h2" style={{ marginBottom: '1.5rem' }}>
+                            Доставка паливних брикетів
                         </h2>
-                        <p style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', margin: 0 }}>
-                            Мінімальне замовлення <Link to="/catalog/drova" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>дров</Link> — від 1 складометра. <Link to="/catalog/brikety" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Брикети</Link> та <Link to="/catalog/vugillya" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>вугілля</Link> — від 1 тонни або мішками (уточнюйте у менеджера).
-                        </p>
+                        <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem' }}>
+                            <p style={{ marginBottom: '1rem' }}>
+                                Вартість доставки <Link to="/catalog/brikety" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>брикетів</Link> по Києву:
+                            </p>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                                <div style={{
+                                    padding: '1.5rem', borderRadius: '16px',
+                                    background: 'rgba(249,115,22,0.05)', border: '1px solid rgba(249,115,22,0.15)',
+                                    textAlign: 'center'
+                                }}>
+                                    <span style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--c-orange)', display: 'block', marginBottom: '0.25rem' }}>700 грн</span>
+                                    <span style={{ color: 'var(--c-text2)', fontSize: '0.95rem' }}>за тонну по Києву</span>
+                                </div>
+                                <div style={{
+                                    padding: '1.5rem', borderRadius: '16px',
+                                    background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
+                                    textAlign: 'center'
+                                }}>
+                                    <span style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--c-text)', display: 'block', marginBottom: '0.25rem' }}>+20 грн</span>
+                                    <span style={{ color: 'var(--c-text2)', fontSize: '0.95rem' }}>за кожен кілометр за межі Києва</span>
+                                </div>
+                            </div>
+                            <p style={{ margin: 0 }}>
+                                Доставка брикетів здійснюється вантажним транспортом з можливістю розвантаження гідробортом або маніпулятором.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* SECTION 4 + 5: Терміни доставки & Оплата — side by side */}
-            <section style={{ padding: 'clamp(40px, 8vw, 80px) 0 0' }}>
+            {/* ── SECTION 4: Доставка вугілля ───────────────────── */}
+            <section style={sectionPad}>
                 <div className="layout-container">
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: '1.5rem' }}>
-                        {/* Терміни доставки */}
-                        <div className="nh-card" style={{ padding: 'clamp(1.5rem, 5vw, 3rem)', borderRadius: '24px' }}>
-                            <h2 className="h2" style={{ marginBottom: '1.5rem', fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }}>
-                                Терміни доставки
-                            </h2>
-                            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                {['Доставка в день замовлення', 'Доставка на наступний день', 'Попереднє бронювання доставки'].map((item, i) => (
-                                    <li key={i} style={listItemStyle}><span style={checkStyle}>✔</span> {item}</li>
+                    <div className="nh-card" style={cardPad}>
+                        <h2 className="h2" style={{ marginBottom: '1.5rem' }}>
+                            Доставка кам&#39;яного вугілля
+                        </h2>
+                        <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem' }}>
+                            <p style={{ marginBottom: '1rem' }}>
+                                Вартість доставки <Link to="/catalog/vugillya" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>вугілля</Link> залежить від обсягу замовлення та відстані доставки. Ціну уточнюйте у менеджера.
+                            </p>
+                            <p style={{ marginBottom: '1rem' }}>Для доставки вугілля по Києву та області використовуються автомобілі:</p>
+                            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                {['ЗІЛ', 'КАМАЗ', 'Маніпулятор'].map((v, i) => (
+                                    <li key={i} style={{
+                                        padding: '0.75rem 1.25rem', borderRadius: '10px',
+                                        background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
+                                        display: 'flex', alignItems: 'center', fontSize: '1.05rem', color: 'var(--c-text)',
+                                    }}>
+                                        <span style={{ color: 'var(--c-orange)', marginRight: '10px', fontWeight: 700 }}>•</span> {v}
+                                    </li>
                                 ))}
                             </ul>
                         </div>
-                        {/* Оплата */}
-                        <div className="nh-card" style={{ padding: 'clamp(1.5rem, 5vw, 3rem)', borderRadius: '24px' }}>
-                            <h2 className="h2" style={{ marginBottom: '1.5rem', fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)' }}>
-                                Оплата
-                            </h2>
-                            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                {['Оплата після отримання', 'Готівкою', 'Безготівковий розрахунок'].map((item, i) => (
-                                    <li key={i} style={listItemStyle}><span style={checkStyle}>✔</span> {item}</li>
-                                ))}
-                            </ul>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── SECTION 5: Спецтехніка ─────────────────────────── */}
+            <section style={sectionPad}>
+                <div className="layout-container">
+                    <div className="nh-card" style={cardPad}>
+                        <h2 className="h2" style={{ marginBottom: '1.5rem' }}>
+                            Спецтехніка для розвантаження
+                        </h2>
+                        <p style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', marginBottom: '1.5rem' }}>
+                            Для зручного розвантаження палива у складних умовах ми пропонуємо спеціалізовану техніку:
+                        </p>
+                        <div style={{ overflowX: 'auto' }}>
+                            <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, fontSize: '1rem', color: 'var(--c-text)' }}>
+                                <thead>
+                                    <tr>
+                                        <th style={thStyle}>Послуга</th>
+                                        <th style={thStyle}>Ціна</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[
+                                        { service: 'Кран-маніпулятор', price: 'від 3 500 грн' },
+                                        { service: 'Гідроборт / рокла', price: 'від 4 500 грн' },
+                                    ].map((row, idx) => (
+                                        <tr key={idx} style={{ background: idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
+                                            <td style={{ ...tdBase, fontWeight: 700, color: 'var(--c-orange)', whiteSpace: 'nowrap' }}>{row.service}</td>
+                                            <td style={{ ...tdBase, fontWeight: 700, color: 'var(--c-orange)' }}>{row.price}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── SECTION 6: Оптові поставки ─────────────────────── */}
+            <section style={sectionPad}>
+                <div className="layout-container">
+                    <div className="nh-card" style={{
+                        ...cardPad,
+                        background: 'linear-gradient(145deg, rgba(249,115,22,0.04) 0%, rgba(20,25,30,0.9) 100%)',
+                        border: '1px solid rgba(249,115,22,0.12)',
+                    }}>
+                        <h2 className="h2" style={{ marginBottom: '1.5rem' }}>
+                            Оптові поставки палива
+                        </h2>
+                        <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem' }}>
+                            <p style={{ marginBottom: '1.25rem' }}>
+                                Ми здійснюємо оптові поставки <Link to="/catalog/drova" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>дров</Link>, <Link to="/catalog/brikety" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>брикетів</Link> та <Link to="/catalog/vugillya" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>вугілля</Link> повними фурами безпосередньо з виробництва. Доставка дров фурою по Києву та області — вигідний варіант для великих обсягів.
+                            </p>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
+                                <div style={{
+                                    padding: '1.5rem', borderRadius: '16px',
+                                    background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.15)',
+                                    textAlign: 'center'
+                                }}>
+                                    <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--c-text2)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '0.5rem' }}>Обсяг фури</span>
+                                    <span style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--c-orange)' }}>22–24</span>
+                                    <span style={{ display: 'block', color: 'var(--c-text2)', fontSize: '0.9rem' }}>складометри дров</span>
+                                </div>
+                                <div style={{
+                                    padding: '1.5rem', borderRadius: '16px',
+                                    background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
+                                    textAlign: 'center'
+                                }}>
+                                    <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--c-text2)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '0.5rem' }}>Ціна</span>
+                                    <span style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--c-text)' }}>Індивідуально</span>
+                                    <span style={{ display: 'block', color: 'var(--c-text2)', fontSize: '0.9rem' }}>розраховується за запитом</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -529,6 +606,8 @@ function DeliveryExtendedSeo() {
         </>
     );
 }
+
+
 
 // ─── FINAL CTA BANNER ──────────────────────────────────────────
 function FinalCtaBanner({ onOrderClick }) {

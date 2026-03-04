@@ -1517,7 +1517,7 @@ function SiteFooter() {
             margin: "0 auto",
             padding: "4rem 1.5rem 3rem",
             display: "grid",
-            gridTemplateColumns: "1.8fr 1fr 1.4fr 1fr",
+            gridTemplateColumns: "1.8fr 1fr 1.4fr",
             gap: "3rem"
           },
           className: "footer-grid",
@@ -1570,37 +1570,41 @@ function SiteFooter() {
             ] }),
             /* @__PURE__ */ jsxs("div", { children: [
               /* @__PURE__ */ jsx("p", { style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--c-text)", marginBottom: 16, letterSpacing: "0.06em", textTransform: "uppercase" }, children: "Контакти" }),
-              /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: 14 }, children: [
-                { Icon: Phone, text: shopConfig.contact.phone, href: `tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, "")}`, label: "Відділ продажу", hideOnMobile: false },
-                { Icon: Phone, text: "+38 099 665 74 77", href: "tel:+380996657477", label: "Відділ продажу", hideOnMobile: false },
-                { Icon: MapPin, text: "вул. Колекторна, 19, Київ", href: "https://maps.google.com/?q=вул.+Колекторна+19+Київ", label: "Адреса", hideOnMobile: false },
-                { Icon: Mail, text: "info@kievbriket.com", href: "mailto:info@kievbriket.com", label: "Email", hideOnMobile: true }
-              ].map(({ Icon, text, href, label, hideOnMobile }) => /* @__PURE__ */ jsxs(
-                "a",
-                {
-                  href,
-                  target: href.startsWith("http") ? "_blank" : void 0,
-                  rel: href.startsWith("http") ? "noopener noreferrer" : void 0,
-                  className: hideOnMobile ? "mobile-hidden-block" : "",
-                  style: { display: "flex", alignItems: "flex-start", gap: 10, textDecoration: "none", color: "var(--c-text2)", fontSize: "0.875rem", lineHeight: 1.5, transition: "color 0.2s" },
-                  onMouseEnter: (e) => e.currentTarget.style.color = "var(--c-text)",
-                  onMouseLeave: (e) => e.currentTarget.style.color = "var(--c-text2)",
-                  children: [
-                    /* @__PURE__ */ jsx(Icon, { size: 14, color: "var(--c-orange)", style: { flexShrink: 0, marginTop: 2 } }),
-                    /* @__PURE__ */ jsxs("div", { children: [
-                      /* @__PURE__ */ jsx("span", { style: { display: "block", fontSize: "0.72rem", color: "var(--c-text2)", marginBottom: 1 }, children: label }),
-                      text
-                    ] })
-                  ]
-                },
-                text
-              )) })
-            ] }),
-            /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs("div", { className: "schedule-row", style: { display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }, children: [
-              /* @__PURE__ */ jsx("p", { style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--c-text)", letterSpacing: "0.06em", textTransform: "uppercase", margin: 0 }, children: "Графік роботи" }),
-              /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem", color: "var(--c-text2)" }, children: "Пн — Нд" }),
-              /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text)" }, children: "09:00 – 20:00" })
-            ] }) })
+              /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: 14 }, children: [
+                [
+                  { Icon: Phone, text: shopConfig.contact.phone, href: `tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, "")}`, label: "Відділ продажу", hideOnMobile: false },
+                  { Icon: Phone, text: "+38 099 665 74 77", href: "tel:+380996657477", label: "Відділ продажу", hideOnMobile: false },
+                  { Icon: MapPin, text: "вул. Колекторна, 19, Київ", href: "https://maps.google.com/?q=вул.+Колекторна+19+Київ", label: "Адреса", hideOnMobile: false },
+                  { Icon: Mail, text: "info@kievbriket.com", href: "mailto:info@kievbriket.com", label: "Email", hideOnMobile: true }
+                ].map(({ Icon, text, href, label, hideOnMobile }) => /* @__PURE__ */ jsxs(
+                  "a",
+                  {
+                    href,
+                    target: href.startsWith("http") ? "_blank" : void 0,
+                    rel: href.startsWith("http") ? "noopener noreferrer" : void 0,
+                    className: hideOnMobile ? "mobile-hidden-block" : "",
+                    style: { display: "flex", alignItems: "flex-start", gap: 10, textDecoration: "none", color: "var(--c-text2)", fontSize: "0.875rem", lineHeight: 1.5, transition: "color 0.2s" },
+                    onMouseEnter: (e) => e.currentTarget.style.color = "var(--c-text)",
+                    onMouseLeave: (e) => e.currentTarget.style.color = "var(--c-text2)",
+                    children: [
+                      /* @__PURE__ */ jsx(Icon, { size: 14, color: "var(--c-orange)", style: { flexShrink: 0, marginTop: 2 } }),
+                      /* @__PURE__ */ jsxs("div", { children: [
+                        /* @__PURE__ */ jsx("span", { style: { display: "block", fontSize: "0.72rem", color: "var(--c-text2)", marginBottom: 1 }, children: label }),
+                        text
+                      ] })
+                    ]
+                  },
+                  text
+                )),
+                /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "flex-start", gap: 10, color: "var(--c-text2)", fontSize: "0.875rem", lineHeight: 1.5 }, children: [
+                  /* @__PURE__ */ jsx(Clock, { size: 14, color: "var(--c-orange)", style: { flexShrink: 0, marginTop: 2 } }),
+                  /* @__PURE__ */ jsxs("div", { children: [
+                    /* @__PURE__ */ jsx("span", { style: { display: "block", fontSize: "0.72rem", color: "var(--c-text2)", marginBottom: 1 }, children: "Графік роботи" }),
+                    "Пн — Нд: 09:00 – 20:00"
+                  ] })
+                ] })
+              ] })
+            ] })
           ]
         }
       ),

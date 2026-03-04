@@ -23,7 +23,7 @@ export function SiteFooter() {
                         maxWidth: 1200, margin: "0 auto",
                         padding: "4rem 1.5rem 3rem",
                         display: "grid",
-                        gridTemplateColumns: "1.8fr 1fr 1.4fr 1fr",
+                        gridTemplateColumns: "1.8fr 1fr 1.4fr",
                         gap: "3rem",
                     }}
                     className="footer-grid"
@@ -117,17 +117,14 @@ export function SiteFooter() {
                                     </div>
                                 </a>
                             ))}
-                        </div>
-                    </div>
-
-                    {/* Графік роботи */}
-                    <div>
-                        <div className="schedule-row" style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
-                            <p style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--c-text)", letterSpacing: "0.06em", textTransform: "uppercase", margin: 0 }}>
-                                Графік роботи
-                            </p>
-                            <span style={{ fontSize: "0.8rem", color: "var(--c-text2)" }}>Пн — Нд</span>
-                            <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text)" }}>09:00 – 20:00</span>
+                            {/* Schedule row inside contacts */}
+                            <div style={{ display: "flex", alignItems: "flex-start", gap: 10, color: "var(--c-text2)", fontSize: "0.875rem", lineHeight: 1.5 }}>
+                                <Clock size={14} color="var(--c-orange)" style={{ flexShrink: 0, marginTop: 2 }} />
+                                <div>
+                                    <span style={{ display: "block", fontSize: "0.72rem", color: "var(--c-text2)", marginBottom: 1 }}>Графік роботи</span>
+                                    Пн — Нд: 09:00 – 20:00
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

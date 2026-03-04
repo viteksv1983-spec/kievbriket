@@ -1657,9 +1657,17 @@ function SiteFooter() {
                 /* Mobile: 2 columns, compact */
                 @media (max-width: 540px) {
                     .footer-grid {
-                        grid-template-columns: 1.2fr 1fr !important; /* Adjust columns after hiding first one */
+                        grid-template-columns: 1.2fr 1fr !important;
                         gap: 1.2rem 1rem !important;
                         padding: 1.5rem 1rem 1.25rem !important;
+                        align-items: start;
+                    }
+                    .footer-grid > div {
+                        align-self: stretch;
+                    }
+                    .footer-grid > div > ul {
+                        height: 100%;
+                        justify-content: space-between;
                     }
                     .mobile-hidden-block {
                         display: none !important;

@@ -7949,7 +7949,10 @@ function ProductPage() {
     }).catch(() => setLoading(false));
   }, [productSlug]);
   const category = categories.find((c) => c.slug === (categorySlug || product?.category));
-  const originalMainImg = product?.image_url ? getImageUrl(product.image_url, api.defaults.baseURL) : "";
+  const PROD_DOMAIN = "https://kievbriket.com";
+  const isSSG = !!ssgData;
+  const imgBase = isSSG ? PROD_DOMAIN : api.defaults.baseURL;
+  const originalMainImg = product?.image_url ? getImageUrl(product.image_url, imgBase) : "";
   const galleryImages = [originalMainImg].filter(Boolean);
   const displayPrice = selectedVariant ? selectedVariant.price : product?.price;
   product?.is_popular || true;
@@ -7981,47 +7984,6 @@ function ProductPage() {
       ] })
     ] });
   }
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Головна", "item": "https://kievbriket.com/" },
-      { "@type": "ListItem", "position": 2, "name": category ? category.name : "Каталог", "item": `https://kievbriket.com${category ? getCategoryUrl(category.slug) : "/catalog/drova"}` },
-      { "@type": "ListItem", "position": 3, "name": product.name, "item": `https://kievbriket.com/catalog/${categorySlug}/${productSlug}` }
-    ]
-  };
-  const productSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": product.name,
-    "image": galleryImages[0] || "",
-    "description": product.description || `Купити ${product.name.toLowerCase()} з доставкою по Києву`,
-    "sku": product.id || String(product.slug),
-    "brand": {
-      "@type": "Brand",
-      "name": "KievBriket"
-    },
-    "offers": {
-      "@type": "Offer",
-      "url": `https://kievbriket.com/catalog/${categorySlug}/${productSlug}`,
-      "priceCurrency": "UAH",
-      "price": displayPrice || 0,
-      "availability": "https://schema.org/InStock",
-      "itemCondition": "https://schema.org/NewCondition"
-    }
-  };
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map((f) => ({
-      "@type": "Question",
-      "name": f.q,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": f.a
-      }
-    }))
-  };
   const dynamicTitle = `${product.name} купити Київ | ціна | KievBriket`;
   return /* @__PURE__ */ jsxs(
     "div",
@@ -8041,8 +8003,7 @@ function ProductPage() {
             title: dynamicTitle,
             description: product.meta_description || product.description || `Замовляйте ${product.name.toLowerCase()} з швидкою доставкою по Києву та області.`,
             ogImage: product.og_image || product.image_url,
-            canonical: product.canonical_url,
-            schema: [breadcrumbSchema, productSchema, faqSchema]
+            canonical: product.canonical_url
           }
         ),
         /* @__PURE__ */ jsx("div", { style: {

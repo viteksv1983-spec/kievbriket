@@ -292,6 +292,22 @@ async function generatePages() {
             // Inject manualTags + whatever useful helmetTags remain into <head>
             html = html.replace('</head>', `${manualTags}\n${helmetTags}\n</head>`);
 
+            // ── SSG Post-Processing ──
+
+            // 1. Strip ALL <link rel="preload"> from inside <div id="root">
+            //    Preload links must ONLY exist in <head>
+            const rootMarker = '<div id="root">';
+            const rootIdx = html.indexOf(rootMarker);
+            if (rootIdx !== -1) {
+                const headPart = html.substring(0, rootIdx);
+                let bodyPart = html.substring(rootIdx);
+                bodyPart = bodyPart.replace(/<link[^>]*rel="preload"[^>]*\/?>/gi, '');
+                html = headPart + bodyPart;
+            }
+
+            // 2. Replace API domain with production domain for all image URLs
+            html = html.replace(/https?:\/\/kievbriket-api\.onrender\.com/g, domain);
+
             // Write to dist folder structure
             const relativePath = route.path === '/' ? '' : route.path.replace(/^\//, '');
             const folderPath = path.join(distDir, relativePath);

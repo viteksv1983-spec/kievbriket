@@ -28,9 +28,9 @@ export default function DeliveryOptionsDrova() {
                     gap: '1.5rem'
                 }}>
                     {[
-                        { title: 'ГАЗель (бортова)', vol: '4–5 складометрів', price: '1500 грн', desc: 'Оптимально для невеликих замовлень дров у межах Києва.', img: 'gazel.webp' },
-                        { title: 'ЗІЛ самоскид', vol: 'до 4 складометрів', price: '3000 грн', desc: 'Найпопулярніший варіант доставки колотих дров.', img: 'zil.webp' },
-                        { title: 'КАМАЗ самоскид', vol: 'до 8–10 складометрів', price: '4000 грн', desc: 'Підходить для великих замовлень дров.', img: 'kamaz.webp' }
+                        { title: 'ГАЗель (бортова)', vol: '4–5 складометрів', price: '1500 грн', desc: 'Оптимально для невеликих замовлень дров у межах Києва.', img: 'gazel-dostavka-driv-kyiv.webp' },
+                        { title: 'ЗІЛ самоскид', vol: 'до 4 складометрів', price: '3000 грн', desc: 'Найпопулярніший варіант доставки колотих дров.', img: 'zil-dostavka-driv-kyiv.webp' },
+                        { title: 'КАМАЗ самоскид', vol: 'до 8–10 складометрів', price: '4000 грн', desc: 'Підходить для великих замовлень дров.', img: 'kamaz-dostavka-driv-kyiv.webp' }
                     ].map((v, i) => (
                         <div key={i} style={{
                             background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
@@ -82,8 +82,8 @@ export default function DeliveryOptionsDrova() {
                     gap: '1.5rem'
                 }}>
                     {[
-                        { title: 'Кран-маніпулятор', desc: 'Для складних умов розвантаження дров (вузькі заїзди, паркани, обмежений доступ).', price: 'від 3500 грн', img: 'manipulator.webp' },
-                        { title: 'Гідроборт / рокла', desc: 'Для розвантаження палет або важких упаковок дров.', price: 'від 4500 грн', img: 'hydrolift.webp' }
+                        { title: 'Кран-маніпулятор', desc: 'Для складних умов розвантаження дров (вузькі заїзди, паркани, обмежений доступ).', price: 'від 3500 грн', img: 'manipulator-dostavka-kyiv.webp' },
+                        { title: 'Гідроборт / рокла', desc: 'Для розвантаження палет або важких упаковок дров.', price: 'від 4500 грн', img: 'gidrobort-rokla-dostavka-kyiv.webp' }
                     ].map((eq, i) => (
                         <div key={i} style={{
                             background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',

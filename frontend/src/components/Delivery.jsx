@@ -436,6 +436,40 @@ function DeliveryExtendedSeo() {
                         <p style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', marginBottom: '2rem' }}>
                             Доставка <Link to="/catalog/drova" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>дров</Link> здійснюється власним транспортом. Ви можете замовити доставку дров складометром у будь-який район Києва та Київської області. Обирайте тип машини залежно від обсягу замовлення.
                         </p>
+
+                        {/* Vehicle images */}
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
+                            gap: '1rem', marginBottom: '2rem',
+                        }}>
+                            {[
+                                { src: '/images/delivery/gazel-dostavka-driv-kyiv.webp', alt: 'ГАЗель доставка дров Київ', label: 'ГАЗель' },
+                                { src: '/images/delivery/zil-dostavka-driv-kyiv.webp', alt: 'ЗІЛ доставка дров Київ', label: 'ЗІЛ' },
+                                { src: '/images/delivery/kamaz-dostavka-driv-kyiv.webp', alt: 'КАМАЗ доставка дров Київ', label: 'КАМАЗ' },
+                            ].map((img, i) => (
+                                <figure key={i} style={{ margin: 0, textAlign: 'center' }}>
+                                    <img
+                                        src={img.src}
+                                        alt={img.alt}
+                                        width={800}
+                                        height={600}
+                                        loading="lazy"
+                                        style={{
+                                            width: '100%', height: 'auto',
+                                            borderRadius: '12px',
+                                            border: '1px solid var(--color-border-subtle)',
+                                            objectFit: 'cover',
+                                        }}
+                                    />
+                                    <figcaption style={{
+                                        marginTop: '0.5rem', fontSize: '0.9rem',
+                                        fontWeight: 600, color: 'var(--c-text2)',
+                                    }}>{img.label}</figcaption>
+                                </figure>
+                            ))}
+                        </div>
+
                         <div style={{ overflowX: 'auto' }}>
                             <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, fontSize: '1rem', color: 'var(--c-text)' }}>
                                 <thead>

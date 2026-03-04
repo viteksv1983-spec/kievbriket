@@ -196,6 +196,19 @@ async function generatePages() {
                                 "url": pageUrl,
                                 "seller": { "@type": "Organization", "name": "КиївБрикет" }
                             };
+                            if (cSlug === 'drova') {
+                                productSchema.offers.shippingDetails = {
+                                    "@type": "OfferShippingDetails",
+                                    "shippingDestination": {
+                                        "@type": "DefinedRegion",
+                                        "addressCountry": "UA"
+                                    },
+                                    "shippingRate": {
+                                        "@type": "MonetaryAmount",
+                                        "currency": "UAH"
+                                    }
+                                };
+                            }
                         }
                         schemas.push(productSchema);
 

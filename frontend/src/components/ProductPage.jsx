@@ -7,6 +7,7 @@ import api from '../api';
 import { OrderFormModal } from './new-home/OrderFormModal';
 import SEOHead from './SEOHead';
 import { useSSGData } from '../context/SSGDataContext';
+import DeliveryOptionsDrova from './DeliveryOptionsDrova';
 
 export default function ProductPage() {
     const { categorySlug, productSlug } = useParams();
@@ -424,12 +425,24 @@ export default function ProductPage() {
                                 <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6, maxWidth: 700 }}>
                                     {product.description ? (
                                         <>
-                                            <p style={{ marginBottom: '1rem' }}>{product.description}</p>
+                                            {product.category === 'drova' ? (
+                                                <p style={{ marginBottom: '1rem' }}>
+                                                    {product.description} Ми пропонуємо якісні <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>дрова колоті</Link>, <Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link> з швидкою доставкою.
+                                                </p>
+                                            ) : (
+                                                <p style={{ marginBottom: '1rem' }}>{product.description}</p>
+                                            )}
                                             <p>Наші дрова щільно укладені в кузові автомобіля (складометрами), що гарантує чесний об'єм при доставці.</p>
                                         </>
                                     ) : (
                                         <>
-                                            <p style={{ marginBottom: '1rem' }}>Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів.</p>
+                                            {product.category === 'drova' ? (
+                                                <p style={{ marginBottom: '1rem' }}>
+                                                    Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів. Окрім <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>дров колотих</Link>, у нас можна замовити <Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link>.
+                                                </p>
+                                            ) : (
+                                                <p style={{ marginBottom: '1rem' }}>Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів.</p>
+                                            )}
                                             <p>Ми ретельно відбираємо сировину, щоб забезпечити максимальну тепловіддачу. Замовляючи у нас, ви отримуєте чесний об'єм та гарантовану якість палива для вашої оселі.</p>
                                         </>
                                     )}
@@ -458,13 +471,30 @@ export default function ProductPage() {
                                     <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
                                         <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Термін доставки:</span> 1 день
                                     </p>
+                                    {product.category === 'drova' && (
+                                        <>
+                                            <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                                <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Мінімальне замовлення:</span> 1 складометр
+                                            </p>
+                                            <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                                <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Типи доставки:</span> ГАЗель, ЗІЛ, КАМАЗ
+                                            </p>
+                                        </>
+                                    )}
                                     <Link to="/dostavka" style={{ color: 'var(--c-orange)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 600, marginTop: '0.25rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                                        Детальніше про доставку <ArrowRight size={14} />
+                                        {product.category === 'drova' ? 'Детальніше про доставку дров' : 'Детальніше про доставку'} <ArrowRight size={14} />
                                     </Link>
                                 </div>
                             </div>
 
                         </div>
+
+                        {/* ── SECTION: DELIVERY OPTIONS DROVA ── */}
+                        {product.category === 'drova' && (
+                            <div style={{ marginTop: '0.5rem' }}>
+                                <DeliveryOptionsDrova />
+                            </div>
+                        )}
 
                         {/* ── SECTION 4: FAQ ── */}
                         <div style={{ marginTop: '1rem' }}>

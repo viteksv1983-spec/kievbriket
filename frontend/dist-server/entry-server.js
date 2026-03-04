@@ -1678,11 +1678,7 @@ function SiteFooter() {
                         align-items: start;
                     }
                     .footer-grid > div {
-                        align-self: stretch;
-                    }
-                    .footer-grid > div > ul {
-                        height: 100%;
-                        justify-content: space-between;
+                        align-self: start;
                     }
                     .mobile-hidden-block {
                         display: none !important;

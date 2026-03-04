@@ -340,9 +340,7 @@ export default function ProductPage() {
                                 <p style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: 0, flexWrap: 'wrap' }}>
                                     <span style={{ fontSize: '34px', fontWeight: 900, color: 'var(--c-orange)', lineHeight: 1 }}>{displayPrice}</span>
                                     <span style={{ fontSize: '20px', fontWeight: 700, color: 'var(--c-orange)' }}>грн</span>
-                                    {!product.variants?.length && (
-                                        <span style={{ fontSize: '18px', color: 'var(--c-text2)', fontWeight: 500 }}>/ {product.category === 'brikety' || product.category === 'vugillya' ? 'тонна' : 'складометр'}</span>
-                                    )}
+                                    <span style={{ fontSize: '18px', color: 'var(--c-text2)', fontWeight: 500 }}>/ {product.category === 'brikety' || product.category === 'vugillya' ? 'тонна' : 'складометр'}</span>
                                 </p>
 
                                 <div style={{ display: 'flex', gap: '1.25rem', marginTop: '1rem' }}>

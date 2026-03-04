@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { X, CheckCircle2, Loader2 } from "lucide-react";
 import api from "../../api";
+import { usePhoneInput } from "../../hooks/usePhoneInput";
 
 const fuelOptions = ["Дрова", "Паливні брикети", "Вугілля", "Декілька видів"];
 
 export function OrderFormModal({ isOpen, onClose, product, variant }) {
-    const [form, setForm] = useState({ name: "", phone: "", fuel: "", message: "" });
+    const [form, setForm] = useState({ name: "", fuel: "", message: "" });
+    const { phoneValue, phoneProps, rawPhone, resetPhone } = usePhoneInput();
     const [status, setStatus] = useState("idle");
 
     const setField = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
@@ -24,7 +26,8 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
             // Reset form when closed
             setTimeout(() => {
                 setStatus("idle");
-                setForm({ name: "", phone: "", fuel: "", message: "" });
+                setForm({ name: "", fuel: "", message: "" });
+                resetPhone();
             }, 300);
         }
     }, [isOpen]);
@@ -36,7 +39,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
         try {
             const payload = {
                 customer_name: form.name.trim() || 'Клієнт',
-                customer_phone: form.phone,
+                customer_phone: rawPhone,
                 cake_id: product ? product.id : null,
                 quantity: 1,
                 flavor: variant ? variant.name : form.fuel,
@@ -51,7 +54,8 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
 
             await api.post('/orders/quick', payload);
             setStatus("success");
-            setForm({ name: "", phone: "", fuel: "", message: "" });
+            setForm({ name: "", fuel: "", message: "" });
+            resetPhone();
         } catch (error) {
             console.error("Order submission failed:", error);
             alert("Сталася помилка при відправці. Спробуйте ще раз або зателефонуйте нам.");
@@ -190,13 +194,10 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
                             <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                                 <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>Телефон *</label>
                                 <input
-                                    type="tel"
-                                    placeholder="+38 (067) 000-00-00"
-                                    value={form.phone}
-                                    onChange={setField("phone")}
+                                    {...phoneProps}
                                     required
                                     style={inputStyle}
-                                    onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(249,115,22,0.50)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(249,115,22,0.10)"; }}
+                                    onFocus={(e) => { phoneProps.onFocus(e); e.currentTarget.style.borderColor = "rgba(249,115,22,0.50)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(249,115,22,0.10)"; }}
                                     onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.10)"; e.currentTarget.style.boxShadow = "none"; }}
                                 />
                             </div>

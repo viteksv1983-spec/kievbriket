@@ -5,6 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import api from "../api";
 import SEOHead from "./SEOHead";
 import { getProductUrl } from "../utils/urls";
+import { usePhoneInput } from "../hooks/usePhoneInput";
 
 function Cart() {
   const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } =
@@ -14,9 +15,9 @@ function Cart() {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const { phoneProps, rawPhone, digits: phoneDigits } = usePhoneInput();
   const [customerDetails, setCustomerDetails] = useState({
     name: "",
-    phone: "",
     deliveryDate: "", // Added for checkout flow
     deliveryMethod:
       cartItems.length > 0 ? cartItems[0].deliveryMethod || "pickup" : "pickup",
@@ -32,7 +33,7 @@ function Cart() {
 
     if (
       !customerDetails.name ||
-      !customerDetails.phone ||
+      phoneDigits.length < 10 ||
       !customerDetails.deliveryDate
     ) {
       setError(
@@ -42,10 +43,9 @@ function Cart() {
       return;
     }
 
-    const phoneRegex = /^(\+?380|0)\d{9}$/;
-    if (!phoneRegex.test(customerDetails.phone.replace(/[\s\-\(\)]/g, ""))) {
+    if (phoneDigits.length < 10) {
       setError(
-        "Будь ласка, введіть коректний номер телефону (наприклад, 0501234567 або +380501234567).",
+        "Будь ласка, введіть повний номер телефону (10 цифр після +38).",
       );
       setIsCheckingOut(false);
       return;
@@ -55,7 +55,7 @@ function Cart() {
       const firstItem = cartItems[0];
       const orderData = {
         customer_name: customerDetails.name,
-        customer_phone: customerDetails.phone,
+        customer_phone: rawPhone,
         delivery_method: customerDetails.deliveryMethod,
         delivery_date: customerDetails.deliveryDate,
         items: cartItems.map((item) => ({
@@ -350,11 +350,8 @@ function Cart() {
                   Ваш Телефон
                 </label>
                 <input
-                  type="tel"
+                  {...phoneProps}
                   name="phone"
-                  value={customerDetails.phone}
-                  onChange={handleDetailsChange}
-                  placeholder="+380..."
                   className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-700 focus:border-transparent transition-all outline-none text-gray-900 font-medium"
                 />
               </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../api';
+import { usePhoneInput } from '../hooks/usePhoneInput';
 
 const QuickOrderModal = ({
     product,
@@ -11,7 +12,7 @@ const QuickOrderModal = ({
     weight
 }) => {
     const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
+    const { phoneProps, rawPhone, resetPhone, digits } = usePhoneInput();
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -21,9 +22,9 @@ const QuickOrderModal = ({
         e.preventDefault();
         setLoading(true);
         setMessage('');
-        const phoneRegex = /^(\+?380|0)\d{9}$/;
-        if (!phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''))) {
-            setMessage('Будь ласка, введіть коректний номер телефону (наприклад, +380501234567 або 0501234567).');
+        const cleanDigits = digits;
+        if (cleanDigits.length < 10) {
+            setMessage('Будь ласка, введіть повний номер телефону (10 цифр після +38).');
             setLoading(false);
             return;
         }
@@ -31,7 +32,7 @@ const QuickOrderModal = ({
         try {
             await api.post('/orders/quick', {
                 customer_name: name,
-                customer_phone: phone,
+                customer_phone: rawPhone,
                 product_id: product.id,
                 quantity: 1,
                 flavor: flavor || null,
@@ -43,7 +44,7 @@ const QuickOrderModal = ({
             setTimeout(() => {
                 onClose();
                 setName('');
-                setPhone('');
+                resetPhone();
                 setMessage('');
             }, 3000);
         } catch (error) {
@@ -112,12 +113,9 @@ const QuickOrderModal = ({
                                 Номер телефону
                             </label>
                             <input
+                                {...phoneProps}
                                 className="w-full bg-[#f8f9fa] border border-gray-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#D39A5E]/20 focus:border-[#D39A5E] transition-all"
                                 id="phone"
-                                type="tel"
-                                placeholder="+38 (___) ___ __ __"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
                                 required
                             />
                         </div>

@@ -3,11 +3,13 @@ import { CheckCircle2, Loader2, Phone, Mail, MapPin } from "lucide-react";
 import { useReveal } from "../../hooks/useReveal";
 import shopConfig from '../../shop.config';
 import api from '../../api';
+import { usePhoneInput } from '../../hooks/usePhoneInput';
 
 const fuelOptions = ["Дрова", "Паливні брикети", "Вугілля", "Декілька видів"];
 
 export function ContactSection() {
-    const [form, setForm] = useState({ name: "", phone: "", fuel: "", message: "" });
+    const [form, setForm] = useState({ name: "", fuel: "", message: "" });
+    const { phoneProps, rawPhone, resetPhone } = usePhoneInput();
     const [status, setStatus] = useState("idle");
     const { ref, visible } = useReveal();
 
@@ -19,7 +21,7 @@ export function ContactSection() {
         try {
             await api.post("/orders/quick", {
                 customer_name: form.name,
-                customer_phone: form.phone,
+                customer_phone: rawPhone,
                 delivery_method: form.fuel || null,
                 delivery_date: form.message || null,
             });
@@ -123,7 +125,7 @@ export function ContactSection() {
                                 <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--c-text)", marginBottom: 10 }}>Заявку прийнято!</h3>
                                 <p style={{ fontSize: "0.9rem", color: "var(--c-text2)", marginBottom: 24 }}>Передзвонимо протягом 15 хвилин.</p>
                                 <button
-                                    onClick={() => { setStatus("idle"); setForm({ name: "", phone: "", fuel: "", message: "" }); }}
+                                    onClick={() => { setStatus("idle"); setForm({ name: "", fuel: "", message: "" }); resetPhone(); }}
                                     style={{ background: "none", border: "none", color: "var(--c-orange)", fontSize: "0.9rem", fontWeight: 700, cursor: "pointer" }}
                                 >
                                     Нова заявка →
@@ -143,7 +145,6 @@ export function ContactSection() {
                                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="form-row">
                                     {([
                                         { key: "name", label: "Ваше ім'я", placeholder: "Іван", type: "text" },
-                                        { key: "phone", label: "Телефон *", placeholder: "+38 (067) 000-00-00", type: "tel", required: true },
                                     ]).map((f) => (
                                         <div key={f.key} style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                                             <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text2)" }}>{f.label}</label>
@@ -169,6 +170,26 @@ export function ContactSection() {
                                             />
                                         </div>
                                     ))}
+                                    <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                                        <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text2)" }}>Телефон *</label>
+                                        <input
+                                            {...phoneProps}
+                                            required
+                                            style={{
+                                                background: "var(--c-surface2)",
+                                                border: "1px solid rgba(255,255,255,0.09)",
+                                                borderRadius: 10,
+                                                padding: "12px 14px",
+                                                color: "var(--c-text)",
+                                                fontSize: "0.9rem",
+                                                outline: "none",
+                                                transition: "border-color 0.2s",
+                                                fontFamily: "inherit",
+                                            }}
+                                            onFocus={(e) => { phoneProps.onFocus(e); e.currentTarget.style.borderColor = "rgba(249,115,22,0.45)"; }}
+                                            onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)")}
+                                        />
+                                    </div>
                                 </div>
 
                                 <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>

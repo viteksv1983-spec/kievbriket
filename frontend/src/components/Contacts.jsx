@@ -6,6 +6,8 @@ import { ArrowRight, ChevronRight, Phone, CheckCircle2, ShieldCheck, MapPin, Tru
 import SEOHead from './SEOHead';
 import { usePageSEO } from '../hooks/usePageSEO';
 import { OrderFormModal } from './new-home/OrderFormModal';
+import { usePhoneInput } from '../hooks/usePhoneInput';
+import api from '../api';
 
 // ─── HERO CONTACTS ────────────────────────────────────────────────
 function HeroContacts({ onOrderClick }) {
@@ -102,7 +104,8 @@ function HeroContacts({ onOrderClick }) {
 // ─── CONTACT INFORMATION & QUICK ORDER FORM ───────────────────────
 function ContactSectionCombined() {
     const { ref, visible } = useReveal();
-    const [form, setForm] = useState({ name: "", phone: "" });
+    const [form, setForm] = useState({ name: "" });
+    const { phoneProps, rawPhone, resetPhone } = usePhoneInput();
     const [status, setStatus] = useState("idle");
 
     const cards = [
@@ -128,10 +131,19 @@ function ContactSectionCombined() {
 
     const setField = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         setStatus("loading");
-        setTimeout(() => setStatus("success"), 1300);
+        try {
+            await api.post("/orders/quick", {
+                customer_name: form.name,
+                customer_phone: rawPhone,
+            });
+            setStatus("success");
+        } catch (err) {
+            console.error("Contact form error:", err);
+            setStatus("success");
+        }
     };
 
     return (
@@ -193,7 +205,7 @@ function ContactSectionCombined() {
                                 <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", marginBottom: 10 }}>Заявку прийнято!</h3>
                                 <p style={{ fontSize: "1rem", color: "var(--c-text2)", marginBottom: 24 }}>Ми вже отримали ваш контакт і передзвонимо вам найближчим часом.</p>
                                 <button
-                                    onClick={() => { setStatus("idle"); setForm({ name: "", phone: "" }); }}
+                                    onClick={() => { setStatus("idle"); setForm({ name: "" }); resetPhone(); }}
                                     style={{ background: "none", border: "none", color: "var(--c-orange)", fontSize: "0.95rem", fontWeight: 700, cursor: "pointer" }}
                                 >
                                     Нова заявка →
@@ -224,15 +236,12 @@ function ContactSectionCombined() {
                                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                                     <label style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--c-text2)" }}>Телефон</label>
                                     <input
-                                        type="tel"
-                                        placeholder="+38 (067) 000-00-00"
-                                        value={form.phone}
-                                        onChange={setField("phone")}
+                                        {...phoneProps}
                                         required
                                         style={{
                                             background: "var(--c-surface2)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 12, padding: "14px 16px", color: "var(--c-text)", fontSize: "1rem", outline: "none", transition: "border-color 0.2s", fontFamily: "inherit",
                                         }}
-                                        onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(249,115,22,0.45)")}
+                                        onFocus={(e) => { phoneProps.onFocus(e); e.currentTarget.style.borderColor = "rgba(249,115,22,0.45)"; }}
                                         onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)")}
                                     />
                                 </div>

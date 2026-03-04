@@ -1517,7 +1517,7 @@ function SiteFooter() {
             margin: "0 auto",
             padding: "4rem 1.5rem 3rem",
             display: "grid",
-            gridTemplateColumns: "1.8fr 1fr 1.4fr",
+            gridTemplateColumns: "1.8fr 1fr 1.4fr 1fr",
             gap: "3rem"
           },
           className: "footer-grid",
@@ -1596,7 +1596,7 @@ function SiteFooter() {
                   },
                   text
                 )),
-                /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "flex-start", gap: 10, color: "var(--c-text2)", fontSize: "0.875rem", lineHeight: 1.5 }, children: [
+                /* @__PURE__ */ jsxs("div", { className: "mobile-schedule-row", style: { display: "none", alignItems: "flex-start", gap: 10, color: "var(--c-text2)", fontSize: "0.875rem", lineHeight: 1.5 }, children: [
                   /* @__PURE__ */ jsx(Clock, { size: 14, color: "var(--c-orange)", style: { flexShrink: 0, marginTop: 2 } }),
                   /* @__PURE__ */ jsxs("div", { children: [
                     /* @__PURE__ */ jsx("span", { style: { display: "block", fontSize: "0.72rem", color: "var(--c-text2)", marginBottom: 1 }, children: "Графік роботи" }),
@@ -1604,6 +1604,21 @@ function SiteFooter() {
                   ] })
                 ] })
               ] })
+            ] }),
+            /* @__PURE__ */ jsxs("div", { className: "desktop-schedule-col", children: [
+              /* @__PURE__ */ jsx("p", { style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--c-text)", marginBottom: 16, letterSpacing: "0.06em", textTransform: "uppercase" }, children: "Графік роботи" }),
+              /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: 8 }, children: [
+                { day: "Понеділок", time: "09:00 – 20:00" },
+                { day: "Вівторок", time: "09:00 – 20:00" },
+                { day: "Середа", time: "09:00 – 20:00" },
+                { day: "Четвер", time: "09:00 – 20:00" },
+                { day: "П'ятниця", time: "09:00 – 20:00" },
+                { day: "Субота", time: "09:00 – 20:00" },
+                { day: "Неділя", time: "09:00 – 20:00" }
+              ].map((h) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }, children: [
+                /* @__PURE__ */ jsx("span", { style: { fontSize: "0.82rem", color: "var(--c-text2)" }, children: h.day }),
+                /* @__PURE__ */ jsx("span", { style: { fontSize: "0.82rem", fontWeight: 600, color: "var(--c-text)", whiteSpace: "nowrap" }, children: h.time })
+              ] }, h.day)) })
             ] })
           ]
         }
@@ -1671,6 +1686,12 @@ function SiteFooter() {
                     }
                     .mobile-hidden-block {
                         display: none !important;
+                    }
+                    .desktop-schedule-col {
+                        display: none !important;
+                    }
+                    .mobile-schedule-row {
+                        display: flex !important;
                     }
                 }
             ` })

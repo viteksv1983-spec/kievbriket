@@ -23,7 +23,7 @@ export function SiteFooter() {
                         maxWidth: 1200, margin: "0 auto",
                         padding: "4rem 1.5rem 3rem",
                         display: "grid",
-                        gridTemplateColumns: "1.8fr 1fr 1.4fr",
+                        gridTemplateColumns: "1.8fr 1fr 1.4fr 1fr",
                         gap: "3rem",
                     }}
                     className="footer-grid"
@@ -117,14 +117,37 @@ export function SiteFooter() {
                                     </div>
                                 </a>
                             ))}
-                            {/* Schedule row inside contacts */}
-                            <div style={{ display: "flex", alignItems: "flex-start", gap: 10, color: "var(--c-text2)", fontSize: "0.875rem", lineHeight: 1.5 }}>
+                            {/* Schedule row inside contacts — MOBILE ONLY */}
+                            <div className="mobile-schedule-row" style={{ display: "none", alignItems: "flex-start", gap: 10, color: "var(--c-text2)", fontSize: "0.875rem", lineHeight: 1.5 }}>
                                 <Clock size={14} color="var(--c-orange)" style={{ flexShrink: 0, marginTop: 2 }} />
                                 <div>
                                     <span style={{ display: "block", fontSize: "0.72rem", color: "var(--c-text2)", marginBottom: 1 }}>Графік роботи</span>
                                     Пн — Нд: 09:00 – 20:00
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Графік роботи — DESKTOP ONLY */}
+                    <div className="desktop-schedule-col">
+                        <p style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--c-text)", marginBottom: 16, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                            Графік роботи
+                        </p>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                            {[
+                                { day: "Понеділок", time: "09:00 – 20:00" },
+                                { day: "Вівторок", time: "09:00 – 20:00" },
+                                { day: "Середа", time: "09:00 – 20:00" },
+                                { day: "Четвер", time: "09:00 – 20:00" },
+                                { day: "П'ятниця", time: "09:00 – 20:00" },
+                                { day: "Субота", time: "09:00 – 20:00" },
+                                { day: "Неділя", time: "09:00 – 20:00" },
+                            ].map((h) => (
+                                <div key={h.day} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                                    <span style={{ fontSize: "0.82rem", color: "var(--c-text2)" }}>{h.day}</span>
+                                    <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--c-text)", whiteSpace: "nowrap" }}>{h.time}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -185,6 +208,12 @@ export function SiteFooter() {
                     }
                     .mobile-hidden-block {
                         display: none !important;
+                    }
+                    .desktop-schedule-col {
+                        display: none !important;
+                    }
+                    .mobile-schedule-row {
+                        display: flex !important;
                     }
                 }
             `}</style>

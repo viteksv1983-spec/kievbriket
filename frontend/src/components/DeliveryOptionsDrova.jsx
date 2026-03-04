@@ -48,11 +48,11 @@ export default function DeliveryOptionsDrova() {
                                 e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
                             }}
                         >
-                            <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#fff' }}>
+                            <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: '#fff', padding: '1.5rem' }}>
                                 <img
                                     src={getImgUrl(v.img)}
                                     alt={`Доставка дров машиною ${v.title} Київ`}
-                                    width="400" height="300"
+                                    width="400" height="225"
                                     loading="lazy"
                                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                                 />

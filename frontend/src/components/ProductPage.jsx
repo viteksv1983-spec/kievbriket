@@ -489,12 +489,7 @@ export default function ProductPage() {
 
                         </div>
 
-                        {/* ── SECTION: DELIVERY OPTIONS DROVA ── */}
-                        {product.category === 'drova' && (
-                            <div style={{ marginTop: '0.5rem' }}>
-                                <DeliveryOptionsDrova />
-                            </div>
-                        )}
+
 
                         {/* ── SECTION 4: FAQ ── */}
                         <div style={{ marginTop: '1rem' }}>
@@ -540,6 +535,13 @@ export default function ProductPage() {
 
                     </div>
                 </div>
+
+                {/* ── SECTION: DELIVERY OPTIONS DROVA (FULL WIDTH) ── */}
+                {product.category === 'drova' && (
+                    <div style={{ marginTop: '4rem' }}>
+                        <DeliveryOptionsDrova />
+                    </div>
+                )}
 
                 {/* ── SECTION 5: RELATED PRODUCTS ── */}
                 {relatedProducts.length > 0 && (

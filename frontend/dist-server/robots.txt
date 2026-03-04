@@ -7,7 +7,6 @@ Disallow: /api
 Disallow: /docs
 
 Disallow: /*.json$
-Disallow: /*?*
 
 Host: https://kievbriket.com
 Sitemap: https://kievbriket.com/sitemap.xml

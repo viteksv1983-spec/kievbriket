@@ -122,14 +122,12 @@ export function SiteFooter() {
 
                     {/* Графік роботи */}
                     <div>
-                        <p style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--c-text)", marginBottom: 16, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-                            Графік роботи
-                        </p>
-                        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                                <span style={{ fontSize: "0.8rem", color: "var(--c-text2)" }}>Пн — Нд</span>
-                                <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text)" }}>09:00 – 20:00</span>
-                            </div>
+                        <div className="schedule-row" style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
+                            <p style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--c-text)", letterSpacing: "0.06em", textTransform: "uppercase", margin: 0 }}>
+                                Графік роботи
+                            </p>
+                            <span style={{ fontSize: "0.8rem", color: "var(--c-text2)" }}>Пн — Нд</span>
+                            <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text)" }}>09:00 – 20:00</span>
                         </div>
                     </div>
                 </div>

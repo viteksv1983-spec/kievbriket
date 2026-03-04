@@ -1596,13 +1596,11 @@ function SiteFooter() {
                 text
               )) })
             ] }),
-            /* @__PURE__ */ jsxs("div", { children: [
-              /* @__PURE__ */ jsx("p", { style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--c-text)", marginBottom: 16, letterSpacing: "0.06em", textTransform: "uppercase" }, children: "Графік роботи" }),
-              /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: 12 }, children: /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
-                /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem", color: "var(--c-text2)" }, children: "Пн — Нд" }),
-                /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text)" }, children: "09:00 – 20:00" })
-              ] }) })
-            ] })
+            /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs("div", { className: "schedule-row", style: { display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }, children: [
+              /* @__PURE__ */ jsx("p", { style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--c-text)", letterSpacing: "0.06em", textTransform: "uppercase", margin: 0 }, children: "Графік роботи" }),
+              /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem", color: "var(--c-text2)" }, children: "Пн — Нд" }),
+              /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem", fontWeight: 600, color: "var(--c-text)" }, children: "09:00 – 20:00" })
+            ] }) })
           ]
         }
       ),

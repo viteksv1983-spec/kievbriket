@@ -613,27 +613,101 @@ function DeliveryExtendedSeo() {
                         <p style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', marginBottom: '1.5rem' }}>
                             Для зручного розвантаження палива у складних умовах ми пропонуємо спеціалізовану техніку:
                         </p>
-                        <div style={{ overflowX: 'auto' }}>
-                            <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, fontSize: '1rem', color: 'var(--c-text)' }}>
-                                <thead>
-                                    <tr>
-                                        <th style={thStyle}>Послуга</th>
-                                        <th style={thStyle}>Ціна</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {[
-                                        { service: 'Кран-маніпулятор', price: 'від 3 500 грн' },
-                                        { service: 'Гідроборт / рокла', price: 'від 4 500 грн' },
-                                    ].map((row, idx) => (
-                                        <tr key={idx} style={{ background: idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
-                                            <td style={{ ...tdBase, fontWeight: 700, color: 'var(--c-orange)', whiteSpace: 'nowrap' }}>{row.service}</td>
-                                            <td style={{ ...tdBase, fontWeight: 700, color: 'var(--c-orange)' }}>{row.price}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                        {/* Interactive vehicle cards */}
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+                            gap: '1.5rem',
+                        }}>
+                            {[
+                                { src: '/images/delivery/manipulator-dostavka-kyiv.webp', alt: 'Кран-маніпулятор доставка Київ', name: 'Кран-маніпулятор', volume: 'Складні умови', price: 'від 3 500 грн' },
+                                { src: '/images/delivery/gidrobort-rokla-dostavka-kyiv.webp', alt: 'Гідроборт рокла доставка Київ', name: 'Гідроборт / рокла', volume: 'Складні умови', price: 'від 4 500 грн' },
+                            ].map((card, i) => (
+                                <figure
+                                    key={i}
+                                    className="nh-card hover-glow"
+                                    style={{
+                                        margin: 0, padding: 0, borderRadius: '20px',
+                                        overflow: 'hidden', cursor: 'default',
+                                        transition: 'transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s ease',
+                                        border: '1px solid var(--color-border-subtle)',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+                                        e.currentTarget.style.boxShadow = '0 20px 40px rgba(249,115,22,0.15), 0 0 0 1px rgba(249,115,22,0.2)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                                        e.currentTarget.style.boxShadow = 'none';
+                                    }}
+                                >
+                                    {/* Image */}
+                                    <div style={{
+                                        position: 'relative', overflow: 'hidden',
+                                        background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(20,25,30,0.4) 100%)',
+                                        padding: '1.5rem 1.5rem 0.5rem',
+                                    }}>
+                                        <img
+                                            src={card.src}
+                                            alt={card.alt}
+                                            width={800}
+                                            height={600}
+                                            loading="lazy"
+                                            style={{
+                                                width: '100%', height: 'auto',
+                                                objectFit: 'contain',
+                                                borderRadius: '12px',
+                                                transition: 'transform 0.4s ease',
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Info */}
+                                    <figcaption style={{ padding: '1.25rem 1.5rem 1.5rem' }}>
+                                        <h3 style={{
+                                            fontSize: '1.25rem', fontWeight: 800,
+                                            color: 'var(--c-text)', margin: '0 0 0.75rem',
+                                        }}>{card.name}</h3>
+
+                                        <div style={{
+                                            display: 'flex', alignItems: 'center', gap: '0.5rem',
+                                            marginBottom: '0.5rem', fontSize: '0.95rem', color: 'var(--c-text2)',
+                                        }}>
+                                            <Package size={16} style={{ color: 'var(--c-orange)', flexShrink: 0 }} />
+                                            <span>{card.volume}</span>
+                                        </div>
+
+                                        <div style={{
+                                            display: 'flex', alignItems: 'center', gap: '0.5rem',
+                                            marginBottom: '0.5rem', fontSize: '0.9rem', color: '#22c55e',
+                                        }}>
+                                            <CheckCircle2 size={16} style={{ flexShrink: 0 }} />
+                                            <span>Швидка доставка по Києву</span>
+                                        </div>
+
+                                        <div style={{
+                                            display: 'flex', alignItems: 'baseline', gap: '0.25rem',
+                                            paddingTop: '0.75rem',
+                                            borderTop: '1px dashed rgba(255,255,255,0.08)',
+                                        }}>
+                                            <span style={{
+                                                fontSize: '1.5rem', fontWeight: 800,
+                                                color: 'var(--c-orange)',
+                                            }}>{card.price}</span>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            ))}
                         </div>
+
+                        {/* Hidden SEO table — crawlers see structured data */}
+                        <table style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>
+                            <thead><tr><th>Послуга</th><th>Ціна</th></tr></thead>
+                            <tbody>
+                                <tr><td>Кран-маніпулятор</td><td>від 3 500 грн</td></tr>
+                                <tr><td>Гідроборт / рокла</td><td>від 4 500 грн</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>

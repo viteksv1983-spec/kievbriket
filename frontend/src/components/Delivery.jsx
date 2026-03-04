@@ -399,6 +399,55 @@ function FaqSection() {
     );
 }
 
+// ─── DISTRICTS SECTION ──────────────────────────────────────────────
+function DistrictsSection() {
+    const { ref, visible } = useReveal();
+    const districts = [
+        "Дарницький район", "Дніпровський район", "Деснянський район",
+        "Оболонський район", "Печерський район", "Подільський район",
+        "Святошинський район", "Солом'янський район", "Шевченківський район",
+        "Голосіївський район"
+    ];
+
+    return (
+        <section ref={ref} style={{ padding: 'clamp(40px, 8vw, 80px) 0', background: 'rgba(255,255,255,0.015)' }}>
+            <div className="layout-container">
+                <div className={`nh-card reveal ${visible ? "visible" : ""}`} style={{ padding: 'clamp(1.5rem, 5vw, 3.5rem)', borderRadius: '24px' }}>
+                    <h2 className="h2" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+                        Райони Києва, куди ми доставляємо паливо
+                    </h2>
+                    <p style={{ color: 'var(--c-text2)', textAlign: 'center', maxWidth: '800px', margin: '0 auto 2.5rem', lineHeight: 1.6 }}>
+                        <strong style={{ color: 'var(--c-text)' }}>Доставка дров Київ, доставка брикетів Київ </strong> та <strong style={{ color: 'var(--c-text)' }}>доставка вугілля Київ</strong> здійснюється по всіх районах. Наш транспорт працює щодня, тому ми можемо доставити замовлення максимально швидко.
+                    </p>
+                    <div style={{
+                        display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem'
+                    }}>
+                        {districts.map((d, i) => (
+                            <div key={i} style={{
+                                padding: '1rem', background: 'rgba(255,255,255,0.02)',
+                                border: '1px solid var(--color-border-subtle)', borderRadius: '12px',
+                                textAlign: 'center', fontSize: '1rem', color: 'var(--c-text)',
+                                transition: 'all 0.3s ease'
+                            }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.borderColor = 'var(--c-orange)';
+                                    e.currentTarget.style.background = 'rgba(249,115,22,0.03)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+                                }}
+                            >
+                                {d}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
 // ─── EXTENDED SEO SECTIONS ─────────────────────────────────────────
 function DeliveryExtendedSeo() {
     const seoLinkStyle = {
@@ -426,6 +475,95 @@ function DeliveryExtendedSeo() {
 
     return (
         <>
+            {/* ── SECTION: Яке паливо ми доставляємо ──────────────── */}
+            <section style={sectionPad}>
+                <div className="layout-container">
+                    <div className="nh-card" style={cardPad}>
+                        <h2 className="h2" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+                            Яке паливо ми доставляємо
+                        </h2>
+                        <p style={{ color: 'var(--c-text2)', textAlign: 'center', maxWidth: '800px', margin: '0 auto 2.5rem', lineHeight: 1.6 }}>
+                            Ми здійснюємо доставку <Link to="/catalog/drova" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>дров</Link>, <Link to="/catalog/brikety" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>брикетів</Link> та <Link to="/catalog/vugillya" style={seoLinkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>вугілля</Link> по Києву та Київській області власним транспортом.
+                        </p>
+                        <div style={{
+                            display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem'
+                        }}>
+                            {[
+                                { title: 'Дрова колоті', link: '/catalog/drova' },
+                                { title: 'Паливні брикети', link: '/catalog/brikety' },
+                                { title: 'Кам\'яне вугілля', link: '/catalog/vugillya' }
+                            ].map((item, i) => (
+                                <Link key={i} to={item.link} style={{ textDecoration: 'none' }}>
+                                    <div style={{
+                                        padding: '1.5rem', background: 'rgba(255,255,255,0.02)',
+                                        border: '1px solid var(--color-border-subtle)', borderRadius: '16px',
+                                        textAlign: 'center', transition: 'all 0.3s ease', height: '100%',
+                                        display: 'flex', flexDirection: 'column', justifyContent: 'center'
+                                    }}
+                                        className="hover-glow"
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.borderColor = 'var(--c-orange)';
+                                            e.currentTarget.style.background = 'rgba(249,115,22,0.03)';
+                                            e.currentTarget.style.transform = 'translateY(-4px)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
+                                            e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                        }}
+                                    >
+                                        <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: 'var(--c-text)' }}>
+                                            {item.title}
+                                        </h3>
+                                        <span style={{ color: 'var(--c-orange)', fontSize: '0.9rem', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}>
+                                            Перейти до каталогу <ChevronRight size={16} />
+                                        </span>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── SECTION: Транспорт для доставки ─────────────────── */}
+            <section style={sectionPad}>
+                <div className="layout-container">
+                    <div className="nh-card" style={cardPad}>
+                        <h2 className="h2" style={{ marginBottom: '1.5rem' }}>
+                            Транспорт для доставки
+                        </h2>
+                        <div style={{ overflowX: 'auto' }}>
+                            <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, fontSize: '1rem', color: 'var(--c-text)', minWidth: '600px' }}>
+                                <thead>
+                                    <tr>
+                                        <th style={thStyle}>Тип машини</th>
+                                        <th style={thStyle}>Обсяг</th>
+                                        <th style={thStyle}>Ціна доставки</th>
+                                        <th style={thStyle}>Особливості</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[
+                                        { type: 'ГАЗель', vol: 'до 2 складометрів', price: 'від 1500 грн', desc: 'Швидка доставка невеликих замовлень' },
+                                        { type: 'ЗІЛ', vol: 'до 4 складометрів', price: 'від 3000 грн', desc: 'Оптимально для приватних будинків' },
+                                        { type: 'КАМАЗ', vol: 'до 8 складометрів', price: 'від 4000 грн', desc: 'Великі обсяги палива' },
+                                        { type: 'Фура', vol: '22–24 складометри', price: 'за домовленістю', desc: 'Поставка напряму з лісгоспу' },
+                                    ].map((row, idx) => (
+                                        <tr key={idx} style={{ background: idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
+                                            <td style={{ ...tdBase, fontWeight: 700, color: 'var(--c-orange)' }}>{row.type}</td>
+                                            <td style={{ ...tdBase, color: 'var(--c-text2)' }}>{row.vol}</td>
+                                            <td style={{ ...tdBase, fontWeight: 700, color: 'var(--c-text)' }}>{row.price}</td>
+                                            <td style={{ ...tdBase, color: 'var(--c-text2)' }}>{row.desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* ── SECTION 2: Доставка дров ───────────────────────── */}
             <section style={sectionPad}>
                 <div className="layout-container">
@@ -825,6 +963,27 @@ export default function Delivery() {
         "description": description
     };
 
+    const deliveryServiceSchema = {
+        "@context": "https://schema.org",
+        "@type": "DeliveryService",
+        "name": "Доставка дров, брикетів та вугілля",
+        "provider": {
+            "@type": "LocalBusiness",
+            "name": "КиївБрикет",
+            "telephone": "+380991234567",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "вул. Колекторна 19",
+                "addressLocality": "Київ",
+                "addressCountry": "UA"
+            }
+        },
+        "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Київ та Київська область"
+        }
+    };
+
     return (
         <div className="new-home-scope" style={{
             minHeight: '100vh',
@@ -837,7 +996,7 @@ export default function Delivery() {
                 title={title}
                 description={description}
                 canonical={`${shopConfig.domain}/dostavka`}
-                schema={serviceSchema}
+                schema={[serviceSchema, deliveryServiceSchema]}
             />
 
             <HeroDelivery onOrderClick={() => setIsOrderFormOpen(true)} />
@@ -854,7 +1013,28 @@ export default function Delivery() {
 
             <FaqSection />
 
+            <DistrictsSection />
+
             <DeliveryExtendedSeo />
+
+            {/* Final SEO Text block */}
+            <section style={{ padding: 'clamp(40px, 8vw, 80px) 0 0', color: 'var(--c-text2)', lineHeight: 1.8 }}>
+                <div className="layout-container">
+                    <div style={{ maxWidth: '900px', margin: '0 auto', fontSize: '0.95rem' }}>
+                        <p style={{ marginBottom: '1rem' }}>
+                            Ми здійснюємо <strong>доставку твердого палива по Києву</strong> власним транспортом.
+                            У нас можна замовити <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>дрова колоті</Link>, <Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link> з швидкою доставкою
+                            по всіх районах Києва та області.
+                        </p>
+                        <p>
+                            Наша компанія працює з 2013 року та забезпечує
+                            чесний обʼєм палива, швидке завантаження та
+                            оперативну доставку дров, брикетів і вугілля
+                            для приватних будинків, котелень та підприємств. Якщо вам потрібно <strong>купити дрова з доставкою</strong> або замовити <strong>доставку палива Київ</strong>, обирайте перевіреного постачальника КиївБрикет.
+                        </p>
+                    </div>
+                </div>
+            </section>
 
             <FinalCtaBanner onOrderClick={() => setIsOrderFormOpen(true)} />
 

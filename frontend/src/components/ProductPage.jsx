@@ -394,7 +394,7 @@ export default function ProductPage() {
                         </div>
 
                         {/* ── SECTION 2 & 3: Characteristics & Description ── */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+                        <div className="product-info-grid" style={{ display: 'grid', gap: '1.5rem', marginTop: '0.5rem' }}>
                             {/* Specs */}
                             <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', rowGap: '1.5rem' }}>
@@ -486,13 +486,12 @@ export default function ProductPage() {
                                     </Link>
                                 </div>
                             </div>
-
                         </div>
 
 
 
                         {/* ── SECTION 4: FAQ ── */}
-                        <div style={{ marginTop: '1rem' }}>
+                        <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
                             <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
                                 Часті питання
                             </h2>
@@ -526,13 +525,11 @@ export default function ProductPage() {
                                             transition: 'all 0.3s ease',
                                             color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6,
                                         }}>
-                                            {faq.a}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -680,6 +677,7 @@ export default function ProductPage() {
                     .product-price-block { order: -1; padding-top: 0 !important; border-top: none !important; }
                     main { padding-top: 1rem !important; padding-bottom: 1rem !important; }
                     
+                    }
                     /* Sticky Mobile CTA Container */
                     .product-cta-container {
                         position: fixed;
@@ -694,6 +692,16 @@ export default function ProductPage() {
                     }
                     /* Add padding to bottom to account for the sticky bar */
                     .new-home-scope { padding-bottom: 90px; }
+                }
+
+                /* Layout for Product Info Sections */
+                .product-info-grid {
+                    grid-template-columns: 1fr 1fr;
+                }
+                @media (max-width: 992px) {
+                    .product-info-grid {
+                        grid-template-columns: 1fr;
+                    }
                 }
             `}</style>
 

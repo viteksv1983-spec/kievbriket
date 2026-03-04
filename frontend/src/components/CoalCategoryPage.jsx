@@ -365,7 +365,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                                             <span>Висока теплотворність</span>
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--c-text2)', fontSize: '0.875rem' }}>
-                                            <Thermometer size={14} style={{ color: 'var(--c-orange)' }} />
+                                            <Thermometer size={14} style={{ color: '#22c55e' }} />
                                             <span>Довге горіння</span>
                                         </div>
                                     </div>

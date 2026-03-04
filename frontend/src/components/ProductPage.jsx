@@ -341,7 +341,7 @@ export default function ProductPage() {
                                     <span style={{ fontSize: '34px', fontWeight: 900, color: 'var(--c-orange)', lineHeight: 1 }}>{displayPrice}</span>
                                     <span style={{ fontSize: '20px', fontWeight: 700, color: 'var(--c-orange)' }}>грн</span>
                                     {!product.variants?.length && (
-                                        <span style={{ fontSize: '18px', color: 'var(--c-text2)', fontWeight: 500 }}>/ складометр</span>
+                                        <span style={{ fontSize: '18px', color: 'var(--c-text2)', fontWeight: 500 }}>/ {product.category === 'brikety' || product.category === 'vugillya' ? 'тонна' : 'складометр'}</span>
                                     )}
                                 </p>
 
@@ -582,7 +582,7 @@ export default function ProductPage() {
                                                         <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--c-orange)', lineHeight: 1, margin: 0 }}>
                                                             {displayPrice} <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--c-orange)' }}>грн</span>
                                                         </p>
-                                                        <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', margin: 0 }}>за 1 складометр</p>
+                                                        <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', margin: 0 }}>за 1 {product.category === 'brikety' || product.category === 'vugillya' ? 'тонну' : 'складометр'}</p>
                                                     </div>
                                                     <button
                                                         className="catalog-card-btn"

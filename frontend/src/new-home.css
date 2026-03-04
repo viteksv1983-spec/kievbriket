@@ -1,11 +1,11 @@
 /* 
   KYIV BRIKET — Scoped Design Token System 
   Isolating styles for the new Home page to strictly avoid leakage.
+  NOTE: Outfit font is loaded non-blocking from index.html
 */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --font-outfit: "Outfit", system-ui, sans-serif;
+  --font-outfit: "Outfit", "Outfit Fallback", system-ui, sans-serif;
 }
 
 .new-home-scope {

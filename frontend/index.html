@@ -16,7 +16,7 @@
   <link rel="preload" as="image" type="image/webp" href="/images/hero-bg.webp" media="(max-width: 767px)"
     fetchpriority="high" />
 
-  <!-- Preload critical font file to prevent CLS -->
+  <!-- Preload critical font files to prevent CLS -->
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="https://fonts.gstatic.com/s/oswald/v53/TK3_WkUHHAIjg75cFRf3bXL8LICs1_FvsUZiZQ.woff2" />
 
@@ -39,15 +39,24 @@
       descent-override: 20%;
       line-gap-override: 0%;
     }
+
+    @font-face {
+      font-family: 'Outfit Fallback';
+      src: local('Segoe UI'), local('Arial');
+      size-adjust: 100%;
+      ascent-override: 95%;
+      descent-override: 25%;
+      line-gap-override: 0%;
+    }
   </style>
 
   <!-- Non-render-blocking fonts: loads as print, swaps to all on load -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Dancing+Script:wght@400;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript>
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Dancing+Script:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet" />
   </noscript>
 
@@ -60,7 +69,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #FDFBF7;
+      background-color: #0D1117;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -78,8 +87,8 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #7b002c;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid #F97316;
       animation: spin 1s linear infinite;
       margin-bottom: 20px;
     }
@@ -97,7 +106,7 @@
     .preloader-text {
       font-family: Arial, sans-serif;
       font-size: 14px;
-      color: #7b002c;
+      color: #F97316;
       letter-spacing: 2px;
       text-transform: uppercase;
       font-weight: bold;

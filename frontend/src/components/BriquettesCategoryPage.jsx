@@ -368,7 +368,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                                             <span>Висока тепловіддача</span>
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--c-text2)', fontSize: '0.875rem' }}>
-                                            <Droplets size={14} style={{ color: 'var(--c-orange)' }} />
+                                            <Droplets size={14} style={{ color: '#22c55e' }} />
                                             <span>Вологість &lt; 8%</span>
                                         </div>
                                     </div>

@@ -696,8 +696,6 @@ export default function Delivery() {
 
             <DeliverySection />
 
-            <DeliveryCost />
-
             <FuelCalculatorSection onQuickOrderClick={() => setIsOrderFormOpen(true)} />
 
             <BenefitsSection />

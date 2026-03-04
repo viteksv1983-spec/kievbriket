@@ -225,8 +225,8 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
                                         appearance: "none",
                                     }}
                                 >
-                                    <option value="">Оберіть вид палива</option>
-                                    {fuelOptions.map((o) => <option key={o} value={o}>{o}</option>)}
+                                    <option value="" style={{ background: "#1e1e1e", color: "#ccc" }}>Оберіть вид палива</option>
+                                    {fuelOptions.map((o) => <option key={o} value={o} style={{ background: "#1e1e1e", color: "#fff" }}>{o}</option>)}
                                 </select>
                             </div>
                         )}

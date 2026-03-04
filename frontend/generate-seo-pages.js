@@ -132,47 +132,95 @@ async function generatePages() {
                     }
                 } else if (parts.length === 4) {
                     const pSlug = parts[3];
+                    const cSlug = parts[2];
                     const prod = products.find(p => p.slug === pSlug);
+                    const cat = categories.find(c => c.slug === cSlug);
                     if (prod) {
                         const fallbackDesc = prod.description ? prod.description.replace(/<[^>]*>/g, '').substring(0, 160) : '';
+                        const metaTitle = prod.meta_title || `${prod.name} — купити в Києві`;
+                        const metaDesc = prod.meta_description || fallbackDesc;
+                        const pageUrl = `${domain}${pathName}`;
+
+                        // Image: always use main domain, never API domain
+                        const rawImg = prod.primary_image || prod.image_url || '/og-image.jpg';
+                        const productImage = rawImg.startsWith('http') ? rawImg.replace(/https?:\/\/[^/]+/, domain) : `${domain}${rawImg}`;
+
+                        // --- Meta tags ---
                         manualTags = `
-                            <title>${prod.meta_title || `${prod.name} — купити в Києві`}</title>
-                            <meta name="description" content="${prod.meta_description || fallbackDesc}" />
-                            <link rel="canonical" href="${domain}${pathName}" />
+                            <title>${metaTitle}</title>
+                            <meta name="description" content="${metaDesc}" />
+                            <link rel="canonical" href="${pageUrl}" />
                             <meta name="robots" content="${prod.meta_robots || 'index, follow'}" />
-                            <meta property="og:title" content="${prod.meta_title || prod.name}" />
-                            <meta property="og:image" content="${domain}${prod.primary_image || prod.image_url || '/og-image.jpg'}" />
-                            <meta property="og:url" content="${domain}${pathName}" />
+                            <meta property="og:title" content="${metaTitle}" />
+                            <meta property="og:description" content="${metaDesc}" />
+                            <meta property="og:image" content="${productImage}" />
+                            <meta property="og:url" content="${pageUrl}" />
                             <meta property="og:type" content="product" />
+                            <meta property="og:site_name" content="КиївБрикет" />
+                            <meta name="twitter:card" content="summary_large_image" />
+                            <meta name="twitter:title" content="${metaTitle}" />
+                            <meta name="twitter:description" content="${metaDesc}" />
+                            <meta name="twitter:image" content="${productImage}" />
+                            <link rel="preload" as="image" href="${productImage}" />
                         `;
-                        // Product JSON-LD schema
-                        if (prod.schema_json) {
-                            manualTags += `\n<script type="application/ld+json">${typeof prod.schema_json === 'string' ? prod.schema_json : JSON.stringify(prod.schema_json)}</script>`;
-                        } else {
-                            // Fallback Product schema
-                            const productSchema = JSON.stringify({
-                                "@context": "https://schema.org",
-                                "@type": "Product",
-                                "name": prod.name,
-                                "description": (prod.meta_description || fallbackDesc).substring(0, 300),
-                                "image": prod.primary_image || prod.image_url ? `${domain}${prod.primary_image || prod.image_url}` : `${domain}/og-image.jpg`,
-                                "url": `${domain}${pathName}`,
-                                "brand": {
-                                    "@type": "Brand",
-                                    "name": "КиївБрикет"
-                                },
-                                ...(prod.price ? {
-                                    "offers": {
-                                        "@type": "Offer",
-                                        "price": prod.price,
-                                        "priceCurrency": "UAH",
-                                        "availability": "https://schema.org/InStock",
-                                        "url": `${domain}${pathName}`
-                                    }
-                                } : {})
-                            });
-                            manualTags += `\n<script type="application/ld+json">${productSchema}</script>`;
+
+                        // --- Consolidated JSON-LD: BreadcrumbList + Product + FAQPage ---
+                        const schemas = [];
+
+                        // 1. BreadcrumbList
+                        schemas.push({
+                            "@type": "BreadcrumbList",
+                            "itemListElement": [
+                                { "@type": "ListItem", "position": 1, "name": "Головна", "item": domain },
+                                { "@type": "ListItem", "position": 2, "name": cat?.name || cSlug, "item": `${domain}/catalog/${cSlug}` },
+                                { "@type": "ListItem", "position": 3, "name": prod.name, "item": pageUrl }
+                            ]
+                        });
+
+                        // 2. Product (single, no duplicates)
+                        const productSchema = {
+                            "@type": "Product",
+                            "name": prod.name,
+                            "description": metaDesc.substring(0, 300),
+                            "image": productImage,
+                            "url": pageUrl,
+                            "brand": { "@type": "Brand", "name": "КиївБрикет" },
+                            "sku": prod.slug
+                        };
+                        if (prod.price) {
+                            productSchema.offers = {
+                                "@type": "Offer",
+                                "price": prod.price,
+                                "priceCurrency": "UAH",
+                                "availability": "https://schema.org/InStock",
+                                "url": pageUrl,
+                                "seller": { "@type": "Organization", "name": "КиївБрикет" }
+                            };
                         }
+                        schemas.push(productSchema);
+
+                        // 3. FAQPage (only if product has FAQ data or use defaults)
+                        const faqItems = prod.faqs || [
+                            { q: `Скільки горять ${prod.name.toLowerCase()}?`, a: `Залежно від типу котла чи печі, завдяки високій щільності та правильній вологості, забезпечують тривале горіння та високу тепловіддачу.` },
+                            { q: `Як замовити ${prod.name.toLowerCase()} з доставкою?`, a: `Оформіть замовлення на сайті або зателефонуйте. Доставка по Києву та області власним транспортом.` }
+                        ];
+                        if (faqItems.length > 0) {
+                            schemas.push({
+                                "@type": "FAQPage",
+                                "mainEntity": faqItems.map(f => ({
+                                    "@type": "Question",
+                                    "name": f.q,
+                                    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+                                }))
+                            });
+                        }
+
+                        // Wrap in @graph
+                        const jsonLd = JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@graph": schemas
+                        });
+                        manualTags += `\n<script type="application/ld+json">${jsonLd}</script>`;
                     }
                 }
             } else if (pathName === '/dostavka') {
@@ -234,9 +282,11 @@ async function generatePages() {
                     if (helmetLink) helmetTags += '\n' + helmetLink;
                 }
 
-                // Always inject Helmet scripts (JSON-LD schema etc.)
-                const helmetScript = helmetContext.helmet.script.toString();
-                if (helmetScript) helmetTags += '\n' + helmetScript;
+                // Only inject Helmet scripts if manualTags don't already have JSON-LD
+                if (!manualTags || !manualTags.includes('application/ld+json')) {
+                    const helmetScript = helmetContext.helmet.script.toString();
+                    if (helmetScript) helmetTags += '\n' + helmetScript;
+                }
             }
 
             // Inject manualTags + whatever useful helmetTags remain into <head>

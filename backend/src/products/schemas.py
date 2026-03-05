@@ -1,21 +1,35 @@
 from datetime import datetime
-from pydantic import BaseModel
-from typing import Optional, List, Dict
+from pydantic import BaseModel, root_validator, validator
+from typing import Optional, List, Dict, Any
+import json
 
 class ProductBase(BaseModel):
     name: str
+    slug: str
+    category: str
+    price: float
+    unit: str = "т"
     description: Optional[str] = None
     short_description: Optional[str] = None
-    price: float
+    is_active: bool = True
+    in_stock: bool = True
     image_url: Optional[str] = None
     image_alt: Optional[str] = None
-    is_available: bool = True
-    slug: Optional[str] = None
+    specifications_json: Optional[Any] = None
+    faqs_json: Optional[Any] = None
+
+    @validator('specifications_json', 'faqs_json', pre=True)
+    def parse_json_fields(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except json.JSONDecodeError:
+                return []
+        return v
     updated_at: Optional[datetime] = None
     weight: Optional[float] = None
     ingredients: Optional[str] = None
     shelf_life: Optional[str] = None
-    category: Optional[str] = None
     stock_quantity: int = 0  # 0 = unlimited/made-to-order
     variants: Optional[List[dict]] = None
     specifications_json: Optional[List[dict]] = None

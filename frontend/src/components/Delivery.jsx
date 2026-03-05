@@ -758,7 +758,7 @@ function DeliveryExtendedSeo() {
                             gap: '1.5rem',
                         }}>
                             {[
-                                { src: '/images/delivery/manipulator-dostavka-kyiv.webp', alt: 'Кран-маніпулятор доставка Київ', name: 'Кран-маніпулятор', volume: 'Складні умови', price: 'від 3 500 грн' },
+                                { src: '/images/delivery/manipulator-dostavka-kyiv.webp', alt: 'Кран-маніпулятор доставка Київ', name: 'Кран-маніпулятор', volume: 'Складні умови', price: 'від 4 500 грн' },
                                 { src: '/images/delivery/gidrobort-rokla-dostavka-kyiv.webp', alt: 'Гідроборт рокла доставка Київ', name: 'Гідроборт / рокла', volume: 'Складні умови', price: 'від 4 500 грн' },
                             ].map((card, i) => (
                                 <figure
@@ -842,7 +842,7 @@ function DeliveryExtendedSeo() {
                         <table style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>
                             <thead><tr><th>Послуга</th><th>Ціна</th></tr></thead>
                             <tbody>
-                                <tr><td>Кран-маніпулятор</td><td>від 3 500 грн</td></tr>
+                                <tr><td>Кран-маніпулятор</td><td>від 4 500 грн</td></tr>
                                 <tr><td>Гідроборт / рокла</td><td>від 4 500 грн</td></tr>
                             </tbody>
                         </table>

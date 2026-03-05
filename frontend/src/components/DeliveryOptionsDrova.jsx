@@ -82,7 +82,7 @@ export default function DeliveryOptionsDrova() {
                     gap: '1rem'
                 }}>
                     {[
-                        { title: 'Кран-маніпулятор', desc: 'Для складних умов розвантаження дров (вузькі заїзди, паркани, обмежений доступ).', price: 'від 3500 грн', img: 'manipulator-dostavka-kyiv.webp' },
+                        { title: 'Кран-маніпулятор', desc: 'Для складних умов розвантаження дров (вузькі заїзди, паркани, обмежений доступ).', price: 'від 4500 грн', img: 'manipulator-dostavka-kyiv.webp' },
                         { title: 'Гідроборт / рокла', desc: 'Для розвантаження палет або важких упаковок дров.', price: 'від 4500 грн', img: 'gidrobort-rokla-dostavka-kyiv.webp' }
                     ].map((eq, i) => (
                         <div key={i} style={{

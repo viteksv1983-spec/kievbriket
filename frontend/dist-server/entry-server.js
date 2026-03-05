@@ -2178,7 +2178,9 @@ function SEOHead({ title, description, ogDescription, keywords, h1, canonical, o
     productPrice && /* @__PURE__ */ jsxs(Fragment, { children: [
       /* @__PURE__ */ jsx("meta", { property: "product:price:amount", content: String(productPrice) }),
       /* @__PURE__ */ jsx("meta", { property: "product:price:currency", content: productCurrency || "UAH" }),
-      /* @__PURE__ */ jsx("meta", { property: "product:availability", content: "in stock" })
+      /* @__PURE__ */ jsx("meta", { property: "product:availability", content: "in stock" }),
+      /* @__PURE__ */ jsx("meta", { itemprop: "price", content: String(productPrice) }),
+      /* @__PURE__ */ jsx("meta", { itemprop: "priceCurrency", content: productCurrency || "UAH" })
     ] }),
     /* @__PURE__ */ jsx("meta", { name: "twitter:card", content: "summary_large_image" }),
     /* @__PURE__ */ jsx("meta", { name: "twitter:title", content: effectiveTitle }),
@@ -8472,9 +8474,11 @@ function ProductPage() {
     "briquettes": "brikety",
     "coal": "vugillya"
   };
-  const specs = product?.specifications_json ? product.specifications_json.map((s) => ({
+  const specifications = Array.isArray(product?.specifications_json) ? product.specifications_json : [];
+  const specsArray = specifications;
+  const specs = specsArray.length > 0 ? specsArray.map((s) => ({
     icon: /* @__PURE__ */ jsx(CheckCircle2, { size: 17, color: "var(--c-orange)" }),
-    label: s.label,
+    label: s.name || s.label,
     value: s.value
   })) : product ? [
     { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Порода", value: product.ingredients || (product.name.toLowerCase().includes("дуб") ? "Дуб" : product.name.toLowerCase().includes("сосн") ? "Сосна" : product.name.toLowerCase().includes("граб") ? "Граб" : product.category === "brikety" ? "Деревна тирса" : "Тверді породи") },
@@ -8484,7 +8488,24 @@ function ProductPage() {
     { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Вологість", value: product.shelf_life || (product.category === "drova" ? "Природна (До 25%)" : product.category === "brikety" ? "до 10%" : "До 8%") },
     { icon: /* @__PURE__ */ jsx(Truck, { size: 17, color: "var(--c-orange)" }), label: "Доставка", value: "По Києву та області" }
   ] : [];
-  const faqs = product?.faqs_json ? product.faqs_json : product ? product.category === "brikety" ? [
+  const faqsArray = (() => {
+    if (!product?.faqs_json) return [];
+    try {
+      if (Array.isArray(product.faqs_json)) {
+        return product.faqs_json;
+      }
+      if (typeof product.faqs_json === "string") {
+        return JSON.parse(product.faqs_json);
+      }
+      if (typeof product.faqs_json === "object") {
+        return Object.values(product.faqs_json);
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  })();
+  const faqs = faqsArray.length > 0 ? faqsArray : product ? product.category === "brikety" ? [
     { q: `Які брикети краще для опалення?`, a: `Для максимальної тепловіддачі та тривалого горіння найкраще підходять дубові брикети RUF або Pini Kay. Якщо у вас котел тривалого горіння, Nestro також стануть чудовим вибором. Для автоматичних котлів використовують пелети.` },
     { q: `Скільки горять паливні брикети?`, a: `Залежно від типу котла та подачі кисню, брикети горять від 2 до 4 годин, після чого можуть тліти ще кілька годин, підтримуючи високу температуру.` },
     { q: `Чим брикети відрізняються від дров?`, a: `Брикети мають вищу щільність і набагато нижчу вологість (до 10%), тому вони віддають більше тепла. Крім того, вони займають менше місця при зберіганні та залишають значно менше попелу.` },
@@ -8614,7 +8635,7 @@ function ProductPage() {
           /* @__PURE__ */ jsx(ChevronRight, { size: 13, style: { opacity: 0.4 } }),
           /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 240 }, children: product.name })
         ] }) }),
-        /* @__PURE__ */ jsx("div", { className: "product-mobile-title", style: { maxWidth: 1200, margin: "0 auto", padding: "1rem 1.5rem 0" }, children: /* @__PURE__ */ jsx("h1", { className: "h1", style: { fontSize: "clamp(22px, 5vw, 28px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.h1_heading || product.name }) }),
+        /* @__PURE__ */ jsx("div", { className: "product-mobile-title", style: { maxWidth: 1200, margin: "0 auto", padding: "1rem 1.5rem 0" }, children: /* @__PURE__ */ jsx("h1", { className: "h1", style: { fontSize: "clamp(22px, 5vw, 28px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.category === "brikety" ? product.seo_h1 || product.name : product.name }) }),
         /* @__PURE__ */ jsxs("section", { className: "product-main-content", style: { maxWidth: 1200, margin: "0 auto", padding: "var(--s-section) 1.5rem" }, children: [
           /* @__PURE__ */ jsxs("div", { style: {
             display: "grid",
@@ -8635,7 +8656,7 @@ function ProductPage() {
                 "img",
                 {
                   src: galleryImages[activeImageIndex],
-                  alt: product.category === "drova" ? `${product.name} колоті дрова складометр доставка Київ` : product.h1_heading || product.name,
+                  alt: product.category === "brikety" ? product.seo_h1 || product.name : product.name,
                   width: "600",
                   height: "450",
                   loading: activeImageIndex === 0 ? "eager" : "lazy",
@@ -8679,7 +8700,7 @@ function ProductPage() {
             ] }),
             /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "2rem" }, children: [
               /* @__PURE__ */ jsxs("div", { className: "product-desktop-title", style: { display: "flex", flexDirection: "column", gap: "0.75rem" }, children: [
-                /* @__PURE__ */ jsx("div", { className: "h1", style: { fontSize: "clamp(22px, 3vw, 36px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.h1_heading || product.name }),
+                /* @__PURE__ */ jsx("h2", { className: "h2", style: { fontSize: "clamp(22px, 3vw, 36px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.category === "brikety" ? product.title_long || product.seo_h1 || product.name : product.name }),
                 /* @__PURE__ */ jsxs("div", { className: "product-badges-row", style: { display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }, children: [
                   /* @__PURE__ */ jsx("span", { style: {
                     display: "inline-flex",
@@ -8836,7 +8857,7 @@ function ProductPage() {
                   justifyContent: "center"
                 }, children: spec.icon }),
                 /* @__PURE__ */ jsxs("div", { children: [
-                  /* @__PURE__ */ jsx("p", { style: { fontSize: "0.75rem", color: "var(--c-text2)", textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700 }, children: spec.label }),
+                  /* @__PURE__ */ jsx("p", { style: { fontSize: "0.75rem", color: "var(--c-text2)", textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700 }, children: spec.name || spec.label }),
                   /* @__PURE__ */ jsx("p", { style: { fontSize: "0.9375rem", fontWeight: 700, color: "var(--c-text)", marginTop: 2 }, children: spec.value })
                 ] })
               ] }, i)) }) }),
@@ -11021,7 +11042,7 @@ const Cart = React.lazy(() => import("./assets/Cart-BZv_SkTW.js"));
 const AdminLayout = React.lazy(() => import("./assets/AdminLayout-C8O55oV3.js"));
 const Orders = React.lazy(() => import("./assets/Orders-Cp_Zo_wR.js"));
 const Products = React.lazy(() => import("./assets/Products-L_-kyUXu.js"));
-const ProductEdit = React.lazy(() => import("./assets/ProductEdit-Y0v26PEH.js"));
+const ProductEdit = React.lazy(() => import("./assets/ProductEdit-Dd0K98n8.js"));
 const PageEditor = React.lazy(() => import("./assets/PageEditor-B-AsxV3M.js"));
 const CategoryManager = React.lazy(() => import("./assets/CategoryManager-Byw8y8Rr.js"));
 React.lazy(() => import("./assets/SEOPages-DzKVOXzR.js"));

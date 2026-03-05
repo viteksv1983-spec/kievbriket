@@ -45,23 +45,8 @@ export default function ProductPage() {
     };
 
 
-    const specsArray = (() => {
-        if (!product?.specifications_json) return [];
-        try {
-            if (Array.isArray(product.specifications_json)) {
-                return product.specifications_json;
-            }
-            if (typeof product.specifications_json === "string") {
-                return JSON.parse(product.specifications_json);
-            }
-            if (typeof product.specifications_json === "object") {
-                return Object.values(product.specifications_json);
-            }
-            return [];
-        } catch (e) {
-            return [];
-        }
-    })();
+    const specifications = Array.isArray(product?.specifications_json) ? product.specifications_json : [];
+    const specsArray = specifications;
 
     const specs = specsArray.length > 0 ? specsArray.map(s => ({
         icon: <CheckCircle2 size={17} color="var(--c-orange)" />,
@@ -241,7 +226,7 @@ export default function ProductPage() {
             {/* ── Mobile-only Title (above image) ── */}
             <div className="product-mobile-title" style={{ maxWidth: 1200, margin: '0 auto', padding: '1rem 1.5rem 0' }}>
                 <h1 className="h1" style={{ fontSize: 'clamp(22px, 5vw, 28px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
-                    {product.name}
+                    {product.category === 'brikety' ? (product.seo_h1 || product.name) : product.name}
                 </h1>
             </div>
 
@@ -269,7 +254,7 @@ export default function ProductPage() {
                             {galleryImages.length > 0 ? (
                                 <img
                                     src={galleryImages[activeImageIndex]}
-                                    alt={product.seo_h1 || product.h1_heading || product.name}
+                                    alt={product.category === 'brikety' ? (product.seo_h1 || product.name) : product.name}
                                     width="600"
                                     height="450"
                                     loading={activeImageIndex === 0 ? "eager" : "lazy"}
@@ -320,7 +305,7 @@ export default function ProductPage() {
                         {/* ── Title & Badges ── */}
                         <div className="product-desktop-title" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <h2 className="h2" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
-                                {product.title_long || product.h1_heading || product.name}
+                                {product.category === 'brikety' ? (product.title_long || product.seo_h1 || product.name) : product.name}
                             </h2>
 
                             <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>

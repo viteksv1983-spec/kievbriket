@@ -177,12 +177,12 @@ export default function ProductPage() {
                     >Головна</Link>
                     <ChevronRight size={13} style={{ opacity: 0.4 }} />
                     <Link
-                        to={category ? getCategoryUrl(category.slug) : '/catalog/drova'}
+                        to={category ? getCategoryUrl(category.slug) : (product?.category === 'drova' ? '/catalog/drova' : '/catalog')}
                         style={{ color: 'var(--c-text2)', textDecoration: 'none', transition: 'color 0.2s' }}
                         onMouseEnter={e => e.target.style.color = 'var(--c-orange)'}
                         onMouseLeave={e => e.target.style.color = 'var(--c-text2)'}
                     >
-                        {category ? category.name : 'Каталог'}
+                        {category ? category.name : (product?.category === 'drova' ? 'Дрова' : 'Каталог')}
                     </Link>
                     <ChevronRight size={13} style={{ opacity: 0.4 }} />
                     <span style={{ color: 'var(--c-text)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 240 }}>
@@ -226,6 +226,7 @@ export default function ProductPage() {
                                     width="600"
                                     height="450"
                                     loading={activeImageIndex === 0 ? "eager" : "lazy"}
+                                    decoding="async"
                                     style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
                                     onMouseEnter={e => window.innerWidth > 768 && (e.target.style.transform = 'scale(1.05)')}
                                     onMouseLeave={e => e.target.style.transform = 'scale(1)'}

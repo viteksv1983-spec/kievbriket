@@ -190,7 +190,7 @@ async function generatePages() {
                             <meta property="og:title" content="${metaTitle}" />
                             <meta property="og:description" content="${metaDesc}" />
                             <meta property="og:image" content="${productImage}" />
-${cSlug === 'drova' ? '                            <meta property="og:locale" content="uk_UA" />\n' : ''}\
+${cSlug === 'drova' ? '                            <meta property="og:locale" content="uk_UA" />\n                            <meta property="og:locale:alternate" content="ru_UA" />\n' : ''}\
                             <meta property="og:url" content="${pageUrl}" />
                             <meta property="og:type" content="product" />
                             <meta property="og:site_name" content="КиївБрикет" />
@@ -199,7 +199,7 @@ ${prod.price ? `                            <meta property="product:price:amount
                             <meta name="twitter:title" content="${metaTitle}" />
                             <meta name="twitter:description" content="${metaDesc}" />
                             <meta name="twitter:image" content="${productImage}" />
-                            <link rel="preload" as="image" href="${productImage}" />
+                            <link rel="preload" as="image" href="${productImage}" fetchpriority="high" />
                         `;
 
                         // --- Consolidated JSON-LD: BreadcrumbList + Product + FAQPage ---

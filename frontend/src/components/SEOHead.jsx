@@ -67,6 +67,7 @@ export default function SEOHead({ title, description, ogDescription, keywords, h
 
             {/* Open Graph */}
             <meta property="og:locale" content="uk_UA" />
+            <meta property="og:locale:alternate" content="ru_UA" />
             <meta property="og:type" content={type} />
             <meta property="og:title" content={effectiveTitle} />
             <meta property="og:description" content={ogDescription || effectiveDesc} />

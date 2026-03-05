@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { i as useAuth, b as api } from "../entry-server.js";
+import { b as useAuth, a as api } from "../entry-server.js";
 import { FiUser, FiChevronRight, FiPackage, FiCopy, FiX, FiPhone, FiTruck } from "react-icons/fi";
 import "react-dom/server";
 import "react-fast-compare";
@@ -9,6 +9,7 @@ import "invariant";
 import "shallowequal";
 import "axios";
 import "lucide-react";
+import "react-icons/fa";
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -354,4 +355,4 @@ ${itemsText}
 export {
   Orders as default
 };
-//# sourceMappingURL=Orders-WiI9290P.js.map
+//# sourceMappingURL=Orders-Cp_Zo_wR.js.map

@@ -1,6 +1,6 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { b as api } from "../entry-server.js";
+import { a as api } from "../entry-server.js";
 import { FiCheck, FiSave } from "react-icons/fi";
 import "react-dom/server";
 import "react-router-dom";
@@ -9,6 +9,7 @@ import "invariant";
 import "shallowequal";
 import "axios";
 import "lucide-react";
+import "react-icons/fa";
 function SiteSettingsPage() {
   const [gaId, setGaId] = useState("");
   const [loading, setLoading] = useState(true);
@@ -149,4 +150,4 @@ function SiteSettingsPage() {
 export {
   SiteSettingsPage as default
 };
-//# sourceMappingURL=SiteSettingsPage-BRMDvs2f.js.map
+//# sourceMappingURL=SiteSettingsPage-Ut7kwAft.js.map

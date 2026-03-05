@@ -1,6 +1,6 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { useState } from "react";
-import { S as SEOHead, b as api } from "../entry-server.js";
+import { S as SEOHead, a as api } from "../entry-server.js";
 import { useNavigate } from "react-router-dom";
 import "react-dom/server";
 import "react-fast-compare";
@@ -8,6 +8,7 @@ import "invariant";
 import "shallowequal";
 import "axios";
 import "lucide-react";
+import "react-icons/fa";
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -124,4 +125,4 @@ function Register() {
 export {
   Register as default
 };
-//# sourceMappingURL=Register-DM_G8vYl.js.map
+//# sourceMappingURL=Register-B1PsgqBd.js.map

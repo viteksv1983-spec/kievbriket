@@ -9,6 +9,7 @@ import "invariant";
 import "shallowequal";
 import "axios";
 import "lucide-react";
+import "react-icons/fa";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -187,4 +188,4 @@ function Login() {
 export {
   Login as default
 };
-//# sourceMappingURL=Login-EF_R0S0Y.js.map
+//# sourceMappingURL=Login-BYuoa_Zl.js.map

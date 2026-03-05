@@ -1,6 +1,6 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { b as api } from "../entry-server.js";
+import { a as api } from "../entry-server.js";
 import { FiBell, FiSend, FiSave, FiCheck, FiX } from "react-icons/fi";
 import "react-dom/server";
 import "react-router-dom";
@@ -9,6 +9,7 @@ import "invariant";
 import "shallowequal";
 import "axios";
 import "lucide-react";
+import "react-icons/fa";
 const TelegramSettings = () => {
   const [settings, setSettings] = useState({
     bot_token: "",
@@ -316,4 +317,4 @@ const TelegramSettings = () => {
 export {
   TelegramSettings as default
 };
-//# sourceMappingURL=TelegramSettings-CeUe8uW3.js.map
+//# sourceMappingURL=TelegramSettings-BbXdVmth.js.map

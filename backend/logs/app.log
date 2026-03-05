@@ -5232,3 +5232,16 @@ fastapi.exceptions.ResponseValidationError: 1 validation error:
 2026-03-05 18:55:09 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
 2026-03-05 19:29:03 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
 2026-03-05 19:29:03 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-05 19:58:11 WARNING  [cakeshop.errors] HTTP 404: Not Found — GET /media/products/briket-placeholder.webp
+2026-03-05 19:58:59 WARNING  [cakeshop.errors] HTTP 404: Not Found — GET /media/products/briket-placeholder.webp
+2026-03-05 19:59:45 WARNING  [cakeshop.errors] HTTP 404: Not Found — GET /media/products/briket-placeholder.webp
+2026-03-05 20:00:33 WARNING  [cakeshop.errors] HTTP 404: Not Found — GET /media/products/briket-placeholder.webp
+2026-03-05 20:00:59 WARNING  [cakeshop.errors] HTTP 404: Not Found — GET /media/products/briket-placeholder.webp
+2026-03-05 20:01:13 WARNING  [cakeshop.errors] HTTP 404: Not Found — GET /media/products/briket-placeholder.webp
+2026-03-05 20:01:15 WARNING  [cakeshop.errors] HTTP 404: Not Found — GET /media/products/briket-placeholder.webp
+2026-03-05 20:01:49 WARNING  [cakeshop.errors] HTTP 404: Not Found — GET /media/products/briket-placeholder.webp
+2026-03-05 20:02:21 WARNING  [cakeshop.errors] HTTP 404: Not Found — GET /media/products/briket-placeholder.webp
+2026-03-05 20:07:26 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-05 20:07:26 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-05 21:03:35 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-05 21:03:35 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route

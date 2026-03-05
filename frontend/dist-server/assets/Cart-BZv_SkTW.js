@@ -1,13 +1,14 @@
 import { jsxs, jsx, Fragment } from "react/jsx-runtime";
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { C as CartContext, A as AuthContext, f as usePhoneInput, S as SEOHead, b as api, g as getProductUrl } from "../entry-server.js";
+import { C as CartContext, A as AuthContext, u as usePhoneInput, S as SEOHead, a as api, g as getProductUrl } from "../entry-server.js";
 import "react-dom/server";
 import "react-fast-compare";
 import "invariant";
 import "shallowequal";
 import "axios";
 import "lucide-react";
+import "react-icons/fa";
 function Cart() {
   const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
@@ -452,4 +453,4 @@ function Cart() {
 export {
   Cart as default
 };
-//# sourceMappingURL=Cart-8nKT32UT.js.map
+//# sourceMappingURL=Cart-BZv_SkTW.js.map

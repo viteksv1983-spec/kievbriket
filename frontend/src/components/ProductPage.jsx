@@ -45,10 +45,9 @@ export default function ProductPage() {
     };
 
 
-    const specifications = Array.isArray(product?.specifications_json) ? product.specifications_json : [];
-    const specsArray = specifications;
+    const specificationsArray = Array.isArray(product?.specifications_json) ? product.specifications_json : [];
 
-    const specs = specsArray.length > 0 ? specsArray.map(s => ({
+    const specs = specificationsArray.length > 0 ? specificationsArray.map(s => ({
         icon: <CheckCircle2 size={17} color="var(--c-orange)" />,
         label: s.name || s.label,
         value: s.value
@@ -59,7 +58,7 @@ export default function ProductPage() {
             ? { icon: <Ruler size={17} color="var(--c-orange)" />, label: 'Форма брикетів', value: product.name.toLowerCase().includes('ruf') ? 'Прямокутні пресовані' : product.name.toLowerCase().includes('pini') ? 'Восьмигранні з отвором' : product.name.toLowerCase().includes('nestro') ? 'Циліндричні' : product.name.toLowerCase().includes('пелет') ? 'Гранули 6-8 мм' : 'Пресований торф' }
             : { icon: <Ruler size={17} color="var(--c-orange)" />, label: 'Довжина полін', value: product.category === 'drova' ? '30-40 см' : '—' },
         { icon: <Scale size={17} color="var(--c-orange)" />, label: 'Фасування', value: product.category === 'drova' ? 'Складометр' : 'У пакуваннях / піддонах' },
-        { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Вологість', value: product.shelf_life || (product.category === 'drova' ? 'Природна (До 25%)' : product.category === 'brikety' ? 'до 10%' : 'До 8%') },
+        { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Вологість', value: product.category === 'drova' ? 'Природна (До 25%)' : (product.category === 'brikety' ? '8-10%' : 'До 8%') },
         { icon: <Truck size={17} color="var(--c-orange)" />, label: 'Доставка', value: 'По Києву та області' },
     ] : [];
 
@@ -305,7 +304,7 @@ export default function ProductPage() {
                         {/* ── Title & Badges ── */}
                         <div className="product-desktop-title" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <h2 className="h2" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
-                                {product.category === 'brikety' ? (product.title_long || product.seo_h1 || product.name) : product.name}
+                                {product.category === 'brikety' ? `Характеристики ${product.name.toLowerCase()}` : product.name}
                             </h2>
 
                             <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>

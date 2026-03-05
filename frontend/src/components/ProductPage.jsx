@@ -156,6 +156,8 @@ export default function ProductPage() {
                 description={product.meta_description || product.description || `Замовляйте ${product.name.toLowerCase()} з швидкою доставкою по Києву та області.`}
                 ogImage={product.og_image || product.image_url}
                 canonical={product.canonical_url}
+                productPrice={product.price}
+                productCurrency="UAH"
             />
 
             {/* ── Breadcrumbs ── */}
@@ -197,7 +199,7 @@ export default function ProductPage() {
             </div>
 
             {/* ── Main Content ── */}
-            <main style={{ maxWidth: 1200, margin: '0 auto', padding: 'var(--s-section) 1.5rem' }}>
+            <section className="product-main-content" style={{ maxWidth: 1200, margin: '0 auto', padding: 'var(--s-section) 1.5rem' }}>
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr 1fr',
@@ -220,7 +222,7 @@ export default function ProductPage() {
                             {galleryImages.length > 0 ? (
                                 <img
                                     src={galleryImages[activeImageIndex]}
-                                    alt={product.h1_heading || product.name}
+                                    alt={product.category === 'drova' ? `${product.name} колоті дрова складометр доставка Київ` : (product.h1_heading || product.name)}
                                     width="600"
                                     height="450"
                                     loading={activeImageIndex === 0 ? "eager" : "lazy"}
@@ -597,7 +599,7 @@ export default function ProductPage() {
                                                 {p.image_url ? (
                                                     <img
                                                         src={getImageUrl(p.image_url, api.defaults.baseURL)}
-                                                        alt={p.h1_heading || p.name}
+                                                        alt={p.category === 'drova' || categorySlug === 'drova' ? `${p.name} колоті дрова складометр доставка Київ` : (p.h1_heading || p.name)}
                                                         className="catalog-card-img"
                                                         onError={e => { e.target.onerror = null; e.target.src = '/assets/product-placeholder-wood.webp'; }}
                                                     />
@@ -631,10 +633,10 @@ export default function ProductPage() {
 
                                             {/* ── CONTENT ── */}
                                             <div style={{ padding: '1rem 1.25rem 1.25rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                                                <h3 className="h3" style={{ margin: 0, marginBottom: 8, transition: 'color 0.2s', lineHeight: 1.25, fontWeight: 700 }}>
+                                                <p className="h3" style={{ margin: 0, marginBottom: 8, transition: 'color 0.2s', lineHeight: 1.25, fontWeight: 700 }}>
                                                     {p.name}
-                                                </h3>
-                                                <div className="catalog-card-description body-sm" style={{ minHeight: '2.8em', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', marginBottom: 16, opacity: 0.8 }} dangerouslySetInnerHTML={{ __html: p.description || 'Якісне тверде паливо з доставкою по Києву та Київській області.' }} />
+                                                </p>
+                                                <div className="catalog-card-description body-sm" style={{ minHeight: '2.8em', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', marginBottom: 16, opacity: 0.8 }} dangerouslySetInnerHTML={{ __html: (p.description || 'Якісне тверде паливо з доставкою по Києву та Київській області.').replace(/<h[1-6][^>]*>/gi, '<strong>').replace(/<\/h[1-6]>/gi, '</strong>') }} />
                                                 {p.variants?.length > 0 && (
                                                     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 12 }}>
                                                         {p.variants.slice(0, 3).map((v, i) => (
@@ -702,28 +704,28 @@ export default function ProductPage() {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
                         <Link to="/catalog/drova" className="nh-card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', textDecoration: 'none', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
                             <div>
-                                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--c-text)', margin: 0 }}>Дрова колоті</h3>
+                                <p style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--c-text)', margin: 0 }}>Дрова колоті</p>
                                 <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', margin: '4px 0 0 0' }}>Дуб, граб, сосна</p>
                             </div>
                             <ChevronRight size={20} color="var(--c-orange)" />
                         </Link>
                         <Link to="/catalog/brikety" className="nh-card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', textDecoration: 'none', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
                             <div>
-                                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--c-text)', margin: 0 }}>Паливні брикети</h3>
+                                <p style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--c-text)', margin: 0 }}>Паливні брикети</p>
                                 <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', margin: '4px 0 0 0' }}>RUF, Nestro, Pini Kay</p>
                             </div>
                             <ChevronRight size={20} color="var(--c-orange)" />
                         </Link>
                         <Link to="/catalog/vugillya" className="nh-card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', textDecoration: 'none', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
                             <div>
-                                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--c-text)', margin: 0 }}>Кам'яне вугілля</h3>
+                                <p style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--c-text)', margin: 0 }}>Кам'яне вугілля</p>
                                 <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', margin: '4px 0 0 0' }}>Антрацит, ДГ</p>
                             </div>
                             <ChevronRight size={20} color="var(--c-orange)" />
                         </Link>
                     </div>
                 </div>
-            </main>
+            </section>
 
             {/* ── responsive grid ── */}
             <style>{`
@@ -741,11 +743,11 @@ export default function ProductPage() {
                     .product-popular-badge { display: none !important; }
                     .product-old-price { display: none !important; }
                     .product-price-badge { display: inline-flex !important; }
-                    main > div { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
-                    main > div > div:first-child { position: static !important; }
-                    main > div > div:last-child { gap: 1rem !important; }
+                    .product-main-content > div { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
+                    .product-main-content > div > div:first-child { position: static !important; }
+                    .product-main-content > div > div:last-child { gap: 1rem !important; }
                     .product-price-block { order: -1; padding-top: 0 !important; border-top: none !important; }
-                    main { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+                    .product-main-content { padding-top: 1rem !important; padding-bottom: 1rem !important; }
                     
                     /* Sticky Mobile CTA Container */
                     .product-cta-container {

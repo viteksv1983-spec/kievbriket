@@ -5,7 +5,7 @@ import axios from 'axios';
 import api from '../api';
 import shopConfig from '../shop.config';
 
-export default function SEOHead({ title, description, keywords, h1, canonical, ogImage, type = 'website', schema, robots, is404 = false }) {
+export default function SEOHead({ title, description, keywords, h1, canonical, ogImage, type = 'website', schema, robots, is404 = false, productPrice, productCurrency }) {
     const location = useLocation();
     const [seoData, setSeoData] = useState(null);
     const domain = shopConfig.domain;
@@ -73,6 +73,15 @@ export default function SEOHead({ title, description, keywords, h1, canonical, o
             <meta property="og:image" content={effectiveOgImage} />
             {!is404 && <meta property="og:url" content={currentFullUrl} />}
             <meta property="og:site_name" content={shopConfig.seo.ogSiteName} />
+
+            {/* Product OpenGraph (for Telegram, Facebook, Viber, WhatsApp) */}
+            {productPrice && (
+                <>
+                    <meta property="product:price:amount" content={String(productPrice)} />
+                    <meta property="product:price:currency" content={productCurrency || 'UAH'} />
+                    <meta property="product:availability" content="in stock" />
+                </>
+            )}
 
             {/* Twitter Cards */}
             <meta name="twitter:card" content="summary_large_image" />

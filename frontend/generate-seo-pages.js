@@ -160,6 +160,7 @@ ${cSlug === 'drova' ? '                            <meta property="og:locale" co
                             <meta property="og:url" content="${pageUrl}" />
                             <meta property="og:type" content="product" />
                             <meta property="og:site_name" content="КиївБрикет" />
+${prod.price ? `                            <meta property="product:price:amount" content="${prod.price}" />\n                            <meta property="product:price:currency" content="UAH" />\n                            <meta property="product:availability" content="in stock" />\n` : ''}\
                             <meta name="twitter:card" content="summary_large_image" />
                             <meta name="twitter:title" content="${metaTitle}" />
                             <meta name="twitter:description" content="${metaDesc}" />
@@ -228,19 +229,7 @@ ${cSlug === 'drova' ? '                            <meta property="og:locale" co
                                 },
                                 "seller": { "@type": "Organization", "name": "КиївБрикет" }
                             };
-                            if (cSlug === 'drova') {
-                                productSchema.offers.shippingDetails = {
-                                    "@type": "OfferShippingDetails",
-                                    "shippingDestination": {
-                                        "@type": "DefinedRegion",
-                                        "addressCountry": "UA"
-                                    },
-                                    "shippingRate": {
-                                        "@type": "MonetaryAmount",
-                                        "currency": "UAH"
-                                    }
-                                };
-                            }
+                            // Removed invalid shippingDetails with shippingRate
                         }
                         schemas.push(productSchema);
 

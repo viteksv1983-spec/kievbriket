@@ -8117,11 +8117,20 @@ function FinalCtaBanner$2({ onQuickOrderClick }) {
 function CoalCategoryPage({ products, onOrderProduct }) {
   return /* @__PURE__ */ jsxs("div", { className: "new-home-scope", children: [
     /* @__PURE__ */ jsxs(Helmet, { children: [
-      /* @__PURE__ */ jsx("title", { children: "Купити кам'яне вугілля в Києві — доставка | КиївБрикет" }),
+      /* @__PURE__ */ jsx("title", { children: "Купити кам'яне вугілля в Києві — ціна та доставка | КиївБрикет" }),
       /* @__PURE__ */ jsx("meta", { name: "description", content: "Купити кам'яне вугілля в Києві з доставкою. Антрацит, ДГ та інші види вугілля для котлів і печей. Швидка доставка по Києву та області." }),
       /* @__PURE__ */ jsx("meta", { property: "og:title", content: "Купити кам'яне вугілля в Києві — доставка | КиївБрикет" }),
       /* @__PURE__ */ jsx("meta", { property: "og:description", content: "Якісне кам'яне вугілля для котлів і печей. Доставка по Києву та області." }),
       /* @__PURE__ */ jsx("meta", { property: "og:image", content: "https://kievbriket.com/media/categories/coal.webp" }),
+      /* @__PURE__ */ jsx("meta", { property: "og:url", content: "https://kievbriket.com/catalog/vugillya" }),
+      /* @__PURE__ */ jsx("meta", { property: "og:type", content: "website" }),
+      /* @__PURE__ */ jsx("meta", { property: "og:site_name", content: "КиївБрикет" }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:card", content: "summary_large_image" }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:title", content: "Купити кам'яне вугілля в Києві — доставка | КиївБрикет" }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:description", content: "Якісне кам'яне вугілля для котлів і печей. Доставка по Києву та області." }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:image", content: "https://kievbriket.com/media/categories/coal.webp" }),
+      /* @__PURE__ */ jsx("link", { rel: "canonical", href: "https://kievbriket.com/catalog/vugillya" }),
+      /* @__PURE__ */ jsx("meta", { name: "robots", content: "index, follow" }),
       /* @__PURE__ */ jsx("script", { type: "application/ld+json", children: `
                     {
                      "@context": "https://schema.org",

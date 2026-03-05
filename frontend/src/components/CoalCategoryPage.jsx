@@ -635,11 +635,20 @@ export default function CoalCategoryPage({ products, onOrderProduct }) {
     return (
         <div className="new-home-scope">
             <Helmet>
-                <title>Купити кам'яне вугілля в Києві — доставка | КиївБрикет</title>
+                <title>Купити кам'яне вугілля в Києві — ціна та доставка | КиївБрикет</title>
                 <meta name="description" content="Купити кам'яне вугілля в Києві з доставкою. Антрацит, ДГ та інші види вугілля для котлів і печей. Швидка доставка по Києву та області." />
                 <meta property="og:title" content="Купити кам'яне вугілля в Києві — доставка | КиївБрикет" />
                 <meta property="og:description" content="Якісне кам'яне вугілля для котлів і печей. Доставка по Києву та області." />
                 <meta property="og:image" content="https://kievbriket.com/media/categories/coal.webp" />
+                <meta property="og:url" content="https://kievbriket.com/catalog/vugillya" />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="КиївБрикет" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Купити кам'яне вугілля в Києві — доставка | КиївБрикет" />
+                <meta name="twitter:description" content="Якісне кам'яне вугілля для котлів і печей. Доставка по Києву та області." />
+                <meta name="twitter:image" content="https://kievbriket.com/media/categories/coal.webp" />
+                <link rel="canonical" href="https://kievbriket.com/catalog/vugillya" />
+                <meta name="robots" content="index, follow" />
                 <script type="application/ld+json">
                     {`
                     {

@@ -161,6 +161,16 @@ def migrate_slugs_live(db: Session = Depends(get_db)):
         db.rollback()
         return {"status": "error", "message": str(e)}
 
+@app.get("/api/seed-drova-live")
+def seed_drova_live():
+    """Temporary endpoint to seed drova products on Render."""
+    try:
+        from backend.seed_drova_seo import seed_drova
+        seed_drova()
+        return {"status": "success", "message": "10 drova products seeded on production"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 # ─── Static Files ───────────────────────────────────────────
 import mimetypes
 mimetypes.add_type("image/webp", ".webp")

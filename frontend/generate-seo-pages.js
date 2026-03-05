@@ -150,6 +150,8 @@ async function generatePages() {
                             <title>${metaTitle}</title>
                             <meta name="description" content="${metaDesc}" />
                             <link rel="canonical" href="${pageUrl}" />
+                            <link rel="alternate" hreflang="uk" href="${pageUrl}" />
+                            <link rel="alternate" hreflang="x-default" href="${pageUrl}" />
                             <meta name="robots" content="${prod.meta_robots || 'index, follow'}" />
                             <meta property="og:title" content="${metaTitle}" />
                             <meta property="og:description" content="${metaDesc}" />
@@ -215,6 +217,11 @@ async function generatePages() {
                                 "availability": "https://schema.org/InStock",
                                 "priceValidUntil": nextYear.toISOString().split('T')[0],
                                 "url": pageUrl,
+                                "priceSpecification": {
+                                    "@type": "UnitPriceSpecification",
+                                    "price": prod.price,
+                                    "priceCurrency": "UAH"
+                                },
                                 "seller": { "@type": "Organization", "name": "КиївБрикет" }
                             };
                             if (cSlug === 'drova') {
@@ -248,6 +255,38 @@ async function generatePages() {
                                 }))
                             });
                         }
+
+                        schemas.push({
+                            "@type": "LocalBusiness",
+                            "name": "КиївБрикет",
+                            "url": "https://kievbriket.com",
+                            "logo": "https://kievbriket.com/kievbriket.svg",
+                            "telephone": "+380991234567",
+                            "priceRange": "$$",
+                            "address": {
+                                "@type": "PostalAddress",
+                                "streetAddress": "вул. Колекторна, 19",
+                                "addressLocality": "Київ",
+                                "addressCountry": "UA"
+                            },
+                            "areaServed": {
+                                "@type": "City",
+                                "name": "Київ"
+                            }
+                        });
+
+                        schemas.push({
+                            "@type": "Organization",
+                            "name": "КиївБрикет",
+                            "url": "https://kievbriket.com",
+                            "logo": "https://kievbriket.com/kievbriket.svg",
+                            "contactPoint": {
+                                "@type": "ContactPoint",
+                                "telephone": "+380991234567",
+                                "contactType": "sales",
+                                "areaServed": "UA"
+                            }
+                        });
 
                         // Wrap in @graph
                         const jsonLd = JSON.stringify({

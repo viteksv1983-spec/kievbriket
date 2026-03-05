@@ -502,6 +502,19 @@ export default function ProductPage() {
                             </div>
                         </div>
 
+                        {/* ── SECTION 3.5: HOW TO ORDER ── */}
+                        <section className="nh-card order-steps" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>Як замовити дрова</h2>
+                            <ol style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', color: 'var(--c-text)', lineHeight: 1.6, fontWeight: 500, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                <li>Оберіть потрібний обсяг дров</li>
+                                <li>Натисніть кнопку "Замовити"</li>
+                                <li>Ми зв’яжемося для підтвердження доставки</li>
+                            </ol>
+                            <p style={{ color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6, margin: 0 }}>
+                                Доставка дров по Києву здійснюється власним транспортом протягом 24 годин після оформлення замовлення.
+                            </p>
+                        </section>
+
                         {/* ── SECTION 4: FAQ ── */}
                         <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
                             <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
@@ -645,14 +658,24 @@ export default function ProductPage() {
                         <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.25rem' }}>Купити {product.name.toLowerCase()} в Києві</h2>
                         <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <p>
-                                Якщо вам потрібні якісні колоті дрова з доставкою по Києву,
-                                компанія КиївБрикет пропонує швидке постачання палива
-                                власним транспортом.
+                                Якщо вам потрібні якісні <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>колоті дрова</Link>
+                                {' '}з доставкою по Києву, компанія КиївБрикет пропонує швидке постачання
+                                палива власним транспортом.
+                            </p>
+                            <p>
+                                У нашому каталозі також доступні
+                                {' '}<Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link>{' '}
+                                та
+                                {' '}<Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link>{' '}
+                                для твердопаливних котлів та камінів.
                             </p>
                             <p>
                                 Ми доставляємо дрова в усі райони Києва:
-                                Дарницький, Деснянський, Оболонський, Подільський,
-                                Шевченківський, Голосіївський та інші.
+                                Дарницький, Деснянський, Оболонський,
+                                Подільський, Шевченківський,
+                                Голосіївський, Солом’янський,
+                                Печерський, Святошинський,
+                                Дніпровський.
                             </p>
                             <p>
                                 Замовляючи <strong>{product.name.toLowerCase()}</strong> у нас, ви гарантовано отримуєте чесний об'єм, оскільки всі дрова щільно укладаються в кузові (в складометрах). Ми працюємо без передоплати — ви оплачуєте замовлення безпосередньо після розвантаження та перевірки якості.

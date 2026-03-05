@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight, Phone, Flame, Truck, Scale, ShieldCheck, Thermometer, Clock, Package, CheckCircle2, Droplets, Zap } from 'lucide-react';
 import shopConfig from '../shop.config';
@@ -633,6 +634,29 @@ function FinalCtaBanner({ onQuickOrderClick }) {
 export default function CoalCategoryPage({ products, onOrderProduct }) {
     return (
         <div className="new-home-scope">
+            <Helmet>
+                <title>Купити кам'яне вугілля в Києві — доставка | КиївБрикет</title>
+                <meta name="description" content="Купити кам'яне вугілля в Києві з доставкою. Антрацит, ДГ та інші фракції для котлів і печей. Швидка доставка по Києву та області власним транспортом." />
+                <meta property="og:title" content="Купити кам'яне вугілля в Києві — доставка | КиївБрикет" />
+                <meta property="og:description" content="Якісне кам'яне вугілля для котлів і печей. Швидка доставка по Києву та області." />
+                <script type="application/ld+json">
+                    {`
+                    {
+                     "@context": "https://schema.org",
+                     "@type": "CollectionPage",
+                     "name": "Кам'яне вугілля",
+                     "url": "https://kievbriket.com/catalog/vugillya",
+                     "description": "Купити кам'яне вугілля в Києві з доставкою.",
+                     "isPartOf": {
+                       "@type": "WebSite",
+                       "name": "КиївБрикет",
+                       "url": "https://kievbriket.com"
+                     }
+                    }
+                    `}
+                </script>
+            </Helmet>
+
             <HeroCategory onQuickOrderClick={() => onOrderProduct(null)} />
 
             <CategoryProducts products={products} onOrderProduct={onOrderProduct} />

@@ -2,6 +2,7 @@ import React from "react";
 import { CheckCircle2 } from "lucide-react";
 import { useReveal } from "../../hooks/useReveal";
 import deliveryImg from "./assets/trust-delivery.webp";
+import deliveryImgMobile from "./assets/trust-delivery-mobile.webp";
 
 const points = [
     "Власний автопарк — без затримок",
@@ -37,15 +38,18 @@ export function TrustBlock({ onOrderClick }) {
                         className={`reveal ${visible ? "visible" : ""}`}
                         style={{ borderRadius: 16, overflow: "hidden", position: "relative", boxShadow: "0 30px 70px rgba(0,0,0,0.5)" }}
                     >
-                        <img
-                            src={deliveryImg}
-                            alt="Доставка твердого палива"
-                            loading="lazy"
-                            decoding="async"
-                            width="720"
-                            height="540"
-                            style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", display: "block", filter: "brightness(0.80) saturate(1.15) contrast(1.05)" }}
-                        />
+                        <picture>
+                            <source media="(max-width: 600px)" srcSet={deliveryImgMobile} />
+                            <img
+                                src={deliveryImg}
+                                alt="Доставка твердого палива"
+                                loading="lazy"
+                                decoding="async"
+                                width="720"
+                                height="540"
+                                style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", display: "block", filter: "brightness(0.80) saturate(1.15) contrast(1.05)" }}
+                            />
+                        </picture>
                         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(13,17,23,0.55) 0%, transparent 50%)", pointerEvents: "none" }} />
                         <div style={{
                             position: "absolute", top: 20, right: 20,

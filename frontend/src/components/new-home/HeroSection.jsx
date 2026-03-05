@@ -103,17 +103,20 @@ export function HeroSection({ onQuickOrderClick }) {
 
           {/* ── RIGHT COLUMN — LCP image ── */}
           <div className="hero-img-wrap">
-            <img
-              src="/images/hero-bg.webp"
-              alt="Дрова, брикети та вугілля КиївБрикет"
-              title="Купити тверде паливо у Києві"
-              className="hero-img"
-              loading="eager"
-              fetchPriority="high"
-              decoding="sync"
-              width="600"
-              height="750"
-            />
+            <picture>
+              <source media="(max-width: 600px)" srcSet="/images/hero-bg-mobile.webp" />
+              <img
+                src="/images/hero-bg.webp"
+                alt="Дрова, брикети та вугілля КиївБрикет"
+                title="Купити тверде паливо у Києві"
+                className="hero-img"
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
+                width="600"
+                height="750"
+              />
+            </picture>
             <div className="hero-img-overlay" />
 
             <div className="hero-img-badges">

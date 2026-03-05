@@ -45,19 +45,25 @@ export default function ProductPage() {
     };
 
 
-    const parseJsonField = (field) => {
-        if (!field) return null;
-        if (typeof field === 'string') {
-            try { return JSON.parse(field); } catch (e) { return null; }
+    const specsArray = (() => {
+        if (!product?.specifications_json) return [];
+        try {
+            if (Array.isArray(product.specifications_json)) {
+                return product.specifications_json;
+            }
+            if (typeof product.specifications_json === "string") {
+                return JSON.parse(product.specifications_json);
+            }
+            if (typeof product.specifications_json === "object") {
+                return Object.values(product.specifications_json);
+            }
+            return [];
+        } catch (e) {
+            return [];
         }
-        return field;
-    };
+    })();
 
-    const parsedSpecs = parseJsonField(product?.specifications_json);
-    const parsedFaqs = parseJsonField(product?.faqs_json);
-
-    // Dynamic Specs — use product fields when available
-    const specs = Array.isArray(parsedSpecs) ? parsedSpecs.map(s => ({
+    const specs = specsArray.length > 0 ? specsArray.map(s => ({
         icon: <CheckCircle2 size={17} color="var(--c-orange)" />,
         label: s.label,
         value: s.value
@@ -72,7 +78,25 @@ export default function ProductPage() {
         { icon: <Truck size={17} color="var(--c-orange)" />, label: 'Доставка', value: 'По Києву та області' },
     ] : [];
 
-    const faqs = Array.isArray(parsedFaqs) ? parsedFaqs : product ? (product.category === 'brikety' ? [
+    const faqsArray = (() => {
+        if (!product?.faqs_json) return [];
+        try {
+            if (Array.isArray(product.faqs_json)) {
+                return product.faqs_json;
+            }
+            if (typeof product.faqs_json === "string") {
+                return JSON.parse(product.faqs_json);
+            }
+            if (typeof product.faqs_json === "object") {
+                return Object.values(product.faqs_json);
+            }
+            return [];
+        } catch (e) {
+            return [];
+        }
+    })();
+
+    const faqs = faqsArray.length > 0 ? faqsArray : product ? (product.category === 'brikety' ? [
         { q: `Які брикети краще для опалення?`, a: `Для максимальної тепловіддачі та тривалого горіння найкраще підходять дубові брикети RUF або Pini Kay. Якщо у вас котел тривалого горіння, Nestro також стануть чудовим вибором. Для автоматичних котлів використовують пелети.` },
         { q: `Скільки горять паливні брикети?`, a: `Залежно від типу котла та подачі кисню, брикети горять від 2 до 4 годин, після чого можуть тліти ще кілька годин, підтримуючи високу температуру.` },
         { q: `Чим брикети відрізняються від дров?`, a: `Брикети мають вищу щільність і набагато нижчу вологість (до 10%), тому вони віддають більше тепла. Крім того, вони займають менше місця при зберіганні та залишають значно менше попелу.` },

@@ -171,6 +171,38 @@ def seed_drova_live():
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
+@app.get("/api/upgrade-db")
+def upgrade_db_schema(db: Session = Depends(get_db)):
+    """Temporary endpoint to add new SEO/Spec columns to the production DB."""
+    import sqlalchemy as sa
+    try:
+        engine = db.get_bind()
+        with engine.begin() as conn:
+            # Add columns. We use IF NOT EXISTS conceptually or just catch errors if they exist.
+            # SQLite doesn't support IF NOT EXISTS for ADD COLUMN natively, so we just try and catch.
+            # Same for Postgres, just handle exceptions.
+            cols = [
+                "short_description TEXT",
+                "image_alt TEXT",
+                "specifications_json TEXT",
+                "faqs_json TEXT"
+            ]
+            added = []
+            for col_def in cols:
+                col_name = col_def.split()[0]
+                try:
+                    conn.execute(sa.text(f"ALTER TABLE cakes ADD COLUMN {col_def}"))
+                    added.append(col_name)
+                except sa.exc.OperationalError as e:
+                    # Column already exists or other error
+                    logger.warning(f"Failed to add {col_name}: {e}")
+                except sa.exc.ProgrammingError as e:
+                    logger.warning(f"Failed to add {col_name}: {e}")
+                    
+        return {"status": "success", "message": "DB schema upgrade attempted", "added_columns": added}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 # ─── Static Files ───────────────────────────────────────────
 import mimetypes
 mimetypes.add_type("image/webp", ".webp")

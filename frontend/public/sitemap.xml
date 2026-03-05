@@ -73,38 +73,62 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kievbriket.com/catalog/drova/berezovi-drova-koloti</loc>
-    <lastmod>2026-03-02</lastmod>
+    <loc>https://kievbriket.com/catalog/drova/akatsiya-drova</loc>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kievbriket.com/catalog/drova/dubovi-drova-koloti</loc>
-    <lastmod>2026-03-03</lastmod>
+    <loc>https://kievbriket.com/catalog/drova/berezovi-drova</loc>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kievbriket.com/catalog/drova/hrabovi-drova-koloti</loc>
-    <lastmod>2026-03-02</lastmod>
+    <loc>https://kievbriket.com/catalog/drova/drova-dlya-kamina</loc>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kievbriket.com/catalog/drova/sosnovi-drova-koloti</loc>
-    <lastmod>2026-03-02</lastmod>
+    <loc>https://kievbriket.com/catalog/drova/drova-dlya-rozpalu</loc>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kievbriket.com/catalog/drova/vilkhovi-drova-koloti</loc>
-    <lastmod>2026-03-02</lastmod>
+    <loc>https://kievbriket.com/catalog/drova/drova-v-setkakh</loc>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kievbriket.com/catalog/drova/yasenovi-drova-koloti</loc>
-    <lastmod>2026-03-02</lastmod>
+    <loc>https://kievbriket.com/catalog/drova/drova-v-yashchykakh</loc>
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kievbriket.com/catalog/drova/dubovi-drova</loc>
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kievbriket.com/catalog/drova/hrabovi-drova</loc>
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kievbriket.com/catalog/drova/vilkhovi-drova</loc>
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kievbriket.com/catalog/drova/yasen-drova</loc>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

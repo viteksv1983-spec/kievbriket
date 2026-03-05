@@ -2129,7 +2129,7 @@ const ProtectedRoute = () => {
   }
   return /* @__PURE__ */ jsx(Outlet, {});
 };
-function SEOHead({ title, description, keywords, h1, canonical, ogImage, type = "website", schema, robots, is404 = false }) {
+function SEOHead({ title, description, ogDescription, keywords, h1, canonical, ogImage, type = "website", schema, robots, is404 = false, productPrice, productCurrency, children }) {
   const location = useLocation();
   const [seoData, setSeoData] = useState(null);
   const domain = shopConfig.domain;
@@ -2169,17 +2169,24 @@ function SEOHead({ title, description, keywords, h1, canonical, ogImage, type = 
     !is404 && /* @__PURE__ */ jsx("link", { rel: "canonical", href: currentFullUrl }),
     /* @__PURE__ */ jsx("meta", { name: "robots", content: effectiveRobots }),
     /* @__PURE__ */ jsx("meta", { property: "og:locale", content: "uk_UA" }),
+    /* @__PURE__ */ jsx("meta", { property: "og:locale:alternate", content: "ru_UA" }),
     /* @__PURE__ */ jsx("meta", { property: "og:type", content: type }),
     /* @__PURE__ */ jsx("meta", { property: "og:title", content: effectiveTitle }),
-    /* @__PURE__ */ jsx("meta", { property: "og:description", content: effectiveDesc }),
+    /* @__PURE__ */ jsx("meta", { property: "og:description", content: ogDescription || effectiveDesc }),
     /* @__PURE__ */ jsx("meta", { property: "og:image", content: effectiveOgImage }),
     !is404 && /* @__PURE__ */ jsx("meta", { property: "og:url", content: currentFullUrl }),
     /* @__PURE__ */ jsx("meta", { property: "og:site_name", content: shopConfig.seo.ogSiteName }),
+    productPrice && /* @__PURE__ */ jsxs(Fragment, { children: [
+      /* @__PURE__ */ jsx("meta", { property: "product:price:amount", content: String(productPrice) }),
+      /* @__PURE__ */ jsx("meta", { property: "product:price:currency", content: productCurrency || "UAH" }),
+      /* @__PURE__ */ jsx("meta", { property: "product:availability", content: "in stock" })
+    ] }),
     /* @__PURE__ */ jsx("meta", { name: "twitter:card", content: "summary_large_image" }),
     /* @__PURE__ */ jsx("meta", { name: "twitter:title", content: effectiveTitle }),
     /* @__PURE__ */ jsx("meta", { name: "twitter:description", content: effectiveDesc }),
     /* @__PURE__ */ jsx("meta", { name: "twitter:image", content: effectiveOgImage }),
-    effectiveSchema && /* @__PURE__ */ jsx("script", { type: "application/ld+json", children: typeof effectiveSchema === "string" ? effectiveSchema : JSON.stringify(effectiveSchema) })
+    effectiveSchema && /* @__PURE__ */ jsx("script", { type: "application/ld+json", children: typeof effectiveSchema === "string" ? effectiveSchema : JSON.stringify(effectiveSchema) }),
+    children
   ] });
 }
 const getCategoryUrl = (slug) => {
@@ -6054,13 +6061,24 @@ function CategoryProducts$2({ products, onOrderProduct, activeCategory }) {
           ] })
         ] }),
         /* @__PURE__ */ jsx("script", { type: "application/ld+json", dangerouslySetInnerHTML: {
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": filteredProducts.map((p, idx) => ({
+              "@type": "ListItem",
+              "position": idx + 1,
+              "url": `https://kievbriket.com${getProductUrl(p)}`
+            }))
+          })
+        } }),
+        /* @__PURE__ */ jsx("script", { type: "application/ld+json", dangerouslySetInnerHTML: {
           __html: JSON.stringify(filteredProducts.map((p) => ({
             "@context": "https://schema.org",
             "@type": "Product",
             "name": p.name,
             "image": getImageUrl(p.image_url, api.defaults.baseURL),
             "description": getDetailedDesc(p.name).desc,
-            "brand": { "@type": "Brand", "name": "КиївБрикет" },
+            "brand": { "@type": "Brand", "name": "КиївБрикет", "logo": "https://kievbriket.com/kievbriket.svg" },
             "offers": {
               "@type": "Offer",
               "price": p.variants?.length > 0 ? p.variants[0].price : p.price,
@@ -6449,10 +6467,12 @@ function FirewoodSeoBlock() {
 function PopularQueriesSection$3({ activeCategorySlug }) {
   if (activeCategorySlug !== "drova") return null;
   const queries = [
-    "Купити дрова Київ",
-    "Дрова складометр Київ",
-    "Дрова машина Київ",
-    "Дрова колоті Київ"
+    { text: "Купити дубові дрова Київ", to: "/catalog/drova/dubovi-drova" },
+    { text: "Дрова граб Київ", to: "/catalog/drova/hrabovi-drova" },
+    { text: "Дрова береза Київ", to: "/catalog/drova/berezovi-drova" },
+    { text: "Дрова для каміна", to: "/catalog/drova/drova-dlya-kamina" },
+    { text: "Дрова в ящиках", to: "/catalog/drova/drova-v-yashchykakh" },
+    { text: "Дрова складометр Київ", to: "/catalog/drova/dubovi-drova" }
   ];
   return /* @__PURE__ */ jsx("section", { style: { padding: "clamp(40px, 10vw, 100px) 0" }, children: /* @__PURE__ */ jsx("div", { className: "layout-container", children: /* @__PURE__ */ jsxs("div", { style: { maxWidth: 900, margin: "0 auto", textAlign: "center" }, children: [
     /* @__PURE__ */ jsx("h3", { className: "h3", style: { marginBottom: "1.5rem", fontSize: "1.25rem" }, children: "Популярні запити" }),
@@ -6464,7 +6484,7 @@ function PopularQueriesSection$3({ activeCategorySlug }) {
     }, children: queries.map((q, i) => /* @__PURE__ */ jsx(
       Link,
       {
-        to: "/catalog/drova",
+        to: q.to,
         className: "popular-link",
         style: {
           padding: "8px 16px",
@@ -6487,7 +6507,7 @@ function PopularQueriesSection$3({ activeCategorySlug }) {
           e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
           e.currentTarget.style.color = "var(--c-text2)";
         },
-        children: q
+        children: q.text
       },
       i
     )) })
@@ -8066,17 +8086,26 @@ function sortProducts(arr, mode) {
   return copy;
 }
 function Catalog({ predefinedCategory }) {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
-  const [orderProduct, setOrderProduct] = useState(null);
-  const [activeFilter, setActiveFilter] = useState("Усі");
-  const [sortMode, setSortMode] = useState("popular");
   const { categorySlug } = useParams();
   const [searchParams] = useSearchParams();
   const { categories, loading: categoriesLoading } = useCategories();
   const categoryQuery = searchParams.get("category");
   const activeCategorySlug = predefinedCategory || categorySlug || categoryQuery;
+  const ssgData = useSSGData();
+  const ssgProducts = useMemo(() => {
+    if (!ssgData?.products) return [];
+    const items2 = Array.isArray(ssgData.products) ? ssgData.products : ssgData.products.items || [];
+    if (activeCategorySlug) {
+      return items2.filter((p) => p.category === activeCategorySlug);
+    }
+    return items2;
+  }, [ssgData, activeCategorySlug]);
+  const [products, setProducts] = useState(ssgProducts);
+  const [loading, setLoading] = useState(true);
+  const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+  const [orderProduct, setOrderProduct] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("Усі");
+  const [sortMode, setSortMode] = useState("popular");
   const oldSlugMap = {
     "firewood": "drova",
     "briquettes": "brikety",
@@ -8088,8 +8117,9 @@ function Catalog({ predefinedCategory }) {
     const cat = activeCategory;
     const fallbackDesc = cat.seo_text ? cat.seo_text.replace(/<[^>]*>/g, "").substring(0, 160) : void 0;
     return {
-      title: cat.meta_title || `${cat.name} — купити з доставкою по Києву`,
-      description: cat.meta_description || fallbackDesc,
+      title: activeCategorySlug === "drova" ? "Купити дрова в Києві — колоті дрова з доставкою | КиївБрикет" : cat.meta_title || `${cat.name} — купити з доставкою по Києву`,
+      description: activeCategorySlug === "drova" ? "Купити дрова в Києві з доставкою. Колоті дрова: дуб, граб, акація, ясен. Чесний складометр, власний автопарк — ГАЗель, ЗІЛ, КАМАЗ. Доставка по Києву та області." : cat.meta_description || fallbackDesc,
+      ogDescription: activeCategorySlug === "drova" ? "Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен. Чесний складометр." : cat.meta_description || fallbackDesc,
       h1: cat.seo_h1 || cat.name,
       ogImage: cat.og_image || cat.image_url,
       canonical: cat.canonical_url || void 0
@@ -8101,7 +8131,8 @@ function Catalog({ predefinedCategory }) {
     window.scrollTo(0, 0);
     api.get("/products/", { params: { category: activeCategorySlug } }).then((response) => {
       const data = response.data;
-      setProducts(Array.isArray(data) ? data : data.items || []);
+      const fetched = Array.isArray(data) ? data : data.items || [];
+      if (fetched.length > 0) setProducts(fetched);
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [activeCategorySlug]);
@@ -8142,9 +8173,32 @@ function Catalog({ predefinedCategory }) {
           {
             title: seo.title,
             description: seo.description,
+            ogDescription: seo.ogDescription,
             ogImage: seo.ogImage,
             canonical: seo.canonical,
-            robots: seo.robots
+            robots: seo.robots,
+            children: activeCategorySlug === "drova" && /* @__PURE__ */ jsxs(Fragment, { children: [
+              /* @__PURE__ */ jsx("link", { rel: "alternate", hrefLang: "uk", href: "https://kievbriket.com/catalog/drova" }),
+              /* @__PURE__ */ jsx("link", { rel: "alternate", hrefLang: "x-default", href: "https://kievbriket.com/catalog/drova" }),
+              /* @__PURE__ */ jsx("meta", { name: "twitter:card", content: "summary_large_image" }),
+              /* @__PURE__ */ jsx("meta", { name: "twitter:title", content: "Купити дрова в Києві — колоті дрова з доставкою" }),
+              /* @__PURE__ */ jsx("meta", { name: "twitter:description", content: "Дрова дуб, граб, акація, ясен з доставкою по Києву та області." }),
+              /* @__PURE__ */ jsx("meta", { name: "twitter:image", content: "https://kievbriket.com/media/categories/firewood.webp" }),
+              /* @__PURE__ */ jsx("script", { type: "application/ld+json", children: `
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": "Дрова",
+ "url": "https://kievbriket.com/catalog/drova",
+ "description": "Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен.",
+ "isPartOf": {
+   "@type": "WebSite",
+   "name": "КиївБрикет",
+   "url": "https://kievbriket.com"
+ }
+}
+                                ` })
+            ] })
           }
         ),
         activeCategorySlug === "brikety" ? /* @__PURE__ */ jsx(
@@ -8193,8 +8247,12 @@ function DeliveryOptionsDrova() {
   };
   return /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "2.5rem" }, children: [
     /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { ...cardPad, background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)" }, children: [
-      /* @__PURE__ */ jsx("h2", { className: "h2", style: { marginBottom: "0.5rem", fontSize: "1.5rem", fontWeight: 800 }, children: "Варіанти доставки дров" }),
-      /* @__PURE__ */ jsx("p", { style: { color: "var(--c-text2)", marginBottom: "2rem", lineHeight: 1.6 }, children: "Ми доставляємо дрова по Києву та області власним транспортом. Тип автомобіля підбирається залежно від обсягу замовлення." }),
+      /* @__PURE__ */ jsx("h2", { className: "h2", style: { marginBottom: "0.5rem", fontSize: "1.5rem", fontWeight: 800 }, children: "Варіанти доставки дров (доставка дров Київ)" }),
+      /* @__PURE__ */ jsxs("p", { style: { color: "var(--c-text2)", marginBottom: "2rem", lineHeight: 1.6 }, children: [
+        "Швидка та надійна ",
+        /* @__PURE__ */ jsx("strong", { children: "доставка дров (Київ та Київська область)" }),
+        ". Ми доставляємо власним транспортом, тому тип автомобіля підбирається залежно від обсягу вашого замовлення."
+      ] }),
       /* @__PURE__ */ jsx("div", { style: {
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
@@ -8258,7 +8316,7 @@ function DeliveryOptionsDrova() {
         gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
         gap: "1rem"
       }, children: [
-        { title: "Кран-маніпулятор", desc: "Для складних умов розвантаження дров (вузькі заїзди, паркани, обмежений доступ).", price: "від 3500 грн", img: "manipulator-dostavka-kyiv.webp" },
+        { title: "Кран-маніпулятор", desc: "Для складних умов розвантаження дров (вузькі заїзди, паркани, обмежений доступ).", price: "від 4500 грн", img: "manipulator-dostavka-kyiv.webp" },
         { title: "Гідроборт / рокла", desc: "Для розвантаження палет або важких упаковок дров.", price: "від 4500 грн", img: "gidrobort-rokla-dostavka-kyiv.webp" }
       ].map((eq, i) => /* @__PURE__ */ jsxs(
         "div",
@@ -8343,35 +8401,37 @@ function ProductPage() {
     "coal": "vugillya"
   };
   const specs = product ? [
-    { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Порода", value: product.name.toLowerCase().includes("дуб") ? "Дуб" : product.name.toLowerCase().includes("сосн") ? "Сосна" : product.name.toLowerCase().includes("граб") ? "Граб" : product.category === "brikety" ? "Деревна тирса" : "Тверді породи" },
+    { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Порода", value: product.ingredients || (product.name.toLowerCase().includes("дуб") ? "Дуб" : product.name.toLowerCase().includes("сосн") ? "Сосна" : product.name.toLowerCase().includes("граб") ? "Граб" : product.category === "brikety" ? "Деревна тирса" : "Тверді породи") },
     { icon: /* @__PURE__ */ jsx(CheckCircle2, { size: 17, color: "var(--c-orange)" }), label: "Тип", value: product.category === "drova" ? "Колоті" : product.category === "brikety" ? "Пресовані" : "Сипуче" },
+    { icon: /* @__PURE__ */ jsx(Ruler, { size: 17, color: "var(--c-orange)" }), label: "Довжина полін", value: product.category === "drova" ? "30-40 см" : "—" },
     { icon: /* @__PURE__ */ jsx(Scale, { size: 17, color: "var(--c-orange)" }), label: "Фасування", value: product.category === "drova" ? "Складометр" : "У пакуваннях / піддонах" },
-    { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Вологість", value: product.category === "drova" ? "Природна (До 25%)" : "До 8%" },
+    { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Вологість", value: product.shelf_life || (product.category === "drova" ? "Природна (До 25%)" : "До 8%") },
     { icon: /* @__PURE__ */ jsx(Truck, { size: 17, color: "var(--c-orange)" }), label: "Доставка", value: "По Києву та області" }
   ] : [];
   const faqs = product ? [
-    { q: `Скільки горять ${product.name.toLowerCase()}?`, a: `Залежить від типу вашого котла чи печі, але завдяки високій щільності та правильній вологості вони забезпечують максимально тривале горіння та високу тепловіддачу.` },
-    { q: `Який обʼєм складометра?`, a: `Складометр — це щільно укладене паливо в обʼємі 1 метр на 1 метр на 1 метр. Ми завжди гарантуємо чесний обʼєм при завантаженні автомобіля.` },
-    { q: "Чи можна замовити доставку сьогодні?", a: "Так! При оформленні замовлення в першій половині дня ми намагаємося доставити власним транспортом в той же день по Києву та області." }
+    { q: `Які дрова краще для опалення?`, a: `${product.ingredients || "Дубові"} дрова вважаються одними з найкращих для опалення завдяки високій щільності деревини та тривалому горінню. Вони дають стабільний жар і підходять для твердопаливних котлів, печей та камінів.` },
+    { q: `Яка довжина полін у дров?`, a: `Стандартна довжина полін — 30-40 см. Це оптимальний розмір для більшості побутових котлів та печей.` },
+    { q: `Скільки дров потрібно на зиму?`, a: `Для опалення будинку площею 100 м² на один опалювальний сезон потрібно приблизно 8-12 складометрів дров, залежно від утеплення та типу котла.` },
+    { q: `Як відбувається доставка?`, a: `Доставка дров здійснюється власним автопарком: ГАЗель (2 склм), ЗІЛ (5 склм), КАМАЗ (10 склм). Також доступні гідроборт та кран-маніпулятор. Доставка по Києву та області протягом 24 годин.` },
+    { q: `Який обʼєм складометра?`, a: `Складометр — це щільно укладене паливо в обʼємі 1×1×1 метр. Ми завжди гарантуємо чесний обʼєм при завантаженні автомобіля.` }
   ] : [];
   useEffect(() => {
     if (ssgProduct && !product?.slug?.length) return;
     window.scrollTo(0, 0);
     setLoading(true);
     setActiveImageIndex(0);
-    api.get("/products/").then((res) => {
-      const data = res.data;
-      const items2 = Array.isArray(data) ? data : data.items || [];
-      const found = items2.find((p) => p.slug === productSlug);
+    api.get(`/products/${productSlug}`).then((res) => {
+      const found = res.data;
       setProduct(found);
-      if (found) {
-        const related = items2.filter((p) => p.category === found.category && p.slug !== found.slug).slice(0, 3);
-        setRelatedProducts(related);
-      }
       if (found?.variants?.length > 0) {
         setSelectedVariant(found.variants[0]);
       }
-      setLoading(false);
+      api.get(`/products/?category=${found.category}&limit=5`).then((relRes) => {
+        const relData = relRes.data;
+        const items2 = Array.isArray(relData) ? relData : relData.items || [];
+        const related = items2.filter((p) => p.slug !== found.slug).slice(0, 3);
+        setRelatedProducts(related);
+      }).catch((err) => console.error("Failed to fetch related products:", err)).finally(() => setLoading(false));
     }).catch(() => setLoading(false));
   }, [productSlug]);
   const category = categories.find((c) => c.slug === (categorySlug || product?.category));
@@ -8410,7 +8470,7 @@ function ProductPage() {
       ] })
     ] });
   }
-  const dynamicTitle = `${product.name} купити Київ | ціна | KievBriket`;
+  const dynamicTitle = product.meta_title || `Купити ${product.name.toLowerCase()} з доставкою по Києву — ціна за складометр | КиївБрикет`;
   return /* @__PURE__ */ jsxs(
     "div",
     {
@@ -8429,7 +8489,9 @@ function ProductPage() {
             title: dynamicTitle,
             description: product.meta_description || product.description || `Замовляйте ${product.name.toLowerCase()} з швидкою доставкою по Києву та області.`,
             ogImage: product.og_image || product.image_url,
-            canonical: product.canonical_url
+            canonical: product.canonical_url,
+            productPrice: product.price,
+            productCurrency: "UAH"
           }
         ),
         /* @__PURE__ */ jsx("div", { style: {
@@ -8460,18 +8522,18 @@ function ProductPage() {
           /* @__PURE__ */ jsx(
             Link,
             {
-              to: category ? getCategoryUrl(category.slug) : "/catalog/drova",
+              to: category ? getCategoryUrl(category.slug) : product?.category === "drova" ? "/catalog/drova" : "/catalog",
               style: { color: "var(--c-text2)", textDecoration: "none", transition: "color 0.2s" },
               onMouseEnter: (e) => e.target.style.color = "var(--c-orange)",
               onMouseLeave: (e) => e.target.style.color = "var(--c-text2)",
-              children: category ? category.name : "Каталог"
+              children: category ? category.name : product?.category === "drova" ? "Дрова" : "Каталог"
             }
           ),
           /* @__PURE__ */ jsx(ChevronRight, { size: 13, style: { opacity: 0.4 } }),
           /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 240 }, children: product.name })
         ] }) }),
-        /* @__PURE__ */ jsx("div", { className: "product-mobile-title", style: { maxWidth: 1200, margin: "0 auto", padding: "1rem 1.5rem 0" }, children: /* @__PURE__ */ jsx("h1", { className: "h1", style: { fontSize: "clamp(22px, 5vw, 28px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.name }) }),
-        /* @__PURE__ */ jsxs("main", { style: { maxWidth: 1200, margin: "0 auto", padding: "var(--s-section) 1.5rem" }, children: [
+        /* @__PURE__ */ jsx("div", { className: "product-mobile-title", style: { maxWidth: 1200, margin: "0 auto", padding: "1rem 1.5rem 0" }, children: /* @__PURE__ */ jsx("h1", { className: "h1", style: { fontSize: "clamp(22px, 5vw, 28px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.h1_heading || product.name }) }),
+        /* @__PURE__ */ jsxs("section", { className: "product-main-content", style: { maxWidth: 1200, margin: "0 auto", padding: "var(--s-section) 1.5rem" }, children: [
           /* @__PURE__ */ jsxs("div", { style: {
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
@@ -8491,10 +8553,11 @@ function ProductPage() {
                 "img",
                 {
                   src: galleryImages[activeImageIndex],
-                  alt: product.name,
+                  alt: product.category === "drova" ? `${product.name} колоті дрова складометр доставка Київ` : product.h1_heading || product.name,
                   width: "600",
                   height: "450",
                   loading: activeImageIndex === 0 ? "eager" : "lazy",
+                  decoding: "async",
                   style: { width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.4s ease" },
                   onMouseEnter: (e) => window.innerWidth > 768 && (e.target.style.transform = "scale(1.05)"),
                   onMouseLeave: (e) => e.target.style.transform = "scale(1)"
@@ -8534,7 +8597,7 @@ function ProductPage() {
             ] }),
             /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "2rem" }, children: [
               /* @__PURE__ */ jsxs("div", { className: "product-desktop-title", style: { display: "flex", flexDirection: "column", gap: "0.75rem" }, children: [
-                /* @__PURE__ */ jsx("h1", { className: "h1", style: { fontSize: "clamp(22px, 3vw, 36px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.name }),
+                /* @__PURE__ */ jsx("div", { className: "h1", style: { fontSize: "clamp(22px, 3vw, 36px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.h1_heading || product.name }),
                 /* @__PURE__ */ jsxs("div", { className: "product-badges-row", style: { display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }, children: [
                   /* @__PURE__ */ jsx("span", { style: {
                     display: "inline-flex",
@@ -8677,38 +8740,132 @@ function ProductPage() {
             gap: "1.5rem",
             alignItems: "start"
           }, children: [
-            /* @__PURE__ */ jsx("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: /* @__PURE__ */ jsx("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", rowGap: "1.5rem" }, children: specs.map((spec, i) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
-              /* @__PURE__ */ jsx("div", { style: {
-                width: 38,
-                height: 38,
-                borderRadius: 10,
-                flexShrink: 0,
-                background: "var(--color-accent-soft)",
-                border: "1px solid rgba(249,115,22,0.15)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }, children: spec.icon }),
-              /* @__PURE__ */ jsxs("div", { children: [
-                /* @__PURE__ */ jsx("p", { style: { fontSize: "0.75rem", color: "var(--c-text2)", textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700 }, children: spec.label }),
-                /* @__PURE__ */ jsx("p", { style: { fontSize: "0.9375rem", fontWeight: 700, color: "var(--c-text)", marginTop: 2 }, children: spec.value })
+            /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "1.5rem" }, children: [
+              /* @__PURE__ */ jsx("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: /* @__PURE__ */ jsx("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", rowGap: "1.5rem" }, children: specs.map((spec, i) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
+                /* @__PURE__ */ jsx("div", { style: {
+                  width: 38,
+                  height: 38,
+                  borderRadius: 10,
+                  flexShrink: 0,
+                  background: "var(--color-accent-soft)",
+                  border: "1px solid rgba(249,115,22,0.15)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }, children: spec.icon }),
+                /* @__PURE__ */ jsxs("div", { children: [
+                  /* @__PURE__ */ jsx("p", { style: { fontSize: "0.75rem", color: "var(--c-text2)", textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700 }, children: spec.label }),
+                  /* @__PURE__ */ jsx("p", { style: { fontSize: "0.9375rem", fontWeight: 700, color: "var(--c-text)", marginTop: 2 }, children: spec.value })
+                ] })
+              ] }, i)) }) }),
+              /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16, display: "flex", flexDirection: "column", gap: "1rem" }, children: [
+                /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
+                  /* @__PURE__ */ jsx("div", { style: {
+                    width: 38,
+                    height: 38,
+                    borderRadius: 10,
+                    flexShrink: 0,
+                    background: "var(--color-accent-soft)",
+                    border: "1px solid rgba(249,115,22,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }, children: /* @__PURE__ */ jsx(Truck, { size: 18, color: "var(--c-orange)" }) }),
+                  /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", margin: 0 }, children: "Інформація про доставку" })
+                ] }),
+                /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: 6, paddingLeft: 50 }, children: [
+                  /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
+                    /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Локація:" }),
+                    " Доставка по Києву та області"
+                  ] }),
+                  /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
+                    /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Термін доставки:" }),
+                    " 1 день"
+                  ] }),
+                  product.category === "drova" && /* @__PURE__ */ jsxs(Fragment, { children: [
+                    /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
+                      /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Мінімальне замовлення:" }),
+                      " 1 складометр"
+                    ] }),
+                    /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
+                      /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Автопарк:" }),
+                      " ГАЗель, ЗІЛ, КАМАЗ"
+                    ] }),
+                    /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
+                      /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Спецтехніка:" }),
+                      " гідроборт, кран-маніпулятор"
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ jsxs(Link, { to: "/dostavka", style: { color: "var(--c-orange)", textDecoration: "none", fontSize: "0.875rem", fontWeight: 600, marginTop: "0.25rem", display: "inline-flex", alignItems: "center", gap: 4 }, children: [
+                    product.category === "drova" ? "Детальніше про доставку дров" : "Детальніше про доставку",
+                    " ",
+                    /* @__PURE__ */ jsx(ArrowRight, { size: 14 })
+                  ] })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxs("section", { className: "nh-card order-steps", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
+                /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.5rem" }, children: "Як замовити дрова" }),
+                /* @__PURE__ */ jsxs("ol", { style: { paddingLeft: "1.5rem", marginBottom: "1.5rem", color: "var(--c-text)", lineHeight: 1.6, fontWeight: 500, display: "flex", flexDirection: "column", gap: "0.75rem" }, children: [
+                  /* @__PURE__ */ jsx("li", { children: "Оберіть потрібний обсяг дров" }),
+                  /* @__PURE__ */ jsx("li", { children: 'Натисніть кнопку "Замовити"' }),
+                  /* @__PURE__ */ jsx("li", { children: "Ми зв’яжемося для підтвердження доставки" })
+                ] }),
+                /* @__PURE__ */ jsx("p", { style: { color: "var(--c-text2)", fontSize: "0.9375rem", lineHeight: 1.6, margin: 0 }, children: "Доставка дров по Києву здійснюється власним транспортом протягом 24 годин після оформлення замовлення." })
+              ] }),
+              /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
+                /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.5rem" }, children: "Часті питання" }),
+                /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: "0.75rem" }, children: faqs.map((faq, idx) => /* @__PURE__ */ jsxs("div", { style: {
+                  background: "var(--color-bg-elevated)",
+                  border: "1px solid var(--color-border-subtle)",
+                  borderRadius: 12,
+                  overflow: "hidden"
+                }, children: [
+                  /* @__PURE__ */ jsxs(
+                    "button",
+                    {
+                      onClick: () => setOpenFaq(openFaq === idx ? null : idx),
+                      style: {
+                        width: "100%",
+                        padding: "1.25rem 1.5rem",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        background: "transparent",
+                        border: "none",
+                        color: "var(--c-text)",
+                        fontSize: "1rem",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        textAlign: "left"
+                      },
+                      children: [
+                        faq.q,
+                        /* @__PURE__ */ jsx(ChevronDown, { size: 20, color: "var(--c-orange)", style: {
+                          transform: openFaq === idx ? "rotate(180deg)" : "rotate(0deg)",
+                          transition: "transform 0.3s ease"
+                        } })
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsx("div", { style: {
+                    maxHeight: openFaq === idx ? 200 : 0,
+                    padding: openFaq === idx ? "0 1.5rem 1.5rem" : "0 1.5rem",
+                    opacity: openFaq === idx ? 1 : 0,
+                    overflow: "hidden",
+                    transition: "all 0.3s ease",
+                    color: "var(--c-text2)",
+                    fontSize: "0.9375rem",
+                    lineHeight: 1.6
+                  }, children: faq.a })
+                ] }, idx)) })
               ] })
-            ] }, i)) }) }),
-            /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "2rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
+            ] }),
+            /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: "1.5rem", position: "sticky", top: "6rem" }, children: /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "2rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
               /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.25rem" }, children: "Про ці дрова" }),
-              /* @__PURE__ */ jsx("div", { style: { color: "var(--c-text2)", fontSize: "1rem", lineHeight: 1.6 }, children: product.description ? /* @__PURE__ */ jsxs(Fragment, { children: [
-                product.category === "drova" ? /* @__PURE__ */ jsxs("p", { style: { marginBottom: "1rem" }, children: [
-                  product.description,
-                  " Ми пропонуємо якісні ",
-                  /* @__PURE__ */ jsx(Link, { to: "/catalog/drova", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "дрова колоті" }),
-                  ", ",
-                  /* @__PURE__ */ jsx(Link, { to: "/catalog/brikety", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "паливні брикети" }),
-                  " та ",
-                  /* @__PURE__ */ jsx(Link, { to: "/catalog/vugillya", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "кам'яне вугілля" }),
-                  " з швидкою доставкою."
-                ] }) : /* @__PURE__ */ jsx("p", { style: { marginBottom: "1rem" }, children: product.description }),
+              /* @__PURE__ */ jsx("div", { style: { color: "var(--c-text2)", fontSize: "1rem", lineHeight: 1.6 }, children: product.description ? /* @__PURE__ */ jsx(Fragment, { children: product.category === "drova" ? /* @__PURE__ */ jsx("div", { className: "product-description", dangerouslySetInnerHTML: { __html: product.description } }) : product.description.includes("<p>") || product.description.includes("<h2>") ? /* @__PURE__ */ jsx("div", { dangerouslySetInnerHTML: { __html: product.description }, className: "product-seo-description", style: { display: "flex", flexDirection: "column", gap: "1rem" } }) : /* @__PURE__ */ jsxs(Fragment, { children: [
+                /* @__PURE__ */ jsx("p", { style: { marginBottom: "1rem" }, children: product.description }),
                 /* @__PURE__ */ jsx("p", { children: "Наші дрова щільно укладені в кузові автомобіля (складометрами), що гарантує чесний об'єм при доставці." })
-              ] }) : /* @__PURE__ */ jsxs(Fragment, { children: [
+              ] }) }) : /* @__PURE__ */ jsxs(Fragment, { children: [
                 product.category === "drova" ? /* @__PURE__ */ jsxs("p", { style: { marginBottom: "1rem" }, children: [
                   "Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів. Окрім ",
                   /* @__PURE__ */ jsx(Link, { to: "/catalog/drova", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "дров колотих" }),
@@ -8720,95 +8877,7 @@ function ProductPage() {
                 ] }) : /* @__PURE__ */ jsx("p", { style: { marginBottom: "1rem" }, children: "Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів." }),
                 /* @__PURE__ */ jsx("p", { children: "Ми ретельно відбираємо сировину, щоб забезпечити максимальну тепловіддачу. Замовляючи у нас, ви отримуєте чесний об'єм та гарантовану якість палива для вашої оселі." })
               ] }) })
-            ] }),
-            /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16, display: "flex", flexDirection: "column", gap: "1rem" }, children: [
-              /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
-                /* @__PURE__ */ jsx("div", { style: {
-                  width: 38,
-                  height: 38,
-                  borderRadius: 10,
-                  flexShrink: 0,
-                  background: "var(--color-accent-soft)",
-                  border: "1px solid rgba(249,115,22,0.15)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }, children: /* @__PURE__ */ jsx(Truck, { size: 18, color: "var(--c-orange)" }) }),
-                /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", margin: 0 }, children: "Інформація про доставку" })
-              ] }),
-              /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: 6, paddingLeft: 50 }, children: [
-                /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
-                  /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Локація:" }),
-                  " Доставка по Києву та області"
-                ] }),
-                /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
-                  /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Термін доставки:" }),
-                  " 1 день"
-                ] }),
-                product.category === "drova" && /* @__PURE__ */ jsxs(Fragment, { children: [
-                  /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
-                    /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Мінімальне замовлення:" }),
-                    " 1 складометр"
-                  ] }),
-                  /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
-                    /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Типи доставки:" }),
-                    " ГАЗель, ЗІЛ, КАМАЗ"
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxs(Link, { to: "/dostavka", style: { color: "var(--c-orange)", textDecoration: "none", fontSize: "0.875rem", fontWeight: 600, marginTop: "0.25rem", display: "inline-flex", alignItems: "center", gap: 4 }, children: [
-                  product.category === "drova" ? "Детальніше про доставку дров" : "Детальніше про доставку",
-                  " ",
-                  /* @__PURE__ */ jsx(ArrowRight, { size: 14 })
-                ] })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
-              /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.5rem" }, children: "Часті питання" }),
-              /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: "0.75rem" }, children: faqs.map((faq, idx) => /* @__PURE__ */ jsxs("div", { style: {
-                background: "var(--color-bg-elevated)",
-                border: "1px solid var(--color-border-subtle)",
-                borderRadius: 12,
-                overflow: "hidden"
-              }, children: [
-                /* @__PURE__ */ jsxs(
-                  "button",
-                  {
-                    onClick: () => setOpenFaq(openFaq === idx ? null : idx),
-                    style: {
-                      width: "100%",
-                      padding: "1.25rem 1.5rem",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      background: "transparent",
-                      border: "none",
-                      color: "var(--c-text)",
-                      fontSize: "1rem",
-                      fontWeight: 600,
-                      cursor: "pointer",
-                      textAlign: "left"
-                    },
-                    children: [
-                      faq.q,
-                      /* @__PURE__ */ jsx(ChevronDown, { size: 20, color: "var(--c-orange)", style: {
-                        transform: openFaq === idx ? "rotate(180deg)" : "rotate(0deg)",
-                        transition: "transform 0.3s ease"
-                      } })
-                    ]
-                  }
-                ),
-                /* @__PURE__ */ jsx("div", { style: {
-                  maxHeight: openFaq === idx ? 200 : 0,
-                  padding: openFaq === idx ? "0 1.5rem 1.5rem" : "0 1.5rem",
-                  opacity: openFaq === idx ? 1 : 0,
-                  overflow: "hidden",
-                  transition: "all 0.3s ease",
-                  color: "var(--c-text2)",
-                  fontSize: "0.9375rem",
-                  lineHeight: 1.6
-                }, children: faq.a })
-              ] }, idx)) })
-            ] })
+            ] }) })
           ] }) }),
           product.category === "drova" && /* @__PURE__ */ jsx("div", { style: { marginTop: "4rem" }, children: /* @__PURE__ */ jsx(DeliveryOptionsDrova, {}) }),
           relatedProducts.length > 0 && /* @__PURE__ */ jsxs("div", { style: { marginTop: "5rem" }, children: [
@@ -8825,7 +8894,7 @@ function ProductPage() {
                     "img",
                     {
                       src: getImageUrl(p.image_url, api.defaults.baseURL),
-                      alt: p.name,
+                      alt: p.category === "drova" || categorySlug === "drova" ? `${p.name} колоті дрова складометр доставка Київ` : p.h1_heading || p.name,
                       className: "catalog-card-img",
                       onError: (e) => {
                         e.target.onerror = null;
@@ -8862,8 +8931,8 @@ function ProductPage() {
                   }, children: "🔥 Популярний" }) })
                 ] }),
                 /* @__PURE__ */ jsxs("div", { style: { padding: "1rem 1.25rem 1.25rem", display: "flex", flexDirection: "column", flex: 1 }, children: [
-                  /* @__PURE__ */ jsx("h3", { className: "h3", style: { margin: 0, marginBottom: 8, transition: "color 0.2s", lineHeight: 1.25, fontWeight: 700 }, children: p.name }),
-                  /* @__PURE__ */ jsx("p", { className: "body-sm", style: { minHeight: "2.8em", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", marginBottom: 16, opacity: 0.8 }, children: p.description || "Якісне тверде паливо з доставкою по Києву та Київській області." }),
+                  /* @__PURE__ */ jsx("p", { className: "h3", style: { margin: 0, marginBottom: 8, transition: "color 0.2s", lineHeight: 1.25, fontWeight: 700 }, children: p.name }),
+                  /* @__PURE__ */ jsx("div", { className: "catalog-card-description body-sm", style: { minHeight: "2.8em", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", marginBottom: 16, opacity: 0.8 }, dangerouslySetInnerHTML: { __html: (p.description || "Якісне тверде паливо з доставкою по Києву та Київській області.").replace(/<h[1-6][^>]*>/gi, "<strong>").replace(/<\/h[1-6]>/gi, "</strong>") } }),
                   p.variants?.length > 0 && /* @__PURE__ */ jsx("div", { style: { display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 12 }, children: p.variants.slice(0, 3).map((v, i) => /* @__PURE__ */ jsx("span", { style: { fontSize: "0.72rem", color: "var(--c-text2)", background: "var(--c-surface)", borderRadius: 6, padding: "2px 8px", border: "1px solid var(--c-border)" }, children: v.name }, i)) }),
                   /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 14, borderTop: "1px solid var(--color-border-subtle)", marginTop: "auto", gap: 12 }, children: [
                     /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: 2 }, children: [
@@ -8896,26 +8965,58 @@ function ProductPage() {
               ] }) }, p.id);
             }) })
           ] }),
+          product.category === "drova" && /* @__PURE__ */ jsxs("section", { className: "product-seo-bottom", style: { marginTop: "5rem", padding: "2rem", background: "var(--color-bg-elevated)", borderRadius: 20, border: "1px solid var(--color-border-subtle)" }, children: [
+            /* @__PURE__ */ jsxs("h2", { style: { fontSize: "1.75rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.25rem" }, children: [
+              "Купити ",
+              product.name.toLowerCase(),
+              " в Києві"
+            ] }),
+            /* @__PURE__ */ jsxs("div", { style: { color: "var(--c-text2)", fontSize: "1rem", lineHeight: 1.6, display: "flex", flexDirection: "column", gap: "1rem" }, children: [
+              /* @__PURE__ */ jsxs("p", { children: [
+                "Якщо вам потрібні якісні ",
+                /* @__PURE__ */ jsx(Link, { to: "/catalog/drova", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "колоті дрова" }),
+                " ",
+                "з доставкою по Києву, компанія КиївБрикет пропонує швидке постачання палива власним транспортом."
+              ] }),
+              /* @__PURE__ */ jsxs("p", { children: [
+                "У нашому каталозі також доступні",
+                " ",
+                /* @__PURE__ */ jsx(Link, { to: "/catalog/brikety", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "паливні брикети" }),
+                " ",
+                "та",
+                " ",
+                /* @__PURE__ */ jsx(Link, { to: "/catalog/vugillya", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "кам'яне вугілля" }),
+                " ",
+                "для твердопаливних котлів та камінів."
+              ] }),
+              /* @__PURE__ */ jsx("p", { children: "Ми доставляємо дрова в усі райони Києва: Дарницький, Деснянський, Оболонський, Подільський, Шевченківський, Голосіївський, Солом’янський, Печерський, Святошинський, Дніпровський." }),
+              /* @__PURE__ */ jsxs("p", { children: [
+                "Замовляючи ",
+                /* @__PURE__ */ jsx("strong", { children: product.name.toLowerCase() }),
+                " у нас, ви гарантовано отримуєте чесний об'єм, оскільки всі дрова щільно укладаються в кузові (в складометрах). Ми працюємо без передоплати — ви оплачуєте замовлення безпосередньо після розвантаження та перевірки якості."
+              ] })
+            ] })
+          ] }),
           /* @__PURE__ */ jsxs("div", { style: { marginTop: "5rem", paddingBottom: "2rem" }, children: [
             /* @__PURE__ */ jsx("h2", { className: "h2", style: { marginBottom: "2rem" }, children: "Інші види палива" }),
             /* @__PURE__ */ jsxs("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }, children: [
               /* @__PURE__ */ jsxs(Link, { to: "/catalog/drova", className: "nh-card", style: { padding: "1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
                 /* @__PURE__ */ jsxs("div", { children: [
-                  /* @__PURE__ */ jsx("h3", { style: { fontSize: "1.125rem", fontWeight: 700, color: "var(--c-text)", margin: 0 }, children: "Дрова колоті" }),
+                  /* @__PURE__ */ jsx("p", { style: { fontSize: "1.125rem", fontWeight: 700, color: "var(--c-text)", margin: 0 }, children: "Дрова колоті" }),
                   /* @__PURE__ */ jsx("p", { style: { fontSize: "0.875rem", color: "var(--c-text2)", margin: "4px 0 0 0" }, children: "Дуб, граб, сосна" })
                 ] }),
                 /* @__PURE__ */ jsx(ChevronRight, { size: 20, color: "var(--c-orange)" })
               ] }),
               /* @__PURE__ */ jsxs(Link, { to: "/catalog/brikety", className: "nh-card", style: { padding: "1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
                 /* @__PURE__ */ jsxs("div", { children: [
-                  /* @__PURE__ */ jsx("h3", { style: { fontSize: "1.125rem", fontWeight: 700, color: "var(--c-text)", margin: 0 }, children: "Паливні брикети" }),
+                  /* @__PURE__ */ jsx("p", { style: { fontSize: "1.125rem", fontWeight: 700, color: "var(--c-text)", margin: 0 }, children: "Паливні брикети" }),
                   /* @__PURE__ */ jsx("p", { style: { fontSize: "0.875rem", color: "var(--c-text2)", margin: "4px 0 0 0" }, children: "RUF, Nestro, Pini Kay" })
                 ] }),
                 /* @__PURE__ */ jsx(ChevronRight, { size: 20, color: "var(--c-orange)" })
               ] }),
               /* @__PURE__ */ jsxs(Link, { to: "/catalog/vugillya", className: "nh-card", style: { padding: "1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
                 /* @__PURE__ */ jsxs("div", { children: [
-                  /* @__PURE__ */ jsx("h3", { style: { fontSize: "1.125rem", fontWeight: 700, color: "var(--c-text)", margin: 0 }, children: "Кам'яне вугілля" }),
+                  /* @__PURE__ */ jsx("p", { style: { fontSize: "1.125rem", fontWeight: 700, color: "var(--c-text)", margin: 0 }, children: "Кам'яне вугілля" }),
                   /* @__PURE__ */ jsx("p", { style: { fontSize: "0.875rem", color: "var(--c-text2)", margin: "4px 0 0 0" }, children: "Антрацит, ДГ" })
                 ] }),
                 /* @__PURE__ */ jsx(ChevronRight, { size: 20, color: "var(--c-orange)" })
@@ -8932,17 +9033,17 @@ function ProductPage() {
 
                 @media (max-width: 768px) {
                     .product-mobile-title { display: block !important; }
-                    .product-desktop-title h1 { display: none !important; }
+                    .product-desktop-title .h1 { display: none !important; }
                     .product-desktop-title { gap: 0.5rem !important; }
                     .product-badges-row { display: none !important; }
                     .product-popular-badge { display: none !important; }
                     .product-old-price { display: none !important; }
                     .product-price-badge { display: inline-flex !important; }
-                    main > div { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
-                    main > div > div:first-child { position: static !important; }
-                    main > div > div:last-child { gap: 1rem !important; }
+                    .product-main-content > div { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
+                    .product-main-content > div > div:first-child { position: static !important; }
+                    .product-main-content > div > div:last-child { gap: 1rem !important; }
                     .product-price-block { order: -1; padding-top: 0 !important; border-top: none !important; }
-                    main { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+                    .product-main-content { padding-top: 1rem !important; padding-bottom: 1rem !important; }
                     
                     /* Sticky Mobile CTA Container */
                     .product-cta-container {
@@ -10359,7 +10460,7 @@ function DeliveryExtendedSeo() {
         gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
         gap: "1.5rem"
       }, children: [
-        { src: "/images/delivery/manipulator-dostavka-kyiv.webp", alt: "Кран-маніпулятор доставка Київ", name: "Кран-маніпулятор", volume: "Складні умови", price: "від 3 500 грн" },
+        { src: "/images/delivery/manipulator-dostavka-kyiv.webp", alt: "Кран-маніпулятор доставка Київ", name: "Кран-маніпулятор", volume: "Складні умови", price: "від 4 500 грн" },
         { src: "/images/delivery/gidrobort-rokla-dostavka-kyiv.webp", alt: "Гідроборт рокла доставка Київ", name: "Гідроборт / рокла", volume: "Складні умови", price: "від 4 500 грн" }
       ].map((card, i) => /* @__PURE__ */ jsxs(
         "figure",
@@ -10458,7 +10559,7 @@ function DeliveryExtendedSeo() {
         /* @__PURE__ */ jsxs("tbody", { children: [
           /* @__PURE__ */ jsxs("tr", { children: [
             /* @__PURE__ */ jsx("td", { children: "Кран-маніпулятор" }),
-            /* @__PURE__ */ jsx("td", { children: "від 3 500 грн" })
+            /* @__PURE__ */ jsx("td", { children: "від 4 500 грн" })
           ] }),
           /* @__PURE__ */ jsxs("tr", { children: [
             /* @__PURE__ */ jsx("td", { children: "Гідроборт / рокла" }),
@@ -11551,7 +11652,7 @@ function DynamicPage() {
 const AdminLayout = React.lazy(() => import("./assets/AdminLayout-DywU__WK.js"));
 const Orders = React.lazy(() => import("./assets/Orders-BBgIk0Tt.js"));
 const Products = React.lazy(() => import("./assets/Products-8D6lj1jp.js"));
-const ProductEdit = React.lazy(() => import("./assets/ProductEdit-By4Vq1zQ.js"));
+const ProductEdit = React.lazy(() => import("./assets/ProductEdit-CG6jdrvn.js"));
 const PageEditor = React.lazy(() => import("./assets/PageEditor-BKYKocbz.js"));
 const CategoryManager = React.lazy(() => import("./assets/CategoryManager-Dr2s_ua6.js"));
 React.lazy(() => import("./assets/SEOPages-Dvk6MJcu.js"));

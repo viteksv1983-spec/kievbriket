@@ -11,19 +11,6 @@ import "axios";
 import "lucide-react";
 import "@react-oauth/google";
 import "react-icons/fa";
-const WEIGHT_OPTIONS = [
-  { value: 400, label: "400 г (Бенто)" },
-  { value: 500, label: "500 г" },
-  { value: 600, label: "600 г" },
-  { value: 800, label: "800 г" },
-  { value: 1e3, label: "1 кг" },
-  { value: 1500, label: "1.5 кг" },
-  { value: 2e3, label: "2 кг" },
-  { value: 2500, label: "2.5 кг" },
-  { value: 3e3, label: "3 кг" },
-  { value: 4e3, label: "4 кг" },
-  { value: 5e3, label: "5 кг" }
-];
 function ProductEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -229,51 +216,33 @@ function ProductEdit() {
               }
             )
           ] }),
-          /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6", children: [
-            /* @__PURE__ */ jsxs("div", { children: [
-              /* @__PURE__ */ jsx("label", { className: "block text-sm font-bold text-gray-700 mb-2", children: "Вага" }),
+          /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6", children: /* @__PURE__ */ jsxs("div", { children: [
+            /* @__PURE__ */ jsx("label", { className: "block text-sm font-bold text-gray-700 mb-2", children: "Категорія" }),
+            /* @__PURE__ */ jsxs("div", { className: "flex gap-2 items-center", children: [
               /* @__PURE__ */ jsxs(
                 "select",
                 {
-                  name: "weight",
-                  value: formData.weight,
+                  name: "category",
+                  value: formData.category,
                   onChange: handleChange,
-                  className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent cursor-pointer",
+                  className: "flex-1 min-w-0 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent cursor-pointer",
                   children: [
-                    /* @__PURE__ */ jsx("option", { value: "", children: "Оберіть вагу" }),
-                    WEIGHT_OPTIONS.map((opt) => /* @__PURE__ */ jsx("option", { value: opt.value, children: opt.label }, opt.value))
+                    /* @__PURE__ */ jsx("option", { value: "", children: "Оберіть категорію" }),
+                    categories.map((cat) => /* @__PURE__ */ jsx("option", { value: cat.slug, children: cat.name }, cat.slug))
                   ]
                 }
+              ),
+              /* @__PURE__ */ jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => navigate("/admin/categories"),
+                  className: "shrink-0 px-3 py-2 text-sm font-bold text-antreme-red border border-red-200 rounded-lg hover:bg-red-50 transition-colors whitespace-nowrap",
+                  children: "+ Додати"
+                }
               )
-            ] }),
-            /* @__PURE__ */ jsxs("div", { children: [
-              /* @__PURE__ */ jsx("label", { className: "block text-sm font-bold text-gray-700 mb-2", children: "Категорія" }),
-              /* @__PURE__ */ jsxs("div", { className: "flex gap-2 items-center", children: [
-                /* @__PURE__ */ jsxs(
-                  "select",
-                  {
-                    name: "category",
-                    value: formData.category,
-                    onChange: handleChange,
-                    className: "flex-1 min-w-0 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent cursor-pointer",
-                    children: [
-                      /* @__PURE__ */ jsx("option", { value: "", children: "Оберіть категорію" }),
-                      categories.map((cat) => /* @__PURE__ */ jsx("option", { value: cat.slug, children: cat.name }, cat.slug))
-                    ]
-                  }
-                ),
-                /* @__PURE__ */ jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => navigate("/admin/categories"),
-                    className: "shrink-0 px-3 py-2 text-sm font-bold text-antreme-red border border-red-200 rounded-lg hover:bg-red-50 transition-colors whitespace-nowrap",
-                    children: "+ Додати"
-                  }
-                )
-              ] })
             ] })
-          ] }),
+          ] }) }),
           /* @__PURE__ */ jsxs("div", { className: "bg-orange-50 p-6 rounded-xl border border-orange-100 mb-6", children: [
             /* @__PURE__ */ jsxs("div", { className: "flex justify-between items-center mb-4", children: [
               /* @__PURE__ */ jsxs("div", { children: [
@@ -394,6 +363,34 @@ function ProductEdit() {
           ] })
         ] }),
         activeTab === "seo" && /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
+          /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-4 p-4 bg-blue-50 border border-blue-200 rounded-lg", children: [
+            /* @__PURE__ */ jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => {
+                  const name = formData.name || "";
+                  const slug = formData.slug || "";
+                  const cat = formData.category || "drova";
+                  if (!name) {
+                    alert("Спочатку заповніть назву товару!");
+                    return;
+                  }
+                  setFormData((prev) => ({
+                    ...prev,
+                    meta_title: prev.meta_title || `Купити ${name.toLowerCase()} з доставкою по Києву — ціна за складометр | КиївБрикет`,
+                    meta_description: prev.meta_description || `${name} купити в Києві з доставкою. Чесний складометр, швидка доставка по Києву та області. Власний автопарк: ГАЗель, ЗІЛ, КАМАЗ.`,
+                    h1_heading: prev.h1_heading || `${name} з доставкою по Києву`,
+                    canonical_url: prev.canonical_url || `/catalog/${cat}/${slug}`,
+                    meta_keywords: prev.meta_keywords || "дрова київ, купити дрова, доставка дров, дрова складометр, дрова для опалення"
+                  }));
+                },
+                className: "px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors whitespace-nowrap",
+                children: "🔧 Автозаповнення SEO"
+              }
+            ),
+            /* @__PURE__ */ jsx("p", { className: "text-xs text-blue-700 m-0", children: "Заповнить порожні SEO поля на основі назви товару. Вже заповнені поля НЕ будуть перезаписані." })
+          ] }),
           /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsx("label", { className: "block text-sm font-bold text-gray-700 mb-2", children: "Meta Title (Заголовок вкладки)" }),
             /* @__PURE__ */ jsx(
@@ -482,4 +479,4 @@ function ProductEdit() {
 export {
   ProductEdit as default
 };
-//# sourceMappingURL=ProductEdit-By4Vq1zQ.js.map
+//# sourceMappingURL=ProductEdit-CG6jdrvn.js.map

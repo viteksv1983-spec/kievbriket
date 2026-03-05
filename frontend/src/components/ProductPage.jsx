@@ -483,14 +483,14 @@ export default function ProductPage() {
 
                             {/* ── SECTION 3.5: HOW TO ORDER ── */}
                             <section className="nh-card order-steps" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>Як замовити дрова</h2>
+                                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>Як замовити {product.category === 'brikety' ? 'брикети' : product.category === 'vugillya' ? 'вугілля' : 'дрова'}</h2>
                                 <ol style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', color: 'var(--c-text)', lineHeight: 1.6, fontWeight: 500, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                    <li>Оберіть потрібний обсяг дров</li>
+                                    <li>Оберіть потрібний обсяг {product.category === 'brikety' ? 'брикетів' : product.category === 'vugillya' ? 'вугілля' : 'дров'}</li>
                                     <li>Натисніть кнопку "Замовити"</li>
-                                    <li>Ми зв’яжемося для підтвердження доставки</li>
+                                    <li>Ми зв'яжемося для підтвердження доставки</li>
                                 </ol>
                                 <p style={{ color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6, margin: 0 }}>
-                                    Доставка дров по Києву здійснюється власним транспортом протягом 24 годин після оформлення замовлення.
+                                    Доставка {product.category === 'brikety' ? 'брикетів' : product.category === 'vugillya' ? 'вугілля' : 'дров'} по Києву здійснюється власним транспортом протягом 24 годин після оформлення замовлення.
                                 </p>
                             </section>
 
@@ -541,7 +541,7 @@ export default function ProductPage() {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'sticky', top: '6rem' }}>
                             <div className="nh-card" style={{ padding: '2rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
                                 <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.25rem' }}>
-                                    Про ці дрова
+                                    {product.category === 'brikety' ? 'Про цей брикет' : product.category === 'vugillya' ? 'Про це вугілля' : 'Про ці дрова'}
                                 </h2>
                                 <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6 }}>
                                     {product.description ? (

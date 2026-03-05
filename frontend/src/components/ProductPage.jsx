@@ -271,9 +271,9 @@ export default function ProductPage() {
 
                         {/* ── Title & Badges ── */}
                         <div className="product-desktop-title" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                            <h1 className="h1" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
+                            <div className="h1" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
                                 {product.h1_heading || product.name}
-                            </h1>
+                            </div>
 
                             <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                                 <span style={{
@@ -737,7 +737,7 @@ export default function ProductPage() {
 
                 @media (max-width: 768px) {
                     .product-mobile-title { display: block !important; }
-                    .product-desktop-title h1 { display: none !important; }
+                    .product-desktop-title .h1 { display: none !important; }
                     .product-desktop-title { gap: 0.5rem !important; }
                     .product-badges-row { display: none !important; }
                     .product-popular-badge { display: none !important; }

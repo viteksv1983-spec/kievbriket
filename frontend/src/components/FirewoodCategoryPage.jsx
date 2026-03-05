@@ -319,7 +319,7 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                             "name": p.name,
                             "image": getImageUrl(p.image_url, api.defaults.baseURL),
                             "description": getDetailedDesc(p.name).desc,
-                            "brand": { "@type": "Brand", "name": "КиївБрикет" },
+                            "brand": { "@type": "Brand", "name": "КиївБрикет", "logo": "https://kievbriket.com/kievbriket.svg" },
                             "offers": {
                                 "@type": "Offer",
                                 "price": p.variants?.length > 0 ? p.variants[0].price : p.price,

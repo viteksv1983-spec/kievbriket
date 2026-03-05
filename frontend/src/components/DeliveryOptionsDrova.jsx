@@ -16,10 +16,10 @@ export default function DeliveryOptionsDrova() {
             {/* ── SECTION 1: DELIVERY VEHICLES BLOCK ── */}
             <div className="nh-card" style={{ ...cardPad, background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)' }}>
                 <h2 className="h2" style={{ marginBottom: '0.5rem', fontSize: '1.5rem', fontWeight: 800 }}>
-                    Варіанти доставки дров
+                    Варіанти доставки дров (доставка дров Київ)
                 </h2>
                 <p style={{ color: 'var(--c-text2)', marginBottom: '2rem', lineHeight: 1.6 }}>
-                    Ми доставляємо дрова по Києву та області власним транспортом. Тип автомобіля підбирається залежно від обсягу замовлення.
+                    Швидка та надійна <strong>доставка дров (Київ та Київська область)</strong>. Ми доставляємо власним транспортом, тому тип автомобіля підбирається залежно від обсягу вашого замовлення.
                 </p>
 
                 <div style={{

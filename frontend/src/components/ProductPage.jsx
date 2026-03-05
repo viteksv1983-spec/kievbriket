@@ -185,7 +185,7 @@ export default function ProductPage() {
             {/* ── Mobile-only Title (above image) ── */}
             <div className="product-mobile-title" style={{ maxWidth: 1200, margin: '0 auto', padding: '1rem 1.5rem 0' }}>
                 <h1 className="h1" style={{ fontSize: 'clamp(22px, 5vw, 28px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
-                    {product.name}
+                    {product.h1_heading || product.name}
                 </h1>
             </div>
 
@@ -213,7 +213,7 @@ export default function ProductPage() {
                             {galleryImages.length > 0 ? (
                                 <img
                                     src={galleryImages[activeImageIndex]}
-                                    alt={product.name}
+                                    alt={product.h1_heading || product.name}
                                     width="600"
                                     height="450"
                                     loading={activeImageIndex === 0 ? "eager" : "lazy"}
@@ -263,7 +263,7 @@ export default function ProductPage() {
                         {/* ── Title & Badges ── */}
                         <div className="product-desktop-title" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <h1 className="h1" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
-                                {product.name}
+                                {product.h1_heading || product.name}
                             </h1>
 
                             <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
@@ -434,14 +434,20 @@ export default function ProductPage() {
                             <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6 }}>
                                 {product.description ? (
                                     <>
-                                        {product.category === 'drova' ? (
-                                            <p style={{ marginBottom: '1rem' }}>
-                                                {product.description} Ми пропонуємо якісні <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>дрова колоті</Link>, <Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link> з швидкою доставкою.
-                                            </p>
+                                        {(product.description.includes('<p>') || product.description.includes('<h2>')) ? (
+                                            <div dangerouslySetInnerHTML={{ __html: product.description }} className="product-seo-description" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} />
                                         ) : (
-                                            <p style={{ marginBottom: '1rem' }}>{product.description}</p>
+                                            <>
+                                                {product.category === 'drova' ? (
+                                                    <p style={{ marginBottom: '1rem' }}>
+                                                        {product.description} Ми пропонуємо якісні <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>дрова колоті</Link>, <Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link> з швидкою доставкою.
+                                                    </p>
+                                                ) : (
+                                                    <p style={{ marginBottom: '1rem' }}>{product.description}</p>
+                                                )}
+                                                <p>Наші дрова щільно укладені в кузові автомобіля (складометрами), що гарантує чесний об'єм при доставці.</p>
+                                            </>
                                         )}
-                                        <p>Наші дрова щільно укладені в кузові автомобіля (складометрами), що гарантує чесний об'єм при доставці.</p>
                                     </>
                                 ) : (
                                     <>
@@ -564,7 +570,7 @@ export default function ProductPage() {
                                                 {p.image_url ? (
                                                     <img
                                                         src={getImageUrl(p.image_url, api.defaults.baseURL)}
-                                                        alt={p.name}
+                                                        alt={p.h1_heading || p.name}
                                                         className="catalog-card-img"
                                                         onError={e => { e.target.onerror = null; e.target.src = '/assets/product-placeholder-wood.webp'; }}
                                                     />
@@ -633,7 +639,29 @@ export default function ProductPage() {
                         </div>
                     </div>
                 )}
-                {/* ── SECTION 6: CROSS-CATEGORY LINKING ── */}
+                {/* ── SECTION 6: BOTTOM SEO BLOCK ── */}
+                {product.category === 'drova' && (
+                    <section className="product-seo-bottom" style={{ marginTop: '5rem', padding: '2rem', background: 'var(--color-bg-elevated)', borderRadius: 20, border: '1px solid var(--color-border-subtle)' }}>
+                        <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.25rem' }}>Купити {product.name.toLowerCase()} в Києві</h2>
+                        <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <p>
+                                Якщо вам потрібні якісні колоті дрова з доставкою по Києву,
+                                компанія КиївБрикет пропонує швидке постачання палива
+                                власним транспортом.
+                            </p>
+                            <p>
+                                Ми доставляємо дрова в усі райони Києва:
+                                Дарницький, Деснянський, Оболонський, Подільський,
+                                Шевченківський, Голосіївський та інші.
+                            </p>
+                            <p>
+                                Замовляючи <strong>{product.name.toLowerCase()}</strong> у нас, ви гарантовано отримуєте чесний об'єм, оскільки всі дрова щільно укладаються в кузові (в складометрах). Ми працюємо без передоплати — ви оплачуєте замовлення безпосередньо після розвантаження та перевірки якості.
+                            </p>
+                        </div>
+                    </section>
+                )}
+
+                {/* ── SECTION 7: CROSS-CATEGORY LINKING ── */}
                 <div style={{ marginTop: '5rem', paddingBottom: '2rem' }}>
                     <h2 className="h2" style={{ marginBottom: '2rem' }}>Інші види палива</h2>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>

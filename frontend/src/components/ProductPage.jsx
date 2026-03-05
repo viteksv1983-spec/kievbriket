@@ -634,9 +634,7 @@ export default function ProductPage() {
                                                 <h3 className="h3" style={{ margin: 0, marginBottom: 8, transition: 'color 0.2s', lineHeight: 1.25, fontWeight: 700 }}>
                                                     {p.name}
                                                 </h3>
-                                                <p className="body-sm" style={{ minHeight: '2.8em', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', marginBottom: 16, opacity: 0.8 }}>
-                                                    {p.description || 'Якісне тверде паливо з доставкою по Києву та Київській області.'}
-                                                </p>
+                                                <div className="catalog-card-description body-sm" style={{ minHeight: '2.8em', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', marginBottom: 16, opacity: 0.8 }} dangerouslySetInnerHTML={{ __html: p.description || 'Якісне тверде паливо з доставкою по Києву та Київській області.' }} />
                                                 {p.variants?.length > 0 && (
                                                     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 12 }}>
                                                         {p.variants.slice(0, 3).map((v, i) => (

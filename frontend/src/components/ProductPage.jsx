@@ -171,6 +171,22 @@ export default function ProductPage() {
 
     const dynamicTitle = product.meta_title || `Купити ${product.name.toLowerCase()} з доставкою по Києву — ціна за складометр | КиївБрикет`;
 
+    const briketShortName = product?.name ? product.name.split('—')[0].split('- ')[0].trim() : '';
+    const briketAlt = briketShortName.replace(/\(|\)/g, '').replace(/\s+/g, ' ');
+
+    let briketH2 = `Характеристики ${briketShortName.toLowerCase()}`;
+    if (briketShortName.toLowerCase().startsWith('брикети')) {
+        briketH2 = briketShortName.replace(/^Брикети/i, 'Характеристики брикетів');
+    } else if (briketShortName.toLowerCase().startsWith('паливні брикети')) {
+        briketH2 = briketShortName.replace(/^Паливні брикети/i, 'Характеристики паливних брикетів');
+    } else if (briketShortName.toLowerCase().startsWith('торфобрикети')) {
+        briketH2 = briketShortName.replace(/^Торфобрикети/i, 'Характеристики торфобрикетів');
+    } else if (briketShortName.toLowerCase().startsWith('вугільні брикети')) {
+        briketH2 = briketShortName.replace(/^Вугільні брикети/i, 'Характеристики вугільних брикетів');
+    } else if (briketShortName.toLowerCase().startsWith('пелети')) {
+        briketH2 = briketShortName.replace(/^Пелети/i, 'Характеристики пелет');
+    }
+
     return (
         <div
             className="new-home-scope"
@@ -253,7 +269,7 @@ export default function ProductPage() {
                             {galleryImages.length > 0 ? (
                                 <img
                                     src={galleryImages[activeImageIndex]}
-                                    alt={product.category === 'brikety' ? (product.seo_h1 || product.name) : product.name}
+                                    alt={product.category === 'brikety' ? briketAlt : product.name}
                                     width="600"
                                     height="450"
                                     loading={activeImageIndex === 0 ? "eager" : "lazy"}
@@ -304,7 +320,7 @@ export default function ProductPage() {
                         {/* ── Title & Badges ── */}
                         <div className="product-desktop-title" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <h2 className="h2" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
-                                {product.category === 'brikety' ? `Характеристики ${product.name.toLowerCase()}` : product.name}
+                                {product.category === 'brikety' ? briketH2 : product.name}
                             </h2>
 
                             <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>

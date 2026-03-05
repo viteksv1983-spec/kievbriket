@@ -402,7 +402,7 @@ export default function ProductPage() {
                         display: 'grid',
                         gridTemplateColumns: 'repeat(2, 1fr)',
                         gap: '1.5rem',
-                        alignItems: 'start'
+                        alignItems: 'stretch'
                     }}>
                         {/* Specs */}
                         <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>

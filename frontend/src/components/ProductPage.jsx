@@ -45,8 +45,19 @@ export default function ProductPage() {
     };
 
 
+    const parseJsonField = (field) => {
+        if (!field) return null;
+        if (typeof field === 'string') {
+            try { return JSON.parse(field); } catch (e) { return null; }
+        }
+        return field;
+    };
+
+    const parsedSpecs = parseJsonField(product?.specifications_json);
+    const parsedFaqs = parseJsonField(product?.faqs_json);
+
     // Dynamic Specs — use product fields when available
-    const specs = product?.specifications_json ? product.specifications_json.map(s => ({
+    const specs = Array.isArray(parsedSpecs) ? parsedSpecs.map(s => ({
         icon: <CheckCircle2 size={17} color="var(--c-orange)" />,
         label: s.label,
         value: s.value
@@ -61,7 +72,7 @@ export default function ProductPage() {
         { icon: <Truck size={17} color="var(--c-orange)" />, label: 'Доставка', value: 'По Києву та області' },
     ] : [];
 
-    const faqs = product?.faqs_json ? product.faqs_json : product ? (product.category === 'brikety' ? [
+    const faqs = Array.isArray(parsedFaqs) ? parsedFaqs : product ? (product.category === 'brikety' ? [
         { q: `Які брикети краще для опалення?`, a: `Для максимальної тепловіддачі та тривалого горіння найкраще підходять дубові брикети RUF або Pini Kay. Якщо у вас котел тривалого горіння, Nestro також стануть чудовим вибором. Для автоматичних котлів використовують пелети.` },
         { q: `Скільки горять паливні брикети?`, a: `Залежно від типу котла та подачі кисню, брикети горять від 2 до 4 годин, після чого можуть тліти ще кілька годин, підтримуючи високу температуру.` },
         { q: `Чим брикети відрізняються від дров?`, a: `Брикети мають вищу щільність і набагато нижчу вологість (до 10%), тому вони віддають більше тепла. Крім того, вони займають менше місця при зберіганні та залишають значно менше попелу.` },

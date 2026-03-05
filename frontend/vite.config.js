@@ -12,6 +12,7 @@ export default defineConfig(({ isSsrBuild }) => ({
           // Split vendor libraries into separate chunks
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'ui-vendor': ['react-helmet-async', 'react-icons'],
+          'icon-vendor': ['lucide-react'],
         }
       }
     },

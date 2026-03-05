@@ -112,11 +112,60 @@ export default function ProductEdit() {
                 .filter(v => v.name.trim() !== '')
                 .map(v => ({ name: v.name.trim(), price: parseFloat(v.price) || 0 }));
 
+            // Auto-generate missing SEO fields based on Name
+            let autoMetaTitle = formData.meta_title;
+            let autoMetaDesc = formData.meta_description;
+            let autoH1 = formData.h1_heading;
+            let autoOGTitle = formData.og_title;
+            let autoOGDesc = formData.og_description;
+
+            const nameLower = formData.name.toLowerCase();
+
+            if (!autoMetaTitle) {
+                if (nameLower.includes('ruf') && nameLower.includes('дуб')) {
+                    autoMetaTitle = `Купити брикети RUF дуб у Києві — доставка | КиївБрикет`;
+                } else if (nameLower.includes('pini kay') || nameLower.includes('піні кей')) {
+                    autoMetaTitle = `Купити брикети Pini Kay у Києві — євродрова | КиївБрикет`;
+                } else if (nameLower.includes('nestro') || nameLower.includes('нестро')) {
+                    autoMetaTitle = `Купити брикети Nestro у Києві — циліндричні брикети | КиївБрикет`;
+                } else if (nameLower.includes('торф') || nameLower.includes('torf')) {
+                    autoMetaTitle = `Купити торфобрикети у Києві — економне опалення | КиївБрикет`;
+                } else {
+                    autoMetaTitle = `Купити ${formData.name.toLowerCase()} у Києві — доставка | КиївБрикет`;
+                }
+            }
+
+            if (!autoMetaDesc) {
+                if (nameLower.includes('ruf') && nameLower.includes('дуб')) {
+                    autoMetaDesc = `Якісні паливні брикети RUF з дубової тирси. Висока тепловіддача та мінімум попелу. Доставка по Києву та області.`;
+                } else {
+                    autoMetaDesc = `Замовляйте ${formData.name.toLowerCase()} з швидкою доставкою по Києву та області.`;
+                }
+            }
+
+            if (!autoH1) {
+                if (nameLower.includes('ruf') && nameLower.includes('дуб')) {
+                    autoH1 = `Брикети RUF (дуб) — паливні брикети для котлів та печей`;
+                } else if (nameLower.includes('pini kay') || nameLower.includes('піні кей')) {
+                    autoH1 = `Брикети Pini Kay — євродрова з підвищеною тепловіддачею`;
+                } else {
+                    autoH1 = formData.name;
+                }
+            }
+
+            if (!autoOGTitle) autoOGTitle = autoMetaTitle;
+            if (!autoOGDesc) autoOGDesc = autoMetaDesc;
+
             const dataToSave = {
                 ...formData,
                 price: parseFloat(formData.price),
                 weight: formData.weight ? parseFloat(formData.weight) : null,
-                variants: cleanedVariants.length > 0 ? cleanedVariants : null
+                variants: cleanedVariants.length > 0 ? cleanedVariants : null,
+                meta_title: autoMetaTitle,
+                meta_description: autoMetaDesc,
+                h1_heading: autoH1,
+                og_title: autoOGTitle,
+                og_description: autoOGDesc
             };
 
             if (isNew) {

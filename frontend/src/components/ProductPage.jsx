@@ -319,9 +319,9 @@ export default function ProductPage() {
 
                         {/* ── Title & Badges ── */}
                         <div className="product-desktop-title" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                            <div className="h1" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
+                            <h2 className="h2" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
                                 {product.h1_heading || product.name}
-                            </div>
+                            </h2>
 
                             <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                                 <span style={{

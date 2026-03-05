@@ -81,6 +81,8 @@ export default function SEOHead({ title, description, ogDescription, keywords, h
                     <meta property="product:price:amount" content={String(productPrice)} />
                     <meta property="product:price:currency" content={productCurrency || 'UAH'} />
                     <meta property="product:availability" content="in stock" />
+                    <meta itemprop="price" content={String(productPrice)} />
+                    <meta itemprop="priceCurrency" content={productCurrency || 'UAH'} />
                 </>
             )}
 

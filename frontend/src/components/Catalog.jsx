@@ -79,14 +79,20 @@ export default function Catalog({ predefinedCategory }) {
             : undefined;
         return {
             title: activeCategorySlug === 'drova'
-                ? 'Купити дрова в Києві — колоті дрова з доставкою | КиївБрикет'
-                : (cat.meta_title || `${cat.name} — купити з доставкою по Києву`),
+                ? 'Купити дрова в Києві — колоті дрова з доставкою | КиєвБрикет'
+                : activeCategorySlug === 'brikety'
+                    ? 'Паливні брикети купити в Києві — ціна за тонну | КиєвБрикет'
+                    : (cat.meta_title || `${cat.name} — купити з доставкою по Києву`),
             description: activeCategorySlug === 'drova'
                 ? 'Купити дрова в Києві з доставкою. Колоті дрова: дуб, граб, акація, ясен. Чесний складометр, власний автопарк — ГАЗель, ЗІЛ, КАМАЗ. Доставка по Києву та області.'
-                : (cat.meta_description || fallbackDesc),
+                : activeCategorySlug === 'brikety'
+                    ? 'Купити паливні брикети в Києві з доставкою. Pini Kay, RUF, Nestro, торфобрикети та пелети. Висока тепловіддача, чесна ціна за тонну. Доставка по Києву та області.'
+                    : (cat.meta_description || fallbackDesc),
             ogDescription: activeCategorySlug === 'drova'
                 ? 'Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен. Чесний складометр.'
-                : (cat.meta_description || fallbackDesc),
+                : activeCategorySlug === 'brikety'
+                    ? 'Паливні брикети з доставкою по Києву. Pini Kay, RUF, Nestro, торфобрикети та пелети.'
+                    : (cat.meta_description || fallbackDesc),
             h1: cat.seo_h1 || cat.name,
             ogImage: cat.og_image || cat.image_url,
             canonical: cat.canonical_url || undefined,
@@ -173,7 +179,33 @@ export default function Catalog({ predefinedCategory }) {
  "description": "Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен.",
  "isPartOf": {
    "@type": "WebSite",
-   "name": "КиївБрикет",
+   "name": "КиєвБрикет",
+   "url": "https://kievbriket.com"
+ }
+}
+                                `}
+                            </script>
+                        </>
+                    )}
+                    {activeCategorySlug === 'brikety' && (
+                        <>
+                            <link rel="alternate" hrefLang="uk" href="https://kievbriket.com/catalog/brikety" />
+                            <link rel="alternate" hrefLang="x-default" href="https://kievbriket.com/catalog/brikety" />
+                            <meta name="twitter:card" content="summary_large_image" />
+                            <meta name="twitter:title" content="Паливні брикети купити в Києві — ціна за тонну" />
+                            <meta name="twitter:description" content="Pini Kay, RUF, Nestro, торфобрикети та пелети з доставкою по Києву та області." />
+                            <meta name="twitter:image" content="https://kievbriket.com/media/products/ruf.webp" />
+                            <script type="application/ld+json">
+                                {`
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": "Паливні брикети",
+ "url": "https://kievbriket.com/catalog/brikety",
+ "description": "Купити паливні брикети в Києві з доставкою. Pini Kay, RUF, Nestro, торфобрикети та пелети.",
+ "isPartOf": {
+   "@type": "WebSite",
+   "name": "КиєвБрикет",
    "url": "https://kievbriket.com"
  }
 }
@@ -183,6 +215,7 @@ export default function Catalog({ predefinedCategory }) {
                     )}
                 </SEOHead>
             )}
+
 
             {/* ── PREMIUM CATEGORY PAGE (Dynamic for all categories) ── */}
             {activeCategorySlug === 'brikety' ? (

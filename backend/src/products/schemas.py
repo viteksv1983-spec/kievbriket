@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, model_validator
 from typing import Optional, List, Dict, Any
 import json
 
@@ -18,15 +18,30 @@ class ProductBase(BaseModel):
     specifications_json: Optional[List[Any]] = None
     faqs_json: Optional[List[Any]] = None
 
-    @field_validator('specifications_json', 'faqs_json', mode='before')
+    @model_validator(mode='before')
     @classmethod
-    def parse_json_fields(cls, v):
-        if isinstance(v, str):
-            try:
-                return json.loads(v)
-            except json.JSONDecodeError:
-                return []
-        return v
+    def parse_json_fields(cls, values):
+        # Handle dict input (e.g. from JSON payload)
+        if isinstance(values, dict):
+            for field in ('specifications_json', 'faqs_json'):
+                val = values.get(field)
+                if isinstance(val, str):
+                    try:
+                        values[field] = json.loads(val)
+                    except json.JSONDecodeError:
+                        values[field] = []
+            return values
+        
+        # Handle ORM object input (from_attributes=True)
+        for field in ('specifications_json', 'faqs_json'):
+            if hasattr(values, field):
+                val = getattr(values, field)
+                if isinstance(val, str):
+                    try:
+                        setattr(values, field, json.loads(val))
+                    except json.JSONDecodeError:
+                        setattr(values, field, [])
+        return values
     updated_at: Optional[datetime] = None
     weight: Optional[float] = None
     ingredients: Optional[str] = None

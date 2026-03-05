@@ -224,6 +224,7 @@ ${prod.price ? `                            <meta property="product:price:amount
                             "url": pageUrl,
                             "brand": { "@type": "Brand", "name": "КиївБрикет", "logo": "https://kievbriket.com/kievbriket.svg" },
                             "sku": prod.slug,
+                            "mpn": prod.slug,
                             "aggregateRating": {
                                 "@type": "AggregateRating",
                                 "ratingValue": "4.9",

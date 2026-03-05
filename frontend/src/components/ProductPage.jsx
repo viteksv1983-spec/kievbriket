@@ -65,7 +65,7 @@ export default function ProductPage() {
 
     const specs = specsArray.length > 0 ? specsArray.map(s => ({
         icon: <CheckCircle2 size={17} color="var(--c-orange)" />,
-        label: s.label,
+        label: s.name || s.label,
         value: s.value
     })) : product ? [
         { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Порода', value: product.ingredients || (product.name.toLowerCase().includes('дуб') ? 'Дуб' : (product.name.toLowerCase().includes('сосн') ? 'Сосна' : (product.name.toLowerCase().includes('граб') ? 'Граб' : (product.category === 'brikety' ? 'Деревна тирса' : 'Тверді породи')))) },
@@ -241,7 +241,7 @@ export default function ProductPage() {
             {/* ── Mobile-only Title (above image) ── */}
             <div className="product-mobile-title" style={{ maxWidth: 1200, margin: '0 auto', padding: '1rem 1.5rem 0' }}>
                 <h1 className="h1" style={{ fontSize: 'clamp(22px, 5vw, 28px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
-                    {product.h1_heading || product.name}
+                    {product.name}
                 </h1>
             </div>
 
@@ -269,7 +269,7 @@ export default function ProductPage() {
                             {galleryImages.length > 0 ? (
                                 <img
                                     src={galleryImages[activeImageIndex]}
-                                    alt={product.category === 'drova' ? `${product.name} колоті дрова складометр доставка Київ` : (product.h1_heading || product.name)}
+                                    alt={product.seo_h1 || product.h1_heading || product.name}
                                     width="600"
                                     height="450"
                                     loading={activeImageIndex === 0 ? "eager" : "lazy"}
@@ -320,7 +320,7 @@ export default function ProductPage() {
                         {/* ── Title & Badges ── */}
                         <div className="product-desktop-title" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <h2 className="h2" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
-                                {product.h1_heading || product.name}
+                                {product.title_long || product.h1_heading || product.name}
                             </h2>
 
                             <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
@@ -477,7 +477,7 @@ export default function ProductPage() {
                                                 {spec.icon}
                                             </div>
                                             <div>
-                                                <p style={{ fontSize: '0.75rem', color: 'var(--c-text2)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 700 }}>{spec.label}</p>
+                                                <p style={{ fontSize: '0.75rem', color: 'var(--c-text2)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 700 }}>{spec.name || spec.label}</p>
                                                 <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--c-text)', marginTop: 2 }}>{spec.value}</p>
                                             </div>
                                         </div>

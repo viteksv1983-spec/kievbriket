@@ -636,9 +636,10 @@ export default function CoalCategoryPage({ products, onOrderProduct }) {
         <div className="new-home-scope">
             <Helmet>
                 <title>Купити кам'яне вугілля в Києві — доставка | КиївБрикет</title>
-                <meta name="description" content="Купити кам'яне вугілля в Києві з доставкою. Антрацит, ДГ та інші фракції для котлів і печей. Швидка доставка по Києву та області власним транспортом." />
+                <meta name="description" content="Купити кам'яне вугілля в Києві з доставкою. Антрацит, ДГ та інші види вугілля для котлів і печей. Швидка доставка по Києву та області." />
                 <meta property="og:title" content="Купити кам'яне вугілля в Києві — доставка | КиївБрикет" />
-                <meta property="og:description" content="Якісне кам'яне вугілля для котлів і печей. Швидка доставка по Києву та області." />
+                <meta property="og:description" content="Якісне кам'яне вугілля для котлів і печей. Доставка по Києву та області." />
+                <meta property="og:image" content="https://kievbriket.com/media/categories/coal.webp" />
                 <script type="application/ld+json">
                     {`
                     {

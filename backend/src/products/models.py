@@ -2,6 +2,28 @@ from sqlalchemy import Boolean, Column, Float, Integer, String, Text, DateTime, 
 from sqlalchemy.sql import func
 from backend.src.core.database import Base
 
+import json
+from sqlalchemy.types import TypeDecorator, VARCHAR
+
+class JSONEncodedList(TypeDecorator):
+    """Safely parse stringified JSON lists from DB"""
+    impl = VARCHAR
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return None
+        return json.dumps(value)
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return None
+        if isinstance(value, str):
+            try:
+                return json.loads(value)
+            except json.JSONDecodeError:
+                return []
+        return value
+
 class Product(Base):
     __tablename__ = "cakes"  # Keep DB table name unchanged!
     __table_args__ = (
@@ -27,8 +49,8 @@ class Product(Base):
     is_deleted = Column(Boolean, default=False)
     deleted_at = Column(DateTime(timezone=True), nullable=True)
     variants = Column(JSON, nullable=True)  # List of dicts: [{"name": "Chopped", "price": 2000}]
-    specifications_json = Column(JSON, nullable=True)
-    faqs_json = Column(JSON, nullable=True)
+    specifications_json = Column(JSONEncodedList, nullable=True)
+    faqs_json = Column(JSONEncodedList, nullable=True)
 
     # SEO Fields
     meta_title = Column(String, nullable=True)

@@ -298,6 +298,19 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                         </div>
                     </div>
 
+                    {/* Schema.org ItemList */}
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@type": "ItemList",
+                            "itemListElement": filteredProducts.map((p, idx) => ({
+                                "@type": "ListItem",
+                                "position": idx + 1,
+                                "url": `https://kievbriket.com${getProductUrl(p)}`
+                            }))
+                        })
+                    }} />
+
                     {/* Schema.org Products */}
                     <script type="application/ld+json" dangerouslySetInnerHTML={{
                         __html: JSON.stringify(filteredProducts.map(p => ({
@@ -717,10 +730,12 @@ function PopularQueriesSection({ activeCategorySlug }) {
     if (activeCategorySlug !== 'drova') return null;
 
     const queries = [
-        "Купити дрова Київ",
-        "Дрова складометр Київ",
-        "Дрова машина Київ",
-        "Дрова колоті Київ"
+        { text: "Купити дубові дрова Київ", to: "/catalog/drova/dubovi-drova" },
+        { text: "Дрова граб Київ", to: "/catalog/drova/hrabovi-drova" },
+        { text: "Дрова береза Київ", to: "/catalog/drova/berezovi-drova" },
+        { text: "Дрова для каміна", to: "/catalog/drova/drova-dlya-kamina" },
+        { text: "Дрова в ящиках", to: "/catalog/drova/drova-v-yashchykakh" },
+        { text: "Дрова складометр Київ", to: "/catalog/drova/dubovi-drova" }
     ];
 
     return (
@@ -734,7 +749,7 @@ function PopularQueriesSection({ activeCategorySlug }) {
                         {queries.map((q, i) => (
                             <Link
                                 key={i}
-                                to="/catalog/drova"
+                                to={q.to}
                                 className="popular-link"
                                 style={{
                                     padding: '8px 16px',
@@ -758,7 +773,7 @@ function PopularQueriesSection({ activeCategorySlug }) {
                                     e.currentTarget.style.color = 'var(--c-text2)';
                                 }}
                             >
-                                {q}
+                                {q.text}
                             </Link>
                         ))}
                     </div>

@@ -10,6 +10,7 @@ import FirewoodCategoryPage from './FirewoodCategoryPage';
 import BriquettesCategoryPage from './BriquettesCategoryPage';
 import CoalCategoryPage from './CoalCategoryPage';
 import NotFound from './NotFound';
+import { useSSGData } from '../context/SSGDataContext.jsx';
 
 
 
@@ -33,19 +34,31 @@ function sortProducts(arr, mode) {
 }
 
 export default function Catalog({ predefinedCategory }) {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
-    const [orderProduct, setOrderProduct] = useState(null);
-    const [activeFilter, setActiveFilter] = useState('Усі');
-    const [sortMode, setSortMode] = useState('popular');
-
     const { categorySlug } = useParams();
     const [searchParams] = useSearchParams();
     const { categories, loading: categoriesLoading } = useCategories();
 
     const categoryQuery = searchParams.get('category');
     const activeCategorySlug = predefinedCategory || categorySlug || categoryQuery;
+
+    const ssgData = useSSGData();
+    // Pre-populate products from SSG data for server-side rendering
+    const ssgProducts = useMemo(() => {
+        if (!ssgData?.products) return [];
+        const items = Array.isArray(ssgData.products) ? ssgData.products : (ssgData.products.items || []);
+        // Filter by active category for category pages
+        if (activeCategorySlug) {
+            return items.filter(p => p.category === activeCategorySlug);
+        }
+        return items;
+    }, [ssgData, activeCategorySlug]);
+
+    const [products, setProducts] = useState(ssgProducts);
+    const [loading, setLoading] = useState(true);
+    const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+    const [orderProduct, setOrderProduct] = useState(null);
+    const [activeFilter, setActiveFilter] = useState('Усі');
+    const [sortMode, setSortMode] = useState('popular');
 
     // Legacy redirect
     const oldSlugMap = {
@@ -65,8 +78,13 @@ export default function Catalog({ predefinedCategory }) {
             ? cat.seo_text.replace(/<[^>]*>/g, '').substring(0, 160)
             : undefined;
         return {
-            title: cat.meta_title || `${cat.name} — купити з доставкою по Києву`,
+            title: activeCategorySlug === 'drova'
+                ? 'Купити дрова у Києві — дуб, граб, береза | доставка | КиївБрикет'
+                : (cat.meta_title || `${cat.name} — купити з доставкою по Києву`),
             description: cat.meta_description || fallbackDesc,
+            ogDescription: activeCategorySlug === 'drova'
+                ? 'Купити дрова у Києві з доставкою за 24 години. Дуб, граб, береза, вільха. Чесний складометр. КиївБрикет.'
+                : (cat.meta_description || fallbackDesc),
             h1: cat.seo_h1 || cat.name,
             ogImage: cat.og_image || cat.image_url,
             canonical: cat.canonical_url || undefined,
@@ -80,7 +98,8 @@ export default function Catalog({ predefinedCategory }) {
         api.get('/products/', { params: { category: activeCategorySlug } })
             .then(response => {
                 const data = response.data;
-                setProducts(Array.isArray(data) ? data : (data.items || []));
+                const fetched = Array.isArray(data) ? data : (data.items || []);
+                if (fetched.length > 0) setProducts(fetched);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
@@ -128,7 +147,7 @@ export default function Catalog({ predefinedCategory }) {
             {activeCategory && (
                 <SEOHead
                     title={seo.title}
-                    description={seo.description}
+                    description={seo.ogDescription || seo.description}
                     ogImage={seo.ogImage}
                     canonical={seo.canonical}
                     robots={seo.robots}

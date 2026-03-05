@@ -363,14 +363,22 @@ function CategoryProducts({ products, onOrderProduct }) {
                                     </div>
 
                                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--c-text2)', fontSize: '0.875rem' }}>
-                                            <Zap size={14} style={{ color: 'var(--c-orange)' }} />
-                                            <span>Висока тепловіддача</span>
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--c-text2)', fontSize: '0.875rem' }}>
-                                            <Droplets size={14} style={{ color: '#22c55e' }} />
-                                            <span>Вологість &lt; 8%</span>
-                                        </div>
+                                        {product.short_description ? (
+                                            <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--c-text2)', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                                {product.short_description}
+                                            </p>
+                                        ) : (
+                                            <>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--c-text2)', fontSize: '0.875rem' }}>
+                                                    <Zap size={14} style={{ color: 'var(--c-orange)' }} />
+                                                    <span>Висока тепловіддача</span>
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--c-text2)', fontSize: '0.875rem' }}>
+                                                    <Droplets size={14} style={{ color: '#22c55e' }} />
+                                                    <span>Вологість &lt; 8%</span>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
 
                                     <div style={{

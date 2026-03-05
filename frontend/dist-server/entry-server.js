@@ -7009,7 +7009,7 @@ function CategoryProducts$1({ products, onOrderProduct }) {
                         boxShadow: "0 0 10px rgba(34,197,94,0.4)"
                       }, children: "✔ В наявності" })
                     ] }),
-                    /* @__PURE__ */ jsxs("div", { style: { flex: 1, display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1.5rem" }, children: [
+                    /* @__PURE__ */ jsx("div", { style: { flex: 1, display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1.5rem" }, children: product.short_description ? /* @__PURE__ */ jsx("p", { style: { margin: 0, fontSize: "0.9rem", color: "var(--c-text2)", lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }, children: product.short_description }) : /* @__PURE__ */ jsxs(Fragment, { children: [
                       /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--c-text2)", fontSize: "0.875rem" }, children: [
                         /* @__PURE__ */ jsx(Zap, { size: 14, style: { color: "var(--c-orange)" } }),
                         /* @__PURE__ */ jsx("span", { children: "Висока тепловіддача" })
@@ -7018,7 +7018,7 @@ function CategoryProducts$1({ products, onOrderProduct }) {
                         /* @__PURE__ */ jsx(Droplets, { size: 14, style: { color: "#22c55e" } }),
                         /* @__PURE__ */ jsx("span", { children: "Вологість < 8%" })
                       ] })
-                    ] }),
+                    ] }) }),
                     /* @__PURE__ */ jsxs("div", { style: {
                       display: "flex",
                       alignItems: "center",
@@ -8472,7 +8472,11 @@ function ProductPage() {
     "briquettes": "brikety",
     "coal": "vugillya"
   };
-  const specs = product ? [
+  const specs = product?.specifications_json ? product.specifications_json.map((s) => ({
+    icon: /* @__PURE__ */ jsx(CheckCircle2, { size: 17, color: "var(--c-orange)" }),
+    label: s.label,
+    value: s.value
+  })) : product ? [
     { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Порода", value: product.ingredients || (product.name.toLowerCase().includes("дуб") ? "Дуб" : product.name.toLowerCase().includes("сосн") ? "Сосна" : product.name.toLowerCase().includes("граб") ? "Граб" : product.category === "brikety" ? "Деревна тирса" : "Тверді породи") },
     { icon: /* @__PURE__ */ jsx(CheckCircle2, { size: 17, color: "var(--c-orange)" }), label: "Тип", value: product.category === "drova" ? "Колоті" : product.category === "brikety" ? "Пресовані" : "Сипуче" },
     product.category === "brikety" ? { icon: /* @__PURE__ */ jsx(Ruler, { size: 17, color: "var(--c-orange)" }), label: "Форма брикетів", value: product.name.toLowerCase().includes("ruf") ? "Прямокутні пресовані" : product.name.toLowerCase().includes("pini") ? "Восьмигранні з отвором" : product.name.toLowerCase().includes("nestro") ? "Циліндричні" : product.name.toLowerCase().includes("пелет") ? "Гранули 6-8 мм" : "Пресований торф" } : { icon: /* @__PURE__ */ jsx(Ruler, { size: 17, color: "var(--c-orange)" }), label: "Довжина полін", value: product.category === "drova" ? "30-40 см" : "—" },
@@ -8480,7 +8484,7 @@ function ProductPage() {
     { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Вологість", value: product.shelf_life || (product.category === "drova" ? "Природна (До 25%)" : product.category === "brikety" ? "до 10%" : "До 8%") },
     { icon: /* @__PURE__ */ jsx(Truck, { size: 17, color: "var(--c-orange)" }), label: "Доставка", value: "По Києву та області" }
   ] : [];
-  const faqs = product ? product.category === "brikety" ? [
+  const faqs = product?.faqs_json ? product.faqs_json : product ? product.category === "brikety" ? [
     { q: `Які брикети краще для опалення?`, a: `Для максимальної тепловіддачі та тривалого горіння найкраще підходять дубові брикети RUF або Pini Kay. Якщо у вас котел тривалого горіння, Nestro також стануть чудовим вибором. Для автоматичних котлів використовують пелети.` },
     { q: `Скільки горять паливні брикети?`, a: `Залежно від типу котла та подачі кисню, брикети горять від 2 до 4 годин, після чого можуть тліти ще кілька годин, підтримуючи високу температуру.` },
     { q: `Чим брикети відрізняються від дров?`, a: `Брикети мають вищу щільність і набагато нижчу вологість (до 10%), тому вони віддають більше тепла. Крім того, вони займають менше місця при зберіганні та залишають значно менше попелу.` },
@@ -8950,21 +8954,24 @@ function ProductPage() {
             ] }),
             /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: "1.5rem", position: "sticky", top: "6rem" }, children: /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "2rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
               /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.25rem" }, children: product.category === "brikety" ? "Про ці брикети" : product.category === "vugillya" ? "Про це вугілля" : "Про ці дрова" }),
-              /* @__PURE__ */ jsx("div", { style: { color: "var(--c-text2)", fontSize: "1rem", lineHeight: 1.6 }, children: product.description ? /* @__PURE__ */ jsx(Fragment, { children: product.category === "drova" ? /* @__PURE__ */ jsx("div", { className: "product-description", dangerouslySetInnerHTML: { __html: product.description } }) : product.description.includes("<p>") || product.description.includes("<h2>") ? /* @__PURE__ */ jsx("div", { dangerouslySetInnerHTML: { __html: product.description }, className: "product-seo-description", style: { display: "flex", flexDirection: "column", gap: "1rem" } }) : /* @__PURE__ */ jsxs(Fragment, { children: [
-                /* @__PURE__ */ jsx("p", { style: { marginBottom: "1rem" }, children: product.description }),
-                /* @__PURE__ */ jsx("p", { children: "Наші дрова щільно укладені в кузові автомобіля (складометрами), що гарантує чесний об'єм при доставці." })
-              ] }) }) : /* @__PURE__ */ jsxs(Fragment, { children: [
-                product.category === "drova" ? /* @__PURE__ */ jsxs("p", { style: { marginBottom: "1rem" }, children: [
-                  "Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів. Окрім ",
-                  /* @__PURE__ */ jsx(Link, { to: "/catalog/drova", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "дров колотих" }),
-                  ", у нас можна замовити ",
-                  /* @__PURE__ */ jsx(Link, { to: "/catalog/brikety", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "паливні брикети" }),
-                  " та ",
-                  /* @__PURE__ */ jsx(Link, { to: "/catalog/vugillya", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "кам'яне вугілля" }),
-                  "."
-                ] }) : /* @__PURE__ */ jsx("p", { style: { marginBottom: "1rem" }, children: "Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів." }),
-                /* @__PURE__ */ jsx("p", { children: "Ми ретельно відбираємо сировину, щоб забезпечити максимальну тепловіддачу. Замовляючи у нас, ви отримуєте чесний об'єм та гарантовану якість палива для вашої оселі." })
-              ] }) })
+              /* @__PURE__ */ jsxs("div", { style: { color: "var(--c-text2)", fontSize: "1rem", lineHeight: 1.6 }, children: [
+                product.short_description && /* @__PURE__ */ jsx("p", { style: { fontWeight: 600, color: "var(--c-text)", fontSize: "1.05rem", marginBottom: "1.25rem" }, children: product.short_description }),
+                product.description ? /* @__PURE__ */ jsx(Fragment, { children: product.category === "drova" ? /* @__PURE__ */ jsx("div", { className: "product-description", dangerouslySetInnerHTML: { __html: product.description } }) : product.description.includes("<p>") || product.description.includes("<h2>") ? /* @__PURE__ */ jsx("div", { dangerouslySetInnerHTML: { __html: product.description }, className: "product-seo-description", style: { display: "flex", flexDirection: "column", gap: "1rem" } }) : /* @__PURE__ */ jsxs(Fragment, { children: [
+                  /* @__PURE__ */ jsx("p", { style: { marginBottom: "1rem" }, children: product.description }),
+                  /* @__PURE__ */ jsx("p", { children: "Наші дрова щільно укладені в кузові автомобіля (складометрами), що гарантує чесний об'єм при доставці." })
+                ] }) }) : /* @__PURE__ */ jsxs(Fragment, { children: [
+                  product.category === "drova" ? /* @__PURE__ */ jsxs("p", { style: { marginBottom: "1rem" }, children: [
+                    "Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів. Окрім ",
+                    /* @__PURE__ */ jsx(Link, { to: "/catalog/drova", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "дров колотих" }),
+                    ", у нас можна замовити ",
+                    /* @__PURE__ */ jsx(Link, { to: "/catalog/brikety", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "паливні брикети" }),
+                    " та ",
+                    /* @__PURE__ */ jsx(Link, { to: "/catalog/vugillya", style: { color: "var(--c-orange)", textDecoration: "none" }, children: "кам'яне вугілля" }),
+                    "."
+                  ] }) : /* @__PURE__ */ jsx("p", { style: { marginBottom: "1rem" }, children: "Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів." }),
+                  /* @__PURE__ */ jsx("p", { children: "Ми ретельно відбираємо сировину, щоб забезпечити максимальну тепловіддачу. Замовляючи у нас, ви отримуєте чесний об'єм та гарантовану якість палива для вашої оселі." })
+                ] })
+              ] })
             ] }) })
           ] }) }),
           product.category === "drova" && /* @__PURE__ */ jsx("div", { style: { marginTop: "4rem" }, children: /* @__PURE__ */ jsx(DeliveryOptionsDrova, {}) }),

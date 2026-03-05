@@ -5,8 +5,10 @@ from typing import Optional, List, Dict
 class ProductBase(BaseModel):
     name: str
     description: Optional[str] = None
+    short_description: Optional[str] = None
     price: float
     image_url: Optional[str] = None
+    image_alt: Optional[str] = None
     is_available: bool = True
     slug: Optional[str] = None
     updated_at: Optional[datetime] = None
@@ -16,6 +18,8 @@ class ProductBase(BaseModel):
     category: Optional[str] = None
     stock_quantity: int = 0  # 0 = unlimited/made-to-order
     variants: Optional[List[dict]] = None
+    specifications_json: Optional[List[dict]] = None
+    faqs_json: Optional[List[dict]] = None
     
     class Config:
         from_attributes = True
@@ -43,8 +47,10 @@ class ProductUpdate(BaseModel):
     name: Optional[str] = None
     slug: Optional[str] = None
     description: Optional[str] = None
+    short_description: Optional[str] = None
     price: Optional[float] = None
     image_url: Optional[str] = None
+    image_alt: Optional[str] = None
     is_available: Optional[bool] = None
     weight: Optional[float] = None
     ingredients: Optional[str] = None
@@ -52,6 +58,8 @@ class ProductUpdate(BaseModel):
     category: Optional[str] = None
     stock_quantity: Optional[int] = None
     variants: Optional[List[dict]] = None
+    specifications_json: Optional[List[dict]] = None
+    faqs_json: Optional[List[dict]] = None
     meta_title: Optional[str] = None
     meta_description: Optional[str] = None
     meta_keywords: Optional[str] = None

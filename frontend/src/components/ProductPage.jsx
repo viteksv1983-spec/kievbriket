@@ -46,7 +46,11 @@ export default function ProductPage() {
 
 
     // Dynamic Specs — use product fields when available
-    const specs = product ? [
+    const specs = product?.specifications_json ? product.specifications_json.map(s => ({
+        icon: <CheckCircle2 size={17} color="var(--c-orange)" />,
+        label: s.label,
+        value: s.value
+    })) : product ? [
         { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Порода', value: product.ingredients || (product.name.toLowerCase().includes('дуб') ? 'Дуб' : (product.name.toLowerCase().includes('сосн') ? 'Сосна' : (product.name.toLowerCase().includes('граб') ? 'Граб' : (product.category === 'brikety' ? 'Деревна тирса' : 'Тверді породи')))) },
         { icon: <CheckCircle2 size={17} color="var(--c-orange)" />, label: 'Тип', value: product.category === 'drova' ? 'Колоті' : (product.category === 'brikety' ? 'Пресовані' : 'Сипуче') },
         product.category === 'brikety'
@@ -57,7 +61,7 @@ export default function ProductPage() {
         { icon: <Truck size={17} color="var(--c-orange)" />, label: 'Доставка', value: 'По Києву та області' },
     ] : [];
 
-    const faqs = product ? (product.category === 'brikety' ? [
+    const faqs = product?.faqs_json ? product.faqs_json : product ? (product.category === 'brikety' ? [
         { q: `Які брикети краще для опалення?`, a: `Для максимальної тепловіддачі та тривалого горіння найкраще підходять дубові брикети RUF або Pini Kay. Якщо у вас котел тривалого горіння, Nestro також стануть чудовим вибором. Для автоматичних котлів використовують пелети.` },
         { q: `Скільки горять паливні брикети?`, a: `Залежно від типу котла та подачі кисню, брикети горять від 2 до 4 годин, після чого можуть тліти ще кілька годин, підтримуючи високу температуру.` },
         { q: `Чим брикети відрізняються від дров?`, a: `Брикети мають вищу щільність і набагато нижчу вологість (до 10%), тому вони віддають більше тепла. Крім того, вони займають менше місця при зберіганні та залишають значно менше попелу.` },
@@ -552,6 +556,11 @@ export default function ProductPage() {
                                     {product.category === 'brikety' ? 'Про ці брикети' : product.category === 'vugillya' ? 'Про це вугілля' : 'Про ці дрова'}
                                 </h2>
                                 <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6 }}>
+                                    {product.short_description && (
+                                        <p style={{ fontWeight: 600, color: 'var(--c-text)', fontSize: '1.05rem', marginBottom: '1.25rem' }}>
+                                            {product.short_description}
+                                        </p>
+                                    )}
                                     {product.description ? (
                                         <>
                                             {product.category === 'drova' ? (

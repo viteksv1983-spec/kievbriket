@@ -13,8 +13,10 @@ class Product(Base):
     slug = Column(String, unique=True, index=True)
     name = Column(String, index=True)
     description = Column(String)
+    short_description = Column(String, nullable=True)
     price = Column(Float)
     image_url = Column(String)
+    image_alt = Column(String, nullable=True)
     is_available = Column(Boolean, default=True, index=True)
     updated_at = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
     weight = Column(Float, nullable=True)  # Вага в грамах
@@ -25,6 +27,8 @@ class Product(Base):
     is_deleted = Column(Boolean, default=False)
     deleted_at = Column(DateTime(timezone=True), nullable=True)
     variants = Column(JSON, nullable=True)  # List of dicts: [{"name": "Chopped", "price": 2000}]
+    specifications_json = Column(JSON, nullable=True)
+    faqs_json = Column(JSON, nullable=True)
 
     # SEO Fields
     meta_title = Column(String, nullable=True)

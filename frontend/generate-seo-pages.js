@@ -156,6 +156,7 @@ async function generatePages() {
                             <meta property="og:title" content="${metaTitle}" />
                             <meta property="og:description" content="${metaDesc}" />
                             <meta property="og:image" content="${productImage}" />
+${cSlug === 'drova' ? '                            <meta property="og:locale" content="uk_UA" />\n' : ''}\
                             <meta property="og:url" content="${pageUrl}" />
                             <meta property="og:type" content="product" />
                             <meta property="og:site_name" content="КиївБрикет" />
@@ -192,8 +193,11 @@ async function generatePages() {
                                 "@type": "AggregateRating",
                                 "ratingValue": "4.9",
                                 "reviewCount": "128"
-                            },
-                            "review": {
+                            }
+                        };
+
+                        if (cSlug !== 'drova') {
+                            productSchema.review = {
                                 "@type": "Review",
                                 "reviewRating": {
                                     "@type": "Rating",
@@ -204,8 +208,8 @@ async function generatePages() {
                                     "@type": "Person",
                                     "name": "Олександр"
                                 }
-                            }
-                        };
+                            };
+                        }
                         if (prod.price) {
                             const nextYear = new Date();
                             nextYear.setFullYear(nextYear.getFullYear() + 1);

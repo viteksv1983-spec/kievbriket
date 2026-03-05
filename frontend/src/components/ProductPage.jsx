@@ -543,17 +543,13 @@ export default function ProductPage() {
                                 <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6 }}>
                                     {product.description ? (
                                         <>
-                                            {(product.description.includes('<p>') || product.description.includes('<h2>')) ? (
+                                            {product.category === 'drova' ? (
+                                                <div className="product-description" dangerouslySetInnerHTML={{ __html: product.description }} />
+                                            ) : (product.description.includes('<p>') || product.description.includes('<h2>')) ? (
                                                 <div dangerouslySetInnerHTML={{ __html: product.description }} className="product-seo-description" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} />
                                             ) : (
                                                 <>
-                                                    {product.category === 'drova' ? (
-                                                        <p style={{ marginBottom: '1rem' }}>
-                                                            {product.description} Ми пропонуємо якісні <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>дрова колоті</Link>, <Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link> з швидкою доставкою.
-                                                        </p>
-                                                    ) : (
-                                                        <p style={{ marginBottom: '1rem' }}>{product.description}</p>
-                                                    )}
+                                                    <p style={{ marginBottom: '1rem' }}>{product.description}</p>
                                                     <p>Наші дрова щільно укладені в кузові автомобіля (складометрами), що гарантує чесний об'єм при доставці.</p>
                                                 </>
                                             )}

@@ -171,6 +171,36 @@ def seed_drova_live():
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
+@app.get("/api/seed-briquettes-live")
+def seed_briquettes_live(db: Session = Depends(get_db)):
+    """Temporary endpoint to populate Briquettes with unique texts and JSONs on Render."""
+    try:
+        import sys, os
+        # Add root to python path to import the sibling script
+        root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        sys.path.insert(0, root_dir)
+        import populate_briquettes
+        
+        updated = []
+        for slug, data in populate_briquettes.products_data.items():
+            product = db.query(Product).filter(Product.slug == slug).first()
+            if product:
+                product.name = data['name']
+                product.short_description = data['short_description']
+                product.description = data['description']
+                product.specifications_json = data['specifications_json']
+                product.faqs_json = data['faqs_json']
+                product.meta_title = data['meta_title']
+                product.meta_description = data['meta_description']
+                product.schema_json = data['schema_json']
+                product.image_alt = data['image_alt']
+                updated.append(slug)
+        db.commit()
+        return {"status": "success", "message": f"Updated {len(updated)} briquettes", "slugs": updated}
+    except Exception as e:
+        db.rollback()
+        return {"status": "error", "message": str(e)}
+
 @app.get("/api/upgrade-db")
 def upgrade_db_schema(db: Session = Depends(get_db)):
     """Temporary endpoint to add new SEO/Spec columns to the production DB."""

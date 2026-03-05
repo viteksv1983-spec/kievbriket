@@ -171,12 +171,18 @@ function ProductPage() {
   const specs = product ? [
     { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Порода", value: product.ingredients || (product.name.toLowerCase().includes("дуб") ? "Дуб" : product.name.toLowerCase().includes("сосн") ? "Сосна" : product.name.toLowerCase().includes("граб") ? "Граб" : product.category === "brikety" ? "Деревна тирса" : "Тверді породи") },
     { icon: /* @__PURE__ */ jsx(CheckCircle2, { size: 17, color: "var(--c-orange)" }), label: "Тип", value: product.category === "drova" ? "Колоті" : product.category === "brikety" ? "Пресовані" : "Сипуче" },
-    { icon: /* @__PURE__ */ jsx(Ruler, { size: 17, color: "var(--c-orange)" }), label: "Довжина полін", value: product.category === "drova" ? "30-40 см" : "—" },
+    product.category === "brikety" ? { icon: /* @__PURE__ */ jsx(Ruler, { size: 17, color: "var(--c-orange)" }), label: "Форма брикетів", value: product.name.toLowerCase().includes("ruf") ? "Прямокутні пресовані" : product.name.toLowerCase().includes("pini") ? "Восьмигранні з отвором" : product.name.toLowerCase().includes("nestro") ? "Циліндричні" : product.name.toLowerCase().includes("пелет") ? "Гранули 6-8 мм" : "Пресований торф" } : { icon: /* @__PURE__ */ jsx(Ruler, { size: 17, color: "var(--c-orange)" }), label: "Довжина полін", value: product.category === "drova" ? "30-40 см" : "—" },
     { icon: /* @__PURE__ */ jsx(Scale, { size: 17, color: "var(--c-orange)" }), label: "Фасування", value: product.category === "drova" ? "Складометр" : "У пакуваннях / піддонах" },
-    { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Вологість", value: product.shelf_life || (product.category === "drova" ? "Природна (До 25%)" : "До 8%") },
+    { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Вологість", value: product.shelf_life || (product.category === "drova" ? "Природна (До 25%)" : product.category === "brikety" ? "до 10%" : "До 8%") },
     { icon: /* @__PURE__ */ jsx(Truck, { size: 17, color: "var(--c-orange)" }), label: "Доставка", value: "По Києву та області" }
   ] : [];
-  const faqs = product ? [
+  const faqs = product ? product.category === "brikety" ? [
+    { q: `Які брикети краще для опалення?`, a: `Для максимальної тепловіддачі та тривалого горіння найкраще підходять дубові брикети RUF або Pini Kay. Якщо у вас котел тривалого горіння, Nestro також стануть чудовим вибором. Для автоматичних котлів використовують пелети.` },
+    { q: `Скільки горять паливні брикети?`, a: `Залежно від типу котла та подачі кисню, брикети горять від 2 до 4 годин, після чого можуть тліти ще кілька годин, підтримуючи високу температуру.` },
+    { q: `Чим брикети відрізняються від дров?`, a: `Брикети мають вищу щільність і набагато нижчу вологість (до 10%), тому вони віддають більше тепла. Крім того, вони займають менше місця при зберіганні та залишають значно менше попелу.` },
+    { q: `Чи підходять брикети для камінів?`, a: `Так, особливо брикети RUF та Pini Kay. Вони горять рівним полум'ям, не іскрять і не виділяють зайвого диму, що робить їх ідеальними для відкритих та закритих камінів.` },
+    { q: `Як замовити брикети з доставкою по Києву?`, a: `Оберіть потрібний тип та кількість брикетів на сайті, натисніть "Замовити", і наш менеджер зв'яжеться з вами для уточнення деталей доставки. Ми доставляємо власною технікою протягом 24 годин.` }
+  ] : [
     { q: `Які дрова краще для опалення?`, a: `${product.ingredients || "Дубові"} дрова вважаються одними з найкращих для опалення завдяки високій щільності деревини та тривалому горінню. Вони дають стабільний жар і підходять для твердопаливних котлів, печей та камінів.` },
     { q: `Яка довжина полін у дров?`, a: `Стандартна довжина полін — 30-40 см. Це оптимальний розмір для більшості побутових котлів та печей.` },
     { q: `Скільки дров потрібно на зиму?`, a: `Для опалення будинку площею 100 м² на один опалювальний сезон потрібно приблизно 8-12 складометрів дров, залежно від утеплення та типу котла.` },
@@ -639,7 +645,7 @@ function ProductPage() {
               ] })
             ] }),
             /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: "1.5rem", position: "sticky", top: "6rem" }, children: /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "2rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
-              /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.25rem" }, children: product.category === "brikety" ? "Про цей брикет" : product.category === "vugillya" ? "Про це вугілля" : "Про ці дрова" }),
+              /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.25rem" }, children: product.category === "brikety" ? "Про ці брикети" : product.category === "vugillya" ? "Про це вугілля" : "Про ці дрова" }),
               /* @__PURE__ */ jsx("div", { style: { color: "var(--c-text2)", fontSize: "1rem", lineHeight: 1.6 }, children: product.description ? /* @__PURE__ */ jsx(Fragment, { children: product.category === "drova" ? /* @__PURE__ */ jsx("div", { className: "product-description", dangerouslySetInnerHTML: { __html: product.description } }) : product.description.includes("<p>") || product.description.includes("<h2>") ? /* @__PURE__ */ jsx("div", { dangerouslySetInnerHTML: { __html: product.description }, className: "product-seo-description", style: { display: "flex", flexDirection: "column", gap: "1rem" } }) : /* @__PURE__ */ jsxs(Fragment, { children: [
                 /* @__PURE__ */ jsx("p", { style: { marginBottom: "1rem" }, children: product.description }),
                 /* @__PURE__ */ jsx("p", { children: "Наші дрова щільно укладені в кузові автомобіля (складометрами), що гарантує чесний об'єм при доставці." })
@@ -661,7 +667,7 @@ function ProductPage() {
           relatedProducts.length > 0 && /* @__PURE__ */ jsxs("div", { style: { marginTop: "5rem" }, children: [
             /* @__PURE__ */ jsxs("h2", { className: "h2", style: { marginBottom: "2rem" }, children: [
               "Інші ",
-              category?.name?.toLowerCase() || "дрова"
+              product.category === "brikety" ? "брикети" : product.category === "vugillya" ? "вугілля" : "дрова"
             ] }),
             /* @__PURE__ */ jsx("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.5rem" }, children: relatedProducts.map((p, idx) => {
               const displayPrice2 = p.variants?.length > 0 ? p.variants[0].price : p.price;
@@ -855,4 +861,4 @@ function ProductPage() {
 export {
   ProductPage as default
 };
-//# sourceMappingURL=ProductPage-Ds0wFi74.js.map
+//# sourceMappingURL=ProductPage-BQfojDpU.js.map

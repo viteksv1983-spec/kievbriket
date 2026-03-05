@@ -37,38 +37,38 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kievbriket.com/catalog/brikety/brykety-nestro-sosna</loc>
-    <lastmod>2026-03-02</lastmod>
+    <loc>https://kievbriket.com/catalog/brikety/brykety-nestro</loc>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://kievbriket.com/catalog/brikety/brykety-pini-kay</loc>
-    <lastmod>2026-03-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://kievbriket.com/catalog/brikety/brykety-pini-kay-xl</loc>
-    <lastmod>2026-03-02</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://kievbriket.com/catalog/brikety/brykety-ruf-dub</loc>
-    <lastmod>2026-03-02</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://kievbriket.com/catalog/brikety/brykety-ruf-premium</loc>
-    <lastmod>2026-03-02</lastmod>
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kievbriket.com/catalog/brikety/pellety</loc>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://kievbriket.com/catalog/brikety/torfobrykety</loc>
-    <lastmod>2026-03-02</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -2300,20 +2300,23 @@ function HeroSection({ onQuickOrderClick }) {
         ] }, s.label)) })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "hero-img-wrap", children: [
-        /* @__PURE__ */ jsx(
-          "img",
-          {
-            src: "/images/hero-bg.webp",
-            alt: "Дрова, брикети та вугілля КиївБрикет",
-            title: "Купити тверде паливо у Києві",
-            className: "hero-img",
-            loading: "eager",
-            fetchPriority: "high",
-            decoding: "sync",
-            width: "600",
-            height: "750"
-          }
-        ),
+        /* @__PURE__ */ jsxs("picture", { children: [
+          /* @__PURE__ */ jsx("source", { media: "(max-width: 600px)", srcSet: "/images/hero-bg-mobile.webp" }),
+          /* @__PURE__ */ jsx(
+            "img",
+            {
+              src: "/images/hero-bg.webp",
+              alt: "Дрова, брикети та вугілля КиївБрикет",
+              title: "Купити тверде паливо у Києві",
+              className: "hero-img",
+              loading: "eager",
+              fetchPriority: "high",
+              decoding: "sync",
+              width: "600",
+              height: "750"
+            }
+          )
+        ] }),
         /* @__PURE__ */ jsx("div", { className: "hero-img-overlay" }),
         /* @__PURE__ */ jsx("div", { className: "hero-img-badges", children: imageBadges.map((item) => /* @__PURE__ */ jsxs("div", { className: "hero-img-badge", children: [
           /* @__PURE__ */ jsx("span", { style: { fontSize: "0.8rem" }, children: item.emoji }),
@@ -2730,7 +2733,8 @@ function BenefitsSection() {
     }
   );
 }
-const deliveryImg = "/assets/trust-delivery-D07I9GX2.webp";
+const deliveryImg = "/assets/trust-delivery-BCu0hCWo.webp";
+const deliveryImgMobile = "/assets/trust-delivery-mobile-CUdLdIQI.webp";
 const points = [
   "Власний автопарк — без затримок",
   "Сертифіковане паливо",
@@ -2764,18 +2768,21 @@ function TrustBlock({ onOrderClick }) {
               className: `reveal ${visible ? "visible" : ""}`,
               style: { borderRadius: 16, overflow: "hidden", position: "relative", boxShadow: "0 30px 70px rgba(0,0,0,0.5)" },
               children: [
-                /* @__PURE__ */ jsx(
-                  "img",
-                  {
-                    src: deliveryImg,
-                    alt: "Доставка твердого палива",
-                    loading: "lazy",
-                    decoding: "async",
-                    width: "720",
-                    height: "540",
-                    style: { width: "100%", aspectRatio: "4/3", objectFit: "cover", display: "block", filter: "brightness(0.80) saturate(1.15) contrast(1.05)" }
-                  }
-                ),
+                /* @__PURE__ */ jsxs("picture", { children: [
+                  /* @__PURE__ */ jsx("source", { media: "(max-width: 600px)", srcSet: deliveryImgMobile }),
+                  /* @__PURE__ */ jsx(
+                    "img",
+                    {
+                      src: deliveryImg,
+                      alt: "Доставка твердого палива",
+                      loading: "lazy",
+                      decoding: "async",
+                      width: "720",
+                      height: "540",
+                      style: { width: "100%", aspectRatio: "4/3", objectFit: "cover", display: "block", filter: "brightness(0.80) saturate(1.15) contrast(1.05)" }
+                    }
+                  )
+                ] }),
                 /* @__PURE__ */ jsx("div", { style: { position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(13,17,23,0.55) 0%, transparent 50%)", pointerEvents: "none" } }),
                 /* @__PURE__ */ jsxs("div", { style: {
                   position: "absolute",
@@ -5757,7 +5764,7 @@ function NotFound() {
   ] });
 }
 const Catalog = React.lazy(() => import("./assets/Catalog-wX5jCCBX.js"));
-const ProductPage = React.lazy(() => import("./assets/ProductPage-Ds0wFi74.js"));
+const ProductPage = React.lazy(() => import("./assets/ProductPage-BQfojDpU.js"));
 const Login = React.lazy(() => import("./assets/Login-EF_R0S0Y.js"));
 const Register = React.lazy(() => import("./assets/Register-DM_G8vYl.js"));
 const Cart = React.lazy(() => import("./assets/Cart-8nKT32UT.js"));

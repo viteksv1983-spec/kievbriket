@@ -663,6 +663,42 @@ async def catch_all(path_name: str, db: Session = Depends(get_db)):
     return FileResponse(index_file, status_code=404)
 
 
+@app.get("/api/fix-db-json")
+def fix_db_json(db: Session = Depends(get_db)):
+    """One-time route to fix all stringified JSON stored in PostgreSQL."""
+    import json
+    
+    products = db.query(Product).all()
+    fixed_count = 0
+    
+    for product in products:
+        changed = False
+        
+        # Check specifications_json
+        if isinstance(product.specifications_json, str):
+            try:
+                product.specifications_json = json.loads(product.specifications_json)
+                changed = True
+            except json.JSONDecodeError:
+                pass
+                
+        # Check faqs_json
+        if isinstance(product.faqs_json, str):
+            try:
+                product.faqs_json = json.loads(product.faqs_json)
+                changed = True
+            except json.JSONDecodeError:
+                pass
+                
+        if changed:
+            db.add(product)
+            fixed_count += 1
+            
+    if fixed_count > 0:
+        db.commit()
+        
+    return {"message": "Database JSON arrays fixed.", "products_fixed": fixed_count}
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=10000, reload=True)

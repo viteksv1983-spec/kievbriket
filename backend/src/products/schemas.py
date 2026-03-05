@@ -32,8 +32,6 @@ class ProductBase(BaseModel):
     shelf_life: Optional[str] = None
     stock_quantity: int = 0  # 0 = unlimited/made-to-order
     variants: Optional[List[dict]] = None
-    specifications_json: Optional[List[dict]] = None
-    faqs_json: Optional[List[dict]] = None
     
     class Config:
         from_attributes = True

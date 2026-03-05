@@ -13,7 +13,7 @@ import { TrustBlock } from './new-home/TrustBlock';
 import { CategoriesSection } from './new-home/CategoriesSection';
 import { DeliverySection } from './new-home/DeliverySection';
 import { ReviewsSection } from './new-home/ReviewsSection';
-import { SeoIntroSection, SeoFooterSection, FaqSection } from './new-home/SeoSections';
+import { SeoIntroSection, SeoFooterSection, SeoContentBlock, FaqSection } from './new-home/SeoSections';
 import { CtaBanner } from './new-home/CtaBanner';
 import { ContactSection } from './new-home/ContactSection';
 import { FuelCalculatorSection } from './new-home/FuelCalculatorSection';
@@ -158,6 +158,7 @@ function Home() {
 
             <SeoIntroSection />
             <SeoFooterSection />
+            <SeoContentBlock />
 
             <CtaBanner />
             <ContactSection />

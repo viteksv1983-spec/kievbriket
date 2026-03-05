@@ -38,15 +38,14 @@ const SiteSettingsPage = React.lazy(() => import('./components/admin/SiteSetting
 
 function App() {
   useEffect(() => {
-    // Hide global preloader smoothly once React evaluates and starts rendering
+    // Hide global preloader immediately once React mounts — no artificial delay
     const preloader = document.getElementById('global-preloader');
     if (preloader) {
+      preloader.classList.add('hidden');
+      // Remove from DOM after CSS transition completes (0.5s)
       setTimeout(() => {
-        preloader.classList.add('hidden');
-        setTimeout(() => {
-          preloader.style.display = 'none';
-        }, 500); // Wait for CSS transition (0.5s)
-      }, 300); // Give React a moment to paint the initial layout
+        preloader.style.display = 'none';
+      }, 500);
     }
   }, []);
 

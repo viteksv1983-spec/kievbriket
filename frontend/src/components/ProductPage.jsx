@@ -175,16 +175,23 @@ export default function ProductPage() {
     const briketAlt = briketShortName.replace(/\(|\)/g, '').replace(/\s+/g, ' ');
 
     let briketH2 = `Характеристики ${briketShortName.toLowerCase()}`;
+    let briketDesc = `Опис ${briketShortName.toLowerCase()}`;
+
     if (briketShortName.toLowerCase().startsWith('брикети')) {
         briketH2 = briketShortName.replace(/^Брикети/i, 'Характеристики брикетів');
+        briketDesc = briketShortName.replace(/^Брикети/i, 'Опис брикетів');
     } else if (briketShortName.toLowerCase().startsWith('паливні брикети')) {
         briketH2 = briketShortName.replace(/^Паливні брикети/i, 'Характеристики паливних брикетів');
+        briketDesc = briketShortName.replace(/^Паливні брикети/i, 'Опис паливних брикетів');
     } else if (briketShortName.toLowerCase().startsWith('торфобрикети')) {
         briketH2 = briketShortName.replace(/^Торфобрикети/i, 'Характеристики торфобрикетів');
+        briketDesc = briketShortName.replace(/^Торфобрикети/i, 'Опис торфобрикетів');
     } else if (briketShortName.toLowerCase().startsWith('вугільні брикети')) {
         briketH2 = briketShortName.replace(/^Вугільні брикети/i, 'Характеристики вугільних брикетів');
+        briketDesc = briketShortName.replace(/^Вугільні брикети/i, 'Опис вугільних брикетів');
     } else if (briketShortName.toLowerCase().startsWith('пелети')) {
         briketH2 = briketShortName.replace(/^Пелети/i, 'Характеристики пелет');
+        briketDesc = briketShortName.replace(/^Пелети/i, 'Опис пелет');
     }
 
     return (
@@ -240,9 +247,9 @@ export default function ProductPage() {
 
             {/* ── Mobile-only Title (above image) ── */}
             <div className="product-mobile-title" style={{ maxWidth: 1200, margin: '0 auto', padding: '1rem 1.5rem 0' }}>
-                <h1 className="h1" style={{ fontSize: 'clamp(22px, 5vw, 28px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
+                <div className="h1" style={{ fontSize: 'clamp(22px, 5vw, 28px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
                     {product.category === 'brikety' ? (product.seo_h1 || product.name) : product.name}
-                </h1>
+                </div>
             </div>
 
             {/* ── Main Content ── */}
@@ -319,9 +326,9 @@ export default function ProductPage() {
 
                         {/* ── Title & Badges ── */}
                         <div className="product-desktop-title" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                            <h2 className="h2" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
-                                {product.category === 'brikety' ? briketH2 : product.name}
-                            </h2>
+                            <h1 className="h1" style={{ fontSize: 'clamp(22px, 3vw, 36px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
+                                {product.category === 'brikety' ? (product.seo_h1 || product.name) : product.name}
+                            </h1>
 
                             <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                                 <span style={{
@@ -465,6 +472,11 @@ export default function ProductPage() {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             {/* Specs */}
                             <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
+                                {product.category === 'brikety' && (
+                                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem', lineHeight: 1.25 }}>
+                                        {briketH2}
+                                    </h2>
+                                )}
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', rowGap: '1.5rem' }}>
                                     {specs.map((spec, i) => (
                                         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -498,9 +510,9 @@ export default function ProductPage() {
                                     }}>
                                         <Truck size={18} color="var(--c-orange)" />
                                     </div>
-                                    <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', margin: 0 }}>
+                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', margin: 0 }}>
                                         Інформація про доставку
-                                    </h2>
+                                    </h3>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingLeft: 50 }}>
                                     <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
@@ -530,7 +542,7 @@ export default function ProductPage() {
 
                             {/* ── SECTION 3.5: HOW TO ORDER ── */}
                             <section className="nh-card order-steps" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>Як замовити {product.category === 'brikety' ? 'брикети' : product.category === 'vugillya' ? 'вугілля' : 'дрова'}</h2>
+                                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>Як замовити {product.category === 'brikety' ? 'брикети' : product.category === 'vugillya' ? 'вугілля' : 'дрова'}</h3>
                                 <ol style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', color: 'var(--c-text)', lineHeight: 1.6, fontWeight: 500, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                     <li>Оберіть потрібний обсяг {product.category === 'brikety' ? 'брикетів' : product.category === 'vugillya' ? 'вугілля' : 'дров'}</li>
                                     <li>Натисніть кнопку "Замовити"</li>
@@ -543,9 +555,9 @@ export default function ProductPage() {
 
                             {/* ── SECTION 4: FAQ ── */}
                             <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
+                                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
                                     Часті питання
-                                </h2>
+                                </h3>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                     {faqs.map((faq, idx) => (
                                         <div key={idx} style={{
@@ -588,7 +600,7 @@ export default function ProductPage() {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'sticky', top: '6rem' }}>
                             <div className="nh-card" style={{ padding: '2rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
                                 <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.25rem' }}>
-                                    {product.category === 'brikety' ? 'Про ці брикети' : product.category === 'vugillya' ? 'Про це вугілля' : 'Про ці дрова'}
+                                    {product.category === 'brikety' ? briketDesc : product.category === 'vugillya' ? 'Про це вугілля' : 'Про ці дрова'}
                                 </h2>
                                 <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6 }}>
                                     {product.short_description && (
@@ -638,7 +650,7 @@ export default function ProductPage() {
                 {/* ── SECTION 5: RELATED PRODUCTS ── */}
                 {relatedProducts.length > 0 && (
                     <div style={{ marginTop: '5rem' }}>
-                        <h2 className="h2" style={{ marginBottom: '2rem' }}>Інші {product.category === 'brikety' ? 'брикети' : product.category === 'vugillya' ? 'вугілля' : 'дрова'}</h2>
+                        <h3 className="h2" style={{ marginBottom: '2rem' }}>Інші {product.category === 'brikety' ? 'брикети' : product.category === 'vugillya' ? 'вугілля' : 'дрова'}</h3>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
                             {relatedProducts.map((p, idx) => {
                                 const displayPrice = p.variants?.length > 0 ? p.variants[0].price : p.price;
@@ -652,7 +664,7 @@ export default function ProductPage() {
                                                 {p.image_url ? (
                                                     <img
                                                         src={getImageUrl(p.image_url, api.defaults.baseURL)}
-                                                        alt={p.category === 'drova' || categorySlug === 'drova' ? `${p.name} колоті дрова складометр доставка Київ` : (p.h1_heading || p.name)}
+                                                        alt={p.category === 'drova' || categorySlug === 'drova' ? `${p.name} колоті дрова складометр доставка Київ` : p.category === 'brikety' ? (p.name.split('—')[0].split('- ')[0].trim().replace(/\(|\)/g, '').replace(/\s+/g, ' ')) : (p.h1_heading || p.name)}
                                                         className="catalog-card-img"
                                                         onError={e => { e.target.onerror = null; e.target.src = '/assets/product-placeholder-wood.webp'; }}
                                                     />

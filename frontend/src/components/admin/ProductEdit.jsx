@@ -239,20 +239,6 @@ export default function ProductEdit() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                 <div>
-                                    <label className="block text-sm font-bold text-gray-700 mb-2">Вага</label>
-                                    <select
-                                        name="weight"
-                                        value={formData.weight}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent cursor-pointer"
-                                    >
-                                        <option value="">Оберіть вагу</option>
-                                        {WEIGHT_OPTIONS.map(opt => (
-                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
                                     <label className="block text-sm font-bold text-gray-700 mb-2">Категорія</label>
                                     <div className="flex gap-2 items-center">
                                         <select

@@ -247,7 +247,7 @@ export default function ProductPage() {
 
             {/* ── Mobile-only Title (above image) ── */}
             <div className="product-mobile-title" style={{ maxWidth: 1200, margin: '0 auto', padding: '1rem 1.5rem 0' }}>
-                <div className="h1" style={{ fontSize: 'clamp(22px, 5vw, 28px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
+                <div className="product-mobile-h1" style={{ fontSize: 'clamp(22px, 5vw, 28px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
                     {product.category === 'brikety' ? (product.seo_h1 || product.name) : product.name}
                 </div>
             </div>

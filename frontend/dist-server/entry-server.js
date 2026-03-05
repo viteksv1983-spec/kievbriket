@@ -8474,9 +8474,8 @@ function ProductPage() {
     "briquettes": "brikety",
     "coal": "vugillya"
   };
-  const specifications = Array.isArray(product?.specifications_json) ? product.specifications_json : [];
-  const specsArray = specifications;
-  const specs = specsArray.length > 0 ? specsArray.map((s) => ({
+  const specificationsArray = Array.isArray(product?.specifications_json) ? product.specifications_json : [];
+  const specs = specificationsArray.length > 0 ? specificationsArray.map((s) => ({
     icon: /* @__PURE__ */ jsx(CheckCircle2, { size: 17, color: "var(--c-orange)" }),
     label: s.name || s.label,
     value: s.value
@@ -8485,7 +8484,7 @@ function ProductPage() {
     { icon: /* @__PURE__ */ jsx(CheckCircle2, { size: 17, color: "var(--c-orange)" }), label: "Тип", value: product.category === "drova" ? "Колоті" : product.category === "brikety" ? "Пресовані" : "Сипуче" },
     product.category === "brikety" ? { icon: /* @__PURE__ */ jsx(Ruler, { size: 17, color: "var(--c-orange)" }), label: "Форма брикетів", value: product.name.toLowerCase().includes("ruf") ? "Прямокутні пресовані" : product.name.toLowerCase().includes("pini") ? "Восьмигранні з отвором" : product.name.toLowerCase().includes("nestro") ? "Циліндричні" : product.name.toLowerCase().includes("пелет") ? "Гранули 6-8 мм" : "Пресований торф" } : { icon: /* @__PURE__ */ jsx(Ruler, { size: 17, color: "var(--c-orange)" }), label: "Довжина полін", value: product.category === "drova" ? "30-40 см" : "—" },
     { icon: /* @__PURE__ */ jsx(Scale, { size: 17, color: "var(--c-orange)" }), label: "Фасування", value: product.category === "drova" ? "Складометр" : "У пакуваннях / піддонах" },
-    { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Вологість", value: product.shelf_life || (product.category === "drova" ? "Природна (До 25%)" : product.category === "brikety" ? "до 10%" : "До 8%") },
+    { icon: /* @__PURE__ */ jsx(Flame, { size: 17, color: "var(--c-orange)" }), label: "Вологість", value: product.category === "drova" ? "Природна (До 25%)" : product.category === "brikety" ? "8-10%" : "До 8%" },
     { icon: /* @__PURE__ */ jsx(Truck, { size: 17, color: "var(--c-orange)" }), label: "Доставка", value: "По Києву та області" }
   ] : [];
   const faqsArray = (() => {
@@ -8574,6 +8573,26 @@ function ProductPage() {
     ] });
   }
   const dynamicTitle = product.meta_title || `Купити ${product.name.toLowerCase()} з доставкою по Києву — ціна за складометр | КиївБрикет`;
+  const briketShortName = product?.name ? product.name.split("—")[0].split("- ")[0].trim() : "";
+  const briketAlt = briketShortName.replace(/\(|\)/g, "").replace(/\s+/g, " ");
+  let briketH2 = `Характеристики ${briketShortName.toLowerCase()}`;
+  let briketDesc = `Опис ${briketShortName.toLowerCase()}`;
+  if (briketShortName.toLowerCase().startsWith("брикети")) {
+    briketH2 = briketShortName.replace(/^Брикети/i, "Характеристики брикетів");
+    briketDesc = briketShortName.replace(/^Брикети/i, "Опис брикетів");
+  } else if (briketShortName.toLowerCase().startsWith("паливні брикети")) {
+    briketH2 = briketShortName.replace(/^Паливні брикети/i, "Характеристики паливних брикетів");
+    briketDesc = briketShortName.replace(/^Паливні брикети/i, "Опис паливних брикетів");
+  } else if (briketShortName.toLowerCase().startsWith("торфобрикети")) {
+    briketH2 = briketShortName.replace(/^Торфобрикети/i, "Характеристики торфобрикетів");
+    briketDesc = briketShortName.replace(/^Торфобрикети/i, "Опис торфобрикетів");
+  } else if (briketShortName.toLowerCase().startsWith("вугільні брикети")) {
+    briketH2 = briketShortName.replace(/^Вугільні брикети/i, "Характеристики вугільних брикетів");
+    briketDesc = briketShortName.replace(/^Вугільні брикети/i, "Опис вугільних брикетів");
+  } else if (briketShortName.toLowerCase().startsWith("пелети")) {
+    briketH2 = briketShortName.replace(/^Пелети/i, "Характеристики пелет");
+    briketDesc = briketShortName.replace(/^Пелети/i, "Опис пелет");
+  }
   return /* @__PURE__ */ jsxs(
     "div",
     {
@@ -8635,7 +8654,7 @@ function ProductPage() {
           /* @__PURE__ */ jsx(ChevronRight, { size: 13, style: { opacity: 0.4 } }),
           /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 240 }, children: product.name })
         ] }) }),
-        /* @__PURE__ */ jsx("div", { className: "product-mobile-title", style: { maxWidth: 1200, margin: "0 auto", padding: "1rem 1.5rem 0" }, children: /* @__PURE__ */ jsx("h1", { className: "h1", style: { fontSize: "clamp(22px, 5vw, 28px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.category === "brikety" ? product.seo_h1 || product.name : product.name }) }),
+        /* @__PURE__ */ jsx("div", { className: "product-mobile-title", style: { maxWidth: 1200, margin: "0 auto", padding: "1rem 1.5rem 0" }, children: /* @__PURE__ */ jsx("div", { className: "product-mobile-h1", style: { fontSize: "clamp(22px, 5vw, 28px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.category === "brikety" ? product.seo_h1 || product.name : product.name }) }),
         /* @__PURE__ */ jsxs("section", { className: "product-main-content", style: { maxWidth: 1200, margin: "0 auto", padding: "var(--s-section) 1.5rem" }, children: [
           /* @__PURE__ */ jsxs("div", { style: {
             display: "grid",
@@ -8656,7 +8675,7 @@ function ProductPage() {
                 "img",
                 {
                   src: galleryImages[activeImageIndex],
-                  alt: product.category === "brikety" ? product.seo_h1 || product.name : product.name,
+                  alt: product.category === "brikety" ? briketAlt : product.name,
                   width: "600",
                   height: "450",
                   loading: activeImageIndex === 0 ? "eager" : "lazy",
@@ -8700,7 +8719,7 @@ function ProductPage() {
             ] }),
             /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "2rem" }, children: [
               /* @__PURE__ */ jsxs("div", { className: "product-desktop-title", style: { display: "flex", flexDirection: "column", gap: "0.75rem" }, children: [
-                /* @__PURE__ */ jsx("h2", { className: "h2", style: { fontSize: "clamp(22px, 3vw, 36px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.category === "brikety" ? product.title_long || product.seo_h1 || product.name : product.name }),
+                /* @__PURE__ */ jsx("h1", { className: "h1", style: { fontSize: "clamp(22px, 3vw, 36px)", lineHeight: 1.15, margin: 0, fontWeight: 700 }, children: product.category === "brikety" ? product.seo_h1 || product.name : product.name }),
                 /* @__PURE__ */ jsxs("div", { className: "product-badges-row", style: { display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }, children: [
                   /* @__PURE__ */ jsx("span", { style: {
                     display: "inline-flex",
@@ -8844,23 +8863,26 @@ function ProductPage() {
             alignItems: "start"
           }, children: [
             /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "1.5rem" }, children: [
-              /* @__PURE__ */ jsx("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: /* @__PURE__ */ jsx("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", rowGap: "1.5rem" }, children: specs.map((spec, i) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
-                /* @__PURE__ */ jsx("div", { style: {
-                  width: 38,
-                  height: 38,
-                  borderRadius: 10,
-                  flexShrink: 0,
-                  background: "var(--color-accent-soft)",
-                  border: "1px solid rgba(249,115,22,0.15)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }, children: spec.icon }),
-                /* @__PURE__ */ jsxs("div", { children: [
-                  /* @__PURE__ */ jsx("p", { style: { fontSize: "0.75rem", color: "var(--c-text2)", textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700 }, children: spec.name || spec.label }),
-                  /* @__PURE__ */ jsx("p", { style: { fontSize: "0.9375rem", fontWeight: 700, color: "var(--c-text)", marginTop: 2 }, children: spec.value })
-                ] })
-              ] }, i)) }) }),
+              /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
+                product.category === "brikety" && /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.5rem", lineHeight: 1.25 }, children: briketH2 }),
+                /* @__PURE__ */ jsx("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", rowGap: "1.5rem" }, children: specs.map((spec, i) => /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
+                  /* @__PURE__ */ jsx("div", { style: {
+                    width: 38,
+                    height: 38,
+                    borderRadius: 10,
+                    flexShrink: 0,
+                    background: "var(--color-accent-soft)",
+                    border: "1px solid rgba(249,115,22,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }, children: spec.icon }),
+                  /* @__PURE__ */ jsxs("div", { children: [
+                    /* @__PURE__ */ jsx("p", { style: { fontSize: "0.75rem", color: "var(--c-text2)", textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700 }, children: spec.name || spec.label }),
+                    /* @__PURE__ */ jsx("p", { style: { fontSize: "0.9375rem", fontWeight: 700, color: "var(--c-text)", marginTop: 2 }, children: spec.value })
+                  ] })
+                ] }, i)) })
+              ] }),
               /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16, display: "flex", flexDirection: "column", gap: "1rem" }, children: [
                 /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
                   /* @__PURE__ */ jsx("div", { style: {
@@ -8874,7 +8896,7 @@ function ProductPage() {
                     alignItems: "center",
                     justifyContent: "center"
                   }, children: /* @__PURE__ */ jsx(Truck, { size: 18, color: "var(--c-orange)" }) }),
-                  /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", margin: 0 }, children: "Інформація про доставку" })
+                  /* @__PURE__ */ jsx("h3", { style: { fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", margin: 0 }, children: "Інформація про доставку" })
                 ] }),
                 /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: 6, paddingLeft: 50 }, children: [
                   /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
@@ -8907,7 +8929,7 @@ function ProductPage() {
                 ] })
               ] }),
               /* @__PURE__ */ jsxs("section", { className: "nh-card order-steps", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
-                /* @__PURE__ */ jsxs("h2", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.5rem" }, children: [
+                /* @__PURE__ */ jsxs("h3", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.5rem" }, children: [
                   "Як замовити ",
                   product.category === "brikety" ? "брикети" : product.category === "vugillya" ? "вугілля" : "дрова"
                 ] }),
@@ -8926,7 +8948,7 @@ function ProductPage() {
                 ] })
               ] }),
               /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
-                /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.5rem" }, children: "Часті питання" }),
+                /* @__PURE__ */ jsx("h3", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.5rem" }, children: "Часті питання" }),
                 /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: "0.75rem" }, children: faqs.map((faq, idx) => /* @__PURE__ */ jsxs("div", { style: {
                   background: "var(--color-bg-elevated)",
                   border: "1px solid var(--color-border-subtle)",
@@ -8974,7 +8996,7 @@ function ProductPage() {
               ] })
             ] }),
             /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: "1.5rem", position: "sticky", top: "6rem" }, children: /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "2rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
-              /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.25rem" }, children: product.category === "brikety" ? "Про ці брикети" : product.category === "vugillya" ? "Про це вугілля" : "Про ці дрова" }),
+              /* @__PURE__ */ jsx("h2", { style: { fontSize: "1.25rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.25rem" }, children: product.category === "brikety" ? briketDesc : product.category === "vugillya" ? "Про це вугілля" : "Про ці дрова" }),
               /* @__PURE__ */ jsxs("div", { style: { color: "var(--c-text2)", fontSize: "1rem", lineHeight: 1.6 }, children: [
                 product.short_description && /* @__PURE__ */ jsx("p", { style: { fontWeight: 600, color: "var(--c-text)", fontSize: "1.05rem", marginBottom: "1.25rem" }, children: product.short_description }),
                 product.description ? /* @__PURE__ */ jsx(Fragment, { children: product.category === "drova" ? /* @__PURE__ */ jsx("div", { className: "product-description", dangerouslySetInnerHTML: { __html: product.description } }) : product.description.includes("<p>") || product.description.includes("<h2>") ? /* @__PURE__ */ jsx("div", { dangerouslySetInnerHTML: { __html: product.description }, className: "product-seo-description", style: { display: "flex", flexDirection: "column", gap: "1rem" } }) : /* @__PURE__ */ jsxs(Fragment, { children: [
@@ -8997,7 +9019,7 @@ function ProductPage() {
           ] }) }),
           product.category === "drova" && /* @__PURE__ */ jsx("div", { style: { marginTop: "4rem" }, children: /* @__PURE__ */ jsx(DeliveryOptionsDrova, {}) }),
           relatedProducts.length > 0 && /* @__PURE__ */ jsxs("div", { style: { marginTop: "5rem" }, children: [
-            /* @__PURE__ */ jsxs("h2", { className: "h2", style: { marginBottom: "2rem" }, children: [
+            /* @__PURE__ */ jsxs("h3", { className: "h2", style: { marginBottom: "2rem" }, children: [
               "Інші ",
               product.category === "brikety" ? "брикети" : product.category === "vugillya" ? "вугілля" : "дрова"
             ] }),
@@ -9010,7 +9032,7 @@ function ProductPage() {
                     "img",
                     {
                       src: getImageUrl(p.image_url, api.defaults.baseURL),
-                      alt: p.category === "drova" || categorySlug === "drova" ? `${p.name} колоті дрова складометр доставка Київ` : p.h1_heading || p.name,
+                      alt: p.category === "drova" || categorySlug === "drova" ? `${p.name} колоті дрова складометр доставка Київ` : p.category === "brikety" ? p.name.split("—")[0].split("- ")[0].trim().replace(/\(|\)/g, "").replace(/\s+/g, " ") : p.h1_heading || p.name,
                       className: "catalog-card-img",
                       onError: (e) => {
                         e.target.onerror = null;

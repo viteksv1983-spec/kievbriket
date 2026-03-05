@@ -116,18 +116,52 @@ async function generatePages() {
                     const cat = categories.find(c => c.slug === cSlug);
                     if (cat) {
                         const fallbackDesc = cat.seo_text ? cat.seo_text.replace(/<[^>]*>/g, '').substring(0, 160) : '';
-                        manualTags = `
-                            <title>${cat.meta_title || `${cat.name} — купити з доставкою по Києву`}</title>
-                            <meta name="description" content="${cat.meta_description || fallbackDesc}" />
+                        if (cSlug === 'drova') {
+                            manualTags = `
+                            <title>Купити дрова в Києві — колоті дрова з доставкою | КиївБрикет</title>
+                            <meta name="description" content="Купити дрова в Києві з доставкою. Колоті дрова: дуб, граб, акація, ясен. Чесний складометр, власний автопарк — ГАЗель, ЗІЛ, КАМАЗ. Доставка по Києву та області." />
                             <link rel="canonical" href="${domain}${pathName}" />
                             <meta name="robots" content="${cat.meta_robots || 'index, follow'}" />
-                            <meta property="og:title" content="${cat.meta_title || cat.name}" />
+                            <meta property="og:title" content="Купити дрова в Києві — колоті дрова з доставкою | КиївБрикет" />
+                            <meta property="og:description" content="Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен. Чесний складометр." />
                             <meta property="og:image" content="${domain}${cat.og_image || cat.image_url}" />
                             <meta property="og:url" content="${domain}${pathName}" />
                             <meta property="og:type" content="website" />
+                            <link rel="alternate" hreflang="uk" href="https://kievbriket.com/catalog/drova" />
+                            <link rel="alternate" hreflang="x-default" href="https://kievbriket.com/catalog/drova" />
+                            <meta name="twitter:card" content="summary_large_image" />
+                            <meta name="twitter:title" content="Купити дрова в Києві — колоті дрова з доставкою" />
+                            <meta name="twitter:description" content="Дрова дуб, граб, акація, ясен з доставкою по Києву та області." />
+                            <meta name="twitter:image" content="https://kievbriket.com/media/categories/firewood.webp" />
+                            <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": "Дрова",
+ "url": "https://kievbriket.com/catalog/drova",
+ "description": "Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен.",
+ "isPartOf": {
+   "@type": "WebSite",
+   "name": "КиївБрикет",
+   "url": "https://kievbriket.com"
+ }
+}
+                            </script>
                         `;
-                        if (cat.schema_json) {
-                            manualTags += `\n<script type="application/ld+json">${typeof cat.schema_json === 'string' ? cat.schema_json : JSON.stringify(cat.schema_json)}</script>`;
+                        } else {
+                            manualTags = `
+                                <title>${cat.meta_title || `${cat.name} — купити з доставкою по Києву`}</title>
+                                <meta name="description" content="${cat.meta_description || fallbackDesc}" />
+                                <link rel="canonical" href="${domain}${pathName}" />
+                                <meta name="robots" content="${cat.meta_robots || 'index, follow'}" />
+                                <meta property="og:title" content="${cat.meta_title || cat.name}" />
+                                <meta property="og:image" content="${domain}${cat.og_image || cat.image_url}" />
+                                <meta property="og:url" content="${domain}${pathName}" />
+                                <meta property="og:type" content="website" />
+                            `;
+                            if (cat.schema_json) {
+                                manualTags += `\n<script type="application/ld+json">${typeof cat.schema_json === 'string' ? cat.schema_json : JSON.stringify(cat.schema_json)}</script>`;
+                            }
                         }
                     }
                 } else if (parts.length === 4) {

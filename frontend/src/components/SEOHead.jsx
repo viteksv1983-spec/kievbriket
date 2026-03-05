@@ -5,7 +5,7 @@ import axios from 'axios';
 import api from '../api';
 import shopConfig from '../shop.config';
 
-export default function SEOHead({ title, description, keywords, h1, canonical, ogImage, type = 'website', schema, robots, is404 = false, productPrice, productCurrency }) {
+export default function SEOHead({ title, description, ogDescription, keywords, h1, canonical, ogImage, type = 'website', schema, robots, is404 = false, productPrice, productCurrency, children }) {
     const location = useLocation();
     const [seoData, setSeoData] = useState(null);
     const domain = shopConfig.domain;
@@ -69,7 +69,7 @@ export default function SEOHead({ title, description, keywords, h1, canonical, o
             <meta property="og:locale" content="uk_UA" />
             <meta property="og:type" content={type} />
             <meta property="og:title" content={effectiveTitle} />
-            <meta property="og:description" content={effectiveDesc} />
+            <meta property="og:description" content={ogDescription || effectiveDesc} />
             <meta property="og:image" content={effectiveOgImage} />
             {!is404 && <meta property="og:url" content={currentFullUrl} />}
             <meta property="og:site_name" content={shopConfig.seo.ogSiteName} />
@@ -102,6 +102,8 @@ export default function SEOHead({ title, description, keywords, h1, canonical, o
                 BUT for static pages managed via Admin, we might want to render H1 in PublicLayout? 
                 Or allow pages to fetch it.
             */}
+            {/* Custom tags passed as children (e.g., hreflang, twitter specific) */}
+            {children}
         </Helmet>
     );
 }

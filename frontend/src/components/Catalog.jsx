@@ -79,11 +79,13 @@ export default function Catalog({ predefinedCategory }) {
             : undefined;
         return {
             title: activeCategorySlug === 'drova'
-                ? 'Купити дрова у Києві — дуб, граб, береза | доставка | КиївБрикет'
+                ? 'Купити дрова в Києві — колоті дрова з доставкою | КиївБрикет'
                 : (cat.meta_title || `${cat.name} — купити з доставкою по Києву`),
-            description: cat.meta_description || fallbackDesc,
+            description: activeCategorySlug === 'drova'
+                ? 'Купити дрова в Києві з доставкою. Колоті дрова: дуб, граб, акація, ясен. Чесний складометр, власний автопарк — ГАЗель, ЗІЛ, КАМАЗ. Доставка по Києву та області.'
+                : (cat.meta_description || fallbackDesc),
             ogDescription: activeCategorySlug === 'drova'
-                ? 'Купити дрова у Києві з доставкою за 24 години. Дуб, граб, береза, вільха. Чесний складометр. КиївБрикет.'
+                ? 'Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен. Чесний складометр.'
                 : (cat.meta_description || fallbackDesc),
             h1: cat.seo_h1 || cat.name,
             ogImage: cat.og_image || cat.image_url,
@@ -147,11 +149,39 @@ export default function Catalog({ predefinedCategory }) {
             {activeCategory && (
                 <SEOHead
                     title={seo.title}
-                    description={seo.ogDescription || seo.description}
+                    description={seo.description}
+                    ogDescription={seo.ogDescription}
                     ogImage={seo.ogImage}
                     canonical={seo.canonical}
                     robots={seo.robots}
-                />
+                >
+                    {activeCategorySlug === 'drova' && (
+                        <>
+                            <link rel="alternate" hrefLang="uk" href="https://kievbriket.com/catalog/drova" />
+                            <link rel="alternate" hrefLang="x-default" href="https://kievbriket.com/catalog/drova" />
+                            <meta name="twitter:card" content="summary_large_image" />
+                            <meta name="twitter:title" content="Купити дрова в Києві — колоті дрова з доставкою" />
+                            <meta name="twitter:description" content="Дрова дуб, граб, акація, ясен з доставкою по Києву та області." />
+                            <meta name="twitter:image" content="https://kievbriket.com/media/categories/firewood.webp" />
+                            <script type="application/ld+json">
+                                {`
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": "Дрова",
+ "url": "https://kievbriket.com/catalog/drova",
+ "description": "Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен.",
+ "isPartOf": {
+   "@type": "WebSite",
+   "name": "КиївБрикет",
+   "url": "https://kievbriket.com"
+ }
+}
+                                `}
+                            </script>
+                        </>
+                    )}
+                </SEOHead>
             )}
 
             {/* ── PREMIUM CATEGORY PAGE (Dynamic for all categories) ── */}

@@ -78,7 +78,6 @@ function Products() {
           /* @__PURE__ */ jsx("th", { className: "px-6 py-4", children: "Фото" }),
           /* @__PURE__ */ jsx("th", { className: "px-6 py-4", children: "Назва" }),
           /* @__PURE__ */ jsx("th", { className: "px-6 py-4", children: "Ціна" }),
-          /* @__PURE__ */ jsx("th", { className: "px-6 py-4", children: "Вага" }),
           /* @__PURE__ */ jsx("th", { className: "px-6 py-4 text-right", children: "Дії" })
         ] }) }),
         /* @__PURE__ */ jsx("tbody", { className: "divide-y divide-gray-50", children: products.length > 0 ? products.map((product) => /* @__PURE__ */ jsxs("tr", { className: "hover:bg-gray-50/50 transition-colors group", children: [
@@ -102,7 +101,6 @@ function Products() {
             /* @__PURE__ */ jsx("span", { className: "font-bold text-gray-900", children: product.price }),
             /* @__PURE__ */ jsx("span", { className: "text-[10px] text-gray-400 ml-1", children: "₴" })
           ] }),
-          /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-gray-500", children: product.weight ? `${product.weight} г` : "-" }),
           /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right", children: /* @__PURE__ */ jsxs("div", { className: "flex justify-end gap-2", children: [
             /* @__PURE__ */ jsx(
               Link,
@@ -123,7 +121,7 @@ function Products() {
               }
             )
           ] }) })
-        ] }, product.id)) : /* @__PURE__ */ jsx("tr", { children: /* @__PURE__ */ jsx("td", { colSpan: "6", className: "px-6 py-20 text-center text-gray-500", children: "Товарів у цій категорії поки що немає" }) }) })
+        ] }, product.id)) : /* @__PURE__ */ jsx("tr", { children: /* @__PURE__ */ jsx("td", { colSpan: "5", className: "px-6 py-20 text-center text-gray-500", children: "Товарів у цій категорії поки що немає" }) }) })
       ] }) }),
       /* @__PURE__ */ jsx("div", { className: "md:hidden divide-y divide-gray-100", children: products.length > 0 ? products.map((product) => /* @__PURE__ */ jsxs("div", { className: "flex gap-3 p-4 bg-white hover:bg-gray-50 transition-colors", children: [
         /* @__PURE__ */ jsx("div", { className: "w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex-shrink-0 relative", children: /* @__PURE__ */ jsx(
@@ -144,14 +142,11 @@ function Products() {
           ] }),
           /* @__PURE__ */ jsx("div", { className: "text-[10px] text-gray-400 uppercase mt-0.5 tracking-wider font-medium", children: product.category }),
           /* @__PURE__ */ jsxs("div", { className: "flex justify-between items-end mt-2", children: [
-            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxs("span", { className: "font-bold text-gray-900 text-sm", children: [
-                product.price,
-                " ",
-                /* @__PURE__ */ jsx("span", { className: "text-[10px] text-gray-400 font-normal", children: "₴" })
-              ] }),
-              product.weight && /* @__PURE__ */ jsx("span", { className: "text-[10px] text-gray-400 px-1.5 py-0.5 bg-gray-100 rounded", children: product.weight >= 10 && product.weight <= 200 ? product.weight + "0 г" : product.weight + " кг" })
-            ] }),
+            /* @__PURE__ */ jsx("div", { className: "flex items-center gap-2", children: /* @__PURE__ */ jsxs("span", { className: "font-bold text-gray-900 text-sm", children: [
+              product.price,
+              " ",
+              /* @__PURE__ */ jsx("span", { className: "text-[10px] text-gray-400 font-normal", children: "₴" })
+            ] }) }),
             /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1", children: [
               /* @__PURE__ */ jsx(
                 Link,
@@ -179,4 +174,4 @@ function Products() {
 export {
   Products as default
 };
-//# sourceMappingURL=Products-DZ_d1rOQ.js.map
+//# sourceMappingURL=Products-8D6lj1jp.js.map

@@ -45,19 +45,22 @@ export default function ProductPage() {
     };
 
 
-    // Dynamic Specs
+    // Dynamic Specs — use product fields when available
     const specs = product ? [
-        { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Порода', value: product.name.toLowerCase().includes('дуб') ? 'Дуб' : (product.name.toLowerCase().includes('сосн') ? 'Сосна' : (product.name.toLowerCase().includes('граб') ? 'Граб' : (product.category === 'brikety' ? 'Деревна тирса' : 'Тверді породи'))) },
+        { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Порода', value: product.ingredients || (product.name.toLowerCase().includes('дуб') ? 'Дуб' : (product.name.toLowerCase().includes('сосн') ? 'Сосна' : (product.name.toLowerCase().includes('граб') ? 'Граб' : (product.category === 'brikety' ? 'Деревна тирса' : 'Тверді породи')))) },
         { icon: <CheckCircle2 size={17} color="var(--c-orange)" />, label: 'Тип', value: product.category === 'drova' ? 'Колоті' : (product.category === 'brikety' ? 'Пресовані' : 'Сипуче') },
+        { icon: <Ruler size={17} color="var(--c-orange)" />, label: 'Довжина полін', value: product.category === 'drova' ? '30-40 см' : '—' },
         { icon: <Scale size={17} color="var(--c-orange)" />, label: 'Фасування', value: product.category === 'drova' ? 'Складометр' : 'У пакуваннях / піддонах' },
-        { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Вологість', value: product.category === 'drova' ? 'Природна (До 25%)' : 'До 8%' },
+        { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Вологість', value: product.shelf_life || (product.category === 'drova' ? 'Природна (До 25%)' : 'До 8%') },
         { icon: <Truck size={17} color="var(--c-orange)" />, label: 'Доставка', value: 'По Києву та області' },
     ] : [];
 
     const faqs = product ? [
-        { q: `Скільки горять ${product.name.toLowerCase()}?`, a: `Залежить від типу вашого котла чи печі, але завдяки високій щільності та правильній вологості вони забезпечують максимально тривале горіння та високу тепловіддачу.` },
-        { q: `Який об\u02BCєм складометра?`, a: `Складометр \u2014 це щільно укладене паливо в об\u02BCємі 1 метр на 1 метр на 1 метр. Ми завжди гарантуємо чесний об\u02BCєм при завантаженні автомобіля.` },
-        { q: 'Чи можна замовити доставку сьогодні?', a: 'Так! При оформленні замовлення в першій половині дня ми намагаємося доставити власним транспортом в той же день по Києву та області.' }
+        { q: `Які дрова краще для опалення?`, a: `${product.ingredients || 'Дубові'} дрова вважаються одними з найкращих для опалення завдяки високій щільності деревини та тривалому горінню. Вони дають стабільний жар і підходять для твердопаливних котлів, печей та камінів.` },
+        { q: `Яка довжина полін у дров?`, a: `Стандартна довжина полін — 30-40 см. Це оптимальний розмір для більшості побутових котлів та печей.` },
+        { q: `Скільки дров потрібно на зиму?`, a: `Для опалення будинку площею 100 м² на один опалювальний сезон потрібно приблизно 8-12 складометрів дров, залежно від утеплення та типу котла.` },
+        { q: `Як відбувається доставка?`, a: `Доставка дров здійснюється власним автопарком: ГАЗель (2 склм), ЗІЛ (5 склм), КАМАЗ (10 склм). Також доступні гідроборт та кран-маніпулятор. Доставка по Києву та області протягом 24 годин.` },
+        { q: `Який об\u02BCєм складометра?`, a: `Складометр \u2014 це щільно укладене паливо в об\u02BCємі 1×1×1 метр. Ми завжди гарантуємо чесний об\u02BCєм при завантаженні автомобіля.` }
     ] : [];
 
     useEffect(() => {
@@ -66,22 +69,26 @@ export default function ProductPage() {
         window.scrollTo(0, 0);
         setLoading(true);
         setActiveImageIndex(0);
-        api.get('/products/')
-            .then(res => {
-                const data = res.data;
-                const items = Array.isArray(data) ? data : (data.items || []);
-                const found = items.find(p => p.slug === productSlug);
-                setProduct(found);
 
-                if (found) {
-                    const related = items.filter(p => p.category === found.category && p.slug !== found.slug).slice(0, 3);
-                    setRelatedProducts(related);
-                }
+        api.get(`/products/${productSlug}`)
+            .then(res => {
+                const found = res.data;
+                setProduct(found);
 
                 if (found?.variants?.length > 0) {
                     setSelectedVariant(found.variants[0]);
                 }
-                setLoading(false);
+
+                // Fetch related products
+                api.get(`/products/?category=${found.category}&limit=5`)
+                    .then(relRes => {
+                        const relData = relRes.data;
+                        const items = Array.isArray(relData) ? relData : (relData.items || []);
+                        const related = items.filter(p => p.slug !== found.slug).slice(0, 3);
+                        setRelatedProducts(related);
+                    })
+                    .catch(err => console.error("Failed to fetch related products:", err))
+                    .finally(() => setLoading(false));
             })
             .catch(() => setLoading(false));
     }, [productSlug]);
@@ -131,7 +138,7 @@ export default function ProductPage() {
     // Schemas are handled by generate-seo-pages.js during SSG (consolidated @graph)
     // SEOHead is used here ONLY for client-side navigation (no schema to avoid duplicates)
 
-    const dynamicTitle = `${product.name} купити Київ | ціна | KievBriket`;
+    const dynamicTitle = product.meta_title || `Купити ${product.name.toLowerCase()} з доставкою по Києву — ціна за складометр | КиївБрикет`;
 
     return (
         <div
@@ -402,160 +409,171 @@ export default function ProductPage() {
                         display: 'grid',
                         gridTemplateColumns: 'repeat(2, 1fr)',
                         gap: '1.5rem',
-                        alignItems: 'stretch'
+                        alignItems: 'start'
                     }}>
-                        {/* Specs */}
-                        <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', rowGap: '1.5rem' }}>
-                                {specs.map((spec, i) => (
-                                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                                        <div style={{
-                                            width: 38, height: 38, borderRadius: 10, flexShrink: 0,
-                                            background: 'var(--color-accent-soft)',
-                                            border: '1px solid rgba(249,115,22,0.15)',
-                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                        }}>
-                                            {spec.icon}
+                        {/* ── LEFT COLUMN ── */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                            {/* Specs */}
+                            <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', rowGap: '1.5rem' }}>
+                                    {specs.map((spec, i) => (
+                                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                            <div style={{
+                                                width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+                                                background: 'var(--color-accent-soft)',
+                                                border: '1px solid rgba(249,115,22,0.15)',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            }}>
+                                                {spec.icon}
+                                            </div>
+                                            <div>
+                                                <p style={{ fontSize: '0.75rem', color: 'var(--c-text2)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 700 }}>{spec.label}</p>
+                                                <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--c-text)', marginTop: 2 }}>{spec.value}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p style={{ fontSize: '0.75rem', color: 'var(--c-text2)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 700 }}>{spec.label}</p>
-                                            <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--c-text)', marginTop: 2 }}>{spec.value}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Description SEO Block */}
-                        <div className="nh-card" style={{ padding: '2rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.25rem' }}>
-                                Про ці дрова
-                            </h2>
-                            <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6 }}>
-                                {product.description ? (
-                                    <>
-                                        {(product.description.includes('<p>') || product.description.includes('<h2>')) ? (
-                                            <div dangerouslySetInnerHTML={{ __html: product.description }} className="product-seo-description" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} />
-                                        ) : (
-                                            <>
-                                                {product.category === 'drova' ? (
-                                                    <p style={{ marginBottom: '1rem' }}>
-                                                        {product.description} Ми пропонуємо якісні <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>дрова колоті</Link>, <Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link> з швидкою доставкою.
-                                                    </p>
-                                                ) : (
-                                                    <p style={{ marginBottom: '1rem' }}>{product.description}</p>
-                                                )}
-                                                <p>Наші дрова щільно укладені в кузові автомобіля (складометрами), що гарантує чесний об'єм при доставці.</p>
-                                            </>
-                                        )}
-                                    </>
-                                ) : (
-                                    <>
-                                        {product.category === 'drova' ? (
-                                            <p style={{ marginBottom: '1rem' }}>
-                                                Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів. Окрім <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>дров колотих</Link>, у нас можна замовити <Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link>.
-                                            </p>
-                                        ) : (
-                                            <p style={{ marginBottom: '1rem' }}>Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів.</p>
-                                        )}
-                                        <p>Ми ретельно відбираємо сировину, щоб забезпечити максимальну тепловіддачу. Замовляючи у нас, ви отримуєте чесний об'єм та гарантовану якість палива для вашої оселі.</p>
-                                    </>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* ── SECTION 3B: Delivery Info ── */}
-                        <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                                <div style={{
-                                    width: 38, height: 38, borderRadius: 10, flexShrink: 0,
-                                    background: 'var(--color-accent-soft)',
-                                    border: '1px solid rgba(249,115,22,0.15)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                }}>
-                                    <Truck size={18} color="var(--c-orange)" />
+                                    ))}
                                 </div>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', margin: 0 }}>
-                                    Інформація про доставку
-                                </h2>
                             </div>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingLeft: 50 }}>
-                                <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
-                                    <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Локація:</span> Доставка по Києву та області
-                                </p>
-                                <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
-                                    <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Термін доставки:</span> 1 день
-                                </p>
-                                {product.category === 'drova' && (
-                                    <>
-                                        <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
-                                            <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Мінімальне замовлення:</span> 1 складометр
-                                        </p>
-                                        <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
-                                            <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Типи доставки:</span> ГАЗель, ЗІЛ, КАМАЗ
-                                        </p>
-                                    </>
-                                )}
-                                <Link to="/dostavka" style={{ color: 'var(--c-orange)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 600, marginTop: '0.25rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                                    {product.category === 'drova' ? 'Детальніше про доставку дров' : 'Детальніше про доставку'} <ArrowRight size={14} />
-                                </Link>
-                            </div>
-                        </div>
 
-                        {/* ── SECTION 3.5: HOW TO ORDER ── */}
-                        <section className="nh-card order-steps" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>Як замовити дрова</h2>
-                            <ol style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', color: 'var(--c-text)', lineHeight: 1.6, fontWeight: 500, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                <li>Оберіть потрібний обсяг дров</li>
-                                <li>Натисніть кнопку "Замовити"</li>
-                                <li>Ми зв’яжемося для підтвердження доставки</li>
-                            </ol>
-                            <p style={{ color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6, margin: 0 }}>
-                                Доставка дров по Києву здійснюється власним транспортом протягом 24 годин після оформлення замовлення.
-                            </p>
-                        </section>
 
-                        {/* ── SECTION 4: FAQ ── */}
-                        <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
-                                Часті питання
-                            </h2>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                {faqs.map((faq, idx) => (
-                                    <div key={idx} style={{
-                                        background: 'var(--color-bg-elevated)',
-                                        border: '1px solid var(--color-border-subtle)',
-                                        borderRadius: 12, overflow: 'hidden',
+
+                            {/* ── SECTION 3B: Delivery Info ── */}
+                            <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                    <div style={{
+                                        width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+                                        background: 'var(--color-accent-soft)',
+                                        border: '1px solid rgba(249,115,22,0.15)',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     }}>
-                                        <button
-                                            onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                                            style={{
-                                                width: '100%', padding: '1.25rem 1.5rem',
-                                                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                                background: 'transparent', border: 'none', color: 'var(--c-text)',
-                                                fontSize: '1rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left',
-                                            }}
-                                        >
-                                            {faq.q}
-                                            <ChevronDown size={20} color="var(--c-orange)" style={{
-                                                transform: openFaq === idx ? 'rotate(180deg)' : 'rotate(0deg)',
-                                                transition: 'transform 0.3s ease'
-                                            }} />
-                                        </button>
-                                        <div style={{
-                                            maxHeight: openFaq === idx ? 200 : 0,
-                                            padding: openFaq === idx ? '0 1.5rem 1.5rem' : '0 1.5rem',
-                                            opacity: openFaq === idx ? 1 : 0,
-                                            overflow: 'hidden',
-                                            transition: 'all 0.3s ease',
-                                            color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6,
-                                        }}>
-                                            {faq.a}
-                                        </div>
+                                        <Truck size={18} color="var(--c-orange)" />
                                     </div>
-                                ))}
+                                    <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', margin: 0 }}>
+                                        Інформація про доставку
+                                    </h2>
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingLeft: 50 }}>
+                                    <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                        <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Локація:</span> Доставка по Києву та області
+                                    </p>
+                                    <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                        <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Термін доставки:</span> 1 день
+                                    </p>
+                                    {product.category === 'drova' && (
+                                        <>
+                                            <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                                <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Мінімальне замовлення:</span> 1 складометр
+                                            </p>
+                                            <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                                <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Автопарк:</span> ГАЗель, ЗІЛ, КАМАЗ
+                                            </p>
+                                            <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                                <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Спецтехніка:</span> гідроборт, кран-маніпулятор
+                                            </p>
+                                        </>
+                                    )}
+                                    <Link to="/dostavka" style={{ color: 'var(--c-orange)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 600, marginTop: '0.25rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                        {product.category === 'drova' ? 'Детальніше про доставку дров' : 'Детальніше про доставку'} <ArrowRight size={14} />
+                                    </Link>
+                                </div>
+                            </div>
+
+                            {/* ── SECTION 3.5: HOW TO ORDER ── */}
+                            <section className="nh-card order-steps" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
+                                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>Як замовити дрова</h2>
+                                <ol style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', color: 'var(--c-text)', lineHeight: 1.6, fontWeight: 500, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                    <li>Оберіть потрібний обсяг дров</li>
+                                    <li>Натисніть кнопку "Замовити"</li>
+                                    <li>Ми зв’яжемося для підтвердження доставки</li>
+                                </ol>
+                                <p style={{ color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6, margin: 0 }}>
+                                    Доставка дров по Києву здійснюється власним транспортом протягом 24 годин після оформлення замовлення.
+                                </p>
+                            </section>
+
+                            {/* ── SECTION 4: FAQ ── */}
+                            <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
+                                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
+                                    Часті питання
+                                </h2>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                    {faqs.map((faq, idx) => (
+                                        <div key={idx} style={{
+                                            background: 'var(--color-bg-elevated)',
+                                            border: '1px solid var(--color-border-subtle)',
+                                            borderRadius: 12, overflow: 'hidden',
+                                        }}>
+                                            <button
+                                                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                                                style={{
+                                                    width: '100%', padding: '1.25rem 1.5rem',
+                                                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                                    background: 'transparent', border: 'none', color: 'var(--c-text)',
+                                                    fontSize: '1rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left',
+                                                }}
+                                            >
+                                                {faq.q}
+                                                <ChevronDown size={20} color="var(--c-orange)" style={{
+                                                    transform: openFaq === idx ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                    transition: 'transform 0.3s ease'
+                                                }} />
+                                            </button>
+                                            <div style={{
+                                                maxHeight: openFaq === idx ? 200 : 0,
+                                                padding: openFaq === idx ? '0 1.5rem 1.5rem' : '0 1.5rem',
+                                                opacity: openFaq === idx ? 1 : 0,
+                                                overflow: 'hidden',
+                                                transition: 'all 0.3s ease',
+                                                color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6,
+                                            }}>
+                                                {faq.a}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
+
+                        {/* ── RIGHT COLUMN: Description SEO Block ── */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'sticky', top: '6rem' }}>
+                            <div className="nh-card" style={{ padding: '2rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
+                                <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.25rem' }}>
+                                    Про ці дрова
+                                </h2>
+                                <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6 }}>
+                                    {product.description ? (
+                                        <>
+                                            {(product.description.includes('<p>') || product.description.includes('<h2>')) ? (
+                                                <div dangerouslySetInnerHTML={{ __html: product.description }} className="product-seo-description" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} />
+                                            ) : (
+                                                <>
+                                                    {product.category === 'drova' ? (
+                                                        <p style={{ marginBottom: '1rem' }}>
+                                                            {product.description} Ми пропонуємо якісні <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>дрова колоті</Link>, <Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link> з швидкою доставкою.
+                                                        </p>
+                                                    ) : (
+                                                        <p style={{ marginBottom: '1rem' }}>{product.description}</p>
+                                                    )}
+                                                    <p>Наші дрова щільно укладені в кузові автомобіля (складометрами), що гарантує чесний об'єм при доставці.</p>
+                                                </>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <>
+                                            {product.category === 'drova' ? (
+                                                <p style={{ marginBottom: '1rem' }}>
+                                                    Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів. Окрім <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>дров колотих</Link>, у нас можна замовити <Link to="/catalog/brikety" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>паливні брикети</Link> та <Link to="/catalog/vugillya" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>кам'яне вугілля</Link>.
+                                                </p>
+                                            ) : (
+                                                <p style={{ marginBottom: '1rem' }}>Дубові дрова — одна з найкращих порід для опалення. Вони горять довго, дають стабільний жар та підходять для твердопаливних котлів, печей та камінів.</p>
+                                            )}
+                                            <p>Ми ретельно відбираємо сировину, щоб забезпечити максимальну тепловіддачу. Замовляючи у нас, ви отримуєте чесний об'єм та гарантовану якість палива для вашої оселі.</p>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

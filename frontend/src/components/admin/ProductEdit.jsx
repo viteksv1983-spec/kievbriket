@@ -387,6 +387,32 @@ export default function ProductEdit() {
 
                     {activeTab === 'seo' && (
                         <div className="space-y-6">
+                            {/* SEO Auto-fill Button */}
+                            <div className="flex items-center gap-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const name = formData.name || '';
+                                        const slug = formData.slug || '';
+                                        const cat = formData.category || 'drova';
+                                        if (!name) { alert('Спочатку заповніть назву товару!'); return; }
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            meta_title: prev.meta_title || `Купити ${name.toLowerCase()} з доставкою по Києву — ціна за складометр | КиївБрикет`,
+                                            meta_description: prev.meta_description || `${name} купити в Києві з доставкою. Чесний складометр, швидка доставка по Києву та області. Власний автопарк: ГАЗель, ЗІЛ, КАМАЗ.`,
+                                            h1_heading: prev.h1_heading || `${name} з доставкою по Києву`,
+                                            canonical_url: prev.canonical_url || `/catalog/${cat}/${slug}`,
+                                            meta_keywords: prev.meta_keywords || 'дрова київ, купити дрова, доставка дров, дрова складометр, дрова для опалення'
+                                        }));
+                                    }}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors whitespace-nowrap"
+                                >
+                                    🔧 Автозаповнення SEO
+                                </button>
+                                <p className="text-xs text-blue-700 m-0">
+                                    Заповнить порожні SEO поля на основі назви товару. Вже заповнені поля НЕ будуть перезаписані.
+                                </p>
+                            </div>
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">Meta Title (Заголовок вкладки)</label>
                                 <input

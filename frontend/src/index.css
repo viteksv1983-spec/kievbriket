@@ -109,3 +109,10 @@ img {
         display: block !important;
     }
 }
+
+/* Product info 2x2 grid → 1 column on mobile */
+@media (max-width: 768px) {
+    .product-info-grid {
+        grid-template-columns: 1fr !important;
+    }
+}

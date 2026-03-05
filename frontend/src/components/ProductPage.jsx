@@ -400,7 +400,7 @@ export default function ProductPage() {
                 <div style={{ marginTop: '4rem' }}>
                     <div className="product-info-grid" style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                        gridTemplateColumns: 'repeat(2, 1fr)',
                         gap: '1.5rem',
                         alignItems: 'start'
                     }}>

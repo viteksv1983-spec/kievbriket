@@ -48,7 +48,7 @@ export default function DeliveryOptionsDrova() {
                                 e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
                             }}
                         >
-                            <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: '#fff', padding: '1rem' }}>
+                            <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(20,25,30,0.4) 100%)', padding: '1rem' }}>
                                 <img
                                     src={getImgUrl(v.img)}
                                     alt={`Доставка дров машиною ${v.title} Київ`}
@@ -101,7 +101,7 @@ export default function DeliveryOptionsDrova() {
                                 e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
                             }}
                         >
-                            <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: '#fff', padding: '1rem' }}>
+                            <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(20,25,30,0.4) 100%)', padding: '1rem' }}>
                                 <img
                                     src={getImgUrl(eq.img)}
                                     alt={`Спецтехніка ${eq.title} для розвантаження дров Київ`}

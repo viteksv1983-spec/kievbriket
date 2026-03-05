@@ -12,18 +12,16 @@ import Home from './components/Home';
 import ScrollToTop from './components/ScrollToTop';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import NotFound from './components/NotFound';
-
-
-
-import Catalog from './components/Catalog';
-import ProductPage from './components/ProductPage';
-import Login from './components/Login';
-import Register from './components/Register';
-import Cart from './components/Cart';
-import Delivery from './components/Delivery';
-import Contacts from './components/Contacts';
-import About from './components/About';
-import DynamicPage from './components/DynamicPage';
+// Non-critical pages — lazy-loaded to reduce initial bundle size
+const Catalog = React.lazy(() => import('./components/Catalog'));
+const ProductPage = React.lazy(() => import('./components/ProductPage'));
+const Login = React.lazy(() => import('./components/Login'));
+const Register = React.lazy(() => import('./components/Register'));
+const Cart = React.lazy(() => import('./components/Cart'));
+const Delivery = React.lazy(() => import('./components/Delivery'));
+const Contacts = React.lazy(() => import('./components/Contacts'));
+const About = React.lazy(() => import('./components/About'));
+const DynamicPage = React.lazy(() => import('./components/DynamicPage'));
 
 // Admin (lazy — never needed on public pages)
 const AdminLayout = React.lazy(() => import('./components/admin/AdminLayout'));

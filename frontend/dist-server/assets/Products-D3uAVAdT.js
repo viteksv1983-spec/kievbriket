@@ -1,7 +1,7 @@
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { u as useAuth, b as useCategories, a as api } from "../entry-server.js";
+import { i as useAuth, c as useCategories, b as api } from "../entry-server.js";
 import { FiGrid, FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
 import "react-dom/server";
 import "react-fast-compare";
@@ -9,8 +9,6 @@ import "invariant";
 import "shallowequal";
 import "axios";
 import "lucide-react";
-import "@react-oauth/google";
-import "react-icons/fa";
 function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -174,4 +172,4 @@ function Products() {
 export {
   Products as default
 };
-//# sourceMappingURL=Products-8D6lj1jp.js.map
+//# sourceMappingURL=Products-D3uAVAdT.js.map

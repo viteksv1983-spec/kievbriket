@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { u as useAuth, b as useCategories, a as api } from "../entry-server.js";
+import { i as useAuth, c as useCategories, b as api } from "../entry-server.js";
 import { FiPlus, FiX, FiChevronUp, FiChevronDown, FiCheck, FiEdit2, FiTrash2, FiUpload } from "react-icons/fi";
 import "react-dom/server";
 import "react-fast-compare";
@@ -9,8 +9,6 @@ import "invariant";
 import "shallowequal";
 import "axios";
 import "lucide-react";
-import "@react-oauth/google";
-import "react-icons/fa";
 function CategoryManager() {
   const { token } = useAuth();
   const { categories, refetchCategories } = useCategories();
@@ -442,4 +440,4 @@ function CategoryManager() {
 export {
   CategoryManager as default
 };
-//# sourceMappingURL=CategoryManager-Dr2s_ua6.js.map
+//# sourceMappingURL=CategoryManager-BIlqku0L.js.map

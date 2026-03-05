@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { u as useAuth, a as api } from "../entry-server.js";
+import { i as useAuth, b as api } from "../entry-server.js";
 import { FiPlus, FiTrash2, FiSave, FiSettings, FiInfo } from "react-icons/fi";
 import "react-dom/server";
 import "react-fast-compare";
@@ -9,8 +9,6 @@ import "invariant";
 import "shallowequal";
 import "axios";
 import "lucide-react";
-import "@react-oauth/google";
-import "react-icons/fa";
 const PAGE_CONFIG = {
   "home": { route: "/", label: "Головна сторінка", icon: "🏠", defaultSchemaType: "localbusiness" },
   "delivery": { route: "/delivery", label: "Доставка", icon: "🚚", defaultSchemaType: "article" },
@@ -357,4 +355,4 @@ function PageEditor() {
 export {
   PageEditor as default
 };
-//# sourceMappingURL=PageEditor-BKYKocbz.js.map
+//# sourceMappingURL=PageEditor-Cmujr7KF.js.map

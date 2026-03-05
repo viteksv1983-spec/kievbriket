@@ -1,6 +1,6 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { u as useAuth, a as api, b as useCategories } from "../entry-server.js";
+import { i as useAuth, b as api, c as useCategories } from "../entry-server.js";
 import { useLocation, Link, Outlet } from "react-router-dom";
 import { FiX, FiMenu, FiShoppingBag, FiPackage, FiGrid, FiImage, FiPlus, FiLayers, FiMessageCircle, FiBarChart2, FiHome, FiLogOut } from "react-icons/fi";
 import { Flame } from "lucide-react";
@@ -9,8 +9,6 @@ import "react-fast-compare";
 import "invariant";
 import "shallowequal";
 import "axios";
-import "@react-oauth/google";
-import "react-icons/fa";
 function AdminLayout() {
   const { logout, token } = useAuth();
   const location = useLocation();
@@ -321,4 +319,4 @@ function AdminLayout() {
 export {
   AdminLayout as default
 };
-//# sourceMappingURL=AdminLayout-DywU__WK.js.map
+//# sourceMappingURL=AdminLayout-fz8nD-dm.js.map

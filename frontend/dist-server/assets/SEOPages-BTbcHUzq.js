@@ -1,6 +1,6 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { u as useAuth, a as api } from "../entry-server.js";
+import { i as useAuth, b as api } from "../entry-server.js";
 import { FiPlus, FiEdit2 } from "react-icons/fi";
 import "react-dom/server";
 import "react-router-dom";
@@ -9,8 +9,6 @@ import "invariant";
 import "shallowequal";
 import "axios";
 import "lucide-react";
-import "@react-oauth/google";
-import "react-icons/fa";
 function SEOPages() {
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -204,4 +202,4 @@ function SEOPages() {
 export {
   SEOPages as default
 };
-//# sourceMappingURL=SEOPages-Dvk6MJcu.js.map
+//# sourceMappingURL=SEOPages-BTbcHUzq.js.map

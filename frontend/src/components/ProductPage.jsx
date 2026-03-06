@@ -485,7 +485,7 @@ export default function ProductPage() {
                                         {briketH2}
                                     </h2>
                                 )}
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', rowGap: '1.5rem' }}>
+                                <div className="product-specs-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', rowGap: '1.5rem' }}>
                                     {specs.map((spec, i) => (
                                         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                                             <div style={{
@@ -551,9 +551,9 @@ export default function ProductPage() {
                             {/* ── SECTION 3.5: HOW TO ORDER ── */}
                             <section className="nh-card order-steps" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
                                 <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>Як замовити {product.category === 'brikety' ? 'брикети' : product.category === 'vugillya' ? 'вугілля' : 'дрова'}</h3>
-                                <ol style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', color: 'var(--c-text)', lineHeight: 1.6, fontWeight: 500, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                    <li>Оберіть потрібний обсяг {product.category === 'brikety' ? 'брикетів' : product.category === 'vugillya' ? 'вугілля' : 'дров'}</li>
-                                    <li>Натисніть кнопку "Замовити"</li>
+                                <ol className="order-steps-list" style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', color: 'var(--c-text)', lineHeight: 1.6, fontWeight: 500 }}>
+                                    <li style={{ marginBottom: '8px' }}>Оберіть потрібний обсяг {product.category === 'brikety' ? 'брикетів' : product.category === 'vugillya' ? 'вугілля' : 'дров'}</li>
+                                    <li style={{ marginBottom: '8px' }}>Натисніть кнопку "Замовити"</li>
                                     <li>Ми зв'яжемося для підтвердження доставки</li>
                                 </ol>
                                 <p style={{ color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6, margin: 0 }}>

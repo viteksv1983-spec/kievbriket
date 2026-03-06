@@ -212,33 +212,16 @@ img {
         justify-content: center !important;
     }
 
-    /* Fix block shifting in product-info-grid */
-    .product-info-grid>div {
-        align-items: center !important;
-        text-align: center !important;
-        width: 100% !important;
-        margin: 0 auto !important;
-    }
-
-    .product-info-grid .nh-card {
-        width: 100% !important;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    /* Overwrite specific text aligns that push text */
-    .product-info-grid .nh-card p,
-    .product-info-grid .nh-card div {
-        text-align: center !important;
-        justify-content: center !important;
-    }
-
-    /* Delivery list fixes in info grid */
+    /* Fix delivery list shifting right on mobile */
     .product-info-grid .nh-card div[style*="padding-left: 50"] {
         padding-left: 0 !important;
-        align-items: center !important;
     }
+
+    /* Force Characteristics grid to stack on mobile */
+    .product-specs-grid {
+        grid-template-columns: 1fr !important;
+    }
+
 
     /* Fix catalog card alignments on mobile categories */
     .catalog-card>div:last-child {

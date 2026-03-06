@@ -400,7 +400,13 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                                 </div>
                                             </div>
 
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '1.25rem' }}>
+                                            <div className="desktop-delivery-badge" style={{ marginBottom: '1.25rem' }}>
+                                                <span style={{ display: 'inline-flex', background: 'rgba(59,130,246,0.1)', color: '#3b82f6', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, alignItems: 'center', gap: '4px' }}>
+                                                    <Truck size={12} /> Доставимо сьогодні
+                                                </span>
+                                            </div>
+
+                                            <div className="mobile-badges-container" style={{ display: 'none', flexWrap: 'wrap', gap: '6px', marginBottom: '1.25rem' }}>
                                                 <span style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
                                                     <CheckCircle2 size={12} /> Є в наявності
                                                 </span>
@@ -414,6 +420,11 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                                 paddingTop: '1rem', borderTop: '1px solid rgba(255, 255, 255, 0.05)'
                                             }}>
                                                 <div>
+                                                    <div className="desktop-availability-badge" style={{ marginBottom: '6px' }}>
+                                                        <span style={{ display: 'inline-flex', background: 'rgba(34,197,94,0.1)', color: '#22c55e', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, alignItems: 'center', gap: '4px' }}>
+                                                            <CheckCircle2 size={12} /> Є в наявності
+                                                        </span>
+                                                    </div>
                                                     <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
                                                         <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{displayPrice}</span>
                                                         <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)' }}>грн / {activeCategory?.slug === 'vugillya' || activeCategory?.slug === 'brikety' ? 'тонну' : 'складометр'}</span>
@@ -446,6 +457,8 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                     }
                     @media (max-width: 640px) {
                         .product-grid { grid-template-columns: 1fr; }
+                        .desktop-delivery-badge, .desktop-availability-badge { display: none !important; }
+                        .mobile-badges-container { display: flex !important; }
                     }
                     .product-card-hover:hover .img-zoom {
                         transform: scale(1.05); /* Zoom image precisely on card hover */

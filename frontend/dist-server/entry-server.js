@@ -6255,7 +6255,11 @@ function CategoryProducts$2({ products, onOrderProduct, activeCategory }) {
                       /* @__PURE__ */ jsx("span", { children: info.use })
                     ] })
                   ] }),
-                  /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "1.25rem" }, children: [
+                  /* @__PURE__ */ jsx("div", { className: "desktop-delivery-badge", style: { marginBottom: "1.25rem" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(59,130,246,0.1)", color: "#3b82f6", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px" }, children: [
+                    /* @__PURE__ */ jsx(Truck, { size: 12 }),
+                    " Доставимо сьогодні"
+                  ] }) }),
+                  /* @__PURE__ */ jsxs("div", { className: "mobile-badges-container", style: { display: "none", flexWrap: "wrap", gap: "6px", marginBottom: "1.25rem" }, children: [
                     /* @__PURE__ */ jsxs("span", { style: { background: "rgba(34,197,94,0.1)", color: "#22c55e", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }, children: [
                       /* @__PURE__ */ jsx(CheckCircle2, { size: 12 }),
                       " Є в наявності"
@@ -6272,13 +6276,19 @@ function CategoryProducts$2({ products, onOrderProduct, activeCategory }) {
                     paddingTop: "1rem",
                     borderTop: "1px solid rgba(255, 255, 255, 0.05)"
                   }, children: [
-                    /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
-                      /* @__PURE__ */ jsx("span", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-orange)" }, children: displayPrice }),
-                      /* @__PURE__ */ jsxs("span", { style: { fontSize: "0.875rem", color: "var(--c-text2)" }, children: [
-                        "грн / ",
-                        activeCategory?.slug === "vugillya" || activeCategory?.slug === "brikety" ? "тонну" : "складометр"
+                    /* @__PURE__ */ jsxs("div", { children: [
+                      /* @__PURE__ */ jsx("div", { className: "desktop-availability-badge", style: { marginBottom: "6px" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(34,197,94,0.1)", color: "#22c55e", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px" }, children: [
+                        /* @__PURE__ */ jsx(CheckCircle2, { size: 12 }),
+                        " Є в наявності"
+                      ] }) }),
+                      /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
+                        /* @__PURE__ */ jsx("span", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-orange)" }, children: displayPrice }),
+                        /* @__PURE__ */ jsxs("span", { style: { fontSize: "0.875rem", color: "var(--c-text2)" }, children: [
+                          "грн / ",
+                          activeCategory?.slug === "vugillya" || activeCategory?.slug === "brikety" ? "тонну" : "складометр"
+                        ] })
                       ] })
-                    ] }) }),
+                    ] }),
                     /* @__PURE__ */ jsx(
                       "button",
                       {
@@ -6311,6 +6321,8 @@ function CategoryProducts$2({ products, onOrderProduct, activeCategory }) {
                     }
                     @media (max-width: 640px) {
                         .product-grid { grid-template-columns: 1fr; }
+                        .desktop-delivery-badge, .desktop-availability-badge { display: none !important; }
+                        .mobile-badges-container { display: flex !important; }
                     }
                     .product-card-hover:hover .img-zoom {
                         transform: scale(1.05); /* Zoom image precisely on card hover */
@@ -7074,7 +7086,11 @@ function CategoryProducts$1({ products, onOrderProduct }) {
                         /* @__PURE__ */ jsx("span", { children: "Вологість < 8%" })
                       ] })
                     ] }),
-                    /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "1.25rem" }, children: [
+                    /* @__PURE__ */ jsx("div", { className: "desktop-delivery-badge", style: { marginBottom: "1.25rem" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(59,130,246,0.1)", color: "#3b82f6", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px" }, children: [
+                      /* @__PURE__ */ jsx(Truck, { size: 12 }),
+                      " Доставимо сьогодні"
+                    ] }) }),
+                    /* @__PURE__ */ jsxs("div", { className: "mobile-badges-container", style: { display: "none", flexWrap: "wrap", gap: "6px", marginBottom: "1.25rem" }, children: [
                       /* @__PURE__ */ jsxs("span", { style: { background: "rgba(34,197,94,0.1)", color: "#22c55e", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }, children: [
                         /* @__PURE__ */ jsx(CheckCircle2, { size: 12 }),
                         " Є в наявності"
@@ -7091,10 +7107,16 @@ function CategoryProducts$1({ products, onOrderProduct }) {
                       paddingTop: "1rem",
                       borderTop: "1px solid rgba(255, 255, 255, 0.05)"
                     }, children: [
-                      /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
-                        /* @__PURE__ */ jsx("span", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-orange)" }, children: product.price }),
-                        /* @__PURE__ */ jsx("span", { style: { fontSize: "0.875rem", color: "var(--c-text2)" }, children: "грн / тонна" })
-                      ] }) }),
+                      /* @__PURE__ */ jsxs("div", { children: [
+                        /* @__PURE__ */ jsx("div", { className: "desktop-availability-badge", style: { marginBottom: "6px" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(34,197,94,0.1)", color: "#22c55e", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px" }, children: [
+                          /* @__PURE__ */ jsx(CheckCircle2, { size: 12 }),
+                          " Є в наявності"
+                        ] }) }),
+                        /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
+                          /* @__PURE__ */ jsx("span", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-orange)" }, children: product.price }),
+                          /* @__PURE__ */ jsx("span", { style: { fontSize: "0.875rem", color: "var(--c-text2)" }, children: "грн / тонна" })
+                        ] })
+                      ] }),
                       /* @__PURE__ */ jsx(
                         "button",
                         {
@@ -7124,7 +7146,15 @@ function CategoryProducts$1({ products, onOrderProduct }) {
           product.id
         ))
       }
-    )
+    ),
+    /* @__PURE__ */ jsx("style", { children: `
+                    .desktop-delivery-badge, .desktop-availability-badge { display: block; }
+                    .mobile-badges-container { display: none !important; }
+                    @media (max-width: 640px) {
+                        .desktop-delivery-badge, .desktop-availability-badge { display: none !important; }
+                        .mobile-badges-container { display: flex !important; }
+                    }
+                ` })
   ] }) });
 }
 function ComparisonTable() {
@@ -7857,7 +7887,11 @@ function CategoryProducts({ products, onOrderProduct }) {
                         /* @__PURE__ */ jsx("span", { children: "Довге горіння" })
                       ] })
                     ] }),
-                    /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "1.25rem" }, children: [
+                    /* @__PURE__ */ jsx("div", { className: "desktop-delivery-badge", style: { marginBottom: "1.25rem" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(59,130,246,0.1)", color: "#3b82f6", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px" }, children: [
+                      /* @__PURE__ */ jsx(Truck, { size: 12 }),
+                      " Доставимо сьогодні"
+                    ] }) }),
+                    /* @__PURE__ */ jsxs("div", { className: "mobile-badges-container", style: { display: "none", flexWrap: "wrap", gap: "6px", marginBottom: "1.25rem" }, children: [
                       /* @__PURE__ */ jsxs("span", { style: { background: "rgba(34,197,94,0.1)", color: "#22c55e", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }, children: [
                         /* @__PURE__ */ jsx(CheckCircle2, { size: 12 }),
                         " Є в наявності"
@@ -7874,10 +7908,16 @@ function CategoryProducts({ products, onOrderProduct }) {
                       paddingTop: "1rem",
                       borderTop: "1px solid rgba(255, 255, 255, 0.05)"
                     }, children: [
-                      /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
-                        /* @__PURE__ */ jsx("span", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-orange)" }, children: product.price }),
-                        /* @__PURE__ */ jsx("span", { style: { fontSize: "0.875rem", color: "var(--c-text2)" }, children: "грн / тонна" })
-                      ] }) }),
+                      /* @__PURE__ */ jsxs("div", { children: [
+                        /* @__PURE__ */ jsx("div", { className: "desktop-availability-badge", style: { marginBottom: "6px" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(34,197,94,0.1)", color: "#22c55e", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px" }, children: [
+                          /* @__PURE__ */ jsx(CheckCircle2, { size: 12 }),
+                          " Є в наявності"
+                        ] }) }),
+                        /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "baseline", gap: "4px" }, children: [
+                          /* @__PURE__ */ jsx("span", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-orange)" }, children: product.price }),
+                          /* @__PURE__ */ jsx("span", { style: { fontSize: "0.875rem", color: "var(--c-text2)" }, children: "грн / тонна" })
+                        ] })
+                      ] }),
                       /* @__PURE__ */ jsx(
                         "button",
                         {
@@ -7907,7 +7947,15 @@ function CategoryProducts({ products, onOrderProduct }) {
           product.id
         ))
       }
-    )
+    ),
+    /* @__PURE__ */ jsx("style", { children: `
+                    .desktop-delivery-badge, .desktop-availability-badge { display: block; }
+                    .mobile-badges-container { display: none !important; }
+                    @media (max-width: 640px) {
+                        .desktop-delivery-badge, .desktop-availability-badge { display: none !important; }
+                        .mobile-badges-container { display: flex !important; }
+                    }
+                ` })
   ] }) });
 }
 function PopularTypesBlock() {

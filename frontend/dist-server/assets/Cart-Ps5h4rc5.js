@@ -1,7 +1,7 @@
 import { jsxs, jsx, Fragment } from "react/jsx-runtime";
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { C as CartContext, A as AuthContext, u as usePhoneInput, S as SEOHead, a as api, g as getProductUrl } from "../entry-server.js";
+import { C as CartContext, A as AuthContext, u as usePhoneInput, S as SEOHead, g as getImageUrl, a as api, b as getProductUrl } from "../entry-server.js";
 import "react-dom/server";
 import "react-fast-compare";
 import "invariant";
@@ -181,7 +181,7 @@ function Cart() {
                   children: item.image_url && /* @__PURE__ */ jsx(
                     "img",
                     {
-                      src: item.image_url.startsWith("http") ? item.image_url : `${api.defaults.baseURL}${item.image_url}`,
+                      src: getImageUrl(item.image_url, api.defaults.baseURL),
                       alt: item.name,
                       className: "h-full w-full object-cover object-center"
                     }
@@ -453,4 +453,4 @@ function Cart() {
 export {
   Cart as default
 };
-//# sourceMappingURL=Cart-BZv_SkTW.js.map
+//# sourceMappingURL=Cart-Ps5h4rc5.js.map

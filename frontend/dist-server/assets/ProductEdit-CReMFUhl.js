@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { b as useAuth, c as useCategories, d as getImageUrl, a as api } from "../entry-server.js";
+import { c as useAuth, d as useCategories, g as getImageUrl, a as api } from "../entry-server.js";
 import { FiArrowLeft, FiSave } from "react-icons/fi";
 import "react-dom/server";
 import "react-fast-compare";
@@ -365,7 +365,7 @@ function ProductEdit() {
                 /* @__PURE__ */ jsx("div", { className: "relative w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden border border-gray-200 shrink-0", children: /* @__PURE__ */ jsx(
                   "img",
                   {
-                    src: getImageUrl(formData.image_url, api.defaults.baseURL),
+                    src: formData.image_url.startsWith("http") || formData.image_url.startsWith("blob") ? formData.image_url : getImageUrl(formData.image_url, api.defaults.baseURL),
                     alt: "Preview",
                     className: "w-full h-full object-cover"
                   }
@@ -440,7 +440,7 @@ function ProductEdit() {
                   setFormData((prev) => ({
                     ...prev,
                     seo_title: prev.seo_title || `Купити ${name.toLowerCase()} з доставкою по Києву — ціна за складометр | КиївБрикет`,
-                    seo_description: prev.seo_description || `${name} купити в Києві з доставкою. Чесний складометр, швидка доставка по Києву та області. Власний автопарк: ГАЗель, ЗІЛ, КАМАЗ.`,
+                    seo_description: prev.seo_description || `${name} купити в Києві з доставкою. Чесний складометр, швидка доставка по Києву та області. Типи: колоті, не колоті, ящик.`,
                     seo_h1: prev.seo_h1 || `${name} з доставкою по Києву`,
                     canonical_url: prev.canonical_url || `/catalog/${cat}/${slug}`,
                     meta_keywords: prev.meta_keywords || "дрова київ, купити дрова, доставка дров, дрова складометр, дрова для опалення"
@@ -540,4 +540,4 @@ function ProductEdit() {
 export {
   ProductEdit as default
 };
-//# sourceMappingURL=ProductEdit-Dd0K98n8.js.map
+//# sourceMappingURL=ProductEdit-CReMFUhl.js.map

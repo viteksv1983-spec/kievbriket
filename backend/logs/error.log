@@ -27,3 +27,34 @@
 2026-03-06 01:05:57 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
 2026-03-06 01:07:24 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
 2026-03-06 01:07:24 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 02:11:12 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-06 02:11:12 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-06 02:32:56 WARNING  [cakeshop.errors] HTTP 404: Product not found — GET /products/vuhillya-antratsyt-horikh
+2026-03-06 02:35:18 WARNING  [cakeshop.errors] HTTP 404: Product not found — GET /products/vuhillya-hazove-dpk
+2026-03-06 02:35:24 WARNING  [cakeshop.errors] HTTP 404: Product not found — GET /products/vuhillya-antratsyt-nasinnya
+2026-03-06 02:45:23 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-06 02:45:25 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-06 03:12:29 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 03:12:29 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 03:14:34 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 03:14:34 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 03:15:42 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 03:15:42 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 03:16:28 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 03:16:28 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 03:29:25 WARNING  [cakeshop.errors] HTTP 404: Product not found — GET /products/vugillya-dh-anthracite
+2026-03-06 03:30:28 WARNING  [cakeshop.errors] HTTP 404: Product not found — GET /products/brikety-ruf-dubovi
+2026-03-06 15:29:54 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 15:29:54 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 16:42:45 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 16:42:45 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 16:46:50 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-06 16:46:50 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-06 16:50:34 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 16:50:34 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 16:55:45 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-06 16:56:23 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — POST /admin/upload
+2026-03-06 17:00:35 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 17:00:35 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 17:41:01 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-06 17:41:01 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/

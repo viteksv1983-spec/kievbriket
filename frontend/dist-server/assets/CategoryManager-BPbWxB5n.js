@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { b as useAuth, c as useCategories, a as api } from "../entry-server.js";
+import { c as useAuth, d as useCategories, a as api, g as getImageUrl } from "../entry-server.js";
 import { FiPlus, FiX, FiChevronUp, FiChevronDown, FiCheck, FiEdit2, FiTrash2, FiUpload } from "react-icons/fi";
 import "react-dom/server";
 import "react-fast-compare";
@@ -154,7 +154,7 @@ function CategoryManager() {
   };
   const getCategoryImage = (cat) => {
     if (cat && cat.image_url) {
-      return cat.image_url.startsWith("http") ? cat.image_url : `${api.defaults.baseURL}${cat.image_url}`;
+      return cat.image_url.startsWith("http") || cat.image_url.startsWith("blob") ? cat.image_url : getImageUrl(cat.image_url, api.defaults.baseURL);
     }
     return `https://placehold.co/400x400/fff/7b002c?text=${cat.name || cat.slug}`;
   };
@@ -441,4 +441,4 @@ function CategoryManager() {
 export {
   CategoryManager as default
 };
-//# sourceMappingURL=CategoryManager-Byw8y8Rr.js.map
+//# sourceMappingURL=CategoryManager-BPbWxB5n.js.map

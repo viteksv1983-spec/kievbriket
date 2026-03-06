@@ -1,6 +1,6 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { b as useAuth, a as api } from "../entry-server.js";
+import { c as useAuth, a as api } from "../entry-server.js";
 import { FiPlus, FiEdit2 } from "react-icons/fi";
 import "react-dom/server";
 import "react-router-dom";
@@ -203,4 +203,4 @@ function SEOPages() {
 export {
   SEOPages as default
 };
-//# sourceMappingURL=SEOPages-DzKVOXzR.js.map
+//# sourceMappingURL=SEOPages-AlcA5Ryi.js.map

@@ -1,6 +1,6 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { b as useAuth, a as api, c as useCategories } from "../entry-server.js";
+import { c as useAuth, a as api, d as useCategories } from "../entry-server.js";
 import { useLocation, Link, Outlet } from "react-router-dom";
 import { FiX, FiMenu, FiShoppingBag, FiPackage, FiGrid, FiImage, FiPlus, FiLayers, FiMessageCircle, FiBarChart2, FiHome, FiLogOut } from "react-icons/fi";
 import { Flame } from "lucide-react";
@@ -320,4 +320,4 @@ function AdminLayout() {
 export {
   AdminLayout as default
 };
-//# sourceMappingURL=AdminLayout-C8O55oV3.js.map
+//# sourceMappingURL=AdminLayout-CQuT53R-.js.map

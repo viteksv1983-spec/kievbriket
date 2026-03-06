@@ -53,7 +53,7 @@ export default function ProductPage() {
         value: s.value
     })) : product ? [
         { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Порода', value: product.ingredients || (product.name.toLowerCase().includes('дуб') ? 'Дуб' : (product.name.toLowerCase().includes('сосн') ? 'Сосна' : (product.name.toLowerCase().includes('граб') ? 'Граб' : (product.category === 'brikety' ? 'Деревна тирса' : 'Тверді породи')))) },
-        { icon: <CheckCircle2 size={17} color="var(--c-orange)" />, label: 'Тип', value: product.category === 'drova' ? 'Колоті' : (product.category === 'brikety' ? 'Пресовані' : 'Сипуче') },
+        { icon: <CheckCircle2 size={17} color="var(--c-orange)" />, label: 'Тип', value: product.category === 'drova' ? 'Колоті, Не колоті, Ящик' : (product.category === 'brikety' ? 'Пресовані' : 'Сипуче') },
         product.category === 'brikety'
             ? { icon: <Ruler size={17} color="var(--c-orange)" />, label: 'Форма брикетів', value: product.name.toLowerCase().includes('ruf') ? 'Прямокутні пресовані' : product.name.toLowerCase().includes('pini') ? 'Восьмигранні з отвором' : product.name.toLowerCase().includes('nestro') ? 'Циліндричні' : product.name.toLowerCase().includes('пелет') ? 'Гранули 6-8 мм' : 'Пресований торф' }
             : { icon: <Ruler size={17} color="var(--c-orange)" />, label: 'Довжина полін', value: product.category === 'drova' ? '30-40 см' : '—' },

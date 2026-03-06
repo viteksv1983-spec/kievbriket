@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { b as useAuth, a as api } from "../entry-server.js";
+import { c as useAuth, a as api } from "../entry-server.js";
 import { FiPlus, FiTrash2, FiSave, FiSettings, FiInfo } from "react-icons/fi";
 import "react-dom/server";
 import "react-fast-compare";
@@ -356,4 +356,4 @@ function PageEditor() {
 export {
   PageEditor as default
 };
-//# sourceMappingURL=PageEditor-B-AsxV3M.js.map
+//# sourceMappingURL=PageEditor-RQqKn3Z-.js.map

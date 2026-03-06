@@ -471,7 +471,7 @@ export default function ProductEdit() {
                                         setFormData(prev => ({
                                             ...prev,
                                             seo_title: prev.seo_title || `Купити ${name.toLowerCase()} з доставкою по Києву — ціна за складометр | КиївБрикет`,
-                                            seo_description: prev.seo_description || `${name} купити в Києві з доставкою. Чесний складометр, швидка доставка по Києву та області. Власний автопарк: ГАЗель, ЗІЛ, КАМАЗ.`,
+                                            seo_description: prev.seo_description || `${name} купити в Києві з доставкою. Чесний складометр, швидка доставка по Києву та області. Типи: колоті, не колоті, ящик.`,
                                             seo_h1: prev.seo_h1 || `${name} з доставкою по Києву`,
                                             canonical_url: prev.canonical_url || `/catalog/${cat}/${slug}`,
                                             meta_keywords: prev.meta_keywords || 'дрова київ, купити дрова, доставка дров, дрова складометр, дрова для опалення'

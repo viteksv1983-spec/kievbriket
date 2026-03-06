@@ -64,11 +64,10 @@ def make_schema(prod):
 
 def make_variants(base_price):
     return [
-        {"name": "ГАЗель (2 склм)", "price": base_price},
-        {"name": "ЗІЛ (5 склм)", "price": round(base_price * 0.95)},
-        {"name": "КАМАЗ (10 склм)", "price": round(base_price * 0.90)}
+        {"name": "Колоті", "price": base_price},
+        {"name": "Не колоті (від 10 складометрів)", "price": base_price},
+        {"name": "Ящик 2 складометри", "price": base_price * 2}
     ]
-
 
 # ── Product data ───────────────────────────────────────────────────────────────
 
@@ -76,7 +75,7 @@ PRODUCTS = [
     {
         "name": "Дубові дрова",
         "slug": "dubovi-drova",
-        "price": 2200,
+        "price": 3800,
         "image": "/media/products/oak.webp",
         "ingredients": "Дуб",
         "shelf_life": "Природна (до 25%)",

@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { b as useAuth, a as api } from "../entry-server.js";
+import { c as useAuth, g as getImageUrl, a as api } from "../entry-server.js";
 import { FiUser, FiChevronRight, FiPackage, FiCopy, FiX, FiPhone, FiTruck } from "react-icons/fi";
 import "react-dom/server";
 import "react-fast-compare";
@@ -180,7 +180,7 @@ ${itemsText}
             /* @__PURE__ */ jsx("div", { className: "w-10 h-10 rounded-xl bg-gray-50 flex-shrink-0 relative overflow-hidden shadow-sm border border-gray-100", children: item.product?.image_url ? /* @__PURE__ */ jsx(
               "img",
               {
-                src: item.product.image_url.startsWith("http") ? item.product.image_url : `${api.defaults.baseURL}${item.product.image_url}`,
+                src: getImageUrl(item.product.image_url, api.defaults.baseURL),
                 alt: "product",
                 className: "w-full h-full object-cover"
               }
@@ -294,7 +294,7 @@ ${itemsText}
                 /* @__PURE__ */ jsx("div", { className: "w-16 h-16 bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 flex-shrink-0", children: item.product?.image_url && /* @__PURE__ */ jsx(
                   "img",
                   {
-                    src: item.product.image_url.startsWith("http") ? item.product.image_url : `${api.defaults.baseURL}${item.product.image_url}`,
+                    src: getImageUrl(item.product.image_url, api.defaults.baseURL),
                     className: "w-full h-full object-cover"
                   }
                 ) }),
@@ -355,4 +355,4 @@ ${itemsText}
 export {
   Orders as default
 };
-//# sourceMappingURL=Orders-Cp_Zo_wR.js.map
+//# sourceMappingURL=Orders-lDs1WTX2.js.map

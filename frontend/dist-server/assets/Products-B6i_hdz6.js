@@ -1,7 +1,7 @@
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { b as useAuth, c as useCategories, a as api } from "../entry-server.js";
+import { c as useAuth, d as useCategories, g as getImageUrl, a as api } from "../entry-server.js";
 import { FiGrid, FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
 import "react-dom/server";
 import "react-fast-compare";
@@ -87,7 +87,7 @@ function Products() {
           /* @__PURE__ */ jsx("td", { className: "px-6 py-4", children: /* @__PURE__ */ jsx("div", { className: "w-12 h-12 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 group-hover:border-yellow-200 transition-colors", children: /* @__PURE__ */ jsx(
             "img",
             {
-              src: product.image_url && product.image_url.startsWith("http") ? product.image_url : `${api.defaults.baseURL}${product.image_url}`,
+              src: getImageUrl(product.image_url, api.defaults.baseURL),
               alt: product.name,
               className: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             }
@@ -126,7 +126,7 @@ function Products() {
         /* @__PURE__ */ jsx("div", { className: "w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex-shrink-0 relative", children: /* @__PURE__ */ jsx(
           "img",
           {
-            src: product.image_url && product.image_url.startsWith("http") ? product.image_url : `${api.defaults.baseURL}${product.image_url}`,
+            src: getImageUrl(product.image_url, api.defaults.baseURL),
             alt: product.name,
             className: "w-full h-full object-cover"
           }
@@ -173,4 +173,4 @@ function Products() {
 export {
   Products as default
 };
-//# sourceMappingURL=Products-L_-kyUXu.js.map
+//# sourceMappingURL=Products-B6i_hdz6.js.map

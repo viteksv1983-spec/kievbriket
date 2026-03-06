@@ -452,8 +452,10 @@ ${prod.price ? `                            <meta property="product:price:amount
                 html = headPart + bodyPart;
             }
 
-            // 2. Replace API domain with production domain for all image URLs
-            html = html.replace(/https?:\/\/kievbriket-api\.onrender\.com/g, domain);
+            // 2. Do NOT replace API domain with production domain for image URLs.
+            //    The backend API hosts the media, so we MUST keep the API absolute URLs
+            //    in the static HTML. The frontend domain does not have /media.
+            // html = html.replace(/https?:\/\/kievbriket-api\.onrender\.com/g, domain);
 
             // Write to dist folder structure
             const relativePath = route.path === '/' ? '' : route.path.replace(/^\//, '');

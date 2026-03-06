@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SiteHeader } from './new-home/SiteHeader';
 import { SiteFooter } from './new-home/SiteFooter';
 import { OrderFormModal } from './new-home/OrderFormModal';
+import GoogleAnalytics from './GoogleAnalytics';
 
 export default function PublicLayout() {
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
@@ -27,6 +28,7 @@ export default function PublicLayout() {
                 isOpen={isOrderFormOpen}
                 onClose={() => setIsOrderFormOpen(false)}
             />
+            <GoogleAnalytics />
         </div>
     );
 }

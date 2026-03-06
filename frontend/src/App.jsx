@@ -10,7 +10,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Critical path (Home is the landing page)
 import Home from './components/Home';
 import ScrollToTop from './components/ScrollToTop';
-import GoogleAnalytics from './components/GoogleAnalytics';
 import NotFound from './components/NotFound';
 // Critical SEO and Public Pages — statically imported to support SSR/SSG without Suspense fallback mismatch
 import Catalog from './components/Catalog';
@@ -43,7 +42,6 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <ScrollToTop />
-        <GoogleAnalytics />
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-[#A0153E] border-t-transparent rounded-full animate-spin" /></div>}>
           <Routes>
             <Route element={<PublicLayout />}>

@@ -133,6 +133,13 @@ img {
         padding: 1.25rem !important;
     }
 
+    /* Product cards and their wrappers should never squeeze the images on mobile */
+    .product-card-link .nh-card,
+    .product-grid .nh-card {
+        padding: 0 !important;
+        border: none !important;
+    }
+
     /* Keep answer text left-aligned but add breathing room */
     .faq-answer-mobile {
         text-align: left;

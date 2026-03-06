@@ -381,16 +381,6 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                         <div className="product-card-body" style={{ padding: 'clamp(1rem, 3vw, 1.5rem)', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
                                             <div className="product-card-title-static" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '1rem', flexShrink: 0 }}>
                                                 <h3 className="h3" style={{ margin: 0, fontSize: '1.25rem', lineHeight: 1.3 }}>{product.name}</h3>
-                                                <div style={{
-                                                    display: 'flex', alignItems: 'center', gap: '4px',
-                                                    background: '#22C55E', color: '#fff',
-                                                    padding: '4px 10px', borderRadius: '40px',
-                                                    fontSize: '0.75rem', fontWeight: 700, flexShrink: 0,
-                                                    boxShadow: '0 0 10px rgba(34,197,94,0.4)',
-                                                    marginTop: '4px'
-                                                }}>
-                                                    ✔ В наявності
-                                                </div>
                                             </div>
 
                                             <div style={{ flex: 1 }}>

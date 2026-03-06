@@ -21,7 +21,6 @@ def migrate_drova_variants():
         
         new_variants = [
             {"name": "Колоті", "price": base_price},
-            {"name": "Не колоті (від 10 складометрів)", "price": base_price},
             {"name": "Ящик 2 складометри", "price": base_price * 2}
         ]
         

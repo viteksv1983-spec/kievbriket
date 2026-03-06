@@ -12,6 +12,7 @@ const QuickOrderModal = ({
     weight
 }) => {
     const [name, setName] = useState('');
+    const [quantity, setQuantity] = useState(1);
     const { phoneProps, rawPhone, resetPhone, digits } = usePhoneInput();
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
@@ -34,7 +35,7 @@ const QuickOrderModal = ({
                 customer_name: name,
                 customer_phone: rawPhone,
                 product_id: product.id,
-                quantity: 1,
+                quantity: quantity,
                 flavor: flavor || null,
                 weight: weight || null,
                 delivery_method: deliveryMethod || 'pickup',
@@ -118,6 +119,25 @@ const QuickOrderModal = ({
                                 id="phone"
                                 required
                             />
+                        </div>
+
+                        <div>
+                            <label className="block text-gray-700 text-[10px] font-bold uppercase tracking-widest mb-1.5" htmlFor="quantity">
+                                Кількість (складометрів / шт)
+                            </label>
+                            <div className="flex items-center w-full bg-[#f8f9fa] border border-gray-100 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#D39A5E]/20 focus-within:border-[#D39A5E] transition-all">
+                                <button type="button" onClick={() => setQuantity(q => Math.max(1, q - 1))} className="px-4 py-3 text-gray-500 hover:bg-gray-200 transition-colors font-bold text-lg leading-none">-</button>
+                                <input
+                                    id="quantity"
+                                    type="number"
+                                    min="1"
+                                    step="1"
+                                    value={quantity}
+                                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                                    className="w-full bg-transparent border-none text-center font-bold text-gray-800 focus:outline-none p-0"
+                                />
+                                <button type="button" onClick={() => setQuantity(q => q + 1)} className="px-4 py-3 text-gray-500 hover:bg-gray-200 transition-colors font-bold text-lg leading-none">+</button>
+                            </div>
                         </div>
 
                         <button

@@ -6,7 +6,7 @@ import { usePhoneInput } from "../../hooks/usePhoneInput";
 const fuelOptions = ["Дрова", "Паливні брикети", "Вугілля", "Декілька видів"];
 
 export function OrderFormModal({ isOpen, onClose, product, variant }) {
-    const [form, setForm] = useState({ name: "", fuel: "", message: "" });
+    const [form, setForm] = useState({ name: "", fuel: "", message: "", quantity: 1 });
     const { phoneValue, phoneProps, rawPhone, resetPhone } = usePhoneInput();
     const [status, setStatus] = useState("idle");
 
@@ -26,7 +26,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
             // Reset form when closed
             setTimeout(() => {
                 setStatus("idle");
-                setForm({ name: "", fuel: "", message: "" });
+                setForm({ name: "", fuel: "", message: "", quantity: 1 });
                 resetPhone();
             }, 300);
         }
@@ -41,7 +41,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
                 customer_name: form.name.trim() || 'Клієнт',
                 customer_phone: rawPhone,
                 cake_id: product ? product.id : null,
-                quantity: 1,
+                quantity: form.quantity || 1,
                 flavor: variant ? variant.name : form.fuel,
                 weight: product ? product.weight : null
             };
@@ -54,7 +54,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
 
             await api.post('/orders/quick', payload);
             setStatus("success");
-            setForm({ name: "", fuel: "", message: "" });
+            setForm({ name: "", fuel: "", message: "", quantity: 1 });
             resetPhone();
         } catch (error) {
             console.error("Order submission failed:", error);
@@ -231,6 +231,24 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
                                 </select>
                             </div>
                         )}
+
+                        {/* Quantity */}
+                        <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                            <label htmlFor="ofm-quantity" style={{ fontSize: "0.8rem", fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>Кількість (складометрів / шт)</label>
+                            <div style={{ display: "flex", alignItems: "center", ...inputStyle, padding: "4px" }}>
+                                <button type="button" onClick={() => setForm(f => ({ ...f, quantity: Math.max(1, f.quantity - 1) }))} style={{ background: "transparent", border: "none", color: "#fff", padding: "10px 15px", cursor: "pointer", fontSize: "1.2rem", fontWeight: 800 }}>-</button>
+                                <input
+                                    id="ofm-quantity"
+                                    type="number"
+                                    min="1"
+                                    step="1"
+                                    value={form.quantity}
+                                    onChange={(e) => setForm(f => ({ ...f, quantity: Math.max(1, parseInt(e.target.value) || 1) }))}
+                                    style={{ flex: 1, background: "transparent", border: "none", color: "#fff", textAlign: "center", fontSize: "1rem", fontWeight: 700, outline: "none", width: "100%", padding: 0 }}
+                                />
+                                <button type="button" onClick={() => setForm(f => ({ ...f, quantity: f.quantity + 1 }))} style={{ background: "transparent", border: "none", color: "#fff", padding: "10px 15px", cursor: "pointer", fontSize: "1.2rem", fontWeight: 800 }}>+</button>
+                            </div>
+                        </div>
 
                         {/* Comment */}
                         <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>

@@ -60,3 +60,11 @@
 2026-03-06 17:41:01 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
 2026-03-06 19:29:43 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
 2026-03-06 19:29:43 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 20:08:21 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 20:08:21 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 20:28:42 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 20:28:42 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 20:30:34 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 20:30:34 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 20:34:28 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 20:34:28 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route

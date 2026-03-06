@@ -58,6 +58,14 @@ class OrderService:
             item_weight = item.weight if item.weight is not None else base_weight_kg
             item_price = round(price_per_kg * item_weight)
             
+            # --- OVERRIDE IF VARIANT EXISTS ---
+            if product.variants and item.flavor:
+                for v in product.variants:
+                    v_name = v.get("name", "")
+                    if v_name and item.flavor.startswith(v_name):
+                        item_price = v.get("price", item_price)
+                        break
+            
             total_price += item_price * item.quantity
             db_items.append(models.OrderItem(cake_id=item.cake_id, quantity=item.quantity, flavor=item.flavor, weight=item.weight))
 
@@ -182,6 +190,15 @@ class OrderService:
             price_per_kg = product.price / base_weight_kg
             item_weight = order.weight if order.weight is not None else base_weight_kg
             item_price = round(price_per_kg * item_weight)
+            
+            # --- OVERRIDE IF VARIANT EXISTS ---
+            if product.variants and order.flavor:
+                for v in product.variants:
+                    v_name = v.get("name", "")
+                    if v_name and order.flavor.startswith(v_name):
+                        item_price = v.get("price", item_price)
+                        break
+            
             total_price = item_price * order.quantity
 
         db_order = models.Order(

@@ -211,6 +211,62 @@ img {
     .breadcrumbs-container {
         justify-content: center !important;
     }
+
+    /* Fix block shifting in product-info-grid */
+    .product-info-grid>div {
+        align-items: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    .product-info-grid .nh-card {
+        width: 100% !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Overwrite specific text aligns that push text */
+    .product-info-grid .nh-card p,
+    .product-info-grid .nh-card div {
+        text-align: center !important;
+        justify-content: center !important;
+    }
+
+    /* Delivery list fixes in info grid */
+    .product-info-grid .nh-card div[style*="padding-left: 50"] {
+        padding-left: 0 !important;
+        align-items: center !important;
+    }
+
+    /* Fix catalog card alignments on mobile categories */
+    .catalog-card>div:last-child {
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .catalog-card .catalog-card-description {
+        text-align: center !important;
+    }
+
+    .catalog-card [style*="justify-content: space-between"] {
+        justify-content: center !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        width: 100% !important;
+    }
+
+    .catalog-card>div:last-child>div:last-child>div {
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .catalog-card-btn {
+        width: 100% !important;
+        text-align: center !important;
+    }
 }
 
 

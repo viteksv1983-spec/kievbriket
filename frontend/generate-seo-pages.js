@@ -170,7 +170,7 @@ async function generatePages() {
  "@type": "CollectionPage",
  "name": "Кам'яне вугілля",
  "url": "https://kievbriket.com/catalog/vugillya",
- "description": "Купити кам'яне вугілля в Києві з доставкою.",
+ "description": "Купити кам'яне вугілля в Києві з доставкою. Антрацит та інші види вугілля для котлів і печей.",
  "isPartOf": {
    "@type": "WebSite",
    "name": "КиївБрикет",

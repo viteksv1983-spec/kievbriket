@@ -3,6 +3,7 @@ import { ArrowRight, Truck, Package, Flame as FireIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useReveal } from "../../hooks/useReveal";
 import api from "../../api";
+import { getImageUrl } from "../../utils/urls";
 
 function ProductCard({ p, delay }) {
     const [hovered, setHovered] = useState(false);
@@ -29,10 +30,11 @@ function ProductCard({ p, delay }) {
         seoDescription = "Кам’яне вугілля антрацит та інші види для ефективного опалення.";
     }
 
-    // Handle image URL properly
-    const imgUrl = p.image_url
-        ? (p.image_url.startsWith('http') ? p.image_url : `${api.defaults.baseURL}${p.image_url}`)
-        : `https://placehold.co/400x300/fff/7b002c?text=${p.name}`;
+    // Handle image URL properly using the shared utility
+
+    // Handle image URL properly using the shared utility
+    const imgUrl = getImageUrl(p.image_url, api.defaults.baseURL)
+        || `https://placehold.co/400x300/fff/7b002c?text=${encodeURIComponent(p.name)}`;
 
     return (
         <article

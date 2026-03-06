@@ -400,7 +400,7 @@ export default function ProductEdit() {
                                         <div className="flex items-center gap-4">
                                             <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden border border-gray-200 shrink-0">
                                                 <img
-                                                    src={getImageUrl(formData.image_url, api.defaults.baseURL)}
+                                                    src={formData.image_url.startsWith('http') || formData.image_url.startsWith('blob') ? formData.image_url : getImageUrl(formData.image_url, api.defaults.baseURL)}
                                                     alt="Preview"
                                                     className="w-full h-full object-cover"
                                                 />

@@ -378,6 +378,11 @@ def import_products_csv(
                     existing.shelf_life = shelf_life
                 if image_url:
                     existing.image_url = image_url
+                
+                # Auto-generate image_alt if missing
+                if not existing.image_alt and existing.name:
+                    existing.image_alt = existing.name
+                    
                 updated += 1
             else:
                 # Create new
@@ -397,6 +402,7 @@ def import_products_csv(
                     ingredients=ingredients,
                     shelf_life=shelf_life,
                     image_url=image_url,
+                    image_alt=name,
                 )
                 db.add(new_product)
                 created += 1

@@ -22,8 +22,15 @@ export default defineConfig(({ isSsrBuild }) => ({
   server: {
     host: true,
     proxy: {
-      '/api': 'http://localhost:8000',
-      '/media': 'http://localhost:8000',
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      '/media': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
+      }
     }
   },
   ssr: {

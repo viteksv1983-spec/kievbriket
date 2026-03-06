@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import api from '../../api';
+import { getImageUrl } from '../../utils/urls';
 import { useAuth } from '../../context/AuthContext';
 import { useCategories } from '../../context/CategoryContext';
 import { FiUpload, FiCheck, FiX, FiPlus, FiTrash2, FiEdit2, FiChevronDown, FiChevronUp } from 'react-icons/fi';
@@ -169,7 +170,7 @@ export default function CategoryManager() {
 
     const getCategoryImage = (cat) => {
         if (cat && cat.image_url) {
-            return cat.image_url.startsWith('http') ? cat.image_url : `${api.defaults.baseURL}${cat.image_url}`;
+            return cat.image_url.startsWith('http') || cat.image_url.startsWith('blob') ? cat.image_url : getImageUrl(cat.image_url, api.defaults.baseURL);
         }
         return `https://placehold.co/400x400/fff/7b002c?text=${cat.name || cat.slug}`;
     };

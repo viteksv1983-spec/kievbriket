@@ -93,6 +93,11 @@ class ProductService:
         model_columns = {c.key for c in models.Product.__table__.columns}
         product_data = {k: v for k, v in product.dict().items() if k in model_columns}
         db_product = models.Product(**product_data)
+        
+        # Auto-generate image_alt if missing
+        if not db_product.image_alt and db_product.name:
+            db_product.image_alt = db_product.name
+
         # Auto-generate slug if not provided
         if not db_product.slug and db_product.name:
             slug = generate_slug(db_product.name)
@@ -116,6 +121,10 @@ class ProductService:
         
         for key, value in product_data.items():
             setattr(db_product, key, value)
+            
+        # Auto-generate image_alt if missing
+        if not db_product.image_alt and db_product.name:
+            db_product.image_alt = db_product.name
         
         db.add(db_product)
         db.commit()

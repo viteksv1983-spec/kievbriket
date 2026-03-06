@@ -23,8 +23,14 @@ export const getImageUrl = (imagePath, baseURL) => {
     if (!imagePath) return '';
     if (imagePath.startsWith('http') || imagePath.startsWith('blob')) return imagePath;
 
-    // Properly encode the path parts (e.g. /media/Кирилична_Назва.webp -> /media/%...webp)
-    const encodedPath = imagePath.split('/').map(part => encodeURIComponent(part)).join('/');
+    // Split and encode only the filename part to prevent encoding the slashes
+    const parts = imagePath.split('/');
+    const encodedPath = parts.map((part, index) => {
+        // Don't encode empty strings (from leading slashes)
+        if (!part) return '';
+        // Only encode the actual filename to handle cyrillic/spaces, leave 'media' etc alone
+        return index === parts.length - 1 ? encodeURIComponent(part) : part;
+    }).join('/');
 
     // Fallback if baseURL is not provided directly
     const base = baseURL || (import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`);

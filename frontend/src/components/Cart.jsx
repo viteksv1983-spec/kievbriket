@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
 import api from "../api";
+import { getImageUrl } from "../utils/urls";
 import SEOHead from "./SEOHead";
 import { getProductUrl } from "../utils/urls";
 import { usePhoneInput } from "../hooks/usePhoneInput";
@@ -197,11 +198,7 @@ function Cart() {
                   >
                     {item.image_url && (
                       <img
-                        src={
-                          item.image_url.startsWith("http")
-                            ? item.image_url
-                            : `${api.defaults.baseURL}${item.image_url}`
-                        }
+                        src={getImageUrl(item.image_url, api.defaults.baseURL)}
                         alt={item.name}
                         className="h-full w-full object-cover object-center"
                       />

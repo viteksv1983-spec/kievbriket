@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import api from '../../api'; // Use centralized api instance
 import { useAuth } from '../../context/AuthContext';
 import { FiPackage, FiClock, FiUser, FiPhone, FiChevronRight, FiCopy, FiX, FiExternalLink, FiTruck } from 'react-icons/fi';
+import { getImageUrl } from '../../utils/urls';
 
 export default function Orders() {
     const [orders, setOrders] = useState([]);
@@ -225,7 +226,7 @@ export default function Orders() {
                                         <div className="w-10 h-10 rounded-xl bg-gray-50 flex-shrink-0 relative overflow-hidden shadow-sm border border-gray-100">
                                             {item.product?.image_url ? (
                                                 <img
-                                                    src={item.product.image_url.startsWith('http') ? item.product.image_url : `${api.defaults.baseURL}${item.product.image_url}`}
+                                                    src={getImageUrl(item.product.image_url, api.defaults.baseURL)}
                                                     alt="product"
                                                     className="w-full h-full object-cover"
                                                 />
@@ -375,7 +376,7 @@ export default function Orders() {
                                             <div className="w-16 h-16 bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 flex-shrink-0">
                                                 {item.product?.image_url && (
                                                     <img
-                                                        src={item.product.image_url.startsWith('http') ? item.product.image_url : `${api.defaults.baseURL}${item.product.image_url}`}
+                                                        src={getImageUrl(item.product.image_url, api.defaults.baseURL)}
                                                         className="w-full h-full object-cover"
                                                     />
                                                 )}

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Use production API URL from environment variable, or fallback to local
-const baseURL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
+// Use production API URL from environment variable, or fallback to the Vite proxy route
+const baseURL = import.meta.env.VITE_API_URL || `/api`;
 console.log('API BaseURL initialized as:', baseURL);
 
 const api = axios.create({

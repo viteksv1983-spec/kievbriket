@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../../api'; // Use centralized api instance
 import { useAuth } from '../../context/AuthContext';
+import { getImageUrl } from '../../utils/urls';
 import { FiEdit2, FiPlus, FiGrid, FiList, FiTrash2 } from 'react-icons/fi';
 
 import { useCategories } from '../../context/CategoryContext';
@@ -101,7 +102,7 @@ export default function Products() {
                                                     <td className="px-6 py-4">
                                                         <div className="w-12 h-12 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 group-hover:border-yellow-200 transition-colors">
                                                             <img
-                                                                src={product.image_url && product.image_url.startsWith('http') ? product.image_url : `${api.defaults.baseURL}${product.image_url}`}
+                                                                src={getImageUrl(product.image_url, api.defaults.baseURL)}
                                                                 alt={product.name}
                                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                                             />
@@ -154,7 +155,7 @@ export default function Products() {
                                         <div key={product.id} className="flex gap-3 p-4 bg-white hover:bg-gray-50 transition-colors">
                                             <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex-shrink-0 relative">
                                                 <img
-                                                    src={product.image_url && product.image_url.startsWith('http') ? product.image_url : `${api.defaults.baseURL}${product.image_url}`}
+                                                    src={getImageUrl(product.image_url, api.defaults.baseURL)}
                                                     alt={product.name}
                                                     className="w-full h-full object-cover"
                                                 />

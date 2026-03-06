@@ -4,7 +4,7 @@ import { ArrowRight, ChevronRight, Phone, Flame, Truck, Scale, ShieldCheck, Ther
 import shopConfig from '../shop.config';
 import { useReveal } from '../hooks/useReveal';
 import api from '../api';
-import { getProductUrl } from '../utils/urls';
+import { getProductUrl, getImageUrl } from '../utils/urls';
 import { FuelCalculatorSection } from './new-home/FuelCalculatorSection';
 import { DeliverySection } from './new-home/DeliverySection';
 import { BenefitsSection } from './new-home/BenefitsSection';
@@ -324,7 +324,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                                 <div className="product-card-image" style={{ height: '300px', width: '100%', position: 'relative', overflow: 'hidden', background: '#0a0d14' }}>
                                     {product.image_url ? (
                                         <img
-                                            src={product.image_url.startsWith('http') ? product.image_url : `${api.defaults.baseURL}${product.image_url}`}
+                                            src={getImageUrl(product.image_url, api.defaults.baseURL)}
                                             alt={`${product.name} Київ`}
                                             loading="lazy"
                                             style={{

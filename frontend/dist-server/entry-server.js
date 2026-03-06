@@ -6258,7 +6258,7 @@ function CategoryProducts$2({ products, onOrderProduct, activeCategory }) {
                       /* @__PURE__ */ jsx("span", { children: info.use })
                     ] })
                   ] }),
-                  /* @__PURE__ */ jsx("div", { className: "desktop-delivery-badge", style: { marginBottom: "1.25rem" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(59,130,246,0.1)", color: "#3b82f6", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px" }, children: [
+                  /* @__PURE__ */ jsx("div", { className: "desktop-delivery-badge", style: { marginBottom: "1.25rem" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(255, 255, 255, 0.08)", color: "#e5e7eb", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px", border: "1px solid rgba(255,255,255,0.1)" }, children: [
                     /* @__PURE__ */ jsx(Truck, { size: 12 }),
                     " Доставимо сьогодні"
                   ] }) }),
@@ -6267,7 +6267,7 @@ function CategoryProducts$2({ products, onOrderProduct, activeCategory }) {
                       /* @__PURE__ */ jsx(CheckCircle2, { size: 12 }),
                       " Є в наявності"
                     ] }),
-                    /* @__PURE__ */ jsxs("span", { style: { background: "rgba(59,130,246,0.1)", color: "#3b82f6", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }, children: [
+                    /* @__PURE__ */ jsxs("span", { style: { background: "rgba(255, 255, 255, 0.08)", color: "#e5e7eb", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px", border: "1px solid rgba(255,255,255,0.1)" }, children: [
                       /* @__PURE__ */ jsx(Truck, { size: 12 }),
                       " Доставимо сьогодні"
                     ] })
@@ -7087,7 +7087,7 @@ function CategoryProducts$1({ products, onOrderProduct }) {
                         /* @__PURE__ */ jsx("span", { children: "Вологість < 8%" })
                       ] })
                     ] }),
-                    /* @__PURE__ */ jsx("div", { className: "desktop-delivery-badge", style: { marginBottom: "1.25rem" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(59,130,246,0.1)", color: "#3b82f6", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px" }, children: [
+                    /* @__PURE__ */ jsx("div", { className: "desktop-delivery-badge", style: { marginBottom: "1.25rem" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(255, 255, 255, 0.08)", color: "#e5e7eb", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px", border: "1px solid rgba(255,255,255,0.1)" }, children: [
                       /* @__PURE__ */ jsx(Truck, { size: 12 }),
                       " Доставимо сьогодні"
                     ] }) }),
@@ -7096,7 +7096,7 @@ function CategoryProducts$1({ products, onOrderProduct }) {
                         /* @__PURE__ */ jsx(CheckCircle2, { size: 12 }),
                         " Є в наявності"
                       ] }),
-                      /* @__PURE__ */ jsxs("span", { style: { background: "rgba(59,130,246,0.1)", color: "#3b82f6", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }, children: [
+                      /* @__PURE__ */ jsxs("span", { style: { background: "rgba(255, 255, 255, 0.08)", color: "#e5e7eb", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px", border: "1px solid rgba(255,255,255,0.1)" }, children: [
                         /* @__PURE__ */ jsx(Truck, { size: 12 }),
                         " Доставимо сьогодні"
                       ] })
@@ -7888,7 +7888,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                         /* @__PURE__ */ jsx("span", { children: "Довге горіння" })
                       ] })
                     ] }),
-                    /* @__PURE__ */ jsx("div", { className: "desktop-delivery-badge", style: { marginBottom: "1.25rem" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(59,130,246,0.1)", color: "#3b82f6", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px" }, children: [
+                    /* @__PURE__ */ jsx("div", { className: "desktop-delivery-badge", style: { marginBottom: "1.25rem" }, children: /* @__PURE__ */ jsxs("span", { style: { display: "inline-flex", background: "rgba(255, 255, 255, 0.08)", color: "#e5e7eb", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, alignItems: "center", gap: "4px", border: "1px solid rgba(255,255,255,0.1)" }, children: [
                       /* @__PURE__ */ jsx(Truck, { size: 12 }),
                       " Доставимо сьогодні"
                     ] }) }),
@@ -7897,7 +7897,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                         /* @__PURE__ */ jsx(CheckCircle2, { size: 12 }),
                         " Є в наявності"
                       ] }),
-                      /* @__PURE__ */ jsxs("span", { style: { background: "rgba(59,130,246,0.1)", color: "#3b82f6", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }, children: [
+                      /* @__PURE__ */ jsxs("span", { style: { background: "rgba(255, 255, 255, 0.08)", color: "#e5e7eb", padding: "4px 8px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px", border: "1px solid rgba(255,255,255,0.1)" }, children: [
                         /* @__PURE__ */ jsx(Truck, { size: 12 }),
                         " Доставимо сьогодні"
                       ] })

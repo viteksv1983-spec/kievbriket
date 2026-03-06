@@ -354,36 +354,36 @@ function CategoryProducts({ products, onOrderProduct }) {
 
                                 <div className="product-card-body" style={{ padding: 'clamp(1rem, 3vw, 1.5rem)', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
                                     <div className="product-card-title-static" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '1rem', flexShrink: 0 }}>
-                                        <h3 className="h3" style={{ margin: 0, fontSize: '1.25rem', lineHeight: 1.3 }}>{product.name}</h3>
+                                        <h3 className="h3" style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, lineHeight: 1.2 }}>{product.name}</h3>
                                     </div>
 
-                                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                                        {product.short_description ? (
-                                            <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--c-text2)', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                                {product.short_description}
-                                            </p>
-                                        ) : (
-                                            <>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--c-text2)', fontSize: '0.875rem' }}>
-                                                    <Zap size={14} style={{ color: 'var(--c-orange)' }} />
-                                                    <span>Висока тепловіддача</span>
-                                                </div>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--c-text2)', fontSize: '0.875rem' }}>
-                                                    <Droplets size={14} style={{ color: '#22c55e' }} />
-                                                    <span>Вологість &lt; 8%</span>
-                                                </div>
-                                            </>
-                                        )}
+                                    {product.short_description && (
+                                        <div style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0 }}>
+                                            {product.short_description}
+                                        </div>
+                                    )}
+
+                                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '1.5rem' }}>
+                                        <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                            <Zap size={15} style={{ color: 'var(--c-orange)' }} />
+                                            <span>Висока тепловіддача</span>
+                                        </div>
+                                        <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                            <Droplets size={15} style={{ color: '#22c55e' }} />
+                                            <span>Вологість &lt; 8%</span>
+                                        </div>
                                     </div>
 
                                     <div style={{
                                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                        paddingTop: '1.25rem', borderTop: '1px solid var(--color-border-subtle)'
+                                        paddingTop: '1.25rem', borderTop: '1px solid rgba(255, 255, 255, 0.05)'
                                     }}>
                                         <div>
-                                            <span className="category-card-mobile-badge" style={{ display: 'none', color: '#22c55e', fontSize: '0.9rem', fontWeight: 700, marginBottom: 4 }}>✔ В наявності</span>
-                                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{product.price}</span>
-                                            <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginLeft: 4 }}>грн / тонна</span>
+                                            <span className="category-card-mobile-badge" style={{ display: 'none', background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', padding: '2px 8px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 700, marginBottom: '6px', width: 'fit-content' }}>✔ В наявності</span>
+                                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                                                <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{product.price}</span>
+                                                <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)' }}>грн / тонна</span>
+                                            </div>
                                         </div>
                                         <button
                                             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onOrderProduct(product); }}

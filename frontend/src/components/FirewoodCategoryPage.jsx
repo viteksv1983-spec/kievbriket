@@ -380,25 +380,36 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                         </div>
                                         <div className="product-card-body" style={{ padding: 'clamp(1rem, 3vw, 1.5rem)', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
                                             <div className="product-card-title-static" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '1rem', flexShrink: 0 }}>
-                                                <h3 className="h3" style={{ margin: 0, fontSize: '1.25rem', lineHeight: 1.3 }}>{product.name}</h3>
+                                                <h3 className="h3" style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, lineHeight: 1.2 }}>{product.name}</h3>
                                             </div>
 
-                                            <div style={{ flex: 1 }}>
-                                                <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginBottom: '0.5rem', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                                            {product.short_description && (
+                                                <div style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0 }}>
+                                                    {product.short_description}
+                                                </div>
+                                            )}
+
+                                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '1.5rem' }}>
+                                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '8px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
                                                     <Flame size={16} color="var(--c-orange)" style={{ flexShrink: 0, marginTop: 2 }} />
-                                                    {info.desc}
-                                                </p>
-                                                <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginBottom: '1.5rem', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                                                    <CheckCircle2 size={16} color="#22C55E" style={{ flexShrink: 0, marginTop: 2 }} />
-                                                    {info.use}
-                                                </p>
+                                                    <span>{info.desc}</span>
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '8px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                                    <CheckCircle2 size={16} color="#22c55e" style={{ flexShrink: 0, marginTop: 2 }} />
+                                                    <span>{info.use}</span>
+                                                </div>
                                             </div>
 
-                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--color-border-subtle)' }}>
+                                            <div style={{
+                                                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                                paddingTop: '1.25rem', borderTop: '1px solid rgba(255, 255, 255, 0.05)'
+                                            }}>
                                                 <div>
-                                                    <span className="category-card-mobile-badge" style={{ display: 'none', color: '#22c55e', fontSize: '0.9rem', fontWeight: 700, marginBottom: 4 }}>✔ В наявності</span>
-                                                    <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{displayPrice}</span>
-                                                    <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)', marginLeft: 4 }}>грн / {activeCategory?.slug === 'vugillya' || activeCategory?.slug === 'brikety' ? 'тонну' : 'складометр'}</span>
+                                                    <span className="category-card-mobile-badge" style={{ display: 'none', background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', padding: '2px 8px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 700, marginBottom: '6px', width: 'fit-content' }}>✔ В наявності</span>
+                                                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                                                        <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{displayPrice}</span>
+                                                        <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)' }}>грн / {activeCategory?.slug === 'vugillya' || activeCategory?.slug === 'brikety' ? 'тонну' : 'складометр'}</span>
+                                                    </div>
                                                 </div>
                                                 <button
                                                     className="nh-btn-primary"

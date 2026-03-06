@@ -42,7 +42,11 @@ def create_order(
         msg += f"- {product_name} ({item.quantity} шт)\n"
 
         if item.flavor:
-            msg += f"  Начинка: {item.flavor}\n"
+            if item.flavor.startswith("Коментар:"):
+                msg += f"  {item.flavor}\n"
+            else:
+                formatted_flavor = item.flavor.replace("Варіант: Коментар:", "Коментар:")
+                msg += f"  Варіант: {formatted_flavor}\n"
     msg += f"\n💰 <b>Всього:</b> {db_order.total_price} грн\n"
     
     try:
@@ -75,7 +79,11 @@ def create_quick_order(order: schemas.QuickOrderCreate, db: Session = Depends(ge
         msg += f"  Кількість: {order.quantity}\n"
 
     if order.flavor:
-        msg += f"  Варіант: {order.flavor}\n"
+        if order.flavor.startswith("Коментар:"):
+            msg += f"  {order.flavor}\n"
+        else:
+            formatted_flavor = order.flavor.replace("\nКоментар:", " | Коментар:")
+            msg += f"  Варіант: {formatted_flavor}\n"
     if order.delivery_method:
         msg += f"🔥 <b>Тип палива:</b> {order.delivery_method}\n"
     if order.delivery_date:

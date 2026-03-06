@@ -1795,7 +1795,7 @@ function OrderFormModal({ isOpen, onClose, product, variant }) {
         weight: product ? product.weight : null
       };
       if (form.message) {
-        payload.flavor = (payload.flavor ? payload.flavor + " | " : "") + "Коментар: " + form.message;
+        payload.flavor = (payload.flavor ? payload.flavor + "\n" : "") + "Коментар: " + form.message;
       }
       await api.post("/orders/quick", payload);
       setStatus("success");

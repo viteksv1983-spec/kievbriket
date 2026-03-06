@@ -49,7 +49,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
             // Append optional message to flavor if there's no dedicated message field, 
             // but we have a comment field. Let's send the message in flavor for now
             if (form.message) {
-                payload.flavor = (payload.flavor ? payload.flavor + ' | ' : '') + 'Коментар: ' + form.message;
+                payload.flavor = (payload.flavor ? payload.flavor + '\n' : '') + 'Коментар: ' + form.message;
             }
 
             await api.post('/orders/quick', payload);

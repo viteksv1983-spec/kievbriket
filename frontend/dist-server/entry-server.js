@@ -11089,7 +11089,7 @@ const Cart = React.lazy(() => import("./assets/Cart-Ps5h4rc5.js"));
 const AdminLayout = React.lazy(() => import("./assets/AdminLayout-CQuT53R-.js"));
 const Orders = React.lazy(() => import("./assets/Orders-lDs1WTX2.js"));
 const Products = React.lazy(() => import("./assets/Products-B6i_hdz6.js"));
-const ProductEdit = React.lazy(() => import("./assets/ProductEdit-CReMFUhl.js"));
+const ProductEdit = React.lazy(() => import("./assets/ProductEdit-CcdsHlvN.js"));
 const PageEditor = React.lazy(() => import("./assets/PageEditor-RQqKn3Z-.js"));
 const CategoryManager = React.lazy(() => import("./assets/CategoryManager-BPbWxB5n.js"));
 React.lazy(() => import("./assets/SEOPages-AlcA5Ryi.js"));

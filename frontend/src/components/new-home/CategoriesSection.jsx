@@ -7,6 +7,7 @@ import { getImageUrl } from "../../utils/urls";
 
 function ProductCard({ p, delay }) {
     const [hovered, setHovered] = useState(false);
+    const [imgError, setImgError] = useState(false);
 
     // We assign some fake tags or details since API categories only have name/desc
     // but we try to match them gracefully.
@@ -31,10 +32,11 @@ function ProductCard({ p, delay }) {
     }
 
     // Handle image URL properly using the shared utility
+    // If the image errors out, we switch to a data-uri placeholder to guarantee it loads inline
+    const placeholderSvg = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="400" height="300" fill="%23222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="24" fill="%23888">${encodeURIComponent(p.name)}</text></svg>`;
 
-    // Handle image URL properly using the shared utility
-    const imgUrl = getImageUrl(p.image_url, api.defaults.baseURL)
-        || `https://placehold.co/400x300/fff/7b002c?text=${encodeURIComponent(p.name)}`;
+    const initialImgUrl = getImageUrl(p.image_url, api.defaults.baseURL) || placeholderSvg;
+    const currentImgUrl = imgError ? placeholderSvg : initialImgUrl;
 
     return (
         <article
@@ -56,13 +58,12 @@ function ProductCard({ p, delay }) {
         >
             <div style={{ height: 220, overflow: "hidden", position: "relative", flexShrink: 0 }}>
                 <img
-                    src={imgUrl}
+                    src={currentImgUrl}
                     alt={p.name}
                     loading="lazy"
                     decoding="async"
-                    onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = `https://placehold.co/400x300/fff/7b002c?text=${encodeURIComponent(p.name)}`;
+                    onError={() => {
+                        if (!imgError) setImgError(true);
                     }}
                     style={{
                         width: "100%", height: "100%", objectFit: "cover",

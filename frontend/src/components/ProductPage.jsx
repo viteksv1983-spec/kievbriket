@@ -341,20 +341,20 @@ export default function ProductPage() {
                             <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                                 <span style={{
                                     display: 'inline-flex', alignItems: 'center', gap: 6,
-                                    background: 'rgba(34,197,94,0.15)', color: '#22c55e',
-                                    border: '1px solid rgba(34,197,94,0.35)',
-                                    padding: '4px 10px', borderRadius: 999, fontSize: '0.75rem', fontWeight: 700
+                                    background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e',
+                                    border: '1px solid rgba(34,197,94,0.15)',
+                                    padding: '6px 14px', borderRadius: 999, fontSize: '0.8rem', fontWeight: 700
                                 }}>
-                                    • В наявності
+                                    <CheckCircle2 size={14} /> В наявності
                                 </span>
                                 {isPopular && (
                                     <span style={{
                                         display: 'inline-flex', alignItems: 'center', gap: 4,
-                                        background: 'rgba(255,115,0,0.15)', color: '#ff7a18',
-                                        border: '1px solid rgba(255,115,0,0.35)',
-                                        padding: '4px 10px', borderRadius: 999, fontSize: '0.75rem', fontWeight: 700
+                                        background: 'rgba(255, 115, 0, 0.1)', color: '#ff7a18',
+                                        border: '1px solid rgba(255,115,0,0.15)',
+                                        padding: '6px 14px', borderRadius: 999, fontSize: '0.8rem', fontWeight: 700
                                     }}>
-                                        • Популярний
+                                        <Flame size={14} /> Популярний
                                     </span>
                                 )}
                             </div>
@@ -402,27 +402,21 @@ export default function ProductPage() {
                                         {Math.round(displayPrice * 1.15)} грн
                                     </span>
                                 )}
-                                <span className="product-price-badge" style={{
-                                    display: 'none', alignItems: 'center', gap: 6,
-                                    color: '#22c55e',
-                                    fontSize: '0.9rem', fontWeight: 700,
-                                    marginBottom: 6
-                                }}>
-                                    ✔ В наявності
-                                </span>
                                 <p style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: 0, flexWrap: 'wrap' }}>
                                     <span style={{ fontSize: '34px', fontWeight: 900, color: 'var(--c-orange)', lineHeight: 1 }}>{displayPrice}</span>
                                     <span style={{ fontSize: '20px', fontWeight: 700, color: 'var(--c-orange)' }}>грн</span>
                                     <span style={{ fontSize: '18px', color: 'var(--c-text2)', fontWeight: 500 }}>/ {product.category === 'brikety' || product.category === 'vugillya' ? 'тонна' : 'складометр'}</span>
                                 </p>
 
-                                <div style={{ display: 'flex', gap: '1.25rem', marginTop: '1rem' }}>
-                                    <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)', display: 'flex', alignItems: 'center', gap: 6, fontWeight: 500 }}>
-                                        <span style={{ color: '#22c55e' }}>•</span> Доставка сьогодні
-                                    </span>
-                                    <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)', display: 'flex', alignItems: 'center', gap: 6, fontWeight: 500 }}>
-                                        <span style={{ color: '#22c55e' }}>•</span> Є на складі
-                                    </span>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1.25rem' }}>
+                                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                        <Truck size={15} style={{ color: '#22c55e' }} />
+                                        <span>Доставка сьогодні</span>
+                                    </div>
+                                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                        <PackageCheck size={15} style={{ color: '#22c55e' }} />
+                                        <span>Є на складі</span>
+                                    </div>
                                 </div>
                             </div>
 

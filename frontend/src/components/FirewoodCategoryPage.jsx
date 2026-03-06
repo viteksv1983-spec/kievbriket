@@ -764,8 +764,6 @@ function PopularQueriesSection({ activeCategorySlug }) {
         { text: "Купити дубові дрова Київ", to: "/catalog/drova/dubovi-drova" },
         { text: "Дрова граб Київ", to: "/catalog/drova/hrabovi-drova" },
         { text: "Дрова береза Київ", to: "/catalog/drova/berezovi-drova" },
-        { text: "Дрова для каміна", to: "/catalog/drova/drova-dlya-kamina" },
-        { text: "Дрова в ящиках", to: "/catalog/drova/drova-v-yashchykakh" },
         { text: "Дрова складометр Київ", to: "/catalog/drova/dubovi-drova" }
     ];
 

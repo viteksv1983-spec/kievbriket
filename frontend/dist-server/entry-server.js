@@ -6595,8 +6595,6 @@ function PopularQueriesSection$3({ activeCategorySlug }) {
     { text: "Купити дубові дрова Київ", to: "/catalog/drova/dubovi-drova" },
     { text: "Дрова граб Київ", to: "/catalog/drova/hrabovi-drova" },
     { text: "Дрова береза Київ", to: "/catalog/drova/berezovi-drova" },
-    { text: "Дрова для каміна", to: "/catalog/drova/drova-dlya-kamina" },
-    { text: "Дрова в ящиках", to: "/catalog/drova/drova-v-yashchykakh" },
     { text: "Дрова складометр Київ", to: "/catalog/drova/dubovi-drova" }
   ];
   return /* @__PURE__ */ jsx("section", { style: { padding: "clamp(40px, 10vw, 100px) 0" }, children: /* @__PURE__ */ jsx("div", { className: "layout-container", children: /* @__PURE__ */ jsxs("div", { style: { maxWidth: 900, margin: "0 auto", textAlign: "center" }, children: [

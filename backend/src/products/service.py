@@ -89,7 +89,10 @@ class ProductService:
     @staticmethod
     def create_product(db: Session, product: schemas.ProductCreate):
         from backend.src.core.slugify import generate_slug, ensure_unique_slug
-        db_product = models.Product(**product.dict())
+        # Filter out schema-only fields that don't exist on the ORM model
+        model_columns = {c.key for c in models.Product.__table__.columns}
+        product_data = {k: v for k, v in product.dict().items() if k in model_columns}
+        db_product = models.Product(**product_data)
         # Auto-generate slug if not provided
         if not db_product.slug and db_product.name:
             slug = generate_slug(db_product.name)

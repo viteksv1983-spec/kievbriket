@@ -39,7 +39,8 @@ const baseRoutes = [
     { path: '/' },
     { path: '/dostavka' },
     { path: '/contacts' },
-    { path: '/kontakty' }
+    { path: '/kontakty' },
+    { path: '/pro-nas' }
 ];
 
 const FALLBACK_CATEGORIES = [
@@ -64,6 +65,20 @@ async function generatePages() {
     } else {
         products = [];
     }
+
+    // Enrich each product with full details (description, faqs_json, variants, SEO fields)
+    // The list endpoint may return all fields, but individual fetch guarantees completeness
+    const enrichedProducts = await Promise.all(
+        products.map(async (prod) => {
+            try {
+                const full = await fetchJson(`${API_BASE}/products/${prod.slug}`);
+                return full ? { ...prod, ...full } : prod;
+            } catch {
+                return prod;
+            }
+        })
+    );
+    products = enrichedProducts;
 
     const allRoutes = [...baseRoutes];
 

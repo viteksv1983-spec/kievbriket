@@ -89,22 +89,6 @@ img {
         position: relative;
     }
 
-    .product-card-title-overlay {
-        display: block !important;
-        position: absolute !important;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 0 1rem 0.75rem 1rem !important;
-        margin: 0 !important;
-        z-index: 5;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
-    }
-
-    .product-card-body .product-card-title-static {
-        display: none !important;
-    }
-
     .category-card-mobile-badge {
         display: block !important;
     }

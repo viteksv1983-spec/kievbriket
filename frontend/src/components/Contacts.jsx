@@ -453,7 +453,7 @@ function FaqSection() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: 'clamp(40px, 8vw, 80px) 0' }}>
+        <section ref={ref} className="faq-mobile-section" style={{ padding: 'clamp(40px, 8vw, 80px) 0' }}>
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                     "@context": "https://schema.org",
@@ -470,7 +470,7 @@ function FaqSection() {
             }} />
             <div className="layout-container">
                 <div className={`reveal ${visible ? "visible" : ""}`} style={{ textAlign: "center", marginBottom: "3rem" }}>
-                    <h2 className="h2" style={{ maxWidth: 800, margin: '0 auto' }}>Поширені запитання</h2>
+                    <h2 className="h2 faq-mobile-h2" style={{ maxWidth: 800, margin: '0 auto' }}>Поширені запитання</h2>
                 </div>
 
                 <div className={`reveal ${visible ? "visible" : ""}`} style={{ transitionDelay: '0.1s' }}>
@@ -484,13 +484,14 @@ function FaqSection() {
                                         width: '100%', textAlign: 'left', background: 'none', border: 'none',
                                         padding: '1.5rem 0', display: 'flex', justifyContent: 'space-between',
                                         alignItems: 'center', cursor: 'pointer', color: 'var(--c-text)',
-                                        fontFamily: 'inherit', fontSize: '1.125rem', fontWeight: 600
+                                        fontFamily: 'inherit', fontSize: '1.125rem', fontWeight: 600, gap: '1rem'
                                     }}
                                 >
-                                    {faq.q}
+                                    <span style={{ flex: 1 }}>{faq.q}</span>
                                     <ChevronRight
                                         size={20}
                                         style={{
+                                            flexShrink: 0,
                                             color: 'var(--c-orange)',
                                             transform: isOpen ? 'rotate(90deg)' : 'none',
                                             transition: 'transform 0.3s ease'

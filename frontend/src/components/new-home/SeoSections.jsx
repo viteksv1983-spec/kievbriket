@@ -611,9 +611,9 @@ export function FaqSection({ faqs }) {
     const [openIndex, setOpenIndex] = useState(null);
 
     return (
-        <section style={{ padding: '4rem 0 6rem', background: 'var(--color-bg-main)', position: 'relative' }}>
+        <section className="faq-mobile-section" style={{ padding: '4rem 0 6rem', background: 'var(--color-bg-main)', position: 'relative' }}>
             <div className="layout-container">
-                <h2 className="h2" style={{ marginBottom: '2.5rem', textAlign: 'left', fontSize: '2rem' }}>
+                <h2 className="h2 faq-mobile-h2" style={{ marginBottom: '2.5rem', textAlign: 'left', fontSize: '2rem' }}>
                     Поширені питання
                 </h2>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -629,12 +629,13 @@ export function FaqSection({ faqs }) {
                                     width: '100%', padding: '1.5rem',
                                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                                     background: 'transparent', border: 'none', color: 'var(--c-text)',
-                                    fontSize: '1.1rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left',
+                                    fontSize: '1.1rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left', gap: '1rem',
                                     fontFamily: 'inherit',
                                 }}
                             >
-                                {faq.name}
+                                <span style={{ flex: 1 }}>{faq.name}</span>
                                 <ChevronDown size={20} color="var(--c-orange)" style={{
+                                    flexShrink: 0,
                                     transform: openIndex === idx ? 'rotate(180deg)' : 'rotate(0deg)',
                                     transition: 'transform 0.3s ease'
                                 }} />

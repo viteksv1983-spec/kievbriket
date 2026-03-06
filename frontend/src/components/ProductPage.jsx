@@ -555,7 +555,7 @@ export default function ProductPage() {
 
                             {/* ── SECTION 4: FAQ ── */}
                             <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
+                                <h3 className="faq-mobile-h2" style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
                                     Часті питання
                                 </h3>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -571,11 +571,12 @@ export default function ProductPage() {
                                                     width: '100%', padding: '1.25rem 1.5rem',
                                                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                                                     background: 'transparent', border: 'none', color: 'var(--c-text)',
-                                                    fontSize: '1rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left',
+                                                    fontSize: '1rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left', gap: '1rem',
                                                 }}
                                             >
-                                                {faq.q}
+                                                <span style={{ flex: 1 }}>{faq.q}</span>
                                                 <ChevronDown size={20} color="var(--c-orange)" style={{
+                                                    flexShrink: 0,
                                                     transform: openFaq === idx ? 'rotate(180deg)' : 'rotate(0deg)',
                                                     transition: 'transform 0.3s ease'
                                                 }} />

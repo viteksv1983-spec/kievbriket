@@ -116,3 +116,25 @@ img {
         grid-template-columns: 1fr !important;
     }
 }
+
+/* Fix mobile alignment issues: Center headlines and fix padding */
+@media (max-width: 640px) {
+    .faq-mobile-section {
+        padding: 3rem 0 4rem !important;
+    }
+
+    .faq-mobile-h2 {
+        text-align: center !important;
+        font-size: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .nh-card {
+        padding: 1.25rem !important;
+    }
+
+    /* Keep answer text left-aligned but add breathing room */
+    .faq-answer-mobile {
+        text-align: left;
+    }
+}

@@ -401,7 +401,7 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                             </div>
 
                                             <div className="desktop-delivery-badge" style={{ marginBottom: '1.25rem' }}>
-                                                <span style={{ display: 'inline-flex', background: 'rgba(59,130,246,0.1)', color: '#3b82f6', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, alignItems: 'center', gap: '4px' }}>
+                                                <span style={{ display: 'inline-flex', background: 'rgba(255, 255, 255, 0.08)', color: '#e5e7eb', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, alignItems: 'center', gap: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
                                                     <Truck size={12} /> Доставимо сьогодні
                                                 </span>
                                             </div>
@@ -410,7 +410,7 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                                 <span style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
                                                     <CheckCircle2 size={12} /> Є в наявності
                                                 </span>
-                                                <span style={{ background: 'rgba(59,130,246,0.1)', color: '#3b82f6', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                <span style={{ background: 'rgba(255, 255, 255, 0.08)', color: '#e5e7eb', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
                                                     <Truck size={12} /> Доставимо сьогодні
                                                 </span>
                                             </div>

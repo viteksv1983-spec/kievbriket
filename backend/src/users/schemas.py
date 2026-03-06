@@ -7,10 +7,14 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
+class UserPasswordUpdate(BaseModel):
+    new_password: str
+
 class User(UserBase):
     id: int
     is_active: bool = True
     is_admin: bool = False
+    is_superadmin: bool = False
 
     class Config:
         from_attributes = True

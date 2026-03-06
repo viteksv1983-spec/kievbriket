@@ -54,3 +54,43 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 @router.get("/users/me/", response_model=schemas.User)
 async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.get("/users/", response_model=list[schemas.User])
+def get_all_users(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if not current_user.is_superadmin:
+        raise HTTPException(status_code=403, detail="Only Super Admins can list all users")
+    return UserService.get_all_users(db)
+
+@router.post("/users/manager", response_model=schemas.User)
+def create_manager(user: schemas.UserCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if not current_user.is_superadmin:
+        raise HTTPException(status_code=403, detail="Only Super Admins can create new managers")
+    db_user = UserService.get_user_by_email(db, email=user.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    new_user = UserService.create_user(db=db, user=user)
+    # Automatically grant admin rights so they can use the panel
+    new_user.is_admin = True
+    db.commit()
+    return new_user
+
+@router.delete("/users/{user_id}")
+def delete_user(user_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if not current_user.is_superadmin:
+        raise HTTPException(status_code=403, detail="Only Super Admins can delete users")
+    if current_user.id == user_id:
+        raise HTTPException(status_code=400, detail="Cannot delete yourself")
+    
+    success = UserService.delete_user(db, user_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"message": "User deleted successfully"}
+
+@router.put("/users/me/password", response_model=schemas.User)
+def change_my_password(payload: schemas.UserPasswordUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    updated_user = UserService.update_password(db, current_user.id, payload.new_password)
+    if not updated_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return updated_user

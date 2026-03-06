@@ -19,3 +19,26 @@ class UserService:
         db.commit()
         db.refresh(db_user)
         return db_user
+
+    @staticmethod
+    def get_all_users(db: Session):
+        return db.query(models.User).all()
+
+    @staticmethod
+    def delete_user(db: Session, user_id: int):
+        user = UserService.get_user(db, user_id)
+        if user:
+            db.delete(user)
+            db.commit()
+            return True
+        return False
+
+    @staticmethod
+    def update_password(db: Session, user_id: int, new_password: str):
+        user = UserService.get_user(db, user_id)
+        if user:
+            user.hashed_password = security.get_password_hash(new_password)
+            db.commit()
+            db.refresh(user)
+            return user
+        return None

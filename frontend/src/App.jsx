@@ -35,6 +35,8 @@ const CategoryManager = React.lazy(() => import('./components/admin/CategoryMana
 const SEOPages = React.lazy(() => import('./components/admin/SEOPages'));
 const TelegramSettings = React.lazy(() => import('./components/admin/TelegramSettings'));
 const SiteSettingsPage = React.lazy(() => import('./components/admin/SiteSettingsPage'));
+const UsersManager = React.lazy(() => import('./components/admin/UsersManager'));
+const MyProfile = React.lazy(() => import('./components/admin/MyProfile'));
 
 function App() {
   return (
@@ -74,6 +76,8 @@ function App() {
                 <Route path="categories" element={<CategoryManager />} />
                 <Route path="telegram" element={<TelegramSettings />} />
                 <Route path="settings" element={<SiteSettingsPage />} />
+                <Route path="users" element={<UsersManager />} />
+                <Route path="profile" element={<MyProfile />} />
               </Route>
             </Route>
           </Routes>

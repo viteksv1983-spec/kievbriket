@@ -15,12 +15,14 @@ import {
   FiMessageCircle,
   FiPlus,
   FiBarChart2,
+  FiUsers,
+  FiUser
 } from "react-icons/fi";
 import { Flame } from "lucide-react";
 import { useCategories } from "../../context/CategoryContext";
 
 export default function AdminLayout() {
-  const { logout, token } = useAuth();
+  const { logout, token, user } = useAuth();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expanded, setExpanded] = useState({ orders: false });
@@ -333,15 +335,41 @@ export default function AdminLayout() {
           </Link>
 
           <Link
-            to="/admin/settings"
+            to="/admin/events"
             onClick={() => setIsSidebarOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/settings")
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/events")
               ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium"
               : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
               }`}
           >
             <FiBarChart2 className="w-5 h-5" />
             <span>Google Analytics</span>
+          </Link>
+
+          {user?.is_superadmin && (
+            <Link
+              to="/admin/users"
+              onClick={() => setIsSidebarOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/users")
+                ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium"
+                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                }`}
+            >
+              <FiUsers className="w-5 h-5" />
+              <span>Користувачі</span>
+            </Link>
+          )}
+
+          <Link
+            to="/admin/profile"
+            onClick={() => setIsSidebarOpen(false)}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/profile")
+              ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium"
+              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+          >
+            <FiUser className="w-5 h-5" />
+            <span>Мій профіль</span>
           </Link>
         </nav>
 

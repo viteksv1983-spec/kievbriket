@@ -148,6 +148,37 @@ async function generatePages() {
 }
                             </script>
                         `;
+                        } else if (cSlug === 'vugillya') {
+                            manualTags = `
+                            <title>Купити кам'яне вугілля в Києві — ціна та доставка | КиївБрикет</title>
+                            <meta name="description" content="Купити кам'яне вугілля в Києві з доставкою. Антрацит, ДГ та інші види вугілля для котлів і печей. Швидка доставка по Києву та області." />
+                            <link rel="canonical" href="${domain}${pathName}" />
+                            <meta name="robots" content="${cat.meta_robots || 'index, follow'}" />
+                            <meta property="og:title" content="Купити кам'яне вугілля в Києві — доставка | КиївБрикет" />
+                            <meta property="og:description" content="Якісне кам'яне вугілля для котлів і печей. Доставка по Києву та області." />
+                            <meta property="og:image" content="https://kievbriket.com/media/categories/coal.webp" />
+                            <meta property="og:url" content="${domain}${pathName}" />
+                            <meta property="og:type" content="website" />
+                            <meta property="og:site_name" content="КиївБрикет" />
+                            <meta name="twitter:card" content="summary_large_image" />
+                            <meta name="twitter:title" content="Купити кам'яне вугілля в Києві — доставка | КиївБрикет" />
+                            <meta name="twitter:description" content="Якісне кам'яне вугілля для котлів і печей. Доставка по Києву та області." />
+                            <meta name="twitter:image" content="https://kievbriket.com/media/categories/coal.webp" />
+                            <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": "Кам'яне вугілля",
+ "url": "https://kievbriket.com/catalog/vugillya",
+ "description": "Купити кам'яне вугілля в Києві з доставкою.",
+ "isPartOf": {
+   "@type": "WebSite",
+   "name": "КиївБрикет",
+   "url": "https://kievbriket.com"
+ }
+}
+                            </script>
+                        `;
                         } else {
                             manualTags = `
                                 <title>${cat.meta_title || `${cat.name} — купити з доставкою по Києву`}</title>

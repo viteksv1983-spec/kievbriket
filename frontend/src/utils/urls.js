@@ -33,7 +33,15 @@ export const getImageUrl = (imagePath, baseURL) => {
     }).join('/');
 
     // Fallback if baseURL is not provided directly
-    const base = baseURL || (import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`);
+    const envApiUrl = import.meta.env.VITE_API_URL;
+
+    // If baseURL is just '/api' (local Vite proxy), we need the real host for images
+    // because images aren't proxied, only API requests are.
+    // In production, VITE_API_URL is the real backend URL.
+    let base = baseURL;
+    if (!base || base === '/api') {
+        base = envApiUrl || `http://${window.location.hostname}:8000`;
+    }
 
     // Ensure no double slashes between base and path
     const cleanBase = base.endsWith('/') ? base.slice(0, -1) : base;

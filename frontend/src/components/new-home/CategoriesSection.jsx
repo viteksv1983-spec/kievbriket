@@ -60,6 +60,10 @@ function ProductCard({ p, delay }) {
                     alt={p.name}
                     loading="lazy"
                     decoding="async"
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `https://placehold.co/400x300/fff/7b002c?text=${encodeURIComponent(p.name)}`;
+                    }}
                     style={{
                         width: "100%", height: "100%", objectFit: "cover",
                         filter: isCoal ? "brightness(0.75) saturate(0.9) contrast(1.2)" : "brightness(0.85) saturate(1.1)",

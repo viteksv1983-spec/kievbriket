@@ -222,33 +222,55 @@ img {
         grid-template-columns: 1fr !important;
     }
 
+    /* Expand Category and Product Grid widths to edges */
+    .catalog-section .layout-container,
+    .product-main-content {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
 
     /* Fix catalog card alignments on mobile categories */
+    .product-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .product-card-image {
+        height: 220px !important;
+    }
+
     .catalog-card>div:last-child {
-        align-items: center !important;
-        text-align: center !important;
+        align-items: flex-start !important;
+        text-align: left !important;
     }
 
     .catalog-card .catalog-card-description {
-        text-align: center !important;
+        text-align: left !important;
     }
 
-    .catalog-card [style*="justify-content: space-between"] {
-        justify-content: center !important;
-        flex-direction: column !important;
+    .catalog-card [style*="justify-content: space-between"],
+    .product-card-body>div:last-child {
+        justify-content: space-between !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
         align-items: center !important;
-        gap: 0.75rem !important;
+        gap: 0.5rem !important;
         width: 100% !important;
     }
 
-    .catalog-card>div:last-child>div:last-child>div {
-        align-items: center !important;
-        text-align: center !important;
+    .catalog-card>div:last-child>div:last-child>div,
+    .product-card-body>div:last-child>div {
+        align-items: flex-start !important;
+        text-align: left !important;
     }
 
-    .catalog-card-btn {
-        width: 100% !important;
+    .catalog-card-btn,
+    .nh-btn-primary {
+        width: auto !important;
         text-align: center !important;
+        padding: 10px 16px !important;
+        font-size: 0.9rem !important;
+        margin-left: auto !important;
+        flex-shrink: 0;
     }
 }
 

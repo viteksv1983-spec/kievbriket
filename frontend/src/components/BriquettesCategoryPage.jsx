@@ -121,8 +121,8 @@ function BriquetteTypesSection() {
     ];
 
     return (
-        <section ref={ref} style={{ padding: 'clamp(40px, 8vw, 80px) 0 clamp(20px, 4vw, 40px)' }}>
-            <div className="layout-container">
+        <section ref={ref} className="briquette-types-section" style={{ padding: 'clamp(40px, 8vw, 80px) 0 clamp(20px, 4vw, 40px)' }}>
+            <div className="layout-container full-width-mobile">
                 <div className={`reveal ${visible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '3rem' }}>
                     <h2 className="h2">Типи паливних брикетів</h2>
                 </div>
@@ -321,7 +321,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                             >
 
 
-                                <div className="product-card-image" style={{ height: '300px', width: '100%', position: 'relative', overflow: 'hidden', background: '#0a0d14' }}>
+                                <div className="product-card-image" style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#0a0d14' }}>
                                     {product.image_url ? (
                                         <img
                                             src={getImageUrl(product.image_url, api.defaults.baseURL)}
@@ -352,15 +352,16 @@ function CategoryProducts({ products, onOrderProduct }) {
                                     </h3>
                                 </div>
 
-                                <div className="product-card-body" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
-                                    <div className="product-card-title-static" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', marginBottom: '1rem', flexShrink: 0 }}>
-                                        <h3 className="h3" style={{ margin: 0 }}>{product.name}</h3>
+                                <div className="product-card-body" style={{ padding: 'clamp(1rem, 3vw, 1.5rem)', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
+                                    <div className="product-card-title-static" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '1rem', flexShrink: 0 }}>
+                                        <h3 className="h3" style={{ margin: 0, fontSize: '1.25rem', lineHeight: 1.3 }}>{product.name}</h3>
                                         <div style={{
                                             display: 'flex', alignItems: 'center', gap: '4px',
                                             background: '#22C55E', color: '#fff',
-                                            padding: '4px 12px', borderRadius: '40px',
-                                            fontSize: '0.8rem', fontWeight: 700, flexShrink: 0,
-                                            boxShadow: '0 0 10px rgba(34,197,94,0.4)'
+                                            padding: '4px 10px', borderRadius: '40px',
+                                            fontSize: '0.75rem', fontWeight: 700, flexShrink: 0,
+                                            boxShadow: '0 0 10px rgba(34,197,94,0.4)',
+                                            marginTop: '4px'
                                         }}>
                                             ✔ В наявності
                                         </div>

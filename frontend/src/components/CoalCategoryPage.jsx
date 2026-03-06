@@ -319,7 +319,7 @@ function CategoryProducts({ products, onOrderProduct }) {
                             >
 
 
-                                <div className="product-card-image" style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#0a0d14' }}>
+                                <div className="product-card-image" style={{ aspectRatio: '4/3', width: '100%', position: 'relative', overflow: 'hidden', background: '#0a0d14' }}>
                                     {product.image_url ? (
                                         <img
                                             src={getImageUrl(product.image_url, api.defaults.baseURL)}

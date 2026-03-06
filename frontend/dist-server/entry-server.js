@@ -2006,7 +2006,10 @@ function OrderFormModal({ isOpen, onClose, product, variant }) {
               )
             ] }),
             /* @__PURE__ */ jsxs("div", { style: { display: "flex", flexDirection: "column", gap: 7 }, children: [
-              /* @__PURE__ */ jsx("label", { htmlFor: "ofm-quantity", style: { fontSize: "0.8rem", fontWeight: 600, color: "rgba(255,255,255,0.65)" }, children: "Кількість (складометрів / шт)" }),
+              /* @__PURE__ */ jsxs("label", { htmlFor: "ofm-quantity", style: { fontSize: "0.8rem", fontWeight: 600, color: "rgba(255,255,255,0.65)" }, children: [
+                "Кількість ",
+                product && (product.category === "brikety" || product.category === "vugillya") ? "(тонн)" : "(складометрів / шт)"
+              ] }),
               /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", ...inputStyle, padding: "4px" }, children: [
                 /* @__PURE__ */ jsx("button", { type: "button", onClick: () => setForm((f) => ({ ...f, quantity: Math.max(1, f.quantity - 1) })), style: { background: "transparent", border: "none", color: "#fff", padding: "10px 15px", cursor: "pointer", fontSize: "1.2rem", fontWeight: 800 }, children: "-" }),
                 /* @__PURE__ */ jsx(

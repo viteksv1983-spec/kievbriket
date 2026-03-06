@@ -220,7 +220,7 @@ export default function ProductPage() {
                 borderBottom: '1px solid var(--color-border-subtle)',
                 padding: '1rem 0',
             }}>
-                <nav style={{
+                <nav className="breadcrumbs-container" style={{
                     maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem',
                     display: 'flex', alignItems: 'center', gap: 6,
                     fontSize: '0.8125rem', color: 'var(--c-text2)',
@@ -354,11 +354,11 @@ export default function ProductPage() {
 
                         {/* Variant selector (if any) */}
                         {product.variants?.length > 0 && (
-                            <div style={{ paddingTop: '1.5rem', borderTop: '1px solid var(--color-border-subtle)' }}>
+                            <div className="product-variants-container" style={{ paddingTop: '1.5rem', borderTop: '1px solid var(--color-border-subtle)' }}>
                                 <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--c-text2)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                     Оберіть варіант
                                 </p>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                                <div className="product-variants-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                                     {product.variants.map((variant, idx) => {
                                         const active = selectedVariant?.name === variant.name;
                                         return (

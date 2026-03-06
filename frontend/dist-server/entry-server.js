@@ -4219,8 +4219,8 @@ function SeoContentBlock() {
 }
 function FaqSection$5({ faqs }) {
   const [openIndex, setOpenIndex] = useState(null);
-  return /* @__PURE__ */ jsx("section", { style: { padding: "4rem 0 6rem", background: "var(--color-bg-main)", position: "relative" }, children: /* @__PURE__ */ jsxs("div", { className: "layout-container", children: [
-    /* @__PURE__ */ jsx("h2", { className: "h2", style: { marginBottom: "2.5rem", textAlign: "left", fontSize: "2rem" }, children: "Поширені питання" }),
+  return /* @__PURE__ */ jsx("section", { className: "faq-mobile-section", style: { padding: "4rem 0 6rem", background: "var(--color-bg-main)", position: "relative" }, children: /* @__PURE__ */ jsxs("div", { className: "layout-container", children: [
+    /* @__PURE__ */ jsx("h2", { className: "h2 faq-mobile-h2", style: { marginBottom: "2.5rem", textAlign: "left", fontSize: "2rem" }, children: "Поширені питання" }),
     /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: "1rem" }, children: faqs.map((faq, idx) => /* @__PURE__ */ jsxs("div", { style: {
       background: "var(--color-bg-elevated)",
       border: "1px solid var(--color-border-subtle)",
@@ -4244,11 +4244,13 @@ function FaqSection$5({ faqs }) {
             fontWeight: 600,
             cursor: "pointer",
             textAlign: "left",
+            gap: "1rem",
             fontFamily: "inherit"
           },
           children: [
-            faq.name,
+            /* @__PURE__ */ jsx("span", { style: { flex: 1 }, children: faq.name }),
             /* @__PURE__ */ jsx(ChevronDown, { size: 20, color: "var(--c-orange)", style: {
+              flexShrink: 0,
               transform: openIndex === idx ? "rotate(180deg)" : "rotate(0deg)",
               transition: "transform 0.3s ease"
             } })
@@ -6281,7 +6283,7 @@ function FaqSection$4() {
     { q: "Який об'єм дров у машині? (чесний складометр)", a: "Ми ретельно укладаємо поліна на складі. Наприклад, в ЗІЛ поміщається до 6-7 складометрів. Ви можете особисто рулеткою заміряти габарити укладених дров у кузові перед вивантаженням (Довжина × Ширина × Висота = Складометри)." },
     { q: "Яка вологість дров для опалення?", a: "Ми поставляємо деревину природної та камерної сушки. Оптимальна вологість дров для ефективного горіння становить 15-20%. Саме такі показники дозволяють отримати максимальну тепловіддачу та мінімізувати утворення сажі." }
   ];
-  return /* @__PURE__ */ jsxs("section", { ref, style: { padding: "clamp(40px, 10vw, 100px) 0" }, children: [
+  return /* @__PURE__ */ jsxs("section", { ref, className: "faq-mobile-section", style: { padding: "clamp(40px, 10vw, 100px) 0" }, children: [
     /* @__PURE__ */ jsx("script", { type: "application/ld+json", dangerouslySetInnerHTML: {
       __html: JSON.stringify({
         "@context": "https://schema.org",
@@ -6297,7 +6299,7 @@ function FaqSection$4() {
       })
     } }),
     /* @__PURE__ */ jsxs("div", { className: "layout-container", children: [
-      /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { textAlign: "center", marginBottom: "3rem" }, children: /* @__PURE__ */ jsx("h2", { className: "h2", style: { maxWidth: 800, margin: "0 auto" }, children: "Поширені запитання" }) }),
+      /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { textAlign: "center", marginBottom: "3rem" }, children: /* @__PURE__ */ jsx("h2", { className: "h2 faq-mobile-h2", style: { maxWidth: 800, margin: "0 auto" }, children: "Поширені запитання" }) }),
       /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { transitionDelay: "0.1s" }, children: faqs.map((faq, idx) => {
         const isOpen = openIdx === idx;
         return /* @__PURE__ */ jsxs(
@@ -6325,15 +6327,17 @@ function FaqSection$4() {
                     color: "var(--c-text)",
                     fontFamily: "inherit",
                     fontSize: "1.125rem",
-                    fontWeight: 600
+                    fontWeight: 600,
+                    gap: "1rem"
                   },
                   children: [
-                    faq.q,
+                    /* @__PURE__ */ jsx("span", { style: { flex: 1 }, children: faq.q }),
                     /* @__PURE__ */ jsx(
                       ChevronRight,
                       {
                         size: 20,
                         style: {
+                          flexShrink: 0,
                           color: "var(--c-orange)",
                           transform: isOpen ? "rotate(90deg)" : "none",
                           transition: "transform 0.3s ease"
@@ -7207,31 +7211,11 @@ function PopularQueriesSection$2() {
   ];
   return /* @__PURE__ */ jsx("section", { ref, style: { padding: "clamp(30px, 6vw, 60px) 0", borderTop: "1px solid var(--color-border-subtle)", borderBottom: "1px solid var(--color-border-subtle)", background: "rgba(20,25,30,0.3)" }, children: /* @__PURE__ */ jsx("div", { className: "layout-container", children: /* @__PURE__ */ jsxs("div", { className: `reveal ${visible ? "visible" : ""}`, style: { display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }, children: [
     /* @__PURE__ */ jsx("h3", { style: { fontSize: "1.125rem", color: "var(--c-text)", marginBottom: "1.5rem", fontWeight: "600" }, children: "Популярні запити:" }),
-    /* @__PURE__ */ jsx("div", { style: { display: "flex", flexWrap: "nowrap", gap: "0.5rem", overflowX: "auto", paddingBottom: "8px", WebkitOverflowScrolling: "touch", justifyContent: "center" }, children: queries.map((q, idx) => /* @__PURE__ */ jsxs(
+    /* @__PURE__ */ jsx("div", { className: "queries-scroll-container", children: queries.map((q, idx) => /* @__PURE__ */ jsxs(
       Link,
       {
         to: q.url,
-        style: {
-          display: "inline-flex",
-          alignItems: "center",
-          padding: "0.75rem 1.25rem",
-          borderRadius: "100px",
-          border: "1px solid var(--color-border-subtle)",
-          color: "var(--c-text2)",
-          textDecoration: "none",
-          fontSize: "0.95rem",
-          transition: "all 0.2s",
-          background: "var(--color-bg-elevated)",
-          gap: "0.5rem"
-        },
-        onMouseEnter: (e) => {
-          e.currentTarget.style.borderColor = "var(--c-orange)";
-          e.currentTarget.style.color = "var(--c-text)";
-        },
-        onMouseLeave: (e) => {
-          e.currentTarget.style.borderColor = "var(--color-border-subtle)";
-          e.currentTarget.style.color = "var(--c-text2)";
-        },
+        className: "query-bubble",
         children: [
           /* @__PURE__ */ jsx(Flame, { size: 14, style: { opacity: 0.5 } }),
           q.name
@@ -7250,7 +7234,7 @@ function FaqSection$3() {
     { q: "Скільки брикетів потрібно на зиму?", a: "Для будинку в 100 кв.м. з середньою утепленістю, як правило, достатньо від 3 до 5 тонн паливних брикетів на весь опалювальний сезон. Це значно менше за об'ємом, ніж дрова, де б знадобилося близько 10-15 складометрів." },
     { q: "Чи можна топити брикетами камін?", a: "Так, звісно! Навіть рекомендується. Nestro і Pini Kay ідеально підходять для каміна, оскільки вони не іскрять, мають гарне полум'я і не забивають димохід сажею завдяки дуже низькій вологості. RUF теж підійдуть, але вони горять менш естетично в порівнянні з іншими." }
   ];
-  return /* @__PURE__ */ jsxs("section", { ref, style: { padding: "clamp(40px, 10vw, 100px) 0" }, children: [
+  return /* @__PURE__ */ jsxs("section", { ref, className: "faq-mobile-section", style: { padding: "clamp(40px, 10vw, 100px) 0" }, children: [
     /* @__PURE__ */ jsx("script", { type: "application/ld+json", dangerouslySetInnerHTML: {
       __html: JSON.stringify({
         "@context": "https://schema.org",
@@ -7266,7 +7250,7 @@ function FaqSection$3() {
       })
     } }),
     /* @__PURE__ */ jsxs("div", { className: "layout-container", children: [
-      /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { textAlign: "center", marginBottom: "3rem" }, children: /* @__PURE__ */ jsx("h2", { className: "h2", style: { maxWidth: 800, margin: "0 auto" }, children: "Поширені запитання" }) }),
+      /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { textAlign: "center", marginBottom: "3rem" }, children: /* @__PURE__ */ jsx("h2", { className: "h2 faq-mobile-h2", style: { maxWidth: 800, margin: "0 auto" }, children: "Поширені запитання" }) }),
       /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { transitionDelay: "0.1s" }, children: faqs.map((faq, idx) => {
         const isOpen = openIdx === idx;
         return /* @__PURE__ */ jsxs("div", { style: { borderBottom: "1px solid var(--color-border-subtle)", marginBottom: "1rem" }, children: [
@@ -7287,15 +7271,17 @@ function FaqSection$3() {
                 color: "var(--c-text)",
                 fontFamily: "inherit",
                 fontSize: "1.125rem",
-                fontWeight: 600
+                fontWeight: 600,
+                gap: "1rem"
               },
               children: [
-                faq.q,
+                /* @__PURE__ */ jsx("span", { style: { flex: 1 }, children: faq.q }),
                 /* @__PURE__ */ jsx(
                   ChevronRight,
                   {
                     size: 20,
                     style: {
+                      flexShrink: 0,
                       color: "var(--c-orange)",
                       transform: isOpen ? "rotate(90deg)" : "none",
                       transition: "transform 0.3s ease"
@@ -7966,31 +7952,11 @@ function PopularQueriesSection$1() {
   ];
   return /* @__PURE__ */ jsx("section", { ref, style: { padding: "clamp(30px, 6vw, 60px) 0", borderTop: "1px solid var(--color-border-subtle)", borderBottom: "1px solid var(--color-border-subtle)", background: "rgba(20,25,30,0.3)" }, children: /* @__PURE__ */ jsx("div", { className: "layout-container", children: /* @__PURE__ */ jsxs("div", { className: `reveal ${visible ? "visible" : ""}`, style: { display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }, children: [
     /* @__PURE__ */ jsx("h3", { style: { fontSize: "1.125rem", color: "var(--c-text)", marginBottom: "1.5rem", fontWeight: "600" }, children: "Популярні запити:" }),
-    /* @__PURE__ */ jsx("div", { style: { display: "flex", flexWrap: "nowrap", gap: "0.5rem", overflowX: "auto", paddingBottom: "8px", WebkitOverflowScrolling: "touch", justifyContent: "center" }, children: queries.map((q, idx) => /* @__PURE__ */ jsxs(
+    /* @__PURE__ */ jsx("div", { className: "queries-scroll-container", children: queries.map((q, idx) => /* @__PURE__ */ jsxs(
       Link,
       {
         to: q.url,
-        style: {
-          display: "inline-flex",
-          alignItems: "center",
-          padding: "0.75rem 1.25rem",
-          borderRadius: "100px",
-          border: "1px solid var(--color-border-subtle)",
-          color: "var(--c-text2)",
-          textDecoration: "none",
-          fontSize: "0.95rem",
-          transition: "all 0.2s",
-          background: "var(--color-bg-elevated)",
-          gap: "0.5rem"
-        },
-        onMouseEnter: (e) => {
-          e.currentTarget.style.borderColor = "var(--c-orange)";
-          e.currentTarget.style.color = "var(--c-text)";
-        },
-        onMouseLeave: (e) => {
-          e.currentTarget.style.borderColor = "var(--color-border-subtle)";
-          e.currentTarget.style.color = "var(--c-text2)";
-        },
+        className: "query-bubble",
         children: [
           /* @__PURE__ */ jsx(Flame, { size: 14, style: { opacity: 0.5 } }),
           q.name
@@ -8009,7 +7975,7 @@ function FaqSection$2() {
     { q: "Чи можна замовити вугілля з доставкою сьогодні?", a: "Так, за наявності вільного транспорту ми можемо організувати доставку в день замовлення. У піковий сезон термін доставки може становити 1-2 дні. Будь ласка, уточнюйте можливість термінової доставки у нашого менеджера по телефону." },
     { q: "Скільки коштує тонна вугілля?", a: "Ціна за тонну варіюється залежно від марки та фракції вугілля. Наприклад, класичне кам'яне вугілля коштує дешевше, ніж високоякісний антрацит. Зверніть увагу на актуальні ціни у нашому каталозі. Для оптових замовлень ми пропонуємо індивідуальні знижки." }
   ];
-  return /* @__PURE__ */ jsxs("section", { ref, style: { padding: "clamp(40px, 10vw, 100px) 0" }, children: [
+  return /* @__PURE__ */ jsxs("section", { ref, className: "faq-mobile-section", style: { padding: "clamp(40px, 10vw, 100px) 0" }, children: [
     /* @__PURE__ */ jsx("script", { type: "application/ld+json", dangerouslySetInnerHTML: {
       __html: JSON.stringify({
         "@context": "https://schema.org",
@@ -8025,7 +7991,7 @@ function FaqSection$2() {
       })
     } }),
     /* @__PURE__ */ jsxs("div", { className: "layout-container", children: [
-      /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { textAlign: "center", marginBottom: "3rem" }, children: /* @__PURE__ */ jsx("h2", { className: "h2", style: { maxWidth: 800, margin: "0 auto" }, children: "Поширені запитання" }) }),
+      /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { textAlign: "center", marginBottom: "3rem" }, children: /* @__PURE__ */ jsx("h2", { className: "h2 faq-mobile-h2", style: { maxWidth: 800, margin: "0 auto" }, children: "Поширені запитання" }) }),
       /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { transitionDelay: "0.1s" }, children: faqs.map((faq, idx) => {
         const isOpen = openIdx === idx;
         return /* @__PURE__ */ jsxs("div", { style: { borderBottom: "1px solid var(--color-border-subtle)", marginBottom: "1rem" }, children: [
@@ -8046,15 +8012,17 @@ function FaqSection$2() {
                 color: "var(--c-text)",
                 fontFamily: "inherit",
                 fontSize: "1.125rem",
-                fontWeight: 600
+                fontWeight: 600,
+                gap: "1rem"
               },
               children: [
-                faq.q,
+                /* @__PURE__ */ jsx("span", { style: { flex: 1 }, children: faq.q }),
                 /* @__PURE__ */ jsx(
                   ChevronRight,
                   {
                     size: 20,
                     style: {
+                      flexShrink: 0,
                       color: "var(--c-orange)",
                       transform: isOpen ? "rotate(90deg)" : "none",
                       transition: "transform 0.3s ease"
@@ -8137,7 +8105,7 @@ function CoalCategoryPage({ products, onOrderProduct }) {
                      "@type": "CollectionPage",
                      "name": "Кам'яне вугілля",
                      "url": "https://kievbriket.com/catalog/vugillya",
-                     "description": "Купити кам'яне вугілля в Києві з доставкою.",
+                     "description": "Купити кам'яне вугілля в Києві з доставкою. Антрацит та інші види вугілля для котлів і печей.",
                      "isPartOf": {
                        "@type": "WebSite",
                        "name": "КиївБрикет",
@@ -8650,7 +8618,7 @@ function ProductPage() {
           background: "var(--color-bg-deep)",
           borderBottom: "1px solid var(--color-border-subtle)",
           padding: "1rem 0"
-        }, children: /* @__PURE__ */ jsxs("nav", { style: {
+        }, children: /* @__PURE__ */ jsxs("nav", { className: "breadcrumbs-container", style: {
           maxWidth: 1200,
           margin: "0 auto",
           padding: "0 1.5rem",
@@ -8777,9 +8745,9 @@ function ProductPage() {
                   }, children: "• Популярний" })
                 ] })
               ] }),
-              product.variants?.length > 0 && /* @__PURE__ */ jsxs("div", { style: { paddingTop: "1.5rem", borderTop: "1px solid var(--color-border-subtle)" }, children: [
+              product.variants?.length > 0 && /* @__PURE__ */ jsxs("div", { className: "product-variants-container", style: { paddingTop: "1.5rem", borderTop: "1px solid var(--color-border-subtle)" }, children: [
                 /* @__PURE__ */ jsx("p", { style: { fontSize: "0.75rem", fontWeight: 700, color: "var(--c-text2)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "0.75rem" }, children: "Оберіть варіант" }),
-                /* @__PURE__ */ jsx("div", { style: { display: "flex", flexWrap: "wrap", gap: 8 }, children: product.variants.map((variant, idx) => {
+                /* @__PURE__ */ jsx("div", { className: "product-variants-grid", style: { display: "flex", flexWrap: "wrap", gap: 8 }, children: product.variants.map((variant, idx) => {
                   const active = selectedVariant?.name === variant.name;
                   return /* @__PURE__ */ jsx(
                     "button",
@@ -8978,7 +8946,7 @@ function ProductPage() {
                 ] })
               ] }),
               /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { padding: "1.5rem", background: "var(--color-bg-elevated)", border: "1px solid var(--color-border-subtle)", borderRadius: 16 }, children: [
-                /* @__PURE__ */ jsx("h3", { style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.5rem" }, children: "Часті питання" }),
+                /* @__PURE__ */ jsx("h3", { className: "faq-mobile-h2", style: { fontSize: "1.5rem", fontWeight: 800, color: "var(--c-text)", marginBottom: "1.5rem" }, children: "Часті питання" }),
                 /* @__PURE__ */ jsx("div", { style: { display: "flex", flexDirection: "column", gap: "0.75rem" }, children: faqs.map((faq, idx) => /* @__PURE__ */ jsxs("div", { style: {
                   background: "var(--color-bg-elevated)",
                   border: "1px solid var(--color-border-subtle)",
@@ -9001,11 +8969,13 @@ function ProductPage() {
                         fontSize: "1rem",
                         fontWeight: 600,
                         cursor: "pointer",
-                        textAlign: "left"
+                        textAlign: "left",
+                        gap: "1rem"
                       },
                       children: [
-                        faq.q,
+                        /* @__PURE__ */ jsx("span", { style: { flex: 1 }, children: faq.q }),
                         /* @__PURE__ */ jsx(ChevronDown, { size: 20, color: "var(--c-orange)", style: {
+                          flexShrink: 0,
                           transform: openFaq === idx ? "rotate(180deg)" : "rotate(0deg)",
                           transition: "transform 0.3s ease"
                         } })
@@ -9434,31 +9404,11 @@ function PopularQueriesSection() {
   ];
   return /* @__PURE__ */ jsx("section", { ref, style: { padding: "clamp(30px, 6vw, 60px) 0", borderTop: "1px solid var(--color-border-subtle)", borderBottom: "1px solid var(--color-border-subtle)", background: "rgba(20,25,30,0.3)" }, children: /* @__PURE__ */ jsx("div", { className: "layout-container", children: /* @__PURE__ */ jsxs("div", { className: `reveal ${visible ? "visible" : ""}`, style: { display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }, children: [
     /* @__PURE__ */ jsx("h3", { style: { fontSize: "1.125rem", color: "var(--c-text)", marginBottom: "1.5rem", fontWeight: "600" }, children: "Популярні запити:" }),
-    /* @__PURE__ */ jsx("div", { style: { display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center" }, children: queries.map((q, idx) => /* @__PURE__ */ jsxs(
+    /* @__PURE__ */ jsx("div", { className: "queries-scroll-container", children: queries.map((q, idx) => /* @__PURE__ */ jsxs(
       Link,
       {
         to: q.url,
-        style: {
-          display: "inline-flex",
-          alignItems: "center",
-          padding: "0.75rem 1.25rem",
-          borderRadius: "100px",
-          border: "1px solid var(--color-border-subtle)",
-          color: "var(--c-text2)",
-          textDecoration: "none",
-          fontSize: "0.95rem",
-          transition: "all 0.2s",
-          background: "var(--color-bg-elevated)",
-          gap: "0.5rem"
-        },
-        onMouseEnter: (e) => {
-          e.currentTarget.style.borderColor = "var(--c-orange)";
-          e.currentTarget.style.color = "var(--c-text)";
-        },
-        onMouseLeave: (e) => {
-          e.currentTarget.style.borderColor = "var(--color-border-subtle)";
-          e.currentTarget.style.color = "var(--c-text2)";
-        },
+        className: "query-bubble",
         children: [
           /* @__PURE__ */ jsx(Truck, { size: 14, style: { opacity: 0.5 } }),
           q.name
@@ -9477,7 +9427,7 @@ function FaqSection$1() {
     { q: "Чи можна замовити доставку сьогодні?", a: "Так! Якщо ви оформите замовлення в першій половині дня, ми зможемо організувати відвантаження у той самий день." },
     { q: "Який мінімальний об'єм замовлення?", a: "Для дров мінімальне замовлення зазвичай становить 1 складометр. Брикети та вугілля постачаються від 1 тонни або мішками (уточнюйте у менеджера)." }
   ];
-  return /* @__PURE__ */ jsxs("section", { ref, style: { padding: "clamp(40px, 10vw, 100px) 0" }, children: [
+  return /* @__PURE__ */ jsxs("section", { ref, className: "faq-mobile-section", style: { padding: "clamp(40px, 10vw, 100px) 0" }, children: [
     /* @__PURE__ */ jsx("script", { type: "application/ld+json", dangerouslySetInnerHTML: {
       __html: JSON.stringify({
         "@context": "https://schema.org",
@@ -9493,7 +9443,7 @@ function FaqSection$1() {
       })
     } }),
     /* @__PURE__ */ jsxs("div", { className: "layout-container", children: [
-      /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { textAlign: "center", marginBottom: "3rem" }, children: /* @__PURE__ */ jsx("h2", { className: "h2", style: { maxWidth: 800, margin: "0 auto" }, children: "Поширені запитання" }) }),
+      /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { textAlign: "center", marginBottom: "3rem" }, children: /* @__PURE__ */ jsx("h2", { className: "h2 faq-mobile-h2", style: { maxWidth: 800, margin: "0 auto" }, children: "Поширені запитання" }) }),
       /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { transitionDelay: "0.1s" }, children: faqs.map((faq, idx) => {
         const isOpen = openIdx === idx;
         return /* @__PURE__ */ jsxs("div", { style: { borderBottom: "1px solid var(--color-border-subtle)", marginBottom: "1rem" }, children: [
@@ -9514,15 +9464,17 @@ function FaqSection$1() {
                 color: "var(--c-text)",
                 fontFamily: "inherit",
                 fontSize: "1.125rem",
-                fontWeight: 600
+                fontWeight: 600,
+                gap: "1rem"
               },
               children: [
-                faq.q,
+                /* @__PURE__ */ jsx("span", { style: { flex: 1 }, children: faq.q }),
                 /* @__PURE__ */ jsx(
                   ChevronRight,
                   {
                     size: 20,
                     style: {
+                      flexShrink: 0,
                       color: "var(--c-orange)",
                       transform: isOpen ? "rotate(90deg)" : "none",
                       transition: "transform 0.3s ease"
@@ -10648,7 +10600,7 @@ function FaqSection() {
     { q: "Які способи оплати доступні?", a: "Ми приймаємо оплату готівкою при отриманні товару (після розвантаження та перевірки об'єму), а також можливий безготівковий розрахунок за потребою." },
     { q: "Чи працюєте по Київській області?", a: "Так, ми здійснюємо доставку по всьому Києву та всій Київській області (Бровари, Бориспіль, Ірпінь, Буча, Фастів тощо). Вартість доставки в область розраховується індивідуально." }
   ];
-  return /* @__PURE__ */ jsxs("section", { ref, style: { padding: "clamp(40px, 8vw, 80px) 0" }, children: [
+  return /* @__PURE__ */ jsxs("section", { ref, className: "faq-mobile-section", style: { padding: "clamp(40px, 8vw, 80px) 0" }, children: [
     /* @__PURE__ */ jsx("script", { type: "application/ld+json", dangerouslySetInnerHTML: {
       __html: JSON.stringify({
         "@context": "https://schema.org",
@@ -10664,7 +10616,7 @@ function FaqSection() {
       })
     } }),
     /* @__PURE__ */ jsxs("div", { className: "layout-container", children: [
-      /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { textAlign: "center", marginBottom: "3rem" }, children: /* @__PURE__ */ jsx("h2", { className: "h2", style: { maxWidth: 800, margin: "0 auto" }, children: "Поширені запитання" }) }),
+      /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { textAlign: "center", marginBottom: "3rem" }, children: /* @__PURE__ */ jsx("h2", { className: "h2 faq-mobile-h2", style: { maxWidth: 800, margin: "0 auto" }, children: "Поширені запитання" }) }),
       /* @__PURE__ */ jsx("div", { className: `reveal ${visible ? "visible" : ""}`, style: { transitionDelay: "0.1s" }, children: faqs.map((faq, idx) => {
         const isOpen = openIdx === idx;
         return /* @__PURE__ */ jsxs("div", { style: { borderBottom: "1px solid var(--color-border-subtle)", marginBottom: "1rem" }, children: [
@@ -10685,15 +10637,17 @@ function FaqSection() {
                 color: "var(--c-text)",
                 fontFamily: "inherit",
                 fontSize: "1.125rem",
-                fontWeight: 600
+                fontWeight: 600,
+                gap: "1rem"
               },
               children: [
-                faq.q,
+                /* @__PURE__ */ jsx("span", { style: { flex: 1 }, children: faq.q }),
                 /* @__PURE__ */ jsx(
                   ChevronRight,
                   {
                     size: 20,
                     style: {
+                      flexShrink: 0,
                       color: "var(--c-orange)",
                       transform: isOpen ? "rotate(90deg)" : "none",
                       transition: "transform 0.3s ease"

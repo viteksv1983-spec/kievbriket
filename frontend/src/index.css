@@ -137,4 +137,115 @@ img {
     .faq-answer-mobile {
         text-align: left;
     }
+
+    /* Center Product Card Information on Mobile */
+    .product-card-body {
+        text-align: center !important;
+        align-items: center !important;
+    }
+
+    .product-card-body>div:last-child {
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 1rem !important;
+    }
+
+    .product-card-body [style*="justify-content: space-between"] {
+        justify-content: center !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .product-card-title-overlay {
+        text-align: center !important;
+    }
+
+    /* Center Product Page Mobile Title and Variants */
+    .product-desktop-title,
+    .product-badges-row,
+    .product-price-block {
+        align-items: center !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+
+    .product-desktop-title h1 {
+        text-align: center !important;
+    }
+
+    .product-price-block>div:first-child {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .product-price-block>div:first-child p {
+        justify-content: center !important;
+    }
+
+    .product-price-block>div:first-child>div {
+        justify-content: center !important;
+    }
+
+    /* Match ProductPage Characteristics header align center */
+    .order-steps h3,
+    .nh-card h2,
+    .nh-card h3 {
+        text-align: center !important;
+    }
+
+    /* Center variants block */
+    .product-variants-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .product-variants-grid {
+        justify-content: center !important;
+    }
+
+    .breadcrumbs-container {
+        justify-content: center !important;
+    }
+}
+
+
+/* Fix mobile display for popular queries bubbles */
+.queries-scroll-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.query-bubble {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    border-radius: 100px;
+    border: 1px solid var(--color-border-subtle);
+    color: var(--c-text2);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    background: var(--color-bg-elevated);
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.query-bubble:hover {
+    border-color: var(--c-orange);
+    color: var(--c-text);
+}
+
+@media (max-width: 640px) {
+    .queries-scroll-container {
+        padding-left: 0;
+        padding-right: 0;
+    }
 }

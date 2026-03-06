@@ -553,25 +553,12 @@ function PopularQueriesSection() {
                     <h3 style={{ fontSize: '1.125rem', color: 'var(--c-text)', marginBottom: '1.5rem', fontWeight: '600' }}>
                         Популярні запити:
                     </h3>
-                    <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem', overflowX: 'auto', paddingBottom: '8px', WebkitOverflowScrolling: 'touch', justifyContent: 'center' }}>
+                    <div className="queries-scroll-container">
                         {queries.map((q, idx) => (
                             <Link
                                 key={idx}
                                 to={q.url}
-                                style={{
-                                    display: 'inline-flex', alignItems: 'center', padding: '0.75rem 1.25rem',
-                                    borderRadius: '100px', border: '1px solid var(--color-border-subtle)',
-                                    color: 'var(--c-text2)', textDecoration: 'none', fontSize: '0.95rem',
-                                    transition: 'all 0.2s', background: 'var(--color-bg-elevated)', gap: '0.5rem'
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.borderColor = 'var(--c-orange)';
-                                    e.currentTarget.style.color = 'var(--c-text)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
-                                    e.currentTarget.style.color = 'var(--c-text2)';
-                                }}
+                                className="query-bubble"
                             >
                                 <Flame size={14} style={{ opacity: 0.5 }} />
                                 {q.name}

@@ -363,23 +363,31 @@ function CategoryProducts({ products, onOrderProduct }) {
                                         </div>
                                     )}
 
-                                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '1.5rem' }}>
-                                        <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                            <Zap size={15} style={{ color: 'var(--c-orange)' }} />
+                                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '1rem' }}>
+                                        <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'center', gap: '6px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '6px', color: '#e5e7eb', fontSize: '0.8rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                            <Zap size={14} style={{ color: 'var(--c-orange)' }} />
                                             <span>Висока тепловіддача</span>
                                         </div>
-                                        <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                            <Droplets size={15} style={{ color: '#22c55e' }} />
+                                        <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'center', gap: '6px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '6px', color: '#e5e7eb', fontSize: '0.8rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                            <Droplets size={14} style={{ color: '#22c55e' }} />
                                             <span>Вологість &lt; 8%</span>
                                         </div>
                                     </div>
 
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '1.25rem' }}>
+                                        <span style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <CheckCircle2 size={12} /> Є в наявності
+                                        </span>
+                                        <span style={{ background: 'rgba(59,130,246,0.1)', color: '#3b82f6', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <Truck size={12} /> Доставимо сьогодні
+                                        </span>
+                                    </div>
+
                                     <div style={{
                                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                        paddingTop: '1.25rem', borderTop: '1px solid rgba(255, 255, 255, 0.05)'
+                                        paddingTop: '1rem', borderTop: '1px solid rgba(255, 255, 255, 0.05)'
                                     }}>
                                         <div>
-                                            <span className="category-card-mobile-badge" style={{ display: 'none', background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', padding: '2px 8px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 700, marginBottom: '6px', width: 'fit-content' }}>✔ В наявності</span>
                                             <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
                                                 <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{product.price}</span>
                                                 <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)' }}>грн / тонна</span>

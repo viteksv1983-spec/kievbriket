@@ -9016,6 +9016,10 @@ function ProductPage() {
                     /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Термін доставки:" }),
                     " 1 день"
                   ] }),
+                  /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
+                    /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Вартість доставки:" }),
+                    " Індивідуальна вартість доставки буде розрахована після вашого запиту"
+                  ] }),
                   product.category === "drova" && /* @__PURE__ */ jsxs(Fragment, { children: [
                     /* @__PURE__ */ jsxs("p", { style: { margin: 0, color: "var(--c-text2)", fontSize: "0.9375rem" }, children: [
                       /* @__PURE__ */ jsx("span", { style: { color: "var(--c-text)", fontWeight: 600 }, children: "Мінімальне замовлення:" }),

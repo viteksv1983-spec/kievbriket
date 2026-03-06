@@ -523,6 +523,9 @@ export default function ProductPage() {
                                     <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
                                         <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Термін доставки:</span> 1 день
                                     </p>
+                                    <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                        <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Вартість доставки:</span> Індивідуальна вартість доставки буде розрахована після вашого запиту
+                                    </p>
                                     {product.category === 'drova' && (
                                         <>
                                             <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>

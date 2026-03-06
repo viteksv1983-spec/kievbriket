@@ -103,3 +103,8 @@
 2026-03-06 18:25:24 INFO     [cakeshop.seed] Database already has 23 products. Skipping auto-seeding.
 2026-03-06 18:25:48 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
 2026-03-06 18:25:49 INFO     [cakeshop.seed] Database already has 23 products. Skipping auto-seeding.
+2026-03-06 19:29:43 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 19:29:43 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 19:46:38 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 19:46:39 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 19:46:40 INFO     [cakeshop.seed] Database already has 23 products. Skipping auto-seeding.

@@ -389,7 +389,7 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                                 </div>
                                             )}
 
-                                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '1rem' }}>
+                                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '6px', marginBottom: '1rem' }}>
                                                 <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'flex-start', gap: '6px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '6px', color: '#e5e7eb', fontSize: '0.8rem', border: '1px solid rgba(255,255,255,0.05)' }}>
                                                     <Flame size={14} color="var(--c-orange)" style={{ flexShrink: 0, marginTop: 1 }} />
                                                     <span>{info.desc}</span>

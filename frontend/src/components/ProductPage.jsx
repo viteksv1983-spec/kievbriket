@@ -281,6 +281,10 @@ export default function ProductPage() {
                                     height="450"
                                     loading={activeImageIndex === 0 ? "eager" : "lazy"}
                                     decoding="async"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = `https://placehold.co/600x450/333/ccc?text=${encodeURIComponent(product.name)}`;
+                                    }}
                                     style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
                                     onMouseEnter={e => window.innerWidth > 768 && (e.target.style.transform = 'scale(1.05)')}
                                     onMouseLeave={e => e.target.style.transform = 'scale(1)'}
@@ -313,6 +317,10 @@ export default function ProductPage() {
                                             width="80"
                                             height="80"
                                             loading="lazy"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = `https://placehold.co/80x80/333/ccc?text=${idx + 1}`;
+                                            }}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                         />
                                     </button>
@@ -667,7 +675,10 @@ export default function ProductPage() {
                                                         src={getImageUrl(p.image_url, api.defaults.baseURL)}
                                                         alt={p.category === 'drova' || categorySlug === 'drova' ? `${p.name} колоті дрова складометр доставка Київ` : p.category === 'brikety' ? (p.name.split('—')[0].split('- ')[0].trim().replace(/\(|\)/g, '').replace(/\s+/g, ' ')) : (p.h1_heading || p.name)}
                                                         className="catalog-card-img"
-                                                        onError={e => { e.target.onerror = null; e.target.src = '/assets/product-placeholder-wood.webp'; }}
+                                                        onError={e => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = `https://placehold.co/400x300/333/ccc?text=${encodeURIComponent(p.name)}`;
+                                                        }}
                                                     />
                                                 ) : (
                                                     <div className="catalog-card-img-placeholder">🪵</div>

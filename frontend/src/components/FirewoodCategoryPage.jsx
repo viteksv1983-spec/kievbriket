@@ -357,10 +357,17 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                         <div className="product-card-image" style={{ aspectRatio: '4/3', width: '100%', overflow: 'hidden', position: 'relative' }}>
                                             <img
                                                 src={getImageUrl(product.image_url, api.defaults.baseURL)}
-                                                alt={`${product.name.replace(/[()]/g, '').trim()} Київ`}
+                                                alt={`${product.name} Київ`}
                                                 loading="lazy"
-                                                className="img-zoom"
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                                                onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = `https://placehold.co/400x300/333/ccc?text=${encodeURIComponent(product.name)}`;
+                                                }}
+                                                style={{
+                                                    width: '100%', height: '100%', objectFit: 'cover',
+                                                    transition: 'transform 0.7s ease'
+                                                }}
+                                                className="group-hover:scale-105"
                                             />
                                             <div style={{
                                                 position: 'absolute', inset: 0,

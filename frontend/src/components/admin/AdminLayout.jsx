@@ -335,9 +335,9 @@ export default function AdminLayout() {
           </Link>
 
           <Link
-            to="/admin/events"
+            to="/admin/settings"
             onClick={() => setIsSidebarOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/events")
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/settings")
               ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium"
               : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
               }`}

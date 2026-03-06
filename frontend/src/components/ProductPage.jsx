@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { Truck, ChevronRight, Ruler, Scale, Flame, Info, ArrowRight, CheckCircle2, ChevronDown } from 'lucide-react';
+import { Truck, ChevronRight, Ruler, Scale, Flame, Info, ArrowRight, CheckCircle2, ChevronDown, PackageCheck } from 'lucide-react';
 import { useCategories } from '../context/CategoryContext';
 import { getCategoryUrl, getImageUrl } from '../utils/urls';
 import api from '../api';

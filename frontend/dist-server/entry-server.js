@@ -6246,11 +6246,11 @@ function CategoryProducts$2({ products, onOrderProduct, activeCategory }) {
                   /* @__PURE__ */ jsx("div", { className: "product-card-title-static", style: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "0.5rem", marginBottom: "1rem", flexShrink: 0 }, children: /* @__PURE__ */ jsx("h3", { className: "h3", style: { margin: 0, fontSize: "1.3rem", fontWeight: 800, lineHeight: 1.2 }, children: product.name }) }),
                   product.short_description && /* @__PURE__ */ jsx("div", { style: { position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", border: 0 }, children: product.short_description }),
                   /* @__PURE__ */ jsxs("div", { style: { flex: 1, display: "flex", flexDirection: "column", gap: "6px", marginBottom: "1rem" }, children: [
-                    /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "flex-start", gap: "6px", background: "rgba(255, 255, 255, 0.03)", padding: "6px 10px", borderRadius: "6px", color: "#e5e7eb", fontSize: "0.8rem", border: "1px solid rgba(255,255,255,0.05)" }, children: [
+                    /* @__PURE__ */ jsxs("div", { style: { display: "inline-flex", width: "fit-content", alignItems: "flex-start", gap: "6px", background: "rgba(255, 255, 255, 0.03)", padding: "6px 10px", borderRadius: "6px", color: "#e5e7eb", fontSize: "0.8rem", border: "1px solid rgba(255,255,255,0.05)" }, children: [
                       /* @__PURE__ */ jsx(Flame, { size: 14, color: "var(--c-orange)", style: { flexShrink: 0, marginTop: 1 } }),
                       /* @__PURE__ */ jsx("span", { children: info.desc })
                     ] }),
-                    /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "flex-start", gap: "6px", background: "rgba(255, 255, 255, 0.03)", padding: "6px 10px", borderRadius: "6px", color: "#e5e7eb", fontSize: "0.8rem", border: "1px solid rgba(255,255,255,0.05)" }, children: [
+                    /* @__PURE__ */ jsxs("div", { style: { display: "inline-flex", width: "fit-content", alignItems: "flex-start", gap: "6px", background: "rgba(255, 255, 255, 0.03)", padding: "6px 10px", borderRadius: "6px", color: "#e5e7eb", fontSize: "0.8rem", border: "1px solid rgba(255,255,255,0.05)" }, children: [
                       /* @__PURE__ */ jsx(CheckCircle2, { size: 14, color: "#22c55e", style: { flexShrink: 0, marginTop: 1 } }),
                       /* @__PURE__ */ jsx("span", { children: info.use })
                     ] })

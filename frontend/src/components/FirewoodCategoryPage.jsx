@@ -390,11 +390,11 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                             )}
 
                                             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '1rem' }}>
-                                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '6px', color: '#e5e7eb', fontSize: '0.8rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                                <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'flex-start', gap: '6px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '6px', color: '#e5e7eb', fontSize: '0.8rem', border: '1px solid rgba(255,255,255,0.05)' }}>
                                                     <Flame size={14} color="var(--c-orange)" style={{ flexShrink: 0, marginTop: 1 }} />
                                                     <span>{info.desc}</span>
                                                 </div>
-                                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '6px', color: '#e5e7eb', fontSize: '0.8rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                                <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'flex-start', gap: '6px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '6px', color: '#e5e7eb', fontSize: '0.8rem', border: '1px solid rgba(255,255,255,0.05)' }}>
                                                     <CheckCircle2 size={14} color="#22c55e" style={{ flexShrink: 0, marginTop: 1 }} />
                                                     <span>{info.use}</span>
                                                 </div>

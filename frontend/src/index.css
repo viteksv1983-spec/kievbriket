@@ -213,11 +213,11 @@ img {
         grid-template-columns: 1fr !important;
     }
 
-    /* Expand Category and Product Grid widths to edges */
+    /* Expand Category and Product Grid widths to edges but retain a 12px safe margin */
     .catalog-section .layout-container,
     .product-main-content {
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
     }
 
     /* Fix catalog card alignments on mobile categories */

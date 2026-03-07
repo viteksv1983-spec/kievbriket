@@ -32,7 +32,7 @@ class OrderItem(Base):
     order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"), index=True)
     cake_id = Column(Integer, ForeignKey("cakes.id", ondelete="SET NULL"), nullable=True, index=True)  # FK references table name
     scale = Column(String, nullable=True)
-    quantity = Column(Integer)
+    quantity = Column(Float)
     flavor = Column(String, nullable=True)
     weight = Column(Float, nullable=True)  # Selected weight in kg
 

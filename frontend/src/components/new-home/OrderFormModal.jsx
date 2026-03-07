@@ -63,7 +63,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
                 customer_name: form.name.trim() || 'Клієнт',
                 customer_phone: rawPhone,
                 cake_id: product ? product.id : null,
-                quantity: form.quantity || 1,
+                quantity: parseFloat(form.quantity) || 1,
                 flavor: variant ? variant.name : form.fuel,
                 weight: product ? product.weight : null,
                 total_price: form.total_price || null
@@ -261,17 +261,17 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
                                 Кількість {product && (product.category === 'brikety' || product.category === 'vugillya') ? '(тонн)' : '(складометрів / шт)'}
                             </label>
                             <div style={{ display: "flex", alignItems: "center", ...inputStyle, padding: "4px" }}>
-                                <button type="button" onClick={() => setForm(f => ({ ...f, quantity: Math.max(1, f.quantity - 1) }))} style={{ background: "transparent", border: "none", color: "#fff", padding: "10px 15px", cursor: "pointer", fontSize: "1.2rem", fontWeight: 800 }}>-</button>
+                                <button type="button" onClick={() => setForm(f => ({ ...f, quantity: Math.max(0.1, Number((Number(f.quantity) - 1).toFixed(2))) }))} style={{ background: "transparent", border: "none", color: "#fff", padding: "10px 15px", cursor: "pointer", fontSize: "1.2rem", fontWeight: 800 }}>-</button>
                                 <input
                                     id="ofm-quantity"
                                     type="number"
-                                    min="1"
-                                    step="1"
+                                    min="0.1"
+                                    step="any"
                                     value={form.quantity}
-                                    onChange={(e) => setForm(f => ({ ...f, quantity: Math.max(1, parseInt(e.target.value) || 1) }))}
+                                    onChange={(e) => setForm(f => ({ ...f, quantity: e.target.value }))}
                                     style={{ flex: 1, background: "transparent", border: "none", color: "#fff", textAlign: "center", fontSize: "1rem", fontWeight: 700, outline: "none", width: "100%", padding: 0 }}
                                 />
-                                <button type="button" onClick={() => setForm(f => ({ ...f, quantity: f.quantity + 1 }))} style={{ background: "transparent", border: "none", color: "#fff", padding: "10px 15px", cursor: "pointer", fontSize: "1.2rem", fontWeight: 800 }}>+</button>
+                                <button type="button" onClick={() => setForm(f => ({ ...f, quantity: Number((Number(f.quantity) + 1).toFixed(2)) }))} style={{ background: "transparent", border: "none", color: "#fff", padding: "10px 15px", cursor: "pointer", fontSize: "1.2rem", fontWeight: 800 }}>+</button>
                             </div>
                         </div>
 

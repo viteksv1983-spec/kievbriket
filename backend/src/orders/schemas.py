@@ -41,6 +41,7 @@ class QuickOrderCreate(BaseModel):
     weight: Optional[float] = None
     delivery_method: Optional[str] = None
     delivery_date: Optional[str] = None
+    total_price: Optional[float] = None
 
 class Order(OrderBase):
     id: int

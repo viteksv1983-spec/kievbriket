@@ -40,7 +40,10 @@ function calculate(area, heating, insulation, fuel, prices = FUEL_CONVERSION) {
     const base = area * BASE_FIREWOOD_PER_M2;
     const adjusted = base * HEATING_MULTIPLIER[heating] * INSULATION_MULTIPLIER[insulation];
     const fuelData = prices[fuel];
-    const volume = adjusted * fuelData.factor;
+    const rawVolume = adjusted * fuelData.factor;
+
+    // Round the volume FIRST exactly as it will be displayed
+    const volume = fuel === 'drova' ? Math.round(rawVolume) : +(rawVolume.toFixed(1));
     const cost = volume * fuelData.pricePerUnit;
 
     // Also compute alternatives
@@ -355,7 +358,7 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
 
                                     {/* Main result */}
                                     <div className="calc-res-main">
-                                        <p className="calc-res-main-label">Необхідний об'єм палива:</p>
+                                        <p className="calc-res-main-label">Необхідний об'єм ({FUEL_OPTIONS.find(f => f.value === fuel)?.label || 'Дрова'}):</p>
                                         <div className="calc-res-main-value">
                                             <span className="calc-res-approx">≈</span>
                                             <span className="calc-res-number">{result.volume}</span>

@@ -35,14 +35,15 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
             else if (defaultRef.type === 'brikety') fuelName = "Паливні брикети";
 
             const calcMessage = defaultRef.volume && defaultRef.unit
-                ? `Об'єм з калькулятора: ${defaultRef.volume} ${defaultRef.unit}` + (defaultRef.cost ? `\nОрієнтовна вартість: ${defaultRef.cost.toLocaleString('uk-UA')} грн` : "")
+                ? `Об'єм з калькулятора: ${defaultRef.volume} ${defaultRef.unit}`
                 : "";
 
             setForm(prev => ({
                 ...prev,
                 fuel: fuelName,
                 quantity: defaultRef.volume || 1,
-                message: calcMessage
+                message: calcMessage,
+                total_price: defaultRef.cost || null
             }));
         }
     }, [isOpen, defaultRef]);
@@ -64,7 +65,8 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
                 cake_id: product ? product.id : null,
                 quantity: form.quantity || 1,
                 flavor: variant ? variant.name : form.fuel,
-                weight: product ? product.weight : null
+                weight: product ? product.weight : null,
+                total_price: form.total_price || null
             };
 
             // Append optional message to flavor if there's no dedicated message field, 

@@ -171,7 +171,7 @@ class OrderService:
     def create_quick_order(db: Session, order: schemas.QuickOrderCreate):
         # If a product is specified — look it up and calculate price
         product = None
-        total_price = 0.0
+        total_price = order.total_price or 0.0
 
         if order.cake_id is not None:
             product = ProductService.get_product(db, order.cake_id)

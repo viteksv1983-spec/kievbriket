@@ -71,6 +71,16 @@ def create_quick_order(order: schemas.QuickOrderCreate, db: Session = Depends(ge
     if order.cake_id is not None:
         product = ProductService.get_product(db, order.cake_id)
         product_name = product.name if product else f"Товар #{order.cake_id}"
+    else:
+        if order.flavor:
+            if not order.flavor.startswith("Коментар:"):
+                if "Коментар:" in order.flavor:
+                    parts = order.flavor.split("Коментар:", 1)
+                    product_name = parts[0].strip()
+                else:
+                    product_name = order.flavor.strip()
+        if product_name == "Консультація":
+            product_name = "Швидке замовлення без товару"
 
     msg = f"<b>Нове замовлення!</b>\n"
     msg += f"🆔 Номер замовлення: №{db_order.id}\n\n"
@@ -86,10 +96,12 @@ def create_quick_order(order: schemas.QuickOrderCreate, db: Session = Depends(ge
             msg += f"  {order.flavor}\n"
         elif "Коментар:" in order.flavor:
             parts = order.flavor.split("Коментар:", 1)
-            msg += f"  Варіант: {parts[0].strip()}\n"
+            if order.cake_id is not None:
+                msg += f"  Варіант: {parts[0].strip()}\n"
             msg += f"  Коментар: {parts[1].strip()}\n"
         else:
-            msg += f"  Варіант: {order.flavor}\n"
+            if order.cake_id is not None:
+                msg += f"  Варіант: {order.flavor}\n"
     if order.delivery_method:
         msg += f"🔥 <b>Тип палива:</b> {order.delivery_method}\n"
     if order.delivery_date:

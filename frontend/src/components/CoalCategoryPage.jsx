@@ -693,7 +693,7 @@ export default function CoalCategoryPage({ products, onOrderProduct }) {
 
             <PopularTypesBlock />
 
-            <FuelCalculatorSection onQuickOrderClick={() => onOrderProduct(null)} defaultFuelType="vugillya" />
+            <FuelCalculatorSection onQuickOrderClick={(payload) => onOrderProduct(payload)} defaultFuelType="vugillya" />
 
             <DeliverySection />
             <BenefitsSection />

@@ -2,7 +2,7 @@ import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { c as useAuth, a as api, d as useCategories } from "../entry-server.js";
 import { useLocation, Link, Outlet } from "react-router-dom";
-import { FiX, FiMenu, FiShoppingBag, FiPackage, FiGrid, FiImage, FiPlus, FiLayers, FiMessageCircle, FiBarChart2, FiHome, FiLogOut } from "react-icons/fi";
+import { FiX, FiMenu, FiShoppingBag, FiPackage, FiGrid, FiImage, FiPlus, FiLayers, FiMessageCircle, FiBarChart2, FiUsers, FiUser, FiHome, FiLogOut } from "react-icons/fi";
 import { Flame } from "lucide-react";
 import "react-dom/server";
 import "react-fast-compare";
@@ -11,7 +11,7 @@ import "shallowequal";
 import "axios";
 import "react-icons/fa";
 function AdminLayout() {
-  const { logout, token } = useAuth();
+  const { logout, token, user } = useAuth();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expanded, setExpanded] = useState({ orders: false });
@@ -285,6 +285,30 @@ function AdminLayout() {
                   /* @__PURE__ */ jsx("span", { children: "Google Analytics" })
                 ]
               }
+            ),
+            user?.is_superadmin && /* @__PURE__ */ jsxs(
+              Link,
+              {
+                to: "/admin/users",
+                onClick: () => setIsSidebarOpen(false),
+                className: `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/users") ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"}`,
+                children: [
+                  /* @__PURE__ */ jsx(FiUsers, { className: "w-5 h-5" }),
+                  /* @__PURE__ */ jsx("span", { children: "Користувачі" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxs(
+              Link,
+              {
+                to: "/admin/profile",
+                onClick: () => setIsSidebarOpen(false),
+                className: `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/profile") ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"}`,
+                children: [
+                  /* @__PURE__ */ jsx(FiUser, { className: "w-5 h-5" }),
+                  /* @__PURE__ */ jsx("span", { children: "Мій профіль" })
+                ]
+              }
             )
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "p-4 border-t border-gray-100", children: [
@@ -320,4 +344,4 @@ function AdminLayout() {
 export {
   AdminLayout as default
 };
-//# sourceMappingURL=AdminLayout-CQuT53R-.js.map
+//# sourceMappingURL=AdminLayout-Brb0zRMc.js.map

@@ -364,7 +364,12 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
                                     <div className="calc-res-actions">
                                         <button
                                             className="nh-btn-primary"
-                                            onClick={onQuickOrderClick}
+                                            onClick={() => onQuickOrderClick({
+                                                type: fuel,
+                                                volume: result.volume,
+                                                unit: result.unit,
+                                                isFromCalculator: true
+                                            })}
                                             style={{ width: '100%', justifyContent: 'center' }}
                                         >
                                             Замовити доставку цього об'єму <ArrowRight size={16} />

@@ -1758,9 +1758,9 @@ function usePhoneInput(initialValue = "") {
   return { phoneValue, phoneProps, rawPhone: phoneValue, setPhone, resetPhone, digits };
 }
 const fuelOptions$1 = ["Дрова", "Паливні брикети", "Вугілля", "Декілька видів"];
-function OrderFormModal({ isOpen, onClose, product, variant }) {
+function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }) {
   const [form, setForm] = useState({ name: "", fuel: "", message: "", quantity: 1 });
-  const { phoneProps, rawPhone, resetPhone } = usePhoneInput();
+  const { phoneProps, rawPhone, resetPhone, digits: phoneDigits } = usePhoneInput();
   const [status, setStatus] = useState("idle");
   const setField = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
   useEffect(() => {
@@ -1780,10 +1780,24 @@ function OrderFormModal({ isOpen, onClose, product, variant }) {
         setForm({ name: "", fuel: "", message: "", quantity: 1 });
         resetPhone();
       }, 300);
+    } else if (isOpen && defaultRef && defaultRef.isFromCalculator) {
+      let fuelName = "Дрова";
+      if (defaultRef.type === "vugillya") fuelName = "Вугілля";
+      else if (defaultRef.type === "brikety") fuelName = "Паливні брикети";
+      setForm((prev) => ({
+        ...prev,
+        fuel: fuelName,
+        quantity: defaultRef.volume || 1,
+        message: defaultRef.volume && defaultRef.unit ? `Об'єм з калькулятора: ${defaultRef.volume} ${defaultRef.unit}` : ""
+      }));
     }
-  }, [isOpen]);
+  }, [isOpen, defaultRef]);
   const submit = async (e) => {
     e.preventDefault();
+    if (phoneDigits.length < 10) {
+      alert("Будь ласка, введіть повний номер телефону (наприклад: +380 50 123 45 67).");
+      return;
+    }
     setStatus("loading");
     try {
       const payload = {
@@ -2111,6 +2125,35 @@ function OrderFormModal({ isOpen, onClose, product, variant }) {
             ` })
   ] });
 }
+function GoogleAnalytics() {
+  const [gaId, setGaId] = useState(null);
+  useEffect(() => {
+    api.get("/api/site-settings/ga").then((res) => {
+      const id = res.data?.ga_tracking_id;
+      if (id && id.trim()) {
+        setGaId(id.trim());
+      }
+    }).catch(() => {
+    });
+  }, []);
+  useEffect(() => {
+    if (!gaId) return;
+    if (document.querySelector(`script[src*="googletagmanager.com/gtag"]`)) return;
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+    document.head.appendChild(script);
+    const inlineScript = document.createElement("script");
+    inlineScript.textContent = `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}');
+        `;
+    document.head.appendChild(inlineScript);
+  }, [gaId]);
+  return null;
+}
 function PublicLayout() {
   const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
   return /* @__PURE__ */ jsxs(
@@ -2134,7 +2177,8 @@ function PublicLayout() {
             isOpen: isOrderFormOpen,
             onClose: () => setIsOrderFormOpen(false)
           }
-        )
+        ),
+        /* @__PURE__ */ jsx(GoogleAnalytics, {})
       ]
     }
   );
@@ -5115,7 +5159,12 @@ function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = "drova" })
                     "button",
                     {
                       className: "nh-btn-primary",
-                      onClick: onQuickOrderClick,
+                      onClick: () => onQuickOrderClick({
+                        type: fuel,
+                        volume: result.volume,
+                        unit: result.unit,
+                        isFromCalculator: true
+                      }),
                       style: { width: "100%", justifyContent: "center" },
                       children: [
                         "Замовити доставку цього об'єму ",
@@ -5615,10 +5664,10 @@ function Home() {
   const { categories } = useCategories();
   const [featuredCakes, setFeaturedCakes] = useState([]);
   const [allCakes, setAllCakes] = useState([]);
-  const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+  const [orderFormPayload, setOrderFormPayload] = useState(null);
   const { pageData } = usePageSEO("/");
-  const handleQuickOrderDefault = () => {
-    setIsOrderFormOpen(true);
+  const handleQuickOrderDefault = (payload = null) => {
+    setOrderFormPayload(payload || true);
   };
   useEffect(() => {
     api.get("/products/").then((response) => {
@@ -5743,8 +5792,9 @@ function Home() {
     /* @__PURE__ */ jsx(
       OrderFormModal,
       {
-        isOpen: isOrderFormOpen,
-        onClose: () => setIsOrderFormOpen(false)
+        isOpen: !!orderFormPayload,
+        onClose: () => setOrderFormPayload(null),
+        defaultRef: typeof orderFormPayload === "object" ? orderFormPayload : null
       }
     )
   ] });
@@ -5754,35 +5804,6 @@ function ScrollToTop() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname, search]);
-  return null;
-}
-function GoogleAnalytics() {
-  const [gaId, setGaId] = useState(null);
-  useEffect(() => {
-    api.get("/api/site-settings/ga").then((res) => {
-      const id = res.data?.ga_tracking_id;
-      if (id && id.trim()) {
-        setGaId(id.trim());
-      }
-    }).catch(() => {
-    });
-  }, []);
-  useEffect(() => {
-    if (!gaId) return;
-    if (document.querySelector(`script[src*="googletagmanager.com/gtag"]`)) return;
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-    document.head.appendChild(script);
-    const inlineScript = document.createElement("script");
-    inlineScript.textContent = `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${gaId}');
-        `;
-    document.head.appendChild(inlineScript);
-  }, [gaId]);
   return null;
 }
 function NotFound() {
@@ -6504,7 +6525,7 @@ function FirewoodCategoryPage({ products, seo, onOrderProduct, activeCategory, a
       }
     ),
     /* @__PURE__ */ jsx(HowToChooseFirewood, { activeCategorySlug }),
-    /* @__PURE__ */ jsx(FuelCalculatorSection, { onQuickOrderClick: () => onOrderProduct(null) }),
+    /* @__PURE__ */ jsx(FuelCalculatorSection, { onQuickOrderClick: (payload) => onOrderProduct(payload) }),
     /* @__PURE__ */ jsx(DeliverySection, {}),
     /* @__PURE__ */ jsx(BenefitsSection, {}),
     activeCategorySlug === "drova" ? /* @__PURE__ */ jsx(FirewoodSeoBlock, {}) : /* @__PURE__ */ jsx("section", { style: { padding: "clamp(40px, 10vw, 100px) 0", display: "flex", justifyContent: "center" }, children: /* @__PURE__ */ jsx("div", { className: "layout-container", style: { display: "flex", justifyContent: "center" }, children: /* @__PURE__ */ jsxs("div", { className: "nh-card", style: { width: "100%", padding: "clamp(1.5rem, 5vw, 4rem)", display: "flex", flexDirection: "column", borderRadius: "24px" }, children: [
@@ -7461,7 +7482,7 @@ function BriquettesCategoryPage({ products, onOrderProduct }) {
     /* @__PURE__ */ jsx(BriquetteTypesSection, {}),
     /* @__PURE__ */ jsx(PopularBriquetteTypes, {}),
     /* @__PURE__ */ jsx(ComparisonTable, {}),
-    /* @__PURE__ */ jsx(FuelCalculatorSection, { onQuickOrderClick: () => onOrderProduct(null), defaultFuelType: "brikety" }),
+    /* @__PURE__ */ jsx(FuelCalculatorSection, { onQuickOrderClick: (payload) => onOrderProduct(payload), defaultFuelType: "brikety" }),
     /* @__PURE__ */ jsx(DeliverySection, {}),
     /* @__PURE__ */ jsx(BenefitsSection, {}),
     /* @__PURE__ */ jsx(BriquettesSeoBlock, {}),
@@ -8224,7 +8245,7 @@ function CoalCategoryPage({ products, onOrderProduct }) {
     /* @__PURE__ */ jsx(CategoryProducts, { products, onOrderProduct }),
     /* @__PURE__ */ jsx(HowToChooseCoalSection, {}),
     /* @__PURE__ */ jsx(PopularTypesBlock, {}),
-    /* @__PURE__ */ jsx(FuelCalculatorSection, { onQuickOrderClick: () => onOrderProduct(null), defaultFuelType: "vugillya" }),
+    /* @__PURE__ */ jsx(FuelCalculatorSection, { onQuickOrderClick: (payload) => onOrderProduct(payload), defaultFuelType: "vugillya" }),
     /* @__PURE__ */ jsx(DeliverySection, {}),
     /* @__PURE__ */ jsx(BenefitsSection, {}),
     /* @__PURE__ */ jsx(CoalSeoBlock, {}),
@@ -8257,6 +8278,7 @@ function Catalog({ predefinedCategory }) {
   const [products, setProducts] = useState(ssgProducts);
   const [loading, setLoading] = useState(true);
   const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+  const [orderFormPayload, setOrderFormPayload] = useState(null);
   const [orderProduct, setOrderProduct] = useState(null);
   const [activeFilter, setActiveFilter] = useState("Усі");
   const [sortMode, setSortMode] = useState("popular");
@@ -8290,8 +8312,14 @@ function Catalog({ predefinedCategory }) {
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [activeCategorySlug]);
-  const handleOrder = useCallback((product = null) => {
-    setOrderProduct(product);
+  const handleOrder = useCallback((input = null) => {
+    if (input && input.isFromCalculator) {
+      setOrderFormPayload(input);
+      setOrderProduct(null);
+    } else {
+      setOrderProduct(input);
+      setOrderFormPayload(null);
+    }
     setIsOrderFormOpen(true);
   }, []);
   activeCategory ? seo.h1 || activeCategory.name : "Каталог";
@@ -8410,8 +8438,10 @@ function Catalog({ predefinedCategory }) {
             onClose: () => {
               setIsOrderFormOpen(false);
               setOrderProduct(null);
+              setOrderFormPayload(null);
             },
-            product: orderProduct
+            product: orderProduct,
+            defaultRef: orderFormPayload
           }
         )
       ]
@@ -10163,7 +10193,7 @@ function FinalCtaBanner$1({ onOrderClick }) {
   ) }) });
 }
 function Delivery() {
-  const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+  const [orderFormPayload, setOrderFormPayload] = useState(null);
   const { pageData } = usePageSEO("/dostavka");
   const title = pageData?.meta_title || "Доставка дров по Києву — брикети та вугілля | КиївБрикет";
   const description = pageData?.meta_description || "Швидка доставка твердого палива (дров, брикетів, вугілля) по Києву та Київській області власним транспортом. Замовляйте сьогодні!";
@@ -10204,9 +10234,9 @@ function Delivery() {
         schema: combinedSchema
       }
     ),
-    /* @__PURE__ */ jsx(HeroDelivery, { onOrderClick: () => setIsOrderFormOpen(true) }),
+    /* @__PURE__ */ jsx(HeroDelivery, { onOrderClick: () => setOrderFormPayload(true) }),
     /* @__PURE__ */ jsx(DeliverySection, {}),
-    /* @__PURE__ */ jsx(FuelCalculatorSection, { onQuickOrderClick: () => setIsOrderFormOpen(true) }),
+    /* @__PURE__ */ jsx(FuelCalculatorSection, { onQuickOrderClick: (payload) => setOrderFormPayload(payload || true) }),
     /* @__PURE__ */ jsx(BenefitsSection, {}),
     /* @__PURE__ */ jsx(DeliverySeoBlock, {}),
     /* @__PURE__ */ jsx(PopularQueriesSection, {}),
@@ -10247,12 +10277,13 @@ function Delivery() {
         ] })
       ] })
     ] }) }) }),
-    /* @__PURE__ */ jsx(FinalCtaBanner$1, { onOrderClick: () => setIsOrderFormOpen(true) }),
+    /* @__PURE__ */ jsx(FinalCtaBanner$1, { onOrderClick: () => setOrderFormPayload(true) }),
     /* @__PURE__ */ jsx(
       OrderFormModal,
       {
-        isOpen: isOrderFormOpen,
-        onClose: () => setIsOrderFormOpen(false)
+        isOpen: !!orderFormPayload,
+        onClose: () => setOrderFormPayload(null),
+        defaultRef: typeof orderFormPayload === "object" ? orderFormPayload : null
       }
     )
   ] });
@@ -11160,7 +11191,7 @@ function DynamicPage() {
 const Login = React.lazy(() => import("./assets/Login-BYuoa_Zl.js"));
 const Register = React.lazy(() => import("./assets/Register-B1PsgqBd.js"));
 const Cart = React.lazy(() => import("./assets/Cart-Ps5h4rc5.js"));
-const AdminLayout = React.lazy(() => import("./assets/AdminLayout-CQuT53R-.js"));
+const AdminLayout = React.lazy(() => import("./assets/AdminLayout-Brb0zRMc.js"));
 const Orders = React.lazy(() => import("./assets/Orders-lDs1WTX2.js"));
 const Products = React.lazy(() => import("./assets/Products-B6i_hdz6.js"));
 const ProductEdit = React.lazy(() => import("./assets/ProductEdit-CcdsHlvN.js"));
@@ -11169,10 +11200,11 @@ const CategoryManager = React.lazy(() => import("./assets/CategoryManager-BPbWxB
 React.lazy(() => import("./assets/SEOPages-AlcA5Ryi.js"));
 const TelegramSettings = React.lazy(() => import("./assets/TelegramSettings-BbXdVmth.js"));
 const SiteSettingsPage = React.lazy(() => import("./assets/SiteSettingsPage-Ut7kwAft.js"));
+const UsersManager = React.lazy(() => import("./assets/UsersManager-C3eEoeMp.js"));
+const MyProfile = React.lazy(() => import("./assets/MyProfile-etrXsg_X.js"));
 function App() {
   return /* @__PURE__ */ jsx(AuthProvider, { children: /* @__PURE__ */ jsxs(CartProvider, { children: [
     /* @__PURE__ */ jsx(ScrollToTop, {}),
-    /* @__PURE__ */ jsx(GoogleAnalytics, {}),
     /* @__PURE__ */ jsx(Suspense, { fallback: /* @__PURE__ */ jsx("div", { className: "min-h-screen flex items-center justify-center", children: /* @__PURE__ */ jsx("div", { className: "w-8 h-8 border-4 border-[#A0153E] border-t-transparent rounded-full animate-spin" }) }), children: /* @__PURE__ */ jsxs(Routes, { children: [
       /* @__PURE__ */ jsxs(Route, { element: /* @__PURE__ */ jsx(PublicLayout, {}), children: [
         /* @__PURE__ */ jsx(Route, { path: "/", element: /* @__PURE__ */ jsx(Home, {}) }),
@@ -11197,7 +11229,9 @@ function App() {
         /* @__PURE__ */ jsx(Route, { path: "seo", element: /* @__PURE__ */ jsx(PageEditor, {}) }),
         /* @__PURE__ */ jsx(Route, { path: "categories", element: /* @__PURE__ */ jsx(CategoryManager, {}) }),
         /* @__PURE__ */ jsx(Route, { path: "telegram", element: /* @__PURE__ */ jsx(TelegramSettings, {}) }),
-        /* @__PURE__ */ jsx(Route, { path: "settings", element: /* @__PURE__ */ jsx(SiteSettingsPage, {}) })
+        /* @__PURE__ */ jsx(Route, { path: "settings", element: /* @__PURE__ */ jsx(SiteSettingsPage, {}) }),
+        /* @__PURE__ */ jsx(Route, { path: "users", element: /* @__PURE__ */ jsx(UsersManager, {}) }),
+        /* @__PURE__ */ jsx(Route, { path: "profile", element: /* @__PURE__ */ jsx(MyProfile, {}) })
       ] }) })
     ] }) })
   ] }) });

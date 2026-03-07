@@ -760,7 +760,7 @@ export default function BriquettesCategoryPage({ products, onOrderProduct }) {
             <ComparisonTable />
 
             {/* Reuse existing blocks */}
-            <FuelCalculatorSection onQuickOrderClick={() => onOrderProduct(null)} defaultFuelType="brikety" />
+            <FuelCalculatorSection onQuickOrderClick={(payload) => onOrderProduct(payload)} defaultFuelType="brikety" />
 
             <DeliverySection />
             <BenefitsSection />

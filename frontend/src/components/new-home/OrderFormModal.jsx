@@ -5,7 +5,7 @@ import { usePhoneInput } from "../../hooks/usePhoneInput";
 
 const fuelOptions = ["Дрова", "Паливні брикети", "Вугілля", "Декілька видів"];
 
-export function OrderFormModal({ isOpen, onClose, product, variant }) {
+export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }) {
     const [form, setForm] = useState({ name: "", fuel: "", message: "", quantity: 1 });
     const { phoneValue, phoneProps, rawPhone, resetPhone, digits: phoneDigits } = usePhoneInput();
     const [status, setStatus] = useState("idle");
@@ -29,8 +29,19 @@ export function OrderFormModal({ isOpen, onClose, product, variant }) {
                 setForm({ name: "", fuel: "", message: "", quantity: 1 });
                 resetPhone();
             }, 300);
+        } else if (isOpen && defaultRef && defaultRef.isFromCalculator) {
+            let fuelName = "Дрова";
+            if (defaultRef.type === 'vugillya') fuelName = "Вугілля";
+            else if (defaultRef.type === 'brikety') fuelName = "Паливні брикети";
+
+            setForm(prev => ({
+                ...prev,
+                fuel: fuelName,
+                quantity: defaultRef.volume || 1,
+                message: defaultRef.volume && defaultRef.unit ? `Об'єм з калькулятора: ${defaultRef.volume} ${defaultRef.unit}` : ""
+            }));
         }
-    }, [isOpen]);
+    }, [isOpen, defaultRef]);
 
     const submit = async (e) => {
         e.preventDefault();

@@ -25,12 +25,12 @@ function Home() {
     const { categories } = useCategories();
     const [featuredCakes, setFeaturedCakes] = useState([]);
     const [allCakes, setAllCakes] = useState([]);
-    const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+    const [orderFormPayload, setOrderFormPayload] = useState(null);
 
     const { pageData } = usePageSEO('/');
 
-    const handleQuickOrderDefault = () => {
-        setIsOrderFormOpen(true);
+    const handleQuickOrderDefault = (payload = null) => {
+        setOrderFormPayload(payload || true);
     };
 
     useEffect(() => {
@@ -164,8 +164,9 @@ function Home() {
             <ContactSection />
 
             <OrderFormModal
-                isOpen={isOrderFormOpen}
-                onClose={() => setIsOrderFormOpen(false)}
+                isOpen={!!orderFormPayload}
+                onClose={() => setOrderFormPayload(null)}
+                defaultRef={typeof orderFormPayload === 'object' ? orderFormPayload : null}
             />
         </>
     );

@@ -930,7 +930,7 @@ function FinalCtaBanner({ onOrderClick }) {
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────
 export default function Delivery() {
-    const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+    const [orderFormPayload, setOrderFormPayload] = useState(null);
 
     const { pageData } = usePageSEO('/dostavka');
     const title = pageData?.meta_title || "Доставка дров по Києву — брикети та вугілля | КиївБрикет";
@@ -973,11 +973,11 @@ export default function Delivery() {
                 schema={combinedSchema}
             />
 
-            <HeroDelivery onOrderClick={() => setIsOrderFormOpen(true)} />
+            <HeroDelivery onOrderClick={() => setOrderFormPayload(true)} />
 
             <DeliverySection />
 
-            <FuelCalculatorSection onQuickOrderClick={() => setIsOrderFormOpen(true)} />
+            <FuelCalculatorSection onQuickOrderClick={(payload) => setOrderFormPayload(payload || true)} />
 
             <BenefitsSection />
 
@@ -1023,11 +1023,12 @@ export default function Delivery() {
                 </div>
             </section>
 
-            <FinalCtaBanner onOrderClick={() => setIsOrderFormOpen(true)} />
+            <FinalCtaBanner onOrderClick={() => setOrderFormPayload(true)} />
 
             <OrderFormModal
-                isOpen={isOrderFormOpen}
-                onClose={() => setIsOrderFormOpen(false)}
+                isOpen={!!orderFormPayload}
+                onClose={() => setOrderFormPayload(null)}
+                defaultRef={typeof orderFormPayload === 'object' ? orderFormPayload : null}
             />
         </div>
     );

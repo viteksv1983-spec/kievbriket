@@ -645,7 +645,7 @@ export default function FirewoodCategoryPage({ products, seo, onOrderProduct, ac
 
             <HowToChooseFirewood activeCategorySlug={activeCategorySlug} />
 
-            <FuelCalculatorSection onQuickOrderClick={() => onOrderProduct(null)} />
+            <FuelCalculatorSection onQuickOrderClick={(payload) => onOrderProduct(payload)} />
 
             {/* Delivery and Benefits from existing NewHome */}
             <DeliverySection />

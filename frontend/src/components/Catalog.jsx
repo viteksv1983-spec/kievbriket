@@ -56,6 +56,7 @@ export default function Catalog({ predefinedCategory }) {
     const [products, setProducts] = useState(ssgProducts);
     const [loading, setLoading] = useState(true);
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+    const [orderFormPayload, setOrderFormPayload] = useState(null);
     const [orderProduct, setOrderProduct] = useState(null);
     const [activeFilter, setActiveFilter] = useState('Усі');
     const [sortMode, setSortMode] = useState('popular');
@@ -114,8 +115,14 @@ export default function Catalog({ predefinedCategory }) {
     }, [activeCategorySlug]);
 
 
-    const handleOrder = useCallback((product = null) => {
-        setOrderProduct(product);
+    const handleOrder = useCallback((input = null) => {
+        if (input && input.isFromCalculator) {
+            setOrderFormPayload(input);
+            setOrderProduct(null);
+        } else {
+            setOrderProduct(input);
+            setOrderFormPayload(null);
+        }
         setIsOrderFormOpen(true);
     }, []);
 
@@ -242,8 +249,9 @@ export default function Catalog({ predefinedCategory }) {
 
             <OrderFormModal
                 isOpen={isOrderFormOpen}
-                onClose={() => { setIsOrderFormOpen(false); setOrderProduct(null); }}
+                onClose={() => { setIsOrderFormOpen(false); setOrderProduct(null); setOrderFormPayload(null); }}
                 product={orderProduct}
+                defaultRef={orderFormPayload}
             />
         </div >
     );

@@ -230,3 +230,35 @@
 2026-03-06 20:41:39 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
 2026-03-06 20:41:40 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.
 2026-03-06 20:41:40 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.
+2026-03-06 20:51:21 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-06 20:51:21 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /users/me/
+2026-03-06 20:59:07 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 20:59:07 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 20:59:09 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.
+2026-03-06 20:59:09 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.
+2026-03-06 20:59:25 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-06 20:59:27 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-06 20:59:33 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — PATCH /products/29
+2026-03-06 20:59:38 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — PATCH /products/29
+2026-03-06 20:59:45 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-06 21:00:13 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — GET /admin/pages
+2026-03-06 21:00:16 WARNING  [cakeshop.errors] HTTP 401: Could not validate credentials — PATCH /products/30
+2026-03-06 21:01:33 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 21:01:35 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 21:01:36 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.
+2026-03-06 21:02:49 INFO     [cakeshop.products] Product cache invalidated
+2026-03-06 21:03:53 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 21:03:54 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.
+2026-03-06 21:20:51 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 21:20:53 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 21:20:54 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.
+2026-03-06 22:01:59 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 22:02:01 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.
+2026-03-06 22:10:17 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-06 22:10:19 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.
+2026-03-06 22:17:35 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 22:17:35 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 22:17:44 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 22:17:44 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 22:19:10 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route
+2026-03-06 22:19:10 WARNING  [cakeshop.errors] HTTP 404: Page not found — GET /pages/by-route

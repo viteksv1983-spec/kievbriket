@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Calculator, ArrowRight, Phone, Flame, Home, Thermometer, TreePine, Package, Loader2 } from 'lucide-react';
 import { useReveal } from '../../hooks/useReveal';
 import shopConfig from '../../shop.config';
+import api from '../../api';
 
 /* ─── Calculation constants ─────────────────────────── */
 const BASE_FIREWOOD_PER_M2 = 0.07; // складометрів на м²
@@ -35,15 +36,15 @@ const FUEL_CONVERSION = {
 };
 
 /* ─── Calculation function ──────────────────────────── */
-function calculate(area, heating, insulation, fuel) {
+function calculate(area, heating, insulation, fuel, prices = FUEL_CONVERSION) {
     const base = area * BASE_FIREWOOD_PER_M2;
     const adjusted = base * HEATING_MULTIPLIER[heating] * INSULATION_MULTIPLIER[insulation];
-    const fuelData = FUEL_CONVERSION[fuel];
+    const fuelData = prices[fuel];
     const volume = adjusted * fuelData.factor;
     const cost = volume * fuelData.pricePerUnit;
 
     // Also compute alternatives
-    const alternatives = Object.entries(FUEL_CONVERSION)
+    const alternatives = Object.entries(prices)
         .filter(([key]) => key !== fuel)
         .map(([, data]) => ({
             volume: +(adjusted * data.factor).toFixed(1),
@@ -95,7 +96,28 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
     const [fuel, setFuel] = useState(defaultFuelType);
     const [result, setResult] = useState(null);
     const [panelState, setPanelState] = useState(PANEL_PREVIEW);
+    const [currentPrices, setCurrentPrices] = useState(FUEL_CONVERSION);
     const resultRef = useRef(null);
+
+    useEffect(() => {
+        api.get('/products/')
+            .then(res => {
+                const items = Array.isArray(res.data) ? res.data : (res.data.items || []);
+                if (items.length === 0) return;
+
+                setCurrentPrices(prev => {
+                    const newPrices = JSON.parse(JSON.stringify(prev));
+                    ['drova', 'brikety', 'vugillya'].forEach(cat => {
+                        const catItems = items.filter(i => i.category === cat && i.price > 0);
+                        if (catItems.length > 0) {
+                            newPrices[cat].pricePerUnit = Math.min(...catItems.map(i => i.price));
+                        }
+                    });
+                    return newPrices;
+                });
+            })
+            .catch(err => console.error("Calculator prices fetch error:", err));
+    }, []);
 
     const handleCalculate = () => {
         const numArea = parseInt(area, 10);
@@ -106,7 +128,7 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
 
         // Phase 2: Result after delay
         setTimeout(() => {
-            const res = calculate(numArea, heating, insulation, fuel);
+            const res = calculate(numArea, heating, insulation, fuel, currentPrices);
             setResult(res);
             setPanelState(PANEL_RESULT);
 
@@ -368,6 +390,7 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
                                                 type: fuel,
                                                 volume: result.volume,
                                                 unit: result.unit,
+                                                cost: result.cost,
                                                 isFromCalculator: true
                                             })}
                                             style={{ width: '100%', justifyContent: 'center' }}

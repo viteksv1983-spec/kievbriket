@@ -1784,11 +1784,13 @@ function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }) {
       let fuelName = "Дрова";
       if (defaultRef.type === "vugillya") fuelName = "Вугілля";
       else if (defaultRef.type === "brikety") fuelName = "Паливні брикети";
+      const calcMessage = defaultRef.volume && defaultRef.unit ? `Об'єм з калькулятора: ${defaultRef.volume} ${defaultRef.unit}` + (defaultRef.cost ? `
+Орієнтовна вартість: ${defaultRef.cost.toLocaleString("uk-UA")} грн` : "") : "";
       setForm((prev) => ({
         ...prev,
         fuel: fuelName,
         quantity: defaultRef.volume || 1,
-        message: defaultRef.volume && defaultRef.unit ? `Об'єм з калькулятора: ${defaultRef.volume} ${defaultRef.unit}` : ""
+        message: calcMessage
       }));
     }
   }, [isOpen, defaultRef]);
@@ -4904,13 +4906,13 @@ const FUEL_CONVERSION = {
   brikety: { unit: "т паливних брикетів", shortUnit: "т брикетів", pricePerUnit: 8e3, factor: 0.45 },
   vugillya: { unit: "т кам'яного вугілля", shortUnit: "т вугілля", pricePerUnit: 9e3, factor: 0.35 }
 };
-function calculate(area, heating, insulation, fuel) {
+function calculate(area, heating, insulation, fuel, prices = FUEL_CONVERSION) {
   const base = area * BASE_FIREWOOD_PER_M2;
   const adjusted = base * HEATING_MULTIPLIER[heating] * INSULATION_MULTIPLIER[insulation];
-  const fuelData = FUEL_CONVERSION[fuel];
+  const fuelData = prices[fuel];
   const volume = adjusted * fuelData.factor;
   const cost = volume * fuelData.pricePerUnit;
-  const alternatives = Object.entries(FUEL_CONVERSION).filter(([key]) => key !== fuel).map(([, data]) => ({
+  const alternatives = Object.entries(prices).filter(([key]) => key !== fuel).map(([, data]) => ({
     volume: +(adjusted * data.factor).toFixed(1),
     unit: data.shortUnit
   }));
@@ -4950,13 +4952,30 @@ function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = "drova" })
   const [fuel, setFuel] = useState(defaultFuelType);
   const [result, setResult] = useState(null);
   const [panelState, setPanelState] = useState(PANEL_PREVIEW);
+  const [currentPrices, setCurrentPrices] = useState(FUEL_CONVERSION);
   const resultRef = useRef(null);
+  useEffect(() => {
+    api.get("/products/").then((res) => {
+      const items2 = Array.isArray(res.data) ? res.data : res.data.items || [];
+      if (items2.length === 0) return;
+      setCurrentPrices((prev) => {
+        const newPrices = JSON.parse(JSON.stringify(prev));
+        ["drova", "brikety", "vugillya"].forEach((cat) => {
+          const catItems = items2.filter((i) => i.category === cat && i.price > 0);
+          if (catItems.length > 0) {
+            newPrices[cat].pricePerUnit = Math.min(...catItems.map((i) => i.price));
+          }
+        });
+        return newPrices;
+      });
+    }).catch((err) => console.error("Calculator prices fetch error:", err));
+  }, []);
   const handleCalculate = () => {
     const numArea = parseInt(area, 10);
     if (!numArea || numArea < 10 || numArea > 1e3) return;
     setPanelState(PANEL_LOADING);
     setTimeout(() => {
-      const res = calculate(numArea, heating, insulation, fuel);
+      const res = calculate(numArea, heating, insulation, fuel, currentPrices);
       setResult(res);
       setPanelState(PANEL_RESULT);
       if (window.innerWidth < 900 && resultRef.current) {
@@ -5163,6 +5182,7 @@ function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = "drova" })
                         type: fuel,
                         volume: result.volume,
                         unit: result.unit,
+                        cost: result.cost,
                         isFromCalculator: true
                       }),
                       style: { width: "100%", justifyContent: "center" },

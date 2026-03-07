@@ -34,11 +34,15 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
             if (defaultRef.type === 'vugillya') fuelName = "Вугілля";
             else if (defaultRef.type === 'brikety') fuelName = "Паливні брикети";
 
+            const calcMessage = defaultRef.volume && defaultRef.unit
+                ? `Об'єм з калькулятора: ${defaultRef.volume} ${defaultRef.unit}` + (defaultRef.cost ? `\nОрієнтовна вартість: ${defaultRef.cost.toLocaleString('uk-UA')} грн` : "")
+                : "";
+
             setForm(prev => ({
                 ...prev,
                 fuel: fuelName,
                 quantity: defaultRef.volume || 1,
-                message: defaultRef.volume && defaultRef.unit ? `Об'єм з калькулятора: ${defaultRef.volume} ${defaultRef.unit}` : ""
+                message: calcMessage
             }));
         }
     }, [isOpen, defaultRef]);

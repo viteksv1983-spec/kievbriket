@@ -14,3 +14,8 @@
 2026-03-07 14:26:48 WARNING  [cakeshop.errors] Validation error on POST /orders/quick: [{'field': 'body.quantity', 'message': 'Input should be a valid integer, got a number with a fractional part'}]
 2026-03-07 14:27:08 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
 2026-03-07 14:27:09 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.
+2026-03-07 14:27:21 WARNING  [cakeshop.errors] Validation error on POST /orders/quick: [{'field': 'body.quantity', 'message': 'Input should be a valid integer, got a number with a fractional part'}]
+2026-03-07 14:27:32 WARNING  [cakeshop.errors] Validation error on POST /orders/quick: [{'field': 'body.quantity', 'message': 'Input should be a valid integer, got a number with a fractional part'}]
+2026-03-07 14:28:40 WARNING  [cakeshop.errors] Validation error on POST /orders/quick: [{'field': 'body.quantity', 'message': 'Input should be a valid integer, got a number with a fractional part'}]
+2026-03-07 14:29:29 INFO     [cakeshop] Logging initialized — logs dir: C:\Users\Виктор\Desktop\firewood_backend\backend\logs
+2026-03-07 14:29:30 INFO     [cakeshop.seed] Database already has 19 products. Skipping auto-seeding.

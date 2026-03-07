@@ -5,7 +5,7 @@ from backend.src.products.schemas import Product
 
 class OrderItemBase(BaseModel):
     cake_id: int
-    quantity: int
+    quantity: float
     flavor: Optional[str] = None
     weight: Optional[float] = None
 
@@ -36,7 +36,7 @@ class QuickOrderCreate(BaseModel):
     customer_name: str
     customer_phone: str
     cake_id: Optional[int] = None
-    quantity: int = 1
+    quantity: float = 1.0
     flavor: Optional[str] = None
     weight: Optional[float] = None
     delivery_method: Optional[str] = None

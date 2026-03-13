@@ -1,36 +1,17 @@
-import React, { useState } from "react";
-import { Star, Quote } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Star, Quote, Play, X } from "lucide-react";
 import { useReveal } from "../../hooks/useReveal";
+import api from "../../api";
 
-const reviews = [
-    {
-        id: 1,
-        name: "Олена Ковальчук",
-        city: "Київ, Оболонь",
-        stars: 5,
-        text: "Замовляємо дрова вже третій рік поспіль. Завжди сухі, чесна вага, привезли точно в домовлений час. Рекомендую всім сусідам по дачному кооперативу.",
-        initials: "ОК",
-        date: "Жовтень 2024",
-    },
-    {
-        id: 2,
-        name: "Дмитро Марченко",
-        city: "Ірпінь",
-        stars: 5,
-        text: "Брали вугілля антрацит на зиму. Якість відмінна — котел тримає температуру значно краще ніж з попереднього постачальника. Ціна адекватна, доставка швидка. Наступного сезону знову тільки до вас.",
-        initials: "ДМ",
-        date: "Листопад 2024",
-    },
-    {
-        id: 3,
-        name: "Наталія Бондаренко",
-        city: "Бровари",
-        stars: 5,
-        text: "Паливні брикети — щось нове для мене, але менеджер детально пояснив різницю між RUF і Pini-Kay. Зупинилась на RUF, задоволена на 100%.",
-        initials: "НБ",
-        date: "Грудень 2024",
-    },
-];
+function getYouTubeInfo(url) {
+    if (!url) return { id: null, isShort: false };
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return {
+        id: (match && match[2].length === 11) ? match[2] : null,
+        isShort: url.includes('/shorts/')
+    };
+}
 
 function StarRow({ count, bright }) {
     return (
@@ -52,8 +33,20 @@ function StarRow({ count, bright }) {
     );
 }
 
-function ReviewCard({ r, delay }) {
+function ReviewCard({ r, delay, onPlayVideo }) {
     const [hovered, setHovered] = useState(false);
+    const ytInfo = getYouTubeInfo(r.youtube_url);
+    const ytId = ytInfo.id;
+    const isShort = ytInfo.isShort;
+
+    const getInitials = (name) => {
+        if (!name) return "І";
+        const parts = name.split(" ");
+        if (parts.length >= 2) {
+            return (parts[0][0] + parts[1][0]).toUpperCase();
+        }
+        return name.substring(0, 2).toUpperCase();
+    };
 
     return (
         <div
@@ -65,18 +58,72 @@ function ReviewCard({ r, delay }) {
                 display: "flex",
                 flexDirection: "column",
                 gap: 16,
-                transitionDelay: delay,
                 transform: hovered ? "translateY(-6px)" : "translateY(0)",
                 border: `1px solid ${hovered ? "rgba(249,115,22,0.30)" : "rgba(255,255,255,0.07)"}`,
                 boxShadow: hovered
                     ? "0 20px 52px rgba(0,0,0,0.45), 0 0 0 1px rgba(249,115,22,0.10), 0 0 32px rgba(249,115,22,0.08)"
                     : "0 6px 24px rgba(0,0,0,0.22)",
                 transition: "transform 0.25s ease, border-color 0.25s, box-shadow 0.25s",
+                breakInside: "avoid",
+                marginBottom: "1.25rem",
+                animation: `fadeInUp 0.6s ease forwards`,
+                animationDelay: delay,
+                opacity: 0,
             }}
         >
+            {ytId && (
+                <div
+                    onClick={() => onPlayVideo(ytId)}
+                    style={{
+                        position: "relative",
+                        width: "100%",
+                        height: isShort ? 380 : 250,
+                        borderRadius: 12,
+                        overflow: "hidden",
+                        cursor: "pointer",
+                        marginBottom: 4,
+                        background: "#0d1117"
+                    }}
+                >
+                    <img
+                        src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
+                        alt="Video Thumbnail"
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            opacity: hovered ? 1 : 0.85,
+                            transform: hovered
+                                ? `scale(${isShort ? 1.85 : 1.25})`
+                                : `scale(${isShort ? 1.8 : 1.2})`,
+                            transition: "opacity 0.25s, transform 0.25s",
+                            pointerEvents: "none"
+                        }}
+                    />
+                    <div style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: hovered ? "translate(-50%, -50%) scale(1.05)" : "translate(-50%, -50%) scale(1)",
+                        width: 56,
+                        height: 56,
+                        borderRadius: "50%",
+                        background: "rgba(249,115,22,0.9)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 4px 14px rgba(0,0,0,0.3)",
+                        transition: "transform 0.2s",
+                        pointerEvents: "none"
+                    }}>
+                        <Play fill="#fff" color="#fff" size={24} style={{ marginLeft: 3 }} />
+                    </div>
+                </div>
+            )}
+
             <Quote size={28} style={{ color: hovered ? "rgba(249,115,22,0.45)" : "rgba(249,115,22,0.22)", transition: "color 0.25s" }} />
             <StarRow count={r.stars} bright={hovered} />
-            <p style={{ fontSize: "0.9rem", color: "var(--c-text2)", lineHeight: 1.7, flex: 1 }}>
+            <p style={{ fontSize: "0.9rem", color: "var(--c-text2)", lineHeight: 1.7, flex: 1, whiteSpace: "pre-wrap" }}>
                 "{r.text}"
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 12, paddingTop: 16, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
@@ -88,13 +135,13 @@ function ReviewCard({ r, delay }) {
                     boxShadow: hovered ? "0 0 14px rgba(249,115,22,0.45)" : "none",
                     transition: "box-shadow 0.25s",
                 }}>
-                    {r.initials}
+                    {getInitials(r.name)}
                 </div>
                 <div style={{ flex: 1 }}>
                     <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "var(--c-text)" }}>{r.name}</p>
                     <p style={{ fontSize: "0.75rem", color: "var(--c-text3)" }}>{r.city}</p>
                 </div>
-                <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.22)", flexShrink: 0 }}>{r.date}</p>
+                {r.date && <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.22)", flexShrink: 0 }}>{r.date}</p>}
             </div>
         </div>
     );
@@ -102,6 +149,24 @@ function ReviewCard({ r, delay }) {
 
 export function ReviewsSection() {
     const { ref, visible } = useReveal();
+    const [reviews, setReviews] = useState([]);
+    const [playingVideoId, setPlayingVideoId] = useState(null);
+
+    useEffect(() => {
+        // Fetch reviews from API
+        api.get('/api/reviews')
+            .then(res => setReviews(res.data))
+            .catch(err => console.error("Failed to load reviews:", err));
+    }, []);
+
+    // Also support closing modal on Escape key
+    useEffect(() => {
+        const handleEsc = (e) => {
+            if (e.key === 'Escape') setPlayingVideoId(null);
+        };
+        window.addEventListener('keydown', handleEsc);
+        return () => window.removeEventListener('keydown', handleEsc);
+    }, []);
 
     return (
         <section
@@ -166,32 +231,77 @@ export function ReviewsSection() {
                             </span>
                         </div>
                     </div>
+                </div>
 
-                    <div style={{ marginTop: 14 }}>
-                        <a
-                            href="#contact"
-                            style={{
-                                fontSize: "0.82rem", color: "rgba(255,255,255,0.32)", fontWeight: 500,
-                                textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 5,
-                                transition: "color 0.2s",
-                            }}
-                            onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(249,115,22,0.80)")}
-                            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.32)")}
-                        >
-                            Переглянути всі відгуки →
-                        </a>
+                {reviews.length > 0 && (
+                    <div className={`reviews-grid ${visible ? "visible" : ""}`}>
+                        {reviews.map((r, i) => (
+                            <ReviewCard key={r.id} r={r} delay={`${(i % 5) * 0.15}s`} onPlayVideo={setPlayingVideoId} />
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {/* Video Modal */}
+            {playingVideoId && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: "rgba(0,0,0,0.85)",
+                        backdropFilter: "blur(8px)",
+                        zIndex: 99999,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        animation: "fadeIn 0.2s ease"
+                    }}
+                    onClick={() => setPlayingVideoId(null)}
+                >
+                    <button
+                        onClick={() => setPlayingVideoId(null)}
+                        style={{
+                            position: "absolute",
+                            top: 24, right: 24,
+                            background: "rgba(255,255,255,0.1)",
+                            border: "none",
+                            borderRadius: "50%",
+                            width: 48, height: 48,
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            cursor: "pointer",
+                            color: "#fff",
+                            transition: "background 0.2s"
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.2)"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.1)"}
+                    >
+                        <X size={28} />
+                    </button>
+                    <div
+                        onClick={e => e.stopPropagation()}
+                        style={{
+                            width: "90%",
+                            maxWidth: 400, // typical shorts aspect ratio width
+                            height: "80vh",
+                            maxHeight: 800,
+                            borderRadius: 16,
+                            overflow: "hidden",
+                            background: "#000",
+                            boxShadow: "0 20px 60px rgba(0,0,0,0.5)"
+                        }}
+                    >
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            src={`https://www.youtube.com/embed/${playingVideoId}?autoplay=1`}
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        ></iframe>
                     </div>
                 </div>
-
-                <div
-                    className={`reviews-grid ${visible ? "visible" : ""}`}
-                    style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "1.25rem" }}
-                >
-                    {reviews.map((r, i) => (
-                        <ReviewCard key={r.id} r={r} delay={`${i * 0.1}s`} />
-                    ))}
-                </div>
-            </div>
+            )}
 
             <style>{`
         /* Star shimmer animation */
@@ -200,13 +310,32 @@ export function ReviewsSection() {
           60%  { opacity: 1; transform: scale(1.18); }
           100% { opacity: 1; transform: scale(1); }
         }
+        @keyframes fadeInUp {
+          0% { opacity: 0; transform: translateY(30px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+        }
         .rating-star { opacity: 0; }
         .stars-visible .rating-star {
           animation: starPop 0.40s cubic-bezier(0.34,1.56,0.64,1) forwards;
         }
 
-        @media (max-width: 900px) { .reviews-grid { grid-template-columns: 1fr !important; max-width: 520px; margin: 0 auto; } }
-        @media (max-width: 600px) { .reviews-grid { max-width: 100% !important; } }
+        .reviews-grid {
+            column-count: 3;
+            column-gap: 1.25rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 900px) { 
+            .reviews-grid { column-count: 2; } 
+        }
+        @media (max-width: 600px) { 
+            .reviews-grid { column-count: 1; } 
+        }
         @media (max-width: 479px) {
           .rating-pill {
             flex-direction: column !important;
@@ -218,11 +347,7 @@ export function ReviewsSection() {
           .rating-pill-divider { display: none !important; }
           .review-card { padding: 1.25rem !important; }
         }
-        .reviews-grid .nh-card { opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease, transform 0.55s ease, border-color 0.25s, box-shadow 0.25s; }
-        .reviews-grid.visible .nh-card:nth-child(1) { opacity:1; transform:none; transition-delay:0s; }
-        .reviews-grid.visible .nh-card:nth-child(2) { opacity:1; transform:none; transition-delay:0.1s; }
-        .reviews-grid.visible .nh-card:nth-child(3) { opacity:1; transform:none; transition-delay:0.2s; }
-        .reviews-grid.visible .nh-card:hover { transform: translateY(-6px) !important; }
+        .reviews-grid.visible .nh-card:hover { transform: translateY(-6px) !important; z-index: 10; position: relative; }
       `}</style>
         </section>
     );

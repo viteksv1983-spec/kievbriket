@@ -3,176 +3,99 @@ import { MapPin, Clock, CheckCircle2, ArrowRight, Truck, Star } from "lucide-rea
 import { useReveal } from "../../hooks/useReveal";
 
 const zones = [
-    { name: "Київ", detail: "Доставка в день замовлення (до 4 годин)", time: "0–4 год" },
-    { name: "Ближнє Підмістя", detail: "Бориспіль, Бровари, Вишневе, Ірпінь, Буча", time: "24 год" },
+    { name: "Київ", detail: "Доставка на протязі 24 годин", time: "24 год" },
+    { name: "Передмістя", detail: "Бориспіль, Бровари, Вишневе, Ірпінь, Буча", time: "24 год" },
     { name: "Київська область", detail: "Фастів, Біла Церква, Обухів, Переяслав", time: "24–48 год" },
 ];
 
-const OBLAST_PATH =
-    "M 78,44 L 108,18 L 152,6 L 200,10 L 250,6 L 300,22 L 348,52 " +
-    "L 376,94 L 380,140 L 365,182 L 334,220 L 292,248 L 248,260 " +
-    "L 200,262 L 152,260 L 108,248 L 68,220 L 38,180 L 22,138 " +
-    "L 26,92 Z";
+const OBLAST_PATH = "M467.3 101.9l0.1 0.7-0.1 0.3-0.1 0.2-0.2 0.2-0.3 0-1.1-0.1-0.3 0.1-0.2 0.2-0.1 0.4 0.1 0.5 0.7 1.7 0.1 0.6 0.1 0.7-0.1 0.7-1 4.9-0.1 0.8-0.1 5.4 0.2 2.6 0.1 0.4 0.1 0.2 0.3 0.2 0.6 0 0.3-0.2 0.5-0.4 0.2-0.2 0.3 0 0.7 0.4 0.6 0.5 0.7 0.2 0.5 0 0.3 0 0.5 0.1 0.5 0.3 1.4 1.3 0.3 0.4 0.2 0.5 0.2 0.9 0.1 0.7 0 0.7-0.3 1.5-0.3 1.5-0.1 0.4 0 0.7 0.1 0.6 0.1 0.3 0.4 0.3 0.5 0.3 3 1.1 0.5 0.3 1.8 1.4 0.5 0.5 0.2 0.4 0 0.2-0.3 1.9-0.1 0.7-0.4 1-0.5 1.2-0.8 1.4-0.2 0.5 0 0.4 0.2 0.2 0.3 0.2 0.6 0 1.6-0.5 0.4 0.1 0.5 0.2 0.6 0.6 0.3 0.4 0.4 0.5 0.2 0.2 0.3 0.1 0.5-0.1 0.3-0.2 0.3-0.2 0.4-0.9 0.2-0.1 0.3-0.1 2.6 0.7 0.7 0.1 0.4-0.1 0.8-0.8 0.6-0.2 0.7 0 3 0.2 0.6 0 0.6-0.2 0.3-0.1 0.6-0.5 0.5-0.3 0.3 0 0.4 0.1 0.2 0.3 0.2 0.5 0.5 0.7 0.4 0.5 0.1 0.3-0.1 0.3-0.2 0.7 0 0.3 0.2 0.3 0.3 0.2 0.8 0.1 0.8 0.1 0.4 0.1 0.2 0.2 0 0.4 0 0.8 0.2 0.3 1.3 1.1 0.7 0.8 0.4 0.5 0.2 0.5 0.2 0.5 0.3 1.2 0.1 0.9 0 0.7-0.1 0.4-0.2 0.6-0.4 0.5-0.2 0.2-0.2 0.1-0.6-0.1-0.2 0.1-0.2 0.3-0.1 0.7-0.1 0.3 0.1 0.3 0.3 0.5 1.6 1.6 0.3 0.2 0.3 0.2 1.1-0.1 0.4 0.1 0.3 0.2 0.2 0.4 0.1 0.4-0.1 1.2 0.2 0.5 0.3 0.5 0.2 0.2 0.3 0.1 0.4 0.1 0.6 0 0.5 0.2 0.5 0.4 0.3 0.1 0.4 0.2 0.6-0.2 0.3-0.1 0.3-0.2 0.8 0 1.1 0.1 4.3 1.1 0.6-0.5 0.6-0.7 0.4-0.3 0.5-0.1 3.4 0.8 0.3 0 0.5-0.2 0.5-0.4 0.2-0.1 0.3-0.1 0.8 0.1 0.3 0 0.2-0.2 0.2-0.2 0.6-0.7 0.4-0.3 0.3-0.1 0.6-0.1 0.3-0.1 0.2-0.2 0.3-0.5 0.4-0.4 0.5-0.3 0.6-0.1 2.2 0.2 0.4 0 0.2-0.1 0.4-0.5 0.7-1 0.2-0.2 0.5-0.2 0.2-0.2 0-0.2 0-0.6 0-0.3 0.1-0.3 0.3-0.4 0.1-0.3 0.1-0.9 0.1-0.3 0.5-0.3 1.1-0.4 1.2-0.1 0.5 0.2 0.6 0.4 1.6 1.6 0.7 0.5 2 2.7 0.5 0.6 0.5 0.4 0.3 0.1 0.7 0.1 2.3 0 0.3 0.3 0.3 0.5 0.1 1.2-0.1 1.2-0.1 0.6-0.2 0.2-0.3 0.2-1.2-0.2-0.3 0.1-0.2 0.1-0.6 0.9-0.3 0.5-0.1 0.3 0 0.4 0.2 0.5 1.3 1.1 0.2 0.2 0.2 0.3 0.1 0.6 0 0.8 0.1 0.6 0.2 0.5 0.3 0.3 0.4 0.3 0.8 0.4 0.5 0.1 0.4 0 0.7-0.1 0.6 0.1 0.3 0.2 0.1 0.2 0 0.4-0.1 0.3-0.8 0.8-0.3 0.4 0.3 0.5 0.3 0.4 3.4 2-1.4 3.8-0.9 1.3-0.2 0.3-0.1 0.2 0.1 0.4 0.3 0.5 0.1 0.3-0.3 0.7-1.5 2.2-0.7-0.3-0.5-0.3-0.5-0.3-0.4-0.2-0.7 0-0.3 0-0.5 0.2-0.3 0.2-0.2 0.3-0.6 0.7-0.3 0.5-0.2 0.4-0.1 0.7 0 0.6 0.2 0.4 0.8 1.1 0.2 0.5 0 0.6-0.1 0.3-0.3 0.6-0.4 0.5-1.1 1.2-0.7 0.3-0.7 0.1-0.4 0-0.5-0.3-0.3 0.1-0.2 0.5-0.3 0.8-0.3 0.6-0.3 0.3-1.8 1.4-0.4 0.5-0.3 0.4 0.1 0.3 0.4 1.1 0.1 0.6 0 0.7 0.3 1.2 0.3 1.1 0.2 0.5-0.1 0.7-0.3 0.3-0.5 0.2-2.1 0.7-0.3 0.1-0.2 0.2-0.2 0.4-0.1 0.2 0.2 1.2 0 0.7 0 0.7-0.1 0.7-0.3 0.6-0.5 1.2-1.4 1.9-0.2 0.5 0.1 0.9-0.2 0.7-0.1 0.2-1 1-0.6 1-0.6 1.2-0.2 0.4-0.5 0.2-5.2-1-0.3-0.2-0.1-0.2-0.1-0.3 0.1-1.8-0.1-0.5-0.2-0.3-0.3-0.1-0.3 0-0.2 0.2-0.2 0.4-0.3 1.6-0.1 0.3-0.3 0.5-0.3 0.2-0.4 0.1-0.7 0.1-0.4-0.1-0.3-0.2-0.5-0.4-0.2 0-0.3 0.1-0.3 0.5-0.2 0.4-0.1 0.8-0.1 0.3-0.3 0.2-0.3-0.2-0.4-0.6-0.4-0.5-0.3-0.5 0-0.7-0.2-0.5-0.6-0.6-0.3-0.5-0.1-0.3-0.1-0.9-0.2-0.2-0.2-0.1-0.6-0.1-0.4 0.1-1 0.3-0.6 0.1-2 0-0.6 0.1-0.6 0.2-4.3 3-1.9 0.2-0.3 0.2-0.4 0.3-0.4 0.5-0.5 1.1-0.7 0.9-0.2 0.3 0 0.2 0.1 0.3 0.2 0.2 0.7 0.5 0.1 0.2-0.1 0.6-0.6 1.3-0.2 0.4 0 0.7 0.1 0.2 0.5 0.4 0.1 0.2 0.1 0.3 0 0.3-0.5 3.1-0.1 0.3-0.8 1.3-0.1 0.3 0 0.3 0 0.2 0.3 0.8 0 0.3-0.1 0.7-0.6 1.1-0.7 1.9-0.2 0.3-0.6 0.6-0.3 0.4-0.1 0.3 0 1 0.1 0.6 0.2 0.2 0.2 0.1 0.7 0.2 0.2 0.2 0.2 0.2 0.1 0.3 0 0.6-0.1 1-0.1 0.6-0.3 0.3-1.7 1.2-0.5 0.5-0.3 0.4-0.9 2.3-0.3 0.4-0.3 0.5-2.4 1.6-0.3 0.3-0.3 0.5-1.4 1.3-0.6 0.6-0.5 0.8-0.2 0.2-1 0.8-0.6 0.7-1.3 2.4-0.2 0.7 0 0.3 0 1 0 0.3-0.2 0.4-0.4 0.4-0.7-0.2-0.4-0.2-0.2-0.3-0.3-0.5-0.2-0.1-0.4 0-0.5 0.4-0.6 0.6-0.3 0.1-0.6 0.1-0.9-0.4-0.3-0.1-0.5 0.3-0.3 0.3-0.6 0.7-0.2 0.2-1.8 0.5-1 0.7-0.3 0-0.3 0-0.3-0.2-0.2-0.3-1.1-1.9-0.4-0.4-0.3 0-0.5 0-0.8 0.3-0.7-0.1-0.4-0.1-0.4-0.4-0.2-0.1-0.3 0-0.2 0.3-0.7 1.5-0.3 0.5-0.2 0.1-0.3 0.1-1.6-0.9-0.2-0.1-0.3 0-0.6 0.6-0.3 0.2-1.8 0.6-0.4 0-0.4-0.4-0.5-0.8-0.6-0.6-0.5-0.3-0.3-0.1-0.4 0-0.4 0.2-0.6 0.3-0.2 0.4-0.2 0.3-0.2 0.7 0 0.7 0 1-0.1 0.3-0.3 1-1.1 4.6-0.1 0.3-0.3 0.2-0.5 0-0.5-0.3-0.3-0.4 0-0.3 0-0.7-0.1-0.2-0.4-0.3-9.7-2-0.3-0.2-0.2-0.2-0.1-0.2 0-0.3 0.1-0.4 0.3-0.5 0.6-1 0.1-0.3 0-0.2-0.2-0.2-1.2-0.5-0.3 0-0.3 0.1-0.6 0.7-0.4 0.5-0.8 0.4-0.4 0.4-0.2 0.3 0 0.2 0.2 0.4 0.3 0.7 0.2 0.5 0 0.3-0.3 0.1-0.5-0.1-0.2-0.1-0.6-0.3-0.3-0.1-1.6-0.1-0.4-0.1-0.4-0.1-0.4 0.2-0.4 0.5-0.6 0.9-0.4 0.2-0.5 0.1-1.9 0-0.5 0.2-1.2 0.9-0.7 0.3-0.3 0.5-0.3 0.9-0.1 0.4-0.5 0.8-0.4 0.4-0.8 0.8-0.3 0.4 0 0.3-0.1 0.3 0.2 0.9-0.2 0.3-0.4 0.2-1.4-0.1-3.3 0.4-0.9-0.4-1.1-0.8-0.4-0.5-0.2-0.4-0.1-0.6 0.1-0.3 0.3-0.2 0.4-0.2 0.1-0.3-0.5-0.5-2.1-0.6-0.5-1.2-0.6-0.3-0.9 0.1-0.7 0-0.4-0.2-0.2-0.2-0.1-0.4-0.4-0.8-1-1.5-0.7-1.7-0.3-0.3-0.2-0.3-0.2-0.1-1.6-0.2-0.6-0.2-0.8-0.4-0.3-0.4-0.2-0.3 0-0.7-0.2-0.5-0.2-0.6-0.8-1.6-0.1-0.8 0.1-0.6 0.2-0.4 0.4-0.4 2.7-1.8 0.2-0.2 0.3-0.6 0-0.7 0-1.1-0.2-0.7-1.2-2.6-0.2-0.5 0-0.3 0.1-0.3 0.3-0.3 0.4-0.2 0.4-0.3 0.2-0.4 0.1-1 0-0.6-0.1-0.4-0.2-0.3-2.2-1.1-0.3-0.2-0.4-0.4-0.4-0.6-0.2-0.5-0.1-0.4-0.1-0.9 0-0.7 0.1-0.7 0.1-0.3 0.6-1.1 0.2-0.8 0.1-0.6-0.1-0.3-0.1-0.3-0.5-0.3-0.3-0.2-2.8-0.4 0.2-1.3 0.5-0.4 0.8-0.4 0.2-0.4 0.2-0.4 0.1-0.4 0-0.7 0-0.5-0.1-0.3-0.1-0.2-0.6 0-1.3 0.2-0.7 0-0.7-0.1 0-0.4 0.4-0.5 0.3-0.5 0.4-0.8 0.3-1 0.2-1.1 0.1-0.6-0.1-0.5-0.3-0.6-0.1-0.4-0.2-0.7 0.1-0.4 0.1-0.3 0.5-0.3 0.2-0.1 0.3 0 0.7 0.1 0.4-0.2 0.3-0.3 0.3-0.6 0.3-0.2 0.3-0.1 0.5 0.1 0.5-0.1 2-1.5 1.8-0.8 0.4-0.3 0.6-0.7 0.3-0.1 0.8-0.3 0.3-0.2 0.4-0.4 0.9-1.2 0.4-0.9 0.3-0.4 0.2-0.2 1.5-0.8 0.4-0.3 1.3-1.4 0.3-0.5 0.1-0.5-0.1-0.6-3.2-5.2-0.2-0.7 0-0.6 0.2-0.3 0.3-0.4 0.2-0.5-0.8-3.2-0.1-0.8 0-0.5 0.1-0.4 0.2-0.3 0.3-0.1 1.8-0.5 0.4-0.2 0.4-0.4 0.4-0.9 0-0.4-0.1-0.4-0.3-0.5 0-1.1 0-0.6-0.2-0.4-0.2-0.2-0.8-0.5-0.4-0.3-0.1-0.3-0.2-0.5-0.1-0.3 0.1-1.9-0.1-1 0.3-3.4 0-0.8-0.2-0.4-0.7-0.3-0.2-0.1-0.4-0.4-0.5-0.9-0.6-1.6-0.4-0.5-0.2-0.2-0.7-0.1-0.7 0-0.2-0.2-0.3-0.5-0.2-1.3-0.7-1.9-0.3-2.4-0.2-0.4-0.6-0.9-0.7-0.9-0.4-0.4-0.3-0.1-0.3-0.1-2.4 0.1-0.3 0-2.1 0.9-0.3 0.1-0.3 0-0.4-0.3-0.3-0.6-0.1-0.4 0.2-0.3 1.2-0.1 0.3-0.1 0.3-0.2 0.3-0.6 0-0.3-0.2-0.2-0.9-0.5-0.2-0.3 0-0.3 0.1-0.3 0.2-0.1 0.3 0 1 0.2 0.3 0 0.2-0.1 0.2-0.2 0.3-0.6 0.5-1.7 0.1-0.7-0.1-0.2-0.3-0.5-0.6-0.3-0.3-0.3-0.2-0.7 0-0.4 0.2-0.2 0.6-0.1 0.3-0.1 0.3-0.5 0.5-1.6 0.3-1-0.1-0.3-0.1-0.3-1-0.7-0.4-0.5-0.3-0.5 0-0.3 0.1-0.4 0.5-1.2 0.6-0.9 1.5-2.4 0.5-1.2 0.4-0.5 1.7-0.9 0.3-0.3 0.3-0.4 0.3-0.8 0.1-0.5 0-0.4-0.8-3-0.2-1.3-0.2-0.8-0.2-0.3-0.4-0.4-0.6-0.2-0.7-0.1-2.1 0.2-0.2 0-0.3-0.2-0.1-0.4 0-0.3 1.1-6.2-0.1-0.6-0.1-0.4-0.1-0.2-1.3-1.5-3.1-4.9-0.2-0.2-0.3-0.1-0.3 0-0.3-0.2-0.3-0.5-0.3-1.2 0.1-0.5 0.2-0.3 1.8 0 0.3 0.1 0.3 0.1 0.7 0.6 0.2 0.1 0.3 0 0.2-0.6 0-0.6-0.2-2 0-0.6 0.1-1 0.1-0.4 0.3-0.6 0.7-1.1 0.3-0.6 0-0.4 0-0.4-0.1-0.2-0.3-0.6-0.4-0.4-0.2-0.2-0.5-0.3-1.4-0.4-0.2-0.2-0.3-0.2-0.1-0.3-0.1-0.6-0.2-0.5-0.2-0.3-0.3-0.4-1.7-1.6-1-0.7-0.6-0.2-0.3 0-0.3 0-0.1 0.2-1.2 1.9-0.1 0.2-0.2 0.1-0.2-0.4-0.2-0.6-0.3-1.2-0.6-4.6-1-3.8 0-0.4 0.3-0.1 0.7-0.1 0.6-0.1 1-0.6 1.7-1.3 0.7-0.7 0.7-0.9 0.6-1.2 0.1-0.7 0.1-1 0.2-3.3-0.1-0.7 0-0.2-0.2-0.3-0.2 0.1-0.5 0.3-0.2 0.1-0.3-0.1-0.3-0.4-0.4-0.8 1.5-1.3 1.3-0.4 2.4 1 1.1 0 0.8-1.5 0.8-2.1 0.6-1.1 0.7-0.4 1.5-0.1 1.2-0.6 0.9-0.9 0.8-1.2 1.1-1.1 1.1-0.4 1.3-0.2 1.2 0.1 0.9 0.7 0.9 1.6 0.5 1.4 0.7 0.9 5.1 0.9 1-0.3 0.5-0.6 0.9-1.7 0.7-0.5 0.6 0.1 0.9 0.6 0.7-0.1 3.4-1.8 1.2-0.3 7.8-0.2 1.6 0.4 1.5 1.1 2.1 2.9 0.8 0.8 2.8 1.4 0.7 0.7 0.3 0.6 0.2 0.6 0 0.7 0 0.9-0.1 0.7-0.4 1.8-0.2 0.1 0.4 1 1.7 2.2 0.7 0.6 0.9 0.4 1.6 0 0.8 0.2 0.9 0.7 1.2 1.9 0.9 0.3 0.7-0.1 0.8 0.2 0.7 0.4 0.6 0.7 0.4 0.9 0.6-0.2 0.3-0.5z";
 
 const SAT_PINS = [
     { label: "Бровари", cx: 272, cy: 100, beginAnim: "0s" },
     { label: "Ірпінь", cx: 104, cy: 116, beginAnim: "1.1s" },
     { label: "Бориспіль", cx: 298, cy: 192, beginAnim: "0.5s" },
-    { label: "Вишневе", cx: 118, cy: 196, beginAnim: "1.7s" },
+    { label: "Вишневе", cx: 92, cy: 196, beginAnim: "1.7s" },
 ];
 
-function KyivMap({ hoveredZone }) {
+export function KyivMap({ hoveredZone }) {
     const oblastActive = hoveredZone === "Київська область";
-    const suburbActive = hoveredZone === "Ближнє Підмістя";
+    const suburbActive = hoveredZone === "Передмістя";
     const kyivActive = hoveredZone === "Київ";
 
     return (
         <svg
             viewBox="0 0 400 300"
             xmlns="http://www.w3.org/2000/svg"
+            className="kyiv-map-svg"
+            preserveAspectRatio="xMidYMid slice"
             style={{ width: "100%", height: "100%", display: "block" }}
-            aria-label="Карта зони доставки Київ Брикет"
+            aria-label="Карта зони доставки Київ Дрова"
         >
             <defs>
-                <filter id="kb-noise" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.78" numOctaves="4" seed="9" stitchTiles="stitch" result="noise" />
-                    <feColorMatrix type="saturate" values="0" in="noise" result="gray" />
-                    <feBlend in="SourceGraphic" in2="gray" mode="overlay" result="blend" />
-                    <feComposite in="blend" in2="SourceGraphic" operator="in" />
+                <radialGradient id="kb-zone3" cx="50%" cy="53%" r="50%">
+                    <stop offset="0%" stopColor="rgba(249,115,22,0.08)" />
+                    <stop offset="100%" stopColor="rgba(249,115,22,0.02)" />
+                </radialGradient>
+                <radialGradient id="kb-zone2" cx="50%" cy="53%" r="35%">
+                    <stop offset="0%" stopColor="rgba(249,115,22,0.14)" />
+                    <stop offset="100%" stopColor="rgba(249,115,22,0.04)" />
+                </radialGradient>
+                <radialGradient id="kb-zone1" cx="50%" cy="53%" r="20%">
+                    <stop offset="0%" stopColor="rgba(249,115,22,0.30)" />
+                    <stop offset="100%" stopColor="rgba(249,115,22,0.10)" />
+                </radialGradient>
+                <filter id="kb-glow2" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
                 </filter>
-
-                <radialGradient id="kb-glow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#F97316" stopOpacity={kyivActive ? "0.45" : "0.30"} />
-                    <stop offset="100%" stopColor="#F97316" stopOpacity="0" />
-                </radialGradient>
-
-                <filter id="kb-pin-glow" x="-80%" y="-80%" width="260%" height="260%">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
-                    <feMerge>
-                        <feMergeNode in="blur" />
-                        <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                </filter>
-
-                <radialGradient id="kb-vignette" cx="50%" cy="50%" r="70%">
-                    <stop offset="55%" stopColor="rgba(0,0,0,0)" />
-                    <stop offset="100%" stopColor="rgba(0,0,0,0.42)" />
-                </radialGradient>
-
-                <radialGradient id="kb-bg-depth" cx="50%" cy="53%" r="55%">
-                    <stop offset="0%" stopColor="#132b1a" />
-                    <stop offset="100%" stopColor="#080f0a" />
-                </radialGradient>
-
-                <clipPath id="kb-clip">
-                    <rect width="400" height="300" />
-                </clipPath>
             </defs>
 
-            <rect width="400" height="300" fill="#080f0a" />
-            <rect width="400" height="300" fill="url(#kb-bg-depth)" />
+            {/* Background */}
+            <rect width="400" height="300" rx="0" fill="#0c1810" />
 
-            {[50, 100, 150, 200, 250].map((y) => (
-                <line key={`h${y}`} x1="0" y1={y} x2="400" y2={y}
-                    stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-            ))}
-            {[57, 114, 171, 228, 285, 342].map((x) => (
-                <line key={`v${x}`} x1={x} y1="0" x2={x} y2="300"
-                    stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-            ))}
+            {/* Map Group - Shifted Up Slightly */}
+            <g transform="translate(0, -5)">
+                {/* Oblast zone */}
+                <path
+                    d={OBLAST_PATH}
+                    transform="translate(-275.6, -22.5)"
+                    fill={oblastActive ? "rgba(249,115,22,0.08)" : "rgba(249,115,22,0.03)"}
+                    stroke={oblastActive ? "rgba(249,115,22,0.5)" : "rgba(249,115,22,0.25)"}
+                    strokeWidth={oblastActive ? "1.8" : "1.2"}
+                    strokeLinejoin="round"
+                    style={{ transition: "all 0.4s ease" }}
+                />
 
-            <rect
-                width="400" height="300"
-                fill="rgba(255,255,255,0.07)"
-                filter="url(#kb-noise)"
-                clipPath="url(#kb-clip)"
-                style={{ mixBlendMode: "overlay" }}
-            />
+                {/* Kyiv zone deleted per user request */}
 
-            <path
-                d={OBLAST_PATH}
-                fill={oblastActive ? "rgba(249,115,22,0.055)" : "rgba(249,115,22,0.025)"}
-                stroke={oblastActive ? "rgba(249,115,22,0.48)" : "rgba(249,115,22,0.32)"}
-                strokeWidth="1.5"
-                strokeDasharray="5 4"
-                strokeLinejoin="round"
-                style={{ transition: "fill 0.35s, stroke 0.35s" }}
-            />
+                {SAT_PINS.map((pin) => (
+                    <g key={pin.label}>
+                        <circle cx={pin.cx} cy={pin.cy} r="6" fill="rgba(249,115,22,0.15)" />
+                        <circle cx={pin.cx} cy={pin.cy} r="2.5" fill="#F97316" opacity="0.9" filter="url(#kb-pin-glow)" />
+                        <text
+                            x={pin.cx} y={pin.cy + 16}
+                            textAnchor="middle"
+                            style={{ fontFamily: "Inter, sans-serif", fontSize: "9px", fontWeight: 600, fill: "rgba(255,255,255,0.6)" }}
+                        >
+                            {pin.label}
+                        </text>
+                    </g>
+                ))}
 
-            <ellipse
-                cx="200" cy="158" rx="76" ry="60"
-                fill="none"
-                stroke={suburbActive ? "rgba(249,115,22,0.50)" : "rgba(249,115,22,0.18)"}
-                strokeWidth="1"
-                strokeDasharray="4 5"
-                style={{ transition: "stroke 0.35s" }}
-            />
-
-            {[0, 0.73, 1.46].map((begin, i) => (
-                <circle key={i} cx="200" cy="158" r="22"
-                    fill="none"
-                    stroke="rgba(249,115,22,0.70)"
-                    strokeWidth="1.5"
-                >
-                    <animate attributeName="r" from="22" to="50" dur="2.2s" repeatCount="indefinite" begin={`${begin}s`} />
-                    <animate attributeName="opacity" from="0.55" to="0" dur="2.2s" repeatCount="indefinite" begin={`${begin}s`} />
-                </circle>
-            ))}
-
-            <circle cx="200" cy="158" r={kyivActive ? 70 : 52}
-                fill="url(#kb-glow)"
-                style={{ transition: "r 0.4s ease" }}
-            />
-
-            {SAT_PINS.map((pin) => (
-                <g key={pin.label}>
-                    <circle cx={pin.cx} cy={pin.cy} r="9" fill="rgba(249,115,22,0.12)" />
-                    <circle cx={pin.cx} cy={pin.cy} r="4.5" fill="#F97316" opacity="0.75" filter="url(#kb-pin-glow)">
-                        <animate attributeName="opacity" values="0.6;1;0.6" dur="3.5s"
-                            repeatCount="indefinite" begin={pin.beginAnim} />
-                    </circle>
-                    <text
-                        x={pin.cx} y={pin.cy + 19}
-                        textAnchor="middle"
-                        style={{ fontFamily: "Inter, sans-serif", fontSize: "8.5px", fontWeight: 600, fill: "rgba(255,255,255,0.30)" }}
-                    >
-                        {pin.label}
-                    </text>
+                <g filter="url(#kb-pin-glow)">
+                    <circle cx="200" cy="158" r="6" fill="#F97316" />
+                    <circle cx="200" cy="158" r="3" fill="#fff" />
                 </g>
-            ))}
-
-            <g filter="url(#kb-pin-glow)">
-                <circle cx="200" cy="158" r="11" fill="#F97316" />
-                <circle cx="200" cy="158" r="5" fill="#fff" />
+                <text
+                    x="200" y="145"
+                    textAnchor="middle"
+                    style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", fontWeight: 700, fill: "rgba(255,255,255,0.9)" }}
+                >
+                    Київ
+                </text>
             </g>
-            <text
-                x="200" y="143"
-                textAnchor="middle"
-                style={{ fontFamily: "Inter, sans-serif", fontSize: "9px", fontWeight: 700, fill: "rgba(255,255,255,0.55)" }}
-            >
-                Київ
-            </text>
 
-            <rect width="400" height="300" fill="url(#kb-vignette)" />
-
-            <text
-                x="14" y="285"
-                style={{
-                    fontFamily: "Inter, sans-serif", fontSize: "9px", fontWeight: 700,
-                    fill: "rgba(249,115,22,0.65)", letterSpacing: "0.07em", textTransform: "uppercase"
-                }}
-            >
-                КИЇВ ТА ОБЛАСТЬ
-            </text>
-
-            <text
-                x="200" y="293"
-                textAnchor="middle"
-                style={{
-                    fontFamily: "Inter, sans-serif", fontSize: "8px", fontWeight: 400,
-                    fill: "rgba(255,255,255,0.20)"
-                }}
-            >
+            <text x="50%" y="278" textAnchor="middle"
+                style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", fontWeight: 500, fill: "rgba(249,115,22,0.8)" }}>
                 Працюємо по всій Київській області
             </text>
         </svg>
@@ -187,6 +110,7 @@ export function DeliverySection() {
         <section
             id="delivery"
             ref={ref}
+            className="delivery-section-wrap"
             style={{ padding: "100px 0", background: "var(--c-bg)", position: "relative" }}
         >
             <div style={{
@@ -199,8 +123,7 @@ export function DeliverySection() {
 
             <div className="layout-container" style={{ zIndex: 1 }}>
 
-                <div className={`reveal ${visible ? "visible" : ""}`} style={{ textAlign: "center", marginBottom: "var(--s-header)" }}>
-                    <p className="section-label" style={{ marginBottom: "var(--s-tight)" }}>Зона покриття</p>
+                <div className="delivery-header-wrap reveal visible" style={{ textAlign: "center", marginBottom: "var(--s-header)" }}>
                     <h2 className="h2" style={{ marginBottom: 12 }}>
                         Доставляємо по{" "}
                         <span style={{ color: "var(--c-orange)" }}>Києву та області</span>
@@ -210,10 +133,10 @@ export function DeliverySection() {
                     </p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '40px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--c-text)' }}>
-                            <CheckCircle2 size={14} color="var(--c-orange)" /> 5000+ доставок
+                            <CheckCircle2 size={14} color="var(--c-orange)" /> 1000+ доставок
                         </span>
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '40px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--c-text)' }}>
-                            <Star size={14} color="var(--c-orange)" /> 12 років досвіду
+                            <Star size={14} color="var(--c-orange)" /> працюємо з 2013 року
                         </span>
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '40px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--c-text)' }}>
                             <Truck size={14} color="var(--c-orange)" /> власний автопарк
@@ -331,6 +254,10 @@ export function DeliverySection() {
 
             <style>{`
         @media (max-width: 768px) { .delivery-grid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 640px) {
+            .delivery-section-wrap { padding: 40px 0 60px 0 !important; }
+            .delivery-header-wrap { margin-bottom: 24px !important; }
+        }
         @media (max-width: 479px) {
           .delivery-grid { gap: 0.875rem !important; }
           .delivery-grid .nh-card { padding: 1rem !important; }

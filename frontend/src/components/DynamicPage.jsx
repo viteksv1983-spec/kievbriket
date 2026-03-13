@@ -29,7 +29,7 @@ export default function DynamicPage() {
         if (page?.meta_title) {
             document.title = page.meta_title;
         }
-        return () => { document.title = 'КиївБрикет'; };
+        return () => { document.title = 'КиївДрова'; };
     }, [page]);
 
     if (loading) return (

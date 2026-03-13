@@ -3,29 +3,27 @@ import { ArrowRight, Flame, Phone, Star } from 'lucide-react';
 import shopConfig from '../../shop.config';
 
 const stats = [
-  { value: "12+", label: "років досвіду" },
+  { value: "2013", label: "рік заснування" },
   { value: "1\u00a0000+", label: "клієнтів", highlight: true },
   { value: "24\u00a0год", label: "доставка", accent: true },
 ];
 
-const imageBadges = [
+const DEFAULT_BADGES = [
   { emoji: "🔥", text: "Сухе паливо" },
   { emoji: "🚚", text: "Доставка по Києву сьогодні" },
   { emoji: "⭐", text: "1000+ клієнтів" },
 ];
+const DEFAULT_TRUST_TEXT = "4.9 · 320+ відгуків";
+const DEFAULT_IMAGE = "/images/hero-bg.webp";
+const DEFAULT_IMAGE_MOBILE = "/images/hero-bg-mobile.webp";
 
-export function HeroSection({ onQuickOrderClick }) {
+export function HeroSection({ onQuickOrderClick, heroBadges, heroTrustText, heroImageUrl }) {
+  const badges = (heroBadges && heroBadges.length > 0) ? heroBadges : DEFAULT_BADGES;
+  const trustText = heroTrustText || DEFAULT_TRUST_TEXT;
+  const imageUrl = heroImageUrl || DEFAULT_IMAGE;
   return (
     <section className="hero-section">
-      <div
-        className="glow-orb hero-glow-r"
-        style={{
-          width: 600, height: 500,
-          top: -80, right: -120,
-          background: "radial-gradient(ellipse, rgba(249,115,22,0.10) 0%, transparent 70%)",
-          filter: "none",
-        }}
-      />
+
 
       <div className="layout-container" style={{ zIndex: 1 }}>
         <div className="hero-grid">
@@ -36,7 +34,7 @@ export function HeroSection({ onQuickOrderClick }) {
             {/* Badge */}
             <div className="nh-badge hero-badge fade-up">
               <Flame size={13} />
-              ТОВ «Київ Брикет» · Київ та область
+              ТОВ «Київ Дрова» · Київ та область
             </div>
 
             {/* Headline */}
@@ -53,14 +51,14 @@ export function HeroSection({ onQuickOrderClick }) {
             <p className="body hero-sub fade-up fade-up-d2">
               Дрова, паливні брикети та вугілля для опалення будинку, котлів і камінів.{" "}
               <span style={{ color: "var(--c-text)", opacity: 0.9 }}>
-                {stats[0].value} років досвіду. Власний транспорт. Гарантія якості.
+                З 2013 року. Власний транспорт. Гарантія якості.
               </span>
             </p>
 
             {/* CTAs */}
             <div className="hero-ctas fade-up fade-up-d3">
-              <button onClick={onQuickOrderClick} className="nh-btn-primary hero-btn-main">
-                Замовити зараз{" "}<ArrowRight size={16} />
+              <button onClick={onQuickOrderClick} className="nh-btn-primary hero-btn-main rounded-full bg-gradient-to-r from-orange-500 to-orange-700 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 border-none" style={{ boxShadow: '0 0 20px rgba(249,115,22,0.5)' }}>
+                Замовити зараз <ArrowRight size={16} />
               </button>
               <a
                 href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`}
@@ -73,7 +71,7 @@ export function HeroSection({ onQuickOrderClick }) {
 
             {/* Trust indicators */}
             <div className="hero-trust-row fade-up fade-up-d3">
-              <span className="hero-trust-item"><span className="hero-trust-check">✔</span>Доставка сьогодні</span>
+              <span className="hero-trust-item"><span className="hero-trust-check">✔</span>Доставка за 24 години</span>
               <span className="hero-trust-sep" />
               <span className="hero-trust-item"><span className="hero-trust-check">✔</span>Оплата після отримання</span>
               <span className="hero-trust-sep" />
@@ -83,7 +81,7 @@ export function HeroSection({ onQuickOrderClick }) {
             {/* Urgency */}
             <p className="hero-urgency fade-up fade-up-d3">
               <span className="hero-dot" />
-              Доставка по Києву можлива сьогодні
+              Доставка по Києву можлива в день замовлення
             </p>
 
             {/* Stats */}
@@ -104,10 +102,10 @@ export function HeroSection({ onQuickOrderClick }) {
           {/* ── RIGHT COLUMN — LCP image ── */}
           <div className="hero-img-wrap">
             <picture>
-              <source media="(max-width: 600px)" srcSet="/images/hero-bg-mobile.webp" />
+              <source media="(max-width: 600px)" srcSet={imageUrl === DEFAULT_IMAGE ? DEFAULT_IMAGE_MOBILE : imageUrl} />
               <img
-                src="/images/hero-bg.webp"
-                alt="Дрова, брикети та вугілля КиївБрикет"
+                src={imageUrl}
+                alt="Дрова, брикети та вугілля КиївДрова"
                 title="Купити тверде паливо у Києві"
                 className="hero-img"
                 loading="eager"
@@ -120,8 +118,8 @@ export function HeroSection({ onQuickOrderClick }) {
             <div className="hero-img-overlay" />
 
             <div className="hero-img-badges">
-              {imageBadges.map((item) => (
-                <div key={item.text} className="hero-img-badge">
+              {badges.map((item, idx) => (
+                <div key={idx} className="hero-img-badge">
                   <span style={{ fontSize: "0.8rem" }}>{item.emoji}</span>
                   <span className="hero-img-badge-text">{item.text}</span>
                 </div>
@@ -135,7 +133,7 @@ export function HeroSection({ onQuickOrderClick }) {
                 ))}
               </div>
               <span className="hero-trust-text">
-                4.9 · 320+ відгуків
+                {trustText}
               </span>
             </div>
           </div>
@@ -409,10 +407,11 @@ export function HeroSection({ onQuickOrderClick }) {
           }
           .hero-btn-main,
           .hero-btn-phone {
-            width: 100%;
+            width: 100% !important;
+            min-width: unset !important;
             justify-content: center;
-            padding: 16px 24px;
-            border-radius: 12px;
+            padding: 16px 24px !important;
+            border-radius: 12px !important;
           }
 
           .hero-urgency { margin-bottom: 24px; }

@@ -45,7 +45,17 @@ export default function ProductPage() {
     };
 
 
-    const specificationsArray = Array.isArray(product?.specifications_json) ? product.specifications_json : [];
+    const specificationsArray = (() => {
+        if (!product?.specifications_json) return [];
+        try {
+            if (Array.isArray(product.specifications_json)) return product.specifications_json;
+            if (typeof product.specifications_json === "string") return JSON.parse(product.specifications_json);
+            if (typeof product.specifications_json === "object") return Object.values(product.specifications_json);
+            return [];
+        } catch (e) {
+            return [];
+        }
+    })();
 
     const specs = specificationsArray.length > 0 ? specificationsArray.map(s => ({
         icon: <CheckCircle2 size={17} color="var(--c-orange)" />,
@@ -61,6 +71,30 @@ export default function ProductPage() {
         { icon: <Flame size={17} color="var(--c-orange)" />, label: 'Вологість', value: product.category === 'drova' ? 'Природна (До 25%)' : (product.category === 'brikety' ? '8-10%' : 'До 8%') },
         { icon: <Truck size={17} color="var(--c-orange)" />, label: 'Доставка', value: 'По Києву та області' },
     ] : [];
+
+    const deliveryInfoObj = (() => {
+        if (!product?.delivery_info_json) return null;
+        try {
+            if (typeof product.delivery_info_json === "string") return JSON.parse(product.delivery_info_json);
+            if (typeof product.delivery_info_json === "object") return product.delivery_info_json;
+            return null;
+        } catch (e) {
+            return null;
+        }
+    })();
+
+    const orderStepsArray = (() => {
+        if (!product?.order_steps_json) return [];
+        try {
+            if (Array.isArray(product.order_steps_json)) return product.order_steps_json;
+            if (typeof product.order_steps_json === "string") return JSON.parse(product.order_steps_json);
+            if (typeof product.order_steps_json === "object") return Object.values(product.order_steps_json);
+            return [];
+        } catch (e) {
+            return [];
+        }
+    })();
+
 
     const faqsArray = (() => {
         if (!product?.faqs_json) return [];
@@ -127,11 +161,13 @@ export default function ProductPage() {
     const category = categories.find(c => c.slug === (categorySlug || product?.category));
 
     // Gather all images — use production domain during SSG, API domain on client
-    const PROD_DOMAIN = 'https://kievbriket.com';
+    const PROD_DOMAIN = 'https://kievdrova.com.ua';
     const isSSG = !!ssgData;
     const imgBase = isSSG ? PROD_DOMAIN : api.defaults.baseURL;
-    const originalMainImg = product?.image_url ? getImageUrl(product.image_url, imgBase) : '';
-    const galleryImages = [originalMainImg].filter(Boolean);
+    const mainImg = product?.image_url ? getImageUrl(product.image_url, imgBase) : '';
+    const img2 = product?.image_url_2 ? getImageUrl(product.image_url_2, imgBase) : '';
+    const img3 = product?.image_url_3 ? getImageUrl(product.image_url_3, imgBase) : '';
+    const galleryImages = [mainImg, img2, img3].filter(Boolean);
 
     const displayPrice = selectedVariant ? selectedVariant.price : product?.price;
     const isPopular = product?.is_popular || true; // Simulate feature for demo if not provided
@@ -246,7 +282,7 @@ export default function ProductPage() {
             </div>
 
             {/* ── Mobile-only Title (above image) ── */}
-            <div className="product-mobile-title" style={{ maxWidth: 1200, margin: '0 auto', padding: '1rem 1.5rem 0' }}>
+            <div className="product-mobile-title" style={{ maxWidth: 1200, margin: '0 auto', padding: '1rem 1.5rem 0', textAlign: 'center' }}>
                 <div className="product-mobile-h1" style={{ fontSize: 'clamp(22px, 5vw, 28px)', lineHeight: 1.15, margin: 0, fontWeight: 700 }}>
                     {product.category === 'brikety' ? (product.seo_h1 || product.name) : product.name}
                 </div>
@@ -258,23 +294,22 @@ export default function ProductPage() {
                     display: 'grid',
                     gridTemplateColumns: '1fr 1fr',
                     gap: '3rem',
-                    alignItems: 'start',
                 }}>
                     {/* ── Left: Image Gallery ── */}
                     <div style={{ position: 'sticky', top: '6rem' }}>
-                        <div style={{
-                            borderRadius: 16,
+                        <div className="product-gallery-main" style={{
+                            borderRadius: 20,
                             overflow: 'hidden',
                             aspectRatio: '4/3',
                             position: 'relative',
-                            background: 'var(--color-bg-elevated)',
-                            border: '1px solid var(--color-border-subtle)',
-                            marginBottom: '1rem',
+                            background: '#1a1f2b',
+                            border: '1px solid rgba(255,255,255,0.06)',
+                            marginBottom: '0.75rem',
+                            boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
                         }}>
-
-
                             {galleryImages.length > 0 ? (
                                 <img
+                                    key={activeImageIndex}
                                     src={galleryImages[activeImageIndex]}
                                     alt={product.category === 'brikety' ? briketAlt : product.name}
                                     width="600"
@@ -285,41 +320,102 @@ export default function ProductPage() {
                                         e.target.onerror = null;
                                         e.target.src = `https://placehold.co/600x450/333/ccc?text=${encodeURIComponent(product.name)}`;
                                     }}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
-                                    onMouseEnter={e => window.innerWidth > 768 && (e.target.style.transform = 'scale(1.05)')}
-                                    onMouseLeave={e => e.target.style.transform = 'scale(1)'}
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 0.35s ease-in-out' }}
                                 />
                             ) : (
                                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--c-text2)' }}>
                                     Немає фото
                                 </div>
                             )}
+
+                            {/* Navigation Arrows */}
+                            {galleryImages.length > 1 && (
+                                <>
+                                    <button
+                                        onClick={() => {
+                                            const newI = activeImageIndex === 0 ? galleryImages.length - 1 : activeImageIndex - 1;
+                                            setActiveImageIndex(newI);
+                                            if (product?.variants?.length > 1 && newI < product.variants.length) {
+                                                setSelectedVariant(product.variants[newI]);
+                                            }
+                                        }}
+                                        aria-label="Попереднє фото"
+                                        className="gallery-arrow gallery-arrow-left"
+                                        style={{
+                                            position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)',
+                                            width: 40, height: 40, borderRadius: '50%',
+                                            background: 'rgba(240,240,240,0.85)', backdropFilter: 'blur(4px)',
+                                            border: 'none', color: '#666',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            cursor: 'pointer', padding: 0,
+                                            transition: 'all 0.2s ease',
+                                            zIndex: 4, boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                                        }}
+                                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.95)'; e.currentTarget.style.color = '#333'; e.currentTarget.style.transform = 'translateY(-50%) scale(1.08)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.2)'; }}
+                                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(240,240,240,0.85)'; e.currentTarget.style.color = '#666'; e.currentTarget.style.transform = 'translateY(-50%) scale(1)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)'; }}
+                                    >
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            const newI = activeImageIndex === galleryImages.length - 1 ? 0 : activeImageIndex + 1;
+                                            setActiveImageIndex(newI);
+                                            if (product?.variants?.length > 1 && newI < product.variants.length) {
+                                                setSelectedVariant(product.variants[newI]);
+                                            }
+                                        }}
+                                        aria-label="Наступне фото"
+                                        className="gallery-arrow gallery-arrow-right"
+                                        style={{
+                                            position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
+                                            width: 40, height: 40, borderRadius: '50%',
+                                            background: 'rgba(240,240,240,0.85)', backdropFilter: 'blur(4px)',
+                                            border: 'none', color: '#666',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            cursor: 'pointer', padding: 0,
+                                            transition: 'all 0.2s ease',
+                                            zIndex: 4, boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                                        }}
+                                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.95)'; e.currentTarget.style.color = '#333'; e.currentTarget.style.transform = 'translateY(-50%) scale(1.08)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.2)'; }}
+                                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(240,240,240,0.85)'; e.currentTarget.style.color = '#666'; e.currentTarget.style.transform = 'translateY(-50%) scale(1)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)'; }}
+                                    >
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                                    </button>
+                                </>
+                            )}
                         </div>
 
                         {/* Thumbnails */}
                         {galleryImages.length > 1 && (
-                            <div className="product-thumbnails" style={{ display: 'flex', gap: '0.75rem', overflowX: 'auto', paddingBottom: '0.5rem', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                            <div className="product-thumbnails" style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.25rem', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
                                 {galleryImages.map((src, idx) => (
                                     <button
                                         key={idx}
-                                        onClick={() => window.innerWidth <= 768 && setActiveImageIndex(idx)}
-                                        onMouseEnter={() => window.innerWidth > 768 && setActiveImageIndex(idx)}
+                                        onClick={() => {
+                                            setActiveImageIndex(idx);
+                                            if (product?.variants?.length > 1 && idx < product.variants.length) {
+                                                setSelectedVariant(product.variants[idx]);
+                                            }
+                                        }}
                                         style={{
-                                            width: 80, height: 80, borderRadius: 12, flexShrink: 0,
-                                            border: activeImageIndex === idx ? '2px solid var(--c-orange)' : '1px solid var(--color-border-subtle)',
-                                            background: 'var(--color-bg-elevated)', cursor: 'pointer', overflow: 'hidden',
-                                            padding: 0, transition: 'border-color 0.2s',
+                                            width: 72, height: 72, borderRadius: 12, flexShrink: 0,
+                                            border: activeImageIndex === idx ? '2px solid var(--c-orange)' : '1px solid rgba(255,255,255,0.08)',
+                                            background: '#1a1f2b', cursor: 'pointer', overflow: 'hidden',
+                                            padding: 0, transition: 'all 0.25s cubic-bezier(.4,0,.2,1)',
+                                            transform: activeImageIndex === idx ? 'scale(1.05)' : 'scale(1)',
+                                            boxShadow: activeImageIndex === idx ? '0 0 0 3px rgba(249,115,22,0.2), 0 4px 12px rgba(0,0,0,0.2)' : '0 2px 8px rgba(0,0,0,0.15)',
+                                            opacity: activeImageIndex === idx ? 1 : 0.7,
                                         }}
                                     >
                                         <img
                                             src={src}
                                             alt={`мініатюра ${idx + 1}`}
-                                            width="80"
-                                            height="80"
+                                            width="72"
+                                            height="72"
                                             loading="lazy"
                                             onError={(e) => {
                                                 e.target.onerror = null;
-                                                e.target.src = `https://placehold.co/80x80/333/ccc?text=${idx + 1}`;
+                                                e.target.src = `https://placehold.co/72x72/333/ccc?text=${idx + 1}`;
                                             }}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                         />
@@ -341,270 +437,192 @@ export default function ProductPage() {
                             <div className="product-badges-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                                 <span style={{
                                     display: 'inline-flex', alignItems: 'center', gap: 6,
-                                    background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e',
-                                    border: '1px solid rgba(34,197,94,0.15)',
+                                    background: product.is_available !== false ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                    color: product.is_available !== false ? '#22c55e' : '#ef4444',
+                                    border: product.is_available !== false ? '1px solid rgba(34,197,94,0.15)' : '1px solid rgba(239, 68, 68, 0.15)',
                                     padding: '6px 14px', borderRadius: 999, fontSize: '0.8rem', fontWeight: 700
                                 }}>
-                                    <CheckCircle2 size={14} /> В наявності
+                                    <CheckCircle2 size={14} /> {product.is_available !== false ? 'В наявності' : 'Немає в наявності'}
                                 </span>
-                                {isPopular && (
-                                    <span style={{
-                                        display: 'inline-flex', alignItems: 'center', gap: 4,
-                                        background: 'rgba(255, 115, 0, 0.1)', color: '#ff7a18',
-                                        border: '1px solid rgba(255,115,0,0.15)',
-                                        padding: '6px 14px', borderRadius: 999, fontSize: '0.8rem', fontWeight: 700
-                                    }}>
-                                        <Flame size={14} /> Популярний
-                                    </span>
-                                )}
+
                             </div>
                         </div>
-
-                        {/* Variant selector (if any) */}
-                        {product.variants?.length > 0 && (
-                            <div className="product-variants-container" style={{ paddingTop: '1.5rem', borderTop: '1px solid var(--color-border-subtle)' }}>
-                                <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--c-text2)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                                    Оберіть варіант
-                                </p>
-                                <div className="product-variants-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                                    {product.variants.map((variant, idx) => {
-                                        const active = selectedVariant?.name === variant.name;
-                                        return (
-                                            <button
-                                                key={idx}
-                                                onClick={() => setSelectedVariant(variant)}
-                                                style={{
-                                                    padding: '10px 20px', borderRadius: 10,
-                                                    border: active ? '1px solid var(--c-orange)' : '1px solid var(--color-border-subtle)',
-                                                    background: active ? 'rgba(249,115,22,0.10)' : 'var(--color-bg-elevated)',
-                                                    color: active ? 'var(--c-orange)' : 'var(--c-text)',
-                                                    fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer',
-                                                    transition: 'border-color 0.2s, background 0.2s, color 0.2s',
-                                                    fontFamily: 'inherit',
-                                                }}
-                                            >
-                                                {variant.name}
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
 
                         {/* ── Price Block & CTA ── */}
                         <div className="product-price-block" style={{
                             paddingTop: '1.5rem', borderTop: '1px solid var(--color-border-subtle)',
                             display: 'flex', flexDirection: 'column', gap: '1.25rem'
                         }}>
-                            <div>
-                                {displayPrice > 1000 && (
-                                    <span className="product-old-price" style={{ fontSize: '1rem', color: 'var(--c-text2)', textDecoration: 'line-through', fontWeight: 600, display: 'block', marginBottom: 4 }}>
-                                        {Math.round(displayPrice * 1.15)} грн
-                                    </span>
-                                )}
+                            <div className="product-price-line">
                                 <p style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: 0, flexWrap: 'wrap' }}>
                                     <span style={{ fontSize: '34px', fontWeight: 900, color: 'var(--c-orange)', lineHeight: 1 }}>{displayPrice}</span>
                                     <span style={{ fontSize: '20px', fontWeight: 700, color: 'var(--c-orange)' }}>грн</span>
-                                    <span style={{ fontSize: '18px', color: 'var(--c-text2)', fontWeight: 500 }}>/ {product.category === 'brikety' || product.category === 'vugillya' ? 'тонна' : 'складометр'}</span>
+                                    <span style={{ fontSize: '18px', color: 'var(--c-text2)', fontWeight: 500 }}>/ {selectedVariant ? selectedVariant.name : (product.category === 'brikety' || product.category === 'vugillya' ? 'тонна' : 'складометр')}</span>
                                 </p>
+                            </div>
 
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1.25rem' }}>
-                                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                        <Truck size={15} style={{ color: '#22c55e' }} />
-                                        <span>Доставка сьогодні</span>
-                                    </div>
-                                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                        <PackageCheck size={15} style={{ color: '#22c55e' }} />
-                                        <span>Є на складі</span>
-                                    </div>
+                            <div className="product-top-badges" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <Truck size={15} style={{ color: '#22c55e' }} />
+                                    <span>Доставка за 24 години</span>
+                                </div>
+                                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <PackageCheck size={15} style={{ color: product.is_available !== false ? '#22c55e' : '#ef4444' }} />
+                                    <span>{product.is_available !== false ? 'Є на складі' : 'Немає на складі'}</span>
+                                </div>
+                                <div className="desktop-only-payment-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 12px', borderRadius: '8px', color: '#e5e7eb', fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <CheckCircle2 size={15} style={{ color: '#22c55e' }} />
+                                    <span>Оплата після отримання</span>
                                 </div>
                             </div>
 
+                            {/* Variant selector (if any) */}
+                            {product.variants?.length > 0 && (
+                                <div className="product-variants-container" style={{ paddingTop: '1.25rem', borderTop: '1px solid var(--color-border-subtle)' }}>
+                                    <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--c-text2)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                                        Оберіть варіант
+                                    </p>
+                                    <div className="product-variants-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                                        {product.variants.map((variant, idx) => {
+                                            const active = selectedVariant?.name === variant.name;
+                                            return (
+                                                <button
+                                                    key={idx}
+                                                    onClick={() => { setSelectedVariant(variant); if (galleryImages.length > 1) setActiveImageIndex(Math.min(idx, galleryImages.length - 1)); }}
+                                                    style={{
+                                                        padding: '10px 20px', borderRadius: 10,
+                                                        border: active ? '1px solid var(--c-orange)' : '1px solid var(--color-border-subtle)',
+                                                        background: active ? 'rgba(249,115,22,0.10)' : 'var(--color-bg-elevated)',
+                                                        color: active ? 'var(--c-orange)' : 'var(--c-text)',
+                                                        fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer',
+                                                        transition: 'border-color 0.2s, background 0.2s, color 0.2s',
+                                                        fontFamily: 'inherit',
+                                                    }}
+                                                >
+                                                    {variant.name}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="product-cta-container">
-                                <button
-                                    className="product-cta-btn"
-                                    onClick={() => setIsOrderFormOpen(true)}
-                                    style={{
-                                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                                        background: 'linear-gradient(135deg, #f97316, #ea580c)',
-                                        color: '#fff', fontWeight: 800, fontSize: '1.125rem',
-                                        border: 'none', borderRadius: 12, padding: '18px 32px',
-                                        cursor: 'pointer', width: '100%',
-                                        boxShadow: '0 4px 20px rgba(249,115,22,0.30)',
-                                        transition: 'box-shadow 0.2s',
-                                        fontFamily: 'inherit',
-                                    }}
-                                    onMouseEnter={e => e.currentTarget.style.boxShadow = '0 8px 28px rgba(249,115,22,0.50)'}
-                                    onMouseLeave={e => e.currentTarget.style.boxShadow = '0 4px 20px rgba(249,115,22,0.30)'}
-                                >
-                                    🔥 {product.category === 'brikety' ? 'Замовити брикети' : product.category === 'vugillya' ? 'Замовити вугілля' : 'Замовити дрова'}
-                                </button>
+                                {product.is_available !== false ? (
+                                    <button
+                                        className="product-cta-btn"
+                                        onClick={() => setIsOrderFormOpen(true)}
+                                        style={{
+                                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+                                            background: 'linear-gradient(135deg, #f97316, #ea580c)',
+                                            color: '#fff', fontWeight: 800, fontSize: '1.125rem',
+                                            border: 'none', borderRadius: 12, padding: '18px 32px',
+                                            cursor: 'pointer', width: '100%',
+                                            boxShadow: '0 4px 20px rgba(249,115,22,0.30)',
+                                            transition: 'box-shadow 0.2s',
+                                            fontFamily: 'inherit',
+                                        }}
+                                        onMouseEnter={e => e.currentTarget.style.boxShadow = '0 8px 28px rgba(249,115,22,0.50)'}
+                                        onMouseLeave={e => e.currentTarget.style.boxShadow = '0 4px 20px rgba(249,115,22,0.30)'}
+                                    >
+                                        🔥 {product.category === 'brikety' ? 'Замовити брикети' : product.category === 'vugillya' ? 'Замовити вугілля' : 'Замовити дрова'}
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="product-cta-btn"
+                                        onClick={() => setIsOrderFormOpen(true)}
+                                        style={{
+                                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+                                            background: 'var(--color-bg-elevated)',
+                                            color: 'var(--c-text2)', fontWeight: 700, fontSize: '1.125rem',
+                                            border: '1px solid var(--color-border-subtle)', borderRadius: 12, padding: '18px 32px',
+                                            cursor: 'pointer', width: '100%',
+                                            transition: 'color 0.2s, border-color 0.2s',
+                                            fontFamily: 'inherit',
+                                        }}
+                                        onMouseEnter={e => { e.currentTarget.style.color = 'var(--c-text)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; }}
+                                        onMouseLeave={e => { e.currentTarget.style.color = 'var(--c-text2)'; e.currentTarget.style.borderColor = 'var(--color-border-subtle)'; }}
+                                    >
+                                        Повідомити про появу
+                                    </button>
+                                )}
                             </div>
 
                             {/* Trust Block */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem', marginTop: '0.25rem' }}>
-                                {[
-                                    'Доставка по Києву за 24 години',
-                                    'Чесний складометр',
-                                    'Оплата після отримання',
-                                    'Працюємо з 2013 року'
-                                ].map((item, idx) => (
-                                    <span key={idx} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: '0.9375rem', color: 'var(--c-text)', fontWeight: 500 }}>
-                                        <div style={{ background: 'rgba(34,197,94,0.15)', borderRadius: '50%', padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                            <CheckCircle2 size={14} color="#22c55e" />
-                                        </div>
-                                        {item}
-                                    </span>
-                                ))}
+                            <div className="trust-block desktop-hidden-trust" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.25rem', marginTop: '0.25rem' }}>
+                                <span className="desktop-only-trust-item" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.8125rem', color: 'var(--c-text)', fontWeight: 500, whiteSpace: 'nowrap' }}>
+                                    <div style={{ background: 'rgba(34,197,94,0.15)', borderRadius: '50%', padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <CheckCircle2 size={12} color="#22c55e" />
+                                    </div>
+                                    Доставка по Києву за 24 години
+                                </span>
+                                
+                                <span className="mobile-badge-style trust-item-standard" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.8125rem', color: 'var(--c-text)', fontWeight: 500, whiteSpace: 'nowrap' }}>
+                                    <div className="trust-icon-container" style={{ background: 'rgba(34,197,94,0.15)', borderRadius: '50%', padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <CheckCircle2 size={12} color="#22c55e" />
+                                    </div>
+                                    <CheckCircle2 className="mobile-badge-icon" size={15} style={{ color: '#22c55e', display: 'none' }} />
+                                    Чесний складометр
+                                </span>
+
+                                <span className="mobile-badge-style trust-item-standard" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.8125rem', color: 'var(--c-text)', fontWeight: 500, whiteSpace: 'nowrap' }}>
+                                    <div className="trust-icon-container" style={{ background: 'rgba(34,197,94,0.15)', borderRadius: '50%', padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <CheckCircle2 size={12} color="#22c55e" />
+                                    </div>
+                                    <CheckCircle2 className="mobile-badge-icon" size={15} style={{ color: '#22c55e', display: 'none' }} />
+                                    Оплата після отримання
+                                </span>
+
+                                <span className="desktop-only-trust-item" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.8125rem', color: 'var(--c-text)', fontWeight: 500, whiteSpace: 'nowrap' }}>
+                                    <div style={{ background: 'rgba(34,197,94,0.15)', borderRadius: '50%', padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <CheckCircle2 size={12} color="#22c55e" />
+                                    </div>
+                                    Працюємо з 2013 року
+                                </span>
                             </div>
                         </div>
 
                     </div>
                 </div>
 
-                {/* ── SECTION 2, 3 & 4: Characteristics, Description, Delivery Info, FAQ (2x2 Grid) ── */}
+                {/* ── SECTION 2, 3 & 4: Characteristics, Description, Delivery Info, FAQ ── */}
                 <div style={{ marginTop: '4rem' }}>
                     <div className="product-info-grid" style={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(2, 1fr)',
+                        gridTemplateRows: 'auto auto auto',
                         gap: '1.5rem',
-                        alignItems: 'start'
                     }}>
-                        {/* ── LEFT COLUMN ── */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                            {/* Specs */}
-                            <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                                {product.category === 'brikety' && (
-                                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem', lineHeight: 1.25 }}>
-                                        {briketH2}
-                                    </h2>
-                                )}
-                                <div className="product-specs-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', rowGap: '1.5rem' }}>
-                                    {specs.map((spec, i) => (
-                                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                                            <div style={{
-                                                width: 38, height: 38, borderRadius: 10, flexShrink: 0,
-                                                background: 'var(--color-accent-soft)',
-                                                border: '1px solid rgba(249,115,22,0.15)',
-                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                            }}>
-                                                {spec.icon}
-                                            </div>
-                                            <div>
-                                                <p style={{ fontSize: '0.75rem', color: 'var(--c-text2)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 700 }}>{spec.name || spec.label}</p>
-                                                <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--c-text)', marginTop: 2 }}>{spec.value}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-
-
-                            {/* ── SECTION 3B: Delivery Info ── */}
-                            <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                                    <div style={{
-                                        width: 38, height: 38, borderRadius: 10, flexShrink: 0,
-                                        background: 'var(--color-accent-soft)',
-                                        border: '1px solid rgba(249,115,22,0.15)',
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    }}>
-                                        <Truck size={18} color="var(--c-orange)" />
-                                    </div>
-                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', margin: 0 }}>
-                                        Інформація про доставку
-                                    </h3>
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingLeft: 50 }}>
-                                    <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
-                                        <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Локація:</span> Доставка по Києву та області
-                                    </p>
-                                    <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
-                                        <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Термін доставки:</span> 1 день
-                                    </p>
-                                    <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
-                                        <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Вартість доставки:</span> Індивідуальна вартість доставки буде розрахована після вашого запиту
-                                    </p>
-                                    {product.category === 'drova' && (
-                                        <>
-                                            <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
-                                                <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Мінімальне замовлення:</span> 1 складометр
-                                            </p>
-                                            <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
-                                                <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Автопарк:</span> ГАЗель, ЗІЛ, КАМАЗ
-                                            </p>
-                                            <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
-                                                <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Спецтехніка:</span> гідроборт, кран-маніпулятор
-                                            </p>
-                                        </>
-                                    )}
-                                    <Link to="/dostavka" style={{ color: 'var(--c-orange)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 600, marginTop: '0.25rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                                        {product.category === 'drova' ? 'Детальніше про доставку дров' : 'Детальніше про доставку'} <ArrowRight size={14} />
-                                    </Link>
-                                </div>
-                            </div>
-
-                            {/* ── SECTION 3.5: HOW TO ORDER ── */}
-                            <section className="nh-card order-steps" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>Як замовити {product.category === 'brikety' ? 'брикети' : product.category === 'vugillya' ? 'вугілля' : 'дрова'}</h3>
-                                <ol className="order-steps-list" style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', color: 'var(--c-text)', lineHeight: 1.6, fontWeight: 500 }}>
-                                    <li style={{ marginBottom: '8px' }}>Оберіть потрібний обсяг {product.category === 'brikety' ? 'брикетів' : product.category === 'vugillya' ? 'вугілля' : 'дров'}</li>
-                                    <li style={{ marginBottom: '8px' }}>Натисніть кнопку "Замовити"</li>
-                                    <li>Ми зв'яжемося для підтвердження доставки</li>
-                                </ol>
-                                <p style={{ color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6, margin: 0 }}>
-                                    Доставка {product.category === 'brikety' ? 'брикетів' : product.category === 'vugillya' ? 'вугілля' : 'дров'} по Києву здійснюється власним транспортом протягом 24 годин після оформлення замовлення.
-                                </p>
-                            </section>
-
-                            {/* ── SECTION 4: FAQ ── */}
-                            <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
-                                <h3 className="faq-mobile-h2" style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
-                                    Часті питання
-                                </h3>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                    {faqs.map((faq, idx) => (
-                                        <div key={idx} style={{
-                                            background: 'var(--color-bg-elevated)',
-                                            border: '1px solid var(--color-border-subtle)',
-                                            borderRadius: 12, overflow: 'hidden',
+                        {/* ── ROW 1 LEFT: Specs ── */}
+                        <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16, gridColumn: '1', gridRow: '1', display: 'flex', flexDirection: 'column' }}>
+                            {product.category === 'brikety' && (
+                                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem', lineHeight: 1.25 }}>
+                                    {briketH2}
+                                </h2>
+                            )}
+                            <div className="product-specs-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', rowGap: '1.5rem', flex: 1 }}>
+                                {specs.map((spec, i) => (
+                                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                        <div style={{
+                                            width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+                                            background: 'var(--color-accent-soft)',
+                                            border: '1px solid rgba(249,115,22,0.15)',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         }}>
-                                            <button
-                                                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                                                style={{
-                                                    width: '100%', padding: '1.25rem 1.5rem',
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                                    background: 'transparent', border: 'none', color: 'var(--c-text)',
-                                                    fontSize: '1rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left', gap: '1rem',
-                                                }}
-                                            >
-                                                <span style={{ flex: 1 }}>{faq.q}</span>
-                                                <ChevronDown size={20} color="var(--c-orange)" style={{
-                                                    flexShrink: 0,
-                                                    transform: openFaq === idx ? 'rotate(180deg)' : 'rotate(0deg)',
-                                                    transition: 'transform 0.3s ease'
-                                                }} />
-                                            </button>
-                                            <div style={{
-                                                maxHeight: openFaq === idx ? 200 : 0,
-                                                padding: openFaq === idx ? '0 1.5rem 1.5rem' : '0 1.5rem',
-                                                opacity: openFaq === idx ? 1 : 0,
-                                                overflow: 'hidden',
-                                                transition: 'all 0.3s ease',
-                                                color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6,
-                                            }}>
-                                                {faq.a}
-                                            </div>
+                                            {spec.icon}
                                         </div>
-                                    ))}
-                                </div>
+                                        <div>
+                                            <p style={{ fontSize: '0.75rem', color: 'var(--c-text2)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 700 }}>{spec.name || spec.label}</p>
+                                            <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--c-text)', marginTop: 2 }}>{spec.value}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
-                        {/* ── RIGHT COLUMN: Description SEO Block ── */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'sticky', top: '6rem' }}>
-                            <div className="nh-card" style={{ padding: '2rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16 }}>
+                        {/* ── ROW 1-3 RIGHT: Description SEO Block (spans all 3 rows) ── */}
+                        <div style={{ gridColumn: '2', gridRow: '1 / 4', display: 'flex', flexDirection: 'column' }}>
+                            <div className="nh-card" style={{ padding: '2rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16, flex: 1, position: 'sticky', top: '6rem' }}>
                                 <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.25rem' }}>
                                     {product.category === 'brikety' ? briketDesc : product.category === 'vugillya' ? 'Про це вугілля' : 'Про ці дрова'}
                                 </h2>
@@ -643,6 +661,129 @@ export default function ProductPage() {
                             </div>
                         </div>
 
+                        {/* ── ROW 2 LEFT: Delivery Info ── */}
+                        <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16, gridColumn: '1', gridRow: '2', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                <div style={{
+                                    width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+                                    background: 'var(--color-accent-soft)',
+                                    border: '1px solid rgba(249,115,22,0.15)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                }}>
+                                    <Truck size={18} color="var(--c-orange)" />
+                                </div>
+                                <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--c-text)', margin: 0 }}>
+                                    Інформація про доставку
+                                </h3>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingLeft: 50 }}>
+                                {(!deliveryInfoObj || Object.keys(deliveryInfoObj).length === 0) ? (
+                                    <>
+                                        <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                            <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Локація:</span> Доставка по Києву та області
+                                        </p>
+                                        <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                            <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Термін доставки:</span> 1 день
+                                        </p>
+                                        <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                            <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Вартість доставки:</span> Індивідуальна вартість доставки буде розрахована після вашого запиту
+                                        </p>
+                                        {product?.category === 'drova' && (
+                                            <>
+                                                <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                                    <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Мінімальне замовлення:</span> 1 складометр
+                                                </p>
+                                                <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                                    <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Автопарк:</span> ГАЗель, ЗІЛ, КАМАЗ
+                                                </p>
+                                                <p style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                                    <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>Спецтехніка:</span> гідроборт, кран-маніпулятор
+                                                </p>
+                                            </>
+                                        )}
+                                    </>
+                                ) : (
+                                    <>
+                                        {['location:Локація', 'time:Термін доставки', 'price:Вартість доставки', 'min_order:Мінімальне замовлення', 'fleet:Автопарк', 'special:Спецтехніка'].map(fieldStr => {
+                                            const [key, label] = fieldStr.split(':');
+                                            if (!deliveryInfoObj[key]) return null;
+                                            return (
+                                                <p key={key} style={{ margin: 0, color: 'var(--c-text2)', fontSize: '0.9375rem' }}>
+                                                    <span style={{ color: 'var(--c-text)', fontWeight: 600 }}>{label}:</span> {deliveryInfoObj[key]}
+                                                </p>
+                                            );
+                                        })}
+                                    </>
+                                )}
+                                <Link to="/dostavka" style={{ color: 'var(--c-orange)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 600, marginTop: '0.25rem', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                    {product.category === 'drova' ? 'Детальніше про доставку дров' : 'Детальніше про доставку'} <ArrowRight size={14} />
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* ── ROW 3 LEFT: How to Order ── */}
+                        <section className="nh-card order-steps" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16, gridColumn: '1', gridRow: '3', display: 'flex', flexDirection: 'column' }}>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>Як замовити {product.category === 'brikety' ? 'брикети' : product.category === 'vugillya' ? 'вугілля' : 'дрова'}</h3>
+                            <ol className="order-steps-list" style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', color: 'var(--c-text)', lineHeight: 1.6, fontWeight: 500 }}>
+                                {(!orderStepsArray || orderStepsArray.length === 0) ? (
+                                    <>
+                                        <li style={{ marginBottom: '8px' }}>Оберіть потрібний обсяг {product?.category === 'brikety' ? 'брикетів' : product?.category === 'vugillya' ? 'вугілля' : 'дров'}</li>
+                                        <li style={{ marginBottom: '8px' }}>Натисніть кнопку "Замовити"</li>
+                                        <li>Ми зв'яжемося для підтвердження доставки</li>
+                                    </>
+                                ) : (
+                                    orderStepsArray.map((s, idx) => (
+                                        <li key={idx} style={{ marginBottom: idx === orderStepsArray.length - 1 ? '0' : '8px' }}>{s.step}</li>
+                                    ))
+                                )}
+                            </ol>
+                            <p style={{ color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6, margin: 0 }}>
+                                Доставка {product.category === 'brikety' ? 'брикетів' : product.category === 'vugillya' ? 'вугілля' : 'дров'} по Києву здійснюється власним транспортом протягом 24 годин після оформлення замовлення.
+                            </p>
+                        </section>
+                    </div>
+
+                    {/* ── FAQ: Full Width ── */}
+                    <div className="nh-card" style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-subtle)', borderRadius: 16, marginTop: '1.5rem' }}>
+                        <h3 className="faq-mobile-h2" style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.5rem' }}>
+                            Часті питання
+                        </h3>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
+                            {faqs.map((faq, idx) => (
+                                <div key={idx} style={{
+                                    background: 'var(--color-bg-elevated)',
+                                    border: '1px solid var(--color-border-subtle)',
+                                    borderRadius: 12, overflow: 'hidden',
+                                }}>
+                                    <button
+                                        onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                                        style={{
+                                            width: '100%', padding: '1.25rem 1.5rem',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                            background: 'transparent', border: 'none', color: 'var(--c-text)',
+                                            fontSize: '1rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left', gap: '1rem',
+                                        }}
+                                    >
+                                        <span style={{ flex: 1 }}>{faq.q}</span>
+                                        <ChevronDown size={20} color="var(--c-orange)" style={{
+                                            flexShrink: 0,
+                                            transform: openFaq === idx ? 'rotate(180deg)' : 'rotate(0deg)',
+                                            transition: 'transform 0.3s ease'
+                                        }} />
+                                    </button>
+                                    <div style={{
+                                        maxHeight: openFaq === idx ? 200 : 0,
+                                        padding: openFaq === idx ? '0 1.5rem 1.5rem' : '0 1.5rem',
+                                        opacity: openFaq === idx ? 1 : 0,
+                                        overflow: 'hidden',
+                                        transition: 'all 0.3s ease',
+                                        color: 'var(--c-text2)', fontSize: '0.9375rem', lineHeight: 1.6,
+                                    }}>
+                                        {faq.a}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
@@ -672,6 +813,7 @@ export default function ProductPage() {
                                                         src={getImageUrl(p.image_url, api.defaults.baseURL)}
                                                         alt={p.category === 'drova' || categorySlug === 'drova' ? `${p.name} колоті дрова складометр доставка Київ` : p.category === 'brikety' ? (p.name.split('—')[0].split('- ')[0].trim().replace(/\(|\)/g, '').replace(/\s+/g, ' ')) : (p.h1_heading || p.name)}
                                                         className="catalog-card-img"
+                                                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                                                         onError={e => {
                                                             e.target.onerror = null;
                                                             e.target.src = `https://placehold.co/400x300/333/ccc?text=${encodeURIComponent(p.name)}`;
@@ -689,20 +831,9 @@ export default function ProductPage() {
                                                         color: '#fff', borderRadius: 999, padding: '4px 10px', fontSize: '0.7rem', fontWeight: 700,
                                                         letterSpacing: '0.02em', boxShadow: '0 2px 10px rgba(0,0,0,0.15)',
                                                     }}>
-                                                        ✔ В наявності
+                                                        {p.is_available !== false ? '✔ В наявності' : '✖ Немає'}
                                                     </span>
                                                 </div>
-                                                {isPopular && (
-                                                    <div className="product-popular-badge" style={{ position: 'absolute', top: 12, right: 12, zIndex: 2 }}>
-                                                        <span style={{
-                                                            display: 'inline-flex', alignItems: 'center', background: 'rgba(249,115,22,0.9)',
-                                                            color: '#fff', borderRadius: 999, padding: '4px 10px', fontSize: '0.7rem', fontWeight: 700,
-                                                            letterSpacing: '0.04em', textTransform: 'uppercase', boxShadow: '0 2px 10px rgba(0,0,0,0.15)',
-                                                        }}>
-                                                            🔥 Популярний
-                                                        </span>
-                                                    </div>
-                                                )}
                                             </div>
 
                                             {/* ── CONTENT ── */}
@@ -720,16 +851,31 @@ export default function ProductPage() {
                                                 )}
                                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 14, borderTop: '1px solid var(--color-border-subtle)', marginTop: 'auto', gap: 12 }}>
                                                     <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                                                        <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--c-orange)', lineHeight: 1, margin: 0 }}>
-                                                            {displayPrice} <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--c-orange)' }}>грн</span>
-                                                        </p>
-                                                        <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', margin: 0 }}>за 1 {product.category === 'brikety' || product.category === 'vugillya' ? 'тонну' : 'складометр'}</p>
+                                                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', flexWrap: 'nowrap' }}>
+                                                            <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--c-orange)', lineHeight: 1, margin: 0, whiteSpace: 'nowrap' }}>
+                                                                {displayPrice} <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--c-orange)' }}>грн</span>
+                                                            </p>
+                                                        </div>
+                                                        <p style={{ fontSize: '0.875rem', color: 'var(--c-text2)', margin: 0, whiteSpace: 'nowrap' }}>за 1 {product.category === 'brikety' || product.category === 'vugillya' ? 'тонну' : 'складометр'}</p>
                                                     </div>
                                                     <button
-                                                        className="catalog-card-btn"
-                                                        onClick={(e) => { e.preventDefault(); setIsOrderFormOpen(true); }}
+                                                        className={`catalog-card-btn nh-btn-primary ${p.is_available === false ? 'out-of-stock-btn' : ''}`}
+                                                        style={{
+                                                            padding: p.is_available === false ? '6px 10px' : '8px 16px', 
+                                                            fontSize: p.is_available === false ? '0.7rem' : '0.875rem', 
+                                                            background: p.is_available === false ? 'rgba(255, 255, 255, 0.05)' : 'var(--c-orange)', 
+                                                            color: p.is_available === false ? '#9ca3af' : '#fff', 
+                                                            border: p.is_available === false ? '1px solid rgba(255, 255, 255, 0.1)' : 'none', 
+                                                            borderRadius: '8px', 
+                                                            cursor: 'pointer', 
+                                                            fontWeight: 600,
+                                                            transition: 'all 0.2s',
+                                                            whiteSpace: 'nowrap',
+                                                            flexShrink: 0
+                                                        }}
+                                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOrderFormOpen(true); }}
                                                     >
-                                                        🛒 {product.category === 'brikety' ? 'Замовити брикети' : product.category === 'vugillya' ? 'Замовити вугілля' : 'Замовити дрова'}
+                                                        {p.is_available === false ? 'Повідомити про появу' : 'Замовити'}
                                                     </button>
                                                 </div>
                                             </div>
@@ -742,12 +888,12 @@ export default function ProductPage() {
                 )}
                 {/* ── SECTION 6: BOTTOM SEO BLOCK ── */}
                 {product.category === 'drova' && (
-                    <section className="product-seo-bottom" style={{ marginTop: '5rem', padding: '2rem', background: 'var(--color-bg-elevated)', borderRadius: 20, border: '1px solid var(--color-border-subtle)' }}>
+                    <section className="product-seo-bottom" style={{ marginTop: '5rem', padding: '2rem', background: '#1c1c1e', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.06)' }}>
                         <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--c-text)', marginBottom: '1.25rem' }}>Купити {product.name.toLowerCase()} в Києві</h2>
                         <div style={{ color: 'var(--c-text2)', fontSize: '1rem', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <p>
                                 Якщо вам потрібні якісні <Link to="/catalog/drova" style={{ color: 'var(--c-orange)', textDecoration: 'none' }}>колоті дрова</Link>
-                                {' '}з доставкою по Києву, компанія КиївБрикет пропонує швидке постачання
+                                {' '}з доставкою по Києву, компанія КиївДрова пропонує швидке постачання
                                 палива власним транспортом.
                             </p>
                             <p>
@@ -809,6 +955,10 @@ export default function ProductPage() {
                 /* Mobile title: show above image; hide desktop title */
                 .product-mobile-title { display: none; }
 
+                @media (min-width: 769px) {
+                    .desktop-hidden-trust { display: none !important; }
+                }
+
                 @media (max-width: 768px) {
                     .product-mobile-title { display: block !important; }
                     .product-desktop-title .h1 { display: none !important; }
@@ -816,11 +966,18 @@ export default function ProductPage() {
                     .product-badges-row { display: none !important; }
                     .product-popular-badge { display: none !important; }
                     .product-old-price { display: none !important; }
+                    .desktop-only-payment-badge { display: none !important; }
                     .product-price-badge { display: inline-flex !important; }
                     .product-main-content > div { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
                     .product-main-content > div > div:first-child { position: static !important; }
                     .product-main-content > div > div:last-child { gap: 1rem !important; }
-                    .product-price-block { order: -1; padding-top: 0 !important; border-top: none !important; }
+                    .product-price-block { order: -1; padding-top: 0 !important; border-top: none !important; gap: 0.6rem !important; }
+                    /* Reorder inside price block on mobile: price first, variants, then badges */
+                    .product-price-line { order: 1; }
+                    .product-variants-container { order: 2; border-top: none !important; padding-top: 0 !important; }
+                    .product-top-badges { order: 3; margin-top: 0.9rem !important; }
+                    .trust-block.desktop-hidden-trust { order: 4; }
+                    .product-cta-container { order: 10; }
                     .product-main-content { padding-top: 1rem !important; padding-bottom: 1rem !important; }
                     
                     /* Sticky Mobile CTA Container */
@@ -837,6 +994,50 @@ export default function ProductPage() {
                     }
                     /* Add padding to bottom to account for the sticky bar */
                     .new-home-scope { padding-bottom: 90px; }
+
+                    .desktop-only-trust-item { display: none !important; }
+                    
+                    .mobile-badge-style {
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: flex-start !important;
+                        gap: 6px !important;
+                        background: rgba(255, 255, 255, 0.03) !important;
+                        padding: 5px 8px !important;
+                        border-radius: 8px !important;
+                        color: #e5e7eb !important;
+                        font-size: 0.75rem !important;
+                        border: 1px solid rgba(255,255,255,0.05) !important;
+                        width: 100% !important;
+                        box-sizing: border-box !important;
+                        line-height: 1.2 !important;
+                        white-space: normal !important;
+                        overflow: hidden !important;
+                        min-width: 0 !important;
+                    }
+
+                    .trust-icon-container { display: none !important; }
+                    .mobile-badge-icon { display: block !important; width: 14px; height: 14px; flex-shrink: 0; }
+                    .trust-block.desktop-hidden-trust { 
+                        display: grid !important; 
+                        grid-template-columns: 1fr 1fr !important;
+                        gap: 0.5rem !important;
+                        margin-top: 0.9rem !important; 
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        overflow: hidden !important;
+                    }
+
+                    /* Make top price badges row compact on mobile too */
+                    .product-price-block > div > div:last-child {
+                        gap: 0.5rem !important;
+                        margin-top: 0.75rem !important;
+                    }
+                    .product-price-block > div > div:last-child > div {
+                        padding: 5px 8px !important;
+                        font-size: 0.75rem !important;
+                        gap: 6px !important;
+                    }
                 }
             `}</style>
 
@@ -845,6 +1046,7 @@ export default function ProductPage() {
                 onClose={() => setIsOrderFormOpen(false)}
                 product={product}
                 variant={selectedVariant}
+                initialQuantity={1}
             />
         </div>
     );

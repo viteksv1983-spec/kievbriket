@@ -13,7 +13,7 @@ const QuickOrderModal = ({
 }) => {
     const [name, setName] = useState('');
     const [quantity, setQuantity] = useState(1);
-    const { phoneProps, rawPhone, resetPhone, digits } = usePhoneInput();
+    const { phoneProps, rawPhone, resetPhone, digits, isValid } = usePhoneInput();
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -23,9 +23,9 @@ const QuickOrderModal = ({
         e.preventDefault();
         setLoading(true);
         setMessage('');
-        const cleanDigits = digits;
-        if (cleanDigits.length < 10) {
-            setMessage('Будь ласка, введіть повний номер телефону (10 цифр після +38).');
+        
+        if (!isValid) {
+            setMessage('Будь ласка, введіть дійсний номер телефону (наприклад: +380 50 123 45 67).');
             setLoading(false);
             return;
         }

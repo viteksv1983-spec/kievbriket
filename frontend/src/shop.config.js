@@ -1,15 +1,15 @@
 const shopConfig = {
     // ─── Brand ────────────────────────────────────────
-    name: "КиївБрикет",
+    name: "КиївДрова",
     tagline: "Якісні дрова з доставкою",
     description: "Купити колоті дрова з доставкою по Києву та області. Дуб, граб, береза, вільха, сосна. Чесний об'єм та швидка доставка вантажівками.",
-    domain: "https://kievbriket.com",
+    domain: "https://kievdrova.com.ua",
     logo: "/logo.svg", // Replaced text via css/components later if needed
 
     // ─── Contact ──────────────────────────────────────
     contact: {
         phone: "+380 (99) 123-45-67",
-        email: "info@kievbriket.com",
+        email: "info@kievdrova.com.ua",
         address: "Київ та Київська область",
         instagram: "https://www.instagram.com/drova_kiyv_example",
         telegram: "https://t.me/drova_kyiv_bot",
@@ -23,10 +23,10 @@ const shopConfig = {
 
     // ─── SEO Defaults ─────────────────────────────────
     seo: {
-        defaultTitle: "КиївБрикет — Купити колоті дрова з доставкою",
+        defaultTitle: "КиївДрова — Купити колоті дрова з доставкою",
         defaultDescription: "Швидка доставка дров по Києву та області. Дуб, ясен, граб, береза. Без передоплати, точний об'єм. Замовляйте якісні дрова для опалення.",
         defaultKeywords: "дрова київ, купити дрова, доставка дров, дрова колоті, дубові дрова, дрова ціна",
-        ogSiteName: "КиївБрикет",
+        ogSiteName: "КиївДрова",
     },
 
     // ─── API ──────────────────────────────────────────

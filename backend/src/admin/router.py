@@ -24,6 +24,12 @@ router = APIRouter(tags=["admin"])
 MEDIA_DIR = Path(__file__).parent.parent.parent / "media"
 MEDIA_DIR.mkdir(parents=True, exist_ok=True)
 
+# On shared hosting, Apache serves /media/ from /www/media/, not from Passenger.
+# So we need to save uploaded files to BOTH directories.
+_WWW_MEDIA_DIR = Path(__file__).parent.parent.parent.parent / "www" / "media"
+if not _WWW_MEDIA_DIR.exists():
+    _WWW_MEDIA_DIR = None  # Not on hosting, skip mirror
+
 # --- Pages ---
 
 @router.get("/admin/pages", response_model=List[page_schemas.Page])
@@ -70,7 +76,10 @@ def create_category_metadata(metadata: category_schemas.CategoryMetadataCreate, 
 
 @router.patch("/admin/categories/metadata/{slug}", response_model=category_schemas.CategoryMetadata)
 def update_category_metadata(slug: str, metadata: category_schemas.CategoryMetadataUpdate, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
-    return CategoryMetadataService.update_category_metadata(db, slug=slug, metadata=metadata)
+    from backend.src.products.router import product_cache
+    result = CategoryMetadataService.update_category_metadata(db, slug=slug, metadata=metadata)
+    product_cache.invalidate()
+    return result
 
 @router.delete("/admin/categories/metadata/{slug}")
 def delete_category_metadata(slug: str, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
@@ -121,6 +130,48 @@ def get_ga_tracking_id(db: Session = Depends(get_db)):
     settings = AdminService.get_site_settings(db)
     return {"ga_tracking_id": settings.ga_tracking_id}
 
+# Public endpoint — no auth, returns hero section settings for homepage
+@router.get("/api/site-settings/hero")
+def get_hero_settings(db: Session = Depends(get_db)):
+    settings = AdminService.get_site_settings(db)
+    import json
+    badges = None
+    if settings.hero_badges:
+        try:
+            badges = json.loads(settings.hero_badges)
+        except (json.JSONDecodeError, TypeError):
+            badges = None
+    return {
+        "hero_badges": badges,
+        "hero_trust_text": settings.hero_trust_text,
+        "hero_image_url": settings.hero_image_url,
+    }
+
+# Public endpoint — no auth, returns delivery transport settings
+@router.get("/api/site-settings/delivery")
+def get_delivery_transport_settings(db: Session = Depends(get_db)):
+    settings = AdminService.get_site_settings(db)
+    import json
+    transport = None
+    if settings.delivery_transport:
+        try:
+            transport = json.loads(settings.delivery_transport)
+        except (json.JSONDecodeError, TypeError):
+            transport = None
+    
+    # Return default hardcoded list if none exists yet
+    if not transport:
+        transport = [
+            { "type": "ГАЗель (бус)", "vol": "4–5 складометрів", "price": "1 500 грн", "desc": "Швидка доставка невеликих замовлень", "category": "standard", "image": "/images/delivery/gazel-dostavka-driv-kyiv.webp" },
+            { "type": "ЗІЛ самоскид", "vol": "4 складометри", "price": "3 000 грн", "desc": "Оптимально для приватних будинків", "category": "standard", "image": "/images/delivery/zil-dostavka-driv-kyiv.webp" },
+            { "type": "КАМАЗ самоскид", "vol": "8 складометрів", "price": "4 000 грн", "desc": "Великі обсяги палива", "category": "standard", "image": "/images/delivery/kamaz-dostavka-driv-kyiv.webp" },
+            { "type": "Кран-маніпулятор", "vol": "Складні умови", "price": "від 4 500 грн", "desc": "Для розвантаження у складних умовах", "category": "special", "image": "/images/delivery/manipulator-dostavka-kyiv.webp" },
+            { "type": "Гідроборт / рокла", "vol": "Складні умови", "price": "від 4 500 грн", "desc": "Для розвантаження палет", "category": "special", "image": "/images/delivery/gidrobort-rokla-dostavka-kyiv.webp" },
+            { "type": "Фура", "vol": "22–24 складометри", "price": "за домовленістю", "desc": "Поставка напряму з лісгоспу", "category": "table_only", "image": "" },
+        ]
+
+    return {"delivery_transport": transport}
+
 # --- Upload ---
 
 from backend.src.core.images import ImageProcessor
@@ -144,6 +195,14 @@ async def upload_image(file: UploadFile = File(...), current_user=Depends(get_cu
         thumb_path = MEDIA_DIR / thumb_name
         with thumb_path.open("wb") as buffer:
             buffer.write(thumb_bytes)
+        
+        # 3. Mirror to /www/media/ for Apache static serving (shared hosting)
+        if _WWW_MEDIA_DIR:
+            try:
+                shutil.copy2(str(main_path), str(_WWW_MEDIA_DIR / main_name))
+                shutil.copy2(str(thumb_path), str(_WWW_MEDIA_DIR / thumb_name))
+            except Exception as mirror_err:
+                logger.warning(f"Mirror to /www/media failed: {mirror_err}")
             
         return {
             "image_url": f"/media/{main_name}",
@@ -411,6 +470,7 @@ def import_products_csv(
             errors.append(f"Row {row_num}: {str(e)}")
             skipped += 1
 
+
     db.commit()
     return {
         "created": created,
@@ -418,3 +478,121 @@ def import_products_csv(
         "skipped": skipped,
         "errors": errors[:10],  # max 10 errors in response
     }
+
+
+# --- Reviews ---
+from backend.src.admin import models as admin_models
+from backend.src.admin import schemas as admin_schemas
+
+@router.get("/api/reviews", response_model=TypingList[admin_schemas.ReviewResponse])
+def get_public_reviews(db: Session = Depends(get_db)):
+    """Public endpoint to get active reviews sorted by sort_order."""
+    reviews = db.query(admin_models.Review).filter(admin_models.Review.is_active == True).order_by(admin_models.Review.sort_order.asc(), admin_models.Review.id.desc()).all()
+    return reviews
+
+@router.get("/admin/reviews", response_model=TypingList[admin_schemas.ReviewResponse])
+def get_admin_reviews(db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+    """Admin endpoint to get all reviews."""
+    reviews = db.query(admin_models.Review).order_by(admin_models.Review.sort_order.asc(), admin_models.Review.id.desc()).all()
+    return reviews
+
+@router.post("/admin/reviews", response_model=admin_schemas.ReviewResponse)
+def create_review(
+    review: admin_schemas.ReviewCreate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    db_review = admin_models.Review(**review.dict())
+    db.add(db_review)
+    db.commit()
+    db.refresh(db_review)
+    return db_review
+
+@router.patch("/admin/reviews/{review_id}", response_model=admin_schemas.ReviewResponse)
+def update_review(
+    review_id: int,
+    review_update: admin_schemas.ReviewUpdate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    db_review = db.query(admin_models.Review).filter(admin_models.Review.id == review_id).first()
+    if not db_review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    
+    update_data = review_update.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_review, key, value)
+        
+    db.commit()
+    db.refresh(db_review)
+    return db_review
+
+@router.delete("/admin/reviews/{review_id}")
+def delete_review(review_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+    db_review = db.query(admin_models.Review).filter(admin_models.Review.id == review_id).first()
+    if not db_review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    
+    db.delete(db_review)
+    db.commit()
+    return {"detail": "Review deleted"}
+
+
+# --- FAQs ---
+
+@router.get("/api/faqs", response_model=TypingList[admin_schemas.FAQResponse])
+def get_public_faqs(page: Optional[str] = None, db: Session = Depends(get_db)):
+    """Public endpoint to get active FAQs. Optionally filter by page."""
+    query = db.query(admin_models.FAQ).filter(admin_models.FAQ.is_active == True)
+    if page:
+        query = query.filter(admin_models.FAQ.page == page)
+    # Order by page then sort_order
+    faqs = query.order_by(admin_models.FAQ.page.asc(), admin_models.FAQ.sort_order.asc(), admin_models.FAQ.id.desc()).all()
+    return faqs
+
+@router.get("/admin/faqs", response_model=TypingList[admin_schemas.FAQResponse])
+def get_admin_faqs(db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+    """Admin endpoint to get all FAQs."""
+    faqs = db.query(admin_models.FAQ).order_by(admin_models.FAQ.page.asc(), admin_models.FAQ.sort_order.asc(), admin_models.FAQ.id.desc()).all()
+    return faqs
+
+@router.post("/admin/faqs", response_model=admin_schemas.FAQResponse)
+def create_faq(
+    faq: admin_schemas.FAQCreate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    db_faq = admin_models.FAQ(**faq.dict())
+    db.add(db_faq)
+    db.commit()
+    db.refresh(db_faq)
+    return db_faq
+
+@router.patch("/admin/faqs/{faq_id}", response_model=admin_schemas.FAQResponse)
+def update_faq(
+    faq_id: int,
+    faq_update: admin_schemas.FAQUpdate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    db_faq = db.query(admin_models.FAQ).filter(admin_models.FAQ.id == faq_id).first()
+    if not db_faq:
+        raise HTTPException(status_code=404, detail="FAQ not found")
+    
+    update_data = faq_update.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_faq, key, value)
+        
+    db.commit()
+    db.refresh(db_faq)
+    return db_faq
+
+@router.delete("/admin/faqs/{faq_id}")
+def delete_faq(faq_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+    db_faq = db.query(admin_models.FAQ).filter(admin_models.FAQ.id == faq_id).first()
+    if not db_faq:
+        raise HTTPException(status_code=404, detail="FAQ not found")
+    
+    db.delete(db_faq)
+    db.commit()
+    return {"detail": "FAQ deleted"}

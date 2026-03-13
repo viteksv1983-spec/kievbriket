@@ -16,7 +16,7 @@ function ProductCard({ p, delay }) {
 
     let fakeTags = ["Деревина", "Екологічно"];
     let triggerIcon = <Truck size={13} />;
-    let triggerText = "Доставка сьогодні";
+    let triggerText = "Доставка за 24 години";
     let seoDescription = "Колені дрова твердих і м’яких порід для опалення будинку, котлів та камінів. Доставка дров по Києву та області.";
 
     if (isBriquettes) {
@@ -27,8 +27,12 @@ function ProductCard({ p, delay }) {
     } else if (isCoal) {
         fakeTags = ["Антрацит", "Довгогоріння"];
         triggerIcon = <Package size={13} />;
-        triggerText = "В наявності";
         seoDescription = "Кам’яне вугілля антрацит та інші види для ефективного опалення.";
+    }
+
+    // Override hardcoded triggerText with DB label if available
+    if (p.label_text) {
+        triggerText = p.label_text;
     }
 
     // Handle image URL properly using the shared utility
@@ -40,23 +44,17 @@ function ProductCard({ p, delay }) {
 
     return (
         <article
-            className="reveal"
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
+            className="reveal ag-card"
             style={{
-                background: "var(--c-surface)",
                 borderRadius: 16,
-                overflow: "hidden",
-                border: `1px solid ${hovered ? "rgba(249,115,22,0.35)" : "rgba(255,255,255,0.07)"}`,
-                transition: "border-color 0.25s, transform 0.25s, box-shadow 0.25s",
-                transform: hovered ? "translateY(-4px)" : "translateY(0)",
-                boxShadow: hovered ? "0 20px 50px rgba(0,0,0,0.45), 0 0 0 1px rgba(249,115,22,0.12)" : "0 4px 20px rgba(0,0,0,0.2)",
                 transitionDelay: delay,
                 display: "flex",
                 flexDirection: "column",
+                overflow: "visible", /* allowing glow overflow */
+                height: "100%"
             }}
         >
-            <div style={{ height: 220, overflow: "hidden", position: "relative", flexShrink: 0 }}>
+            <div className="cat-img-wrap" style={{ height: 220, overflow: "hidden", position: "relative", flexShrink: 0, borderTopLeftRadius: 16, borderTopRightRadius: 16 }}>
                 <img
                     src={currentImgUrl}
                     alt={p.name}
@@ -67,14 +65,30 @@ function ProductCard({ p, delay }) {
                     }}
                     style={{
                         width: "100%", height: "100%", objectFit: "cover",
-                        filter: isCoal ? "brightness(0.75) saturate(0.9) contrast(1.2)" : "brightness(0.85) saturate(1.1)",
-                        transform: hovered ? "scale(1.05)" : "scale(1)",
+                        filter: isCoal ? "brightness(0.75) saturate(0.9) contrast(1.2)" : p.is_available === false ? "brightness(0.5) saturate(0.6)" : "brightness(0.85) saturate(1.1)",
                         transition: "transform 0.5s ease",
                     }}
+                    className="ag-img-zoom"
                 />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(22,28,37,0.85) 0%, transparent 55%)" }} />
                 {isCoal && (
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(249,115,22,0.08) 0%, transparent 60%)", mixBlendMode: "overlay" }} />
+                )}
+                {p.is_available === false && (
+                    <div style={{
+                        position: "absolute", top: 12, right: 12,
+                        background: "rgba(239,68,68,0.9)",
+                        backdropFilter: "blur(8px)",
+                        color: "#fff",
+                        padding: "6px 14px",
+                        borderRadius: 8,
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        letterSpacing: "0.02em",
+                        zIndex: 5,
+                    }}>
+                        Немає в наявності
+                    </div>
                 )}
             </div>
 
@@ -105,17 +119,14 @@ function ProductCard({ p, delay }) {
 
                 <Link
                     to={`/catalog/${p.slug}/`}
+                    className="ag-btn"
                     style={{
                         display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                        background: hovered ? "var(--color-accent-dark)" : "var(--color-accent-primary)",
-                        boxShadow: hovered ? "0 4px 20px rgba(249,115,22,0.45)" : "0 2px 10px rgba(249,115,22,0.25)",
                         color: "#fff",
-                        borderRadius: 10,
                         padding: "12px 0",
                         fontSize: "0.9rem",
                         fontWeight: 700,
-                        textDecoration: "none",
-                        transition: "background 0.2s, box-shadow 0.2s",
+                        textDecoration: "none"
                     }}
                 >
                     Переглянути товари <ArrowRight size={15} />
@@ -140,8 +151,7 @@ function ProductCard({ p, delay }) {
 export function CategoriesSection({ categories = [] }) {
     const { ref, visible } = useReveal();
 
-    // We'll show up to 3 categories to match the Figma grid cleanly,
-    // or exactly what is passed.
+    // Show all categories (up to 3), including unavailable ones with a badge
     const displayCategories = categories.slice(0, 3);
 
     return (
@@ -175,12 +185,6 @@ export function CategoriesSection({ categories = [] }) {
                             <span style={{ color: "var(--c-orange)" }}>твердого палива</span>
                         </h2>
                     </div>
-                    <Link to="/catalog/drova" style={{ color: "var(--c-text2)", fontSize: "0.9rem", textDecoration: "none", fontWeight: 500, display: "flex", alignItems: "center", gap: 6 }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c-text)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--c-text2)")}
-                    >
-                        Всі товари <ArrowRight size={14} />
-                    </Link>
                 </div>
 
                 <div
@@ -197,7 +201,7 @@ export function CategoriesSection({ categories = [] }) {
         @media (max-width: 900px) { .cat-grid { grid-template-columns: 1fr !important; max-width: 480px; margin-left: auto; margin-right: auto; } }
         @media (max-width: 600px) { .cat-grid { max-width: 100% !important; } }
         @media (max-width: 479px) {
-          .cat-grid article > div:first-child { height: 180px !important; }
+          .cat-grid article > div:first-child { height: 220px !important; }
           .cat-grid article > div:last-child { padding: 1.125rem !important; }
           .cat-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
         }
@@ -205,6 +209,57 @@ export function CategoriesSection({ categories = [] }) {
         .cat-grid.visible .reveal:nth-child(1) { opacity:1; transform:none; transition-delay:0s; }
         .cat-grid.visible .reveal:nth-child(2) { opacity:1; transform:none; transition-delay:0.1s; }
         .cat-grid.visible .reveal:nth-child(3) { opacity:1; transform:none; transition-delay:0.2s; }
+
+        .ag-card {
+            background: #0d1117;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3), 0 20px 40px rgba(0,0,0,0.4), 0 40px 80px rgba(0,0,0,0.5);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+        }
+        .ag-card::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 60px;
+            background: radial-gradient(ellipse, rgba(249,115,22,0.3) 0%, transparent 70%);
+            filter: blur(15px);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .ag-card:hover {
+            transform: translateY(-12px);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 30px 80px rgba(249,115,22,0.2);
+        }
+        .ag-card:hover::after {
+            opacity: 1;
+        }
+
+        .ag-card:hover .ag-img-zoom {
+            transform: scale(1.05);
+        }
+
+        .ag-btn {
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #FB923C 0%, #EA580C 100%);
+            box-shadow: 0 0 10px rgba(249,115,22,0.3);
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        .ag-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(249,115,22,0.5);
+        }
+        .ag-btn:active {
+            transform: scale(0.98);
+        }
       `}</style>
         </section>
     );

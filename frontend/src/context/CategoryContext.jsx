@@ -23,6 +23,8 @@ export const CategoryProvider = ({ children }) => {
                 meta_title: cat.meta_title || '',
                 meta_description: cat.meta_description || '',
                 image_url: cat.image_url,
+                label_text: cat.label_text || '',
+                is_available: cat.is_available !== false,
                 imagePlaceholder: `🪵 ${cat.name}`
             }));
             setCategories(mappedCategories);

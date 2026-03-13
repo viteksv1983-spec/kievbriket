@@ -6,9 +6,10 @@ import { useReveal } from '../hooks/useReveal';
 import api from '../api';
 import { getProductUrl, getImageUrl } from '../utils/urls';
 import { FuelCalculatorSection } from './new-home/FuelCalculatorSection';
+import ProductImageGallery from './ProductImageGallery';
 import { DeliverySection } from './new-home/DeliverySection';
 import { BenefitsSection } from './new-home/BenefitsSection';
-
+import FaqSection from './FaqSection';
 // We import the SEOHead and OrderFormModal from parent if needed, or Parent handles it.
 // To keep things simple, we assume Parent (Catalog.jsx) handles SEOHead and OrderModal state,
 // and we just render the visual sections here.
@@ -34,8 +35,8 @@ function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug })
                         "@context": "https://schema.org",
                         "@type": "BreadcrumbList",
                         "itemListElement": [
-                            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://kievbriket.com/" },
-                            { "@type": "ListItem", "position": 2, "name": activeCategory?.name || 'Дрова', "item": "https://kievbriket.com/catalog/drova" }
+                            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://kievdrova.com.ua/" },
+                            { "@type": "ListItem", "position": 2, "name": activeCategory?.name || 'Дрова', "item": "https://kievdrova.com.ua/catalog/drova" }
                         ]
                     })
                 }} />
@@ -94,20 +95,16 @@ function HeroCategory({ onQuickOrderClick, activeCategory, activeCategorySlug })
                         </a>
                     </div>
 
-                    <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)', borderBottom: '1px dashed rgba(255,255,255,0.1)', marginBottom: 'clamp(0.5rem, 1.8vw, 1rem)' }}></div>
-
-                    <div className="hero-trust-row fade-up fade-up-d3" style={{
-                        display: 'flex', gap: 'clamp(0.35rem, 1.5vw, 2rem)', flexWrap: 'wrap', justifyContent: 'flex-start',
-                        fontSize: 'clamp(0.7rem, 2.8vw, 0.9rem)', color: 'rgba(255,255,255,0.7)', paddingBottom: '0.25rem'
+                    <div className="hero-benefits fade-up fade-up-d4" style={{
+                        display: 'flex', gap: 'clamp(0.35rem, 1.5vw, 2rem)', flexWrap: 'nowrap', justifyContent: 'flex-start',
+                        borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 'clamp(12px, 3vw, 16px)', width: '100%',
+                        fontSize: 'clamp(0.7rem, 2.8vw, 0.9rem)', color: 'rgba(255,255,255,0.7)', overflowX: 'auto', WebkitOverflowScrolling: 'touch'
                     }}>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
-                            <span style={{ color: '#22C55E' }}>✔</span> Доставка по Києву за 24 години
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> чесний складометр
                         </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
-                            <span style={{ color: '#22C55E' }}>✔</span> Чесний складометр
-                        </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
-                            <span style={{ color: '#22C55E' }}>✔</span> Оплата після отримання
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                            <span style={{ color: '#22C55E' }}>✔</span> оплата після отримання
                         </span>
                     </div>
                 </div>
@@ -212,7 +209,10 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                             <span style={{ color: 'var(--c-text2)', fontWeight: 500, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)', whiteSpace: 'nowrap' }}>Порода:</span>
                             <div style={{ position: 'relative', flexShrink: 1, minWidth: 0 }}>
                                 <div
-                                    onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                    onClick={() => {
+                                        setIsFilterOpen(!isFilterOpen);
+                                        if (!isFilterOpen) setIsSortOpen(false);
+                                    }}
                                     style={{
                                         position: 'relative', display: 'flex', alignItems: 'center',
                                         background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
@@ -254,7 +254,10 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                             <span style={{ color: 'var(--c-text2)', fontWeight: 500, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)', whiteSpace: 'nowrap' }}>Сортування:</span>
                             <div style={{ position: 'relative', flexShrink: 1, minWidth: 0 }}>
                                 <div
-                                    onClick={() => setIsSortOpen(!isSortOpen)}
+                                    onClick={() => {
+                                        setIsSortOpen(!isSortOpen);
+                                        if (!isSortOpen) setIsFilterOpen(false);
+                                    }}
                                     style={{
                                         position: 'relative', display: 'flex', alignItems: 'center',
                                         background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border-subtle)',
@@ -306,7 +309,7 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                             "itemListElement": filteredProducts.map((p, idx) => ({
                                 "@type": "ListItem",
                                 "position": idx + 1,
-                                "url": `https://kievbriket.com${getProductUrl(p)}`
+                                "url": `https://kievdrova.com.ua${getProductUrl(p)}`
                             }))
                         })
                     }} />
@@ -319,13 +322,13 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                             "name": p.name,
                             "image": getImageUrl(p.image_url, api.defaults.baseURL),
                             "description": getDetailedDesc(p.name).desc,
-                            "brand": { "@type": "Brand", "name": "КиївБрикет", "logo": "https://kievbriket.com/kievbriket.svg" },
+                            "brand": { "@type": "Brand", "name": "КиївДрова", "logo": "https://kievdrova.com.ua/kievdrova.svg" },
                             "offers": {
                                 "@type": "Offer",
                                 "price": p.variants?.length > 0 ? p.variants[0].price : p.price,
                                 "priceCurrency": "UAH",
                                 "availability": "https://schema.org/InStock",
-                                "url": `https://kievbriket.com${getProductUrl(p)}`
+                                "url": `https://kievdrova.com.ua${getProductUrl(p)}`
                             }
                         })))
                     }} />
@@ -336,25 +339,29 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                             const displayPrice = product.variants?.length > 0 ? product.variants[0].price : product.price;
 
                             return (
-                                <Link key={product.id} to={getProductUrl(product)} className="product-card-link" style={{ textDecoration: 'none' }}>
-                                    <article className={`reveal product-card-hover ${visible ? 'visible' : ''}`}
+                                <Link key={product.id} to={getProductUrl(product)} className="product-card-link group relative block" style={{ textDecoration: 'none' }}>
+                                    <article
+                                        className="bg-[#1c1c1e] rounded-[16px] overflow-hidden border border-[#2a2a2a] transition-all duration-200 cursor-pointer"
                                         style={{
                                             display: 'flex', flexDirection: 'column', height: '100%',
-                                            transitionDelay: `${i * 0.1}s`,
-                                            overflow: 'hidden',
-                                            borderRadius: '16px',
-                                            transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+                                            boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                                            transform: 'translateY(0px)',
+                                            willChange: 'transform, box-shadow',
                                         }}
                                         onMouseEnter={e => {
-                                            e.currentTarget.style.transform = 'translateY(-6px)';
-                                            e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(249,115,22,0.15)';
+                                            const el = e.currentTarget;
+                                            el.style.transform = 'translateY(-10px)';
+                                            el.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3), 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(249,115,22,0.25), 0 20px 60px rgba(249,115,22,0.15)';
+                                            el.style.borderColor = 'rgba(249,115,22,0.3)';
                                         }}
                                         onMouseLeave={e => {
-                                            e.currentTarget.style.transform = 'none';
-                                            e.currentTarget.style.boxShadow = 'none';
+                                            const el = e.currentTarget;
+                                            el.style.transform = 'translateY(0px)';
+                                            el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.4)';
+                                            el.style.borderColor = '#2a2a2a';
                                         }}
                                     >
-                                        <div className="product-card-image" style={{ aspectRatio: '4/3', width: '100%', overflow: 'hidden', position: 'relative' }}>
+                                        <div className="product-card-image relative overflow-hidden bg-[#d9d0c4]" style={{ height: '280px', width: '100%' }}>
                                             <img
                                                 src={getImageUrl(product.image_url, api.defaults.baseURL)}
                                                 alt={`${product.name} Київ`}
@@ -363,80 +370,77 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                                                     e.target.onerror = null;
                                                     e.target.src = `https://placehold.co/400x300/333/ccc?text=${encodeURIComponent(product.name)}`;
                                                 }}
-                                                style={{
-                                                    width: '100%', height: '100%', objectFit: 'cover',
-                                                    transition: 'transform 0.7s ease'
-                                                }}
-                                                className="group-hover:scale-105"
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                                             />
-                                            <div style={{
-                                                position: 'absolute', inset: 0,
-                                                background: 'linear-gradient(to top, rgba(10,13,20,0.8) 0%, transparent 60%)',
-                                                pointerEvents: 'none'
-                                            }} />
-                                            <h3 className="product-card-title-overlay" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', lineHeight: 1.3 }}>
+                                        </div>
+                                        <div className="px-5 pb-5 pt-4 flex flex-col flex-1">
+                                            <h3 className="text-white mb-3" style={{ fontWeight: 700, fontSize: '1.05rem', lineHeight: 1.2 }}>
                                                 {product.name}
                                             </h3>
-                                        </div>
-                                        <div className="product-card-body" style={{ padding: 'clamp(1rem, 3vw, 1.5rem)', display: 'flex', flexDirection: 'column', flex: 1, background: '#161C25' }}>
-                                            <div className="product-card-title-static" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '1rem', flexShrink: 0 }}>
-                                                <h3 className="h3" style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, lineHeight: 1.2 }}>{product.name}</h3>
+
+                                            <div className="space-y-2 mb-3 flex-1">
+                                                <div className="flex items-start gap-2">
+                                                    <Flame className="w-3.5 h-3.5 text-orange-500 flex-shrink-0 mt-0.5" />
+                                                    <span className="text-zinc-400" style={{ fontSize: '0.8rem', lineHeight: '1.4' }}>
+                                                        {info.desc}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-start gap-2">
+                                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                                                    <span className="text-zinc-400" style={{ fontSize: '0.8rem', lineHeight: '1.4' }}>
+                                                        {info.use}
+                                                    </span>
+                                                </div>
                                             </div>
 
-                                            {product.short_description && (
-                                                <div style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0 }}>
-                                                    {product.short_description}
+                                            {product.is_available !== false && (
+                                                <div className="inline-flex items-center gap-1.5 bg-[#252525] border border-[#313131] rounded-lg px-3 py-1.5 mb-4 max-w-max">
+                                                    <Truck className="w-3.5 h-3.5 text-zinc-500" />
+                                                    <span className="text-zinc-400" style={{ fontSize: '0.75rem', fontWeight: 500 }}>
+                                                        Доставимо за 24 години
+                                                    </span>
                                                 </div>
                                             )}
 
-                                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '6px', marginBottom: '1rem' }}>
-                                                <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'flex-start', gap: '6px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '6px', color: '#e5e7eb', fontSize: '0.8rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                                    <Flame size={14} color="var(--c-orange)" style={{ flexShrink: 0, marginTop: 1 }} />
-                                                    <span>{info.desc}</span>
-                                                </div>
-                                                <div style={{ display: 'inline-flex', width: 'fit-content', alignItems: 'flex-start', gap: '6px', background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '6px', color: '#e5e7eb', fontSize: '0.8rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                                    <CheckCircle2 size={14} color="#22c55e" style={{ flexShrink: 0, marginTop: 1 }} />
-                                                    <span>{info.use}</span>
-                                                </div>
-                                            </div>
-
-                                            <div className="desktop-delivery-badge" style={{ marginBottom: '1.25rem' }}>
-                                                <span style={{ display: 'inline-flex', background: 'rgba(255, 255, 255, 0.08)', color: '#e5e7eb', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, alignItems: 'center', gap: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                                                    <Truck size={12} /> Доставимо сьогодні
-                                                </span>
-                                            </div>
-
-                                            <div className="mobile-badges-container" style={{ display: 'none', flexWrap: 'wrap', gap: '6px', marginBottom: '1.25rem' }}>
-                                                <span style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                    <CheckCircle2 size={12} /> Є в наявності
-                                                </span>
-                                                <span style={{ background: 'rgba(255, 255, 255, 0.08)', color: '#e5e7eb', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                                                    <Truck size={12} /> Доставимо сьогодні
-                                                </span>
-                                            </div>
-
-                                            <div style={{
-                                                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                                paddingTop: '1rem', borderTop: '1px solid rgba(255, 255, 255, 0.05)'
-                                            }}>
+                                            <div className="flex items-end justify-between gap-2 mt-auto">
                                                 <div>
-                                                    <div className="desktop-availability-badge" style={{ marginBottom: '6px' }}>
-                                                        <span style={{ display: 'inline-flex', background: 'rgba(34,197,94,0.1)', color: '#22c55e', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, alignItems: 'center', gap: '4px' }}>
-                                                            <CheckCircle2 size={12} /> Є в наявності
+                                                    <div className={`flex items-center gap-1.5 mb-1.5 ${product.is_available !== false ? 'text-emerald-500' : 'text-red-400'}`}>
+                                                        {product.is_available !== false
+                                                            ? <CheckCircle2 className="w-3.5 h-3.5" />
+                                                            : <CheckCircle2 className="w-3.5 h-3.5 opacity-50" /> /* Fallback for x-circle */
+                                                        }
+                                                        <span style={{ fontSize: '0.78rem', fontWeight: 500 }}>
+                                                            {product.is_available !== false ? 'Є в наявності' : 'Немає в наявності'}
                                                         </span>
                                                     </div>
-                                                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                                                        <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--c-orange)' }}>{displayPrice}</span>
-                                                        <span style={{ fontSize: '0.875rem', color: 'var(--c-text2)' }}>грн / {activeCategory?.slug === 'vugillya' || activeCategory?.slug === 'brikety' ? 'тонну' : 'складометр'}</span>
+                                                    <div className="flex items-baseline gap-1.5">
+                                                        <span className="text-white" style={{ fontSize: '1.6rem', fontWeight: 700, lineHeight: 1 }}>
+                                                            {Number(displayPrice).toLocaleString('uk-UA')}
+                                                        </span>
+                                                        <span className="text-zinc-500" style={{ fontSize: '0.78rem' }}>
+                                                            грн / {activeCategory?.slug === 'vugillya' || activeCategory?.slug === 'brikety' ? 'тонну' : 'скл. м'}
+                                                        </span>
                                                     </div>
                                                 </div>
-                                                <button
-                                                    className="nh-btn-primary"
-                                                    style={{ padding: '8px 16px', fontSize: '0.875rem', background: 'var(--c-orange)', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}
-                                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); onOrderProduct(product); }}
-                                                >
-                                                    Замовити
-                                                </button>
+
+                                                {product.is_available !== false ? (
+                                                    <button 
+                                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); onOrderProduct(product); }}
+                                                        className="bg-orange-500 hover:bg-orange-600 active:scale-95 text-white px-5 py-2.5 rounded-xl text-sm transition-all flex-shrink-0" 
+                                                        style={{ fontWeight: 600, border: 'none' }}
+                                                    >
+                                                        Замовити
+                                                    </button>
+                                                ) : (
+                                                    <button 
+                                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); onOrderProduct(product); }}
+                                                        className="text-zinc-400 hover:text-white hover:border-orange-500 transition-all flex-shrink-0 whitespace-nowrap" 
+                                                        style={{ fontSize: '0.78rem', background: 'transparent', border: '1px solid rgba(255,255,255,0.15)', padding: '8px 14px', fontWeight: 500, borderRadius: '12px', cursor: 'pointer' }}
+                                                    >
+                                                        Повідомити про появу
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     </article>
@@ -474,6 +478,45 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
                         color: var(--c-orange);
                         text-decoration-color: var(--c-orange);
                     }
+
+                    .ag-btn {
+                        border-radius: 9999px;
+                        background: linear-gradient(135deg, #FB923C 0%, #EA580C 100%);
+                        box-shadow: 0 0 10px rgba(249,115,22,0.3);
+                        transition: all 0.2s ease;
+                        border: none;
+                        display: inline-flex;
+                        align-items: center;
+                    }
+                    .ag-btn:hover {
+                        transform: scale(1.02);
+                        box-shadow: 0 0 20px rgba(249,115,22,0.5);
+                    }
+                    .ag-btn:active {
+                        transform: scale(0.98);
+                    }
+
+                    .ag-green-pulse {
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background-color: #22c55e;
+                        box-shadow: 0 0 12px #22c55e;
+                        animation: agPulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+                        display: inline-block;
+                    }
+                    @keyframes agPulse {
+                        0%, 100% { opacity: 1; transform: scale(1); }
+                        50% { opacity: 0.6; transform: scale(1.3); }
+                    }
+                    
+                    .ag-truck-bounce {
+                        animation: agBounce 2s infinite ease-in-out;
+                    }
+                    @keyframes agBounce {
+                        0%, 100% { transform: translateY(0); }
+                        50% { transform: translateY(-3px); }
+                    }
                 `}</style>
             </section >
 
@@ -481,91 +524,6 @@ function CategoryProducts({ products, onOrderProduct, activeCategory }) {
         </>
     );
 }
-
-// ─── FAQ SECTION ───────────────────────────────────────────────
-function FaqSection() {
-    const { ref, visible } = useReveal();
-    const [openIdx, setOpenIdx] = useState(0);
-
-    const faqs = [
-        { q: "Які дрова краще для котла?", a: "Для твердопаливного котла найкраще підходять тверді породи деревини: дуб, граб та ясен. Вони мають найвищу тепловіддачу та горять найдовше. Вологість не повинна перевищувати 20-25%." },
-        { q: "Які дрова найкращі для печі?", a: "Для пічного опалення чудово підходять дрова твердих порід (дуб, граб), які забезпечують тривалий жар. Також часто використовують березові та вільхові дрова, оскільки вони горять рівним красивим полум'ям і менше забивають димохід сажею." },
-        { q: "Чи можна купити дрова з доставкою сьогодні?", a: "Так, за умови оформлення замовлення в першій половині дня, доставка по Києву можлива в той самий день. По області — зазвичай на наступний день." },
-        { q: "Скільки коштує машина дров?", a: "Вартість залежить від породи деревини та об'єму кузова (ЗІЛ, Камаз, Газель). Вартість доставки розраховується індивідуально в залежності від вашої адреси." },
-        { q: "Який об'єм дров у машині? (чесний складометр)", a: "Ми ретельно укладаємо поліна на складі. Наприклад, в ЗІЛ поміщається до 6-7 складометрів. Ви можете особисто рулеткою заміряти габарити укладених дров у кузові перед вивантаженням (Довжина × Ширина × Висота = Складометри)." },
-        { q: "Яка вологість дров для опалення?", a: "Ми поставляємо деревину природної та камерної сушки. Оптимальна вологість дров для ефективного горіння становить 15-20%. Саме такі показники дозволяють отримати максимальну тепловіддачу та мінімізувати утворення сажі." }
-    ];
-
-    return (
-        <section ref={ref} className="faq-mobile-section" style={{ padding: 'clamp(40px, 10vw, 100px) 0' }}>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{
-                __html: JSON.stringify({
-                    "@context": "https://schema.org",
-                    "@type": "FAQPage",
-                    "mainEntity": faqs.map(f => ({
-                        "@type": "Question",
-                        "name": f.q,
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": f.a
-                        }
-                    }))
-                })
-            }} />
-            <div className="layout-container">
-                <div className={`reveal ${visible ? "visible" : ""}`} style={{ textAlign: "center", marginBottom: "3rem" }}>
-                    <h2 className="h2 faq-mobile-h2" style={{ maxWidth: 800, margin: '0 auto' }}>Поширені запитання</h2>
-                </div>
-
-                <div className={`reveal ${visible ? "visible" : ""}`} style={{ transitionDelay: '0.1s' }}>
-                    {faqs.map((faq, idx) => {
-                        const isOpen = openIdx === idx;
-                        return (
-                            <div
-                                key={idx}
-                                style={{
-                                    borderBottom: '1px solid var(--color-border-subtle)',
-                                    marginBottom: '1rem'
-                                }}
-                            >
-                                <button
-                                    onClick={() => setOpenIdx(isOpen ? -1 : idx)}
-                                    style={{
-                                        width: '100%', textAlign: 'left', background: 'none', border: 'none',
-                                        padding: '1.5rem 0', display: 'flex', justifyContent: 'space-between',
-                                        alignItems: 'center', cursor: 'pointer', color: 'var(--c-text)',
-                                        fontFamily: 'inherit', fontSize: '1.125rem', fontWeight: 600, gap: '1rem'
-                                    }}
-                                >
-                                    <span style={{ flex: 1 }}>{faq.q}</span>
-                                    <ChevronRight
-                                        size={20}
-                                        style={{
-                                            flexShrink: 0,
-                                            color: 'var(--c-orange)',
-                                            transform: isOpen ? 'rotate(90deg)' : 'none',
-                                            transition: 'transform 0.3s ease'
-                                        }}
-                                    />
-                                </button>
-                                <div style={{
-                                    maxHeight: isOpen ? 500 : 0,
-                                    overflow: 'hidden',
-                                    transition: 'max-height 0.4s ease',
-                                    color: 'var(--c-text2)',
-                                    lineHeight: 1.6
-                                }}>
-                                    <p style={{ paddingBottom: '1.5rem', margin: 0 }}>{faq.a}</p>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
-        </section>
-    );
-}
-
 
 // ─── FINAL CTA BANNER ──────────────────────────────────────────
 function FinalCtaBanner({ onQuickOrderClick, activeCategory }) {
@@ -604,23 +562,60 @@ function FinalCtaBanner({ onQuickOrderClick, activeCategory }) {
                             Доставка по Києву можлива вже сьогодні. Чесний об'єм та гарантія якості від виробника.
                         </p>
 
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                            <button onClick={onQuickOrderClick} className="nh-btn-primary" style={{ padding: '16px 32px', fontSize: '1rem' }}>
+                        <div className="category-bottom-cta-wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                            <button onClick={onQuickOrderClick} className="nh-btn-primary category-bottom-btn" style={{ padding: '16px 32px', fontSize: '1rem' }}>
                                 Замовити {activeCategory?.name?.toLowerCase() || ''}
                             </button>
-                            <a href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`} className="nh-btn-ghost" style={{ padding: '16px 32px', fontSize: '1rem', border: '1px solid var(--color-border-medium)' }}>
+                            <a href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`} className="nh-btn-ghost category-bottom-btn" style={{ padding: '16px 32px', fontSize: '1rem', border: '1px solid var(--color-border-medium)' }}>
                                 <Phone size={18} style={{ marginRight: 8 }} /> Подзвонити
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
+            <style>{`
+                @media (max-width: 479px) {
+                    .category-bottom-cta-wrap {
+                        flex-direction: column !important;
+                        width: 100% !important;
+                    }
+                    .category-bottom-btn {
+                        width: 100% !important;
+                        justify-content: center !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 }
 
 // ─── MAIN FIREWOOD CATEGORY COMPONENT ────────────────────────
 export default function FirewoodCategoryPage({ products, seo, onOrderProduct, activeCategory, activeCategorySlug }) {
+    const [faqs, setFaqs] = useState([]);
+
+    React.useEffect(() => {
+        api.get('/api/faqs?page=drova')
+            .then(res => setFaqs(res.data || []))
+            .catch(() => { });
+    }, []);
+
+    // Also push the dynamically fetched FAQs to the schema list
+    if (seo && Array.isArray(seo.schema) && faqs.length > 0) {
+        const existingFaqEntryIndex = seo.schema.findIndex(s => s['@type'] === 'FAQPage');
+        if (existingFaqEntryIndex !== -1) seo.schema.splice(existingFaqEntryIndex, 1);
+        seo.schema.push({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faqs.map(faq => ({
+                "@type": "Question",
+                "name": faq.question,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": faq.answer
+                }
+            }))
+        });
+    }
 
     // We import DeliverySection and BenefitsSection from new-home
     // Since creating them here duplicates too much code, let's just 
@@ -677,7 +672,7 @@ export default function FirewoodCategoryPage({ products, seo, onOrderProduct, ac
 
             <PopularQueriesSection activeCategorySlug={activeCategorySlug} />
 
-            <FaqSection />
+            <FaqSection pageId="drova" />
 
             <FinalCtaBanner onQuickOrderClick={() => onOrderProduct(null)} activeCategory={activeCategory} />
         </div>
@@ -698,28 +693,28 @@ function FirewoodSeoBlock() {
 
                         <div>
                             <p style={{ marginBottom: '1.5rem' }}>
-                                Купити дрова з доставкою по Києву та Київській області можна безпосередньо у постачальника. Компанія «КиївБрикет» пропонує колоті дрова різних порід дерева для ефективного опалення приватних будинків, котлів та камінів, а також <Link to="/catalog/brikety" className="seo-inline-link">паливні брикети</Link> та <Link to="/catalog/vugillya" className="seo-inline-link">кам'яне вугілля</Link>.
+                                Купити дрова з доставкою по Києву та Київській області можна безпосередньо у постачальника. Компанія «КиївДрова» пропонує колоті дрова різних порід дерева для ефективного опалення приватних будинків, котлів та камінів, а також <Link to="/catalog/brikety" className="seo-inline-link">паливні брикети</Link> та <Link to="/catalog/vugillya" className="seo-inline-link">кам'яне вугілля</Link>.
                             </p>
                             <p style={{ marginBottom: 0 }}>
                                 Ми доставляємо дрова дуба, граба, сосни, берези та вільхи. Усі дрова мають низьку вологість та високу тепловіддачу. Працює швидка та зручна <Link to="/dostavka" className="seo-inline-link">доставка по Києву</Link> та області.
                             </p>
                         </div>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                            <div>
-                                <h3 style={{ color: 'var(--c-text)', fontSize: '1.125rem', marginBottom: '1rem', fontWeight: '600' }}>
+                        <div className="seo-links-container" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                            <div className="seo-links-group">
+                                <h3 className="seo-links-title" style={{ color: 'var(--c-text)', fontSize: '1.125rem', marginBottom: '1rem', fontWeight: '600' }}>
                                     Популярні породи дров:
                                 </h3>
-                                <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.625rem' }}>
+                                <ul className="seo-links-list" style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.625rem' }}>
                                     {[
-                                        { name: 'дубові дрова', slug: 'oak' },
-                                        { name: 'грабові дрова', slug: 'hornbeam' },
-                                        { name: 'березові дрова', slug: 'birch' },
-                                        { name: 'соснові дрова', slug: 'pine' },
-                                        { name: 'вільхові дрова', slug: 'alder' }
+                                        { name: 'дубові дрова', slug: 'dubovi-drova' },
+                                        { name: 'грабові дрова', slug: 'hrabovi-drova' },
+                                        { name: 'березові дрова', slug: 'berezovi-drova' },
+                                        { name: 'соснові дрова', slug: 'sosnovi-drova' },
+                                        { name: 'вільхові дрова', slug: 'vilkhovi-drova' }
                                     ].map((item, i) => (
                                         <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                            <Flame size={14} color="var(--c-orange)" />
+                                            <Flame size={14} color="var(--c-orange)" style={{ flexShrink: 0 }} />
                                             <Link to={`/catalog/drova/${item.slug}`} style={{ color: 'var(--c-text2)', textDecoration: 'underline', textDecorationColor: 'rgba(255,255,255,0.2)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={e => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={e => { e.currentTarget.style.color = 'var(--c-text2)'; e.currentTarget.style.textDecorationColor = 'rgba(255,255,255,0.2)'; }}>
                                                 {item.name}
                                             </Link>
@@ -729,21 +724,21 @@ function FirewoodSeoBlock() {
                             </div>
 
                             {/* Internal Links Block */}
-                            <div style={{
+                            <div className="seo-links-group" style={{
                                 paddingTop: '1.5rem',
                                 borderTop: '1px solid var(--color-border-subtle)',
                                 display: 'flex', flexDirection: 'column', gap: '1rem'
                             }}>
-                                <h4 style={{ color: 'var(--c-text)', fontSize: '1.05rem', margin: 0, fontWeight: '600' }}>Також дивіться:</h4>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
+                                <h4 className="seo-links-title" style={{ color: 'var(--c-text)', fontSize: '1.05rem', margin: 0, fontWeight: '600' }}>Також дивіться:</h4>
+                                <div className="seo-links-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
                                     <Link to="/catalog/brikety" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
-                                        <span>→</span> Паливні брикети
+                                        <span style={{ flexShrink: 0 }}>→</span> Паливні брикети
                                     </Link>
                                     <Link to="/catalog/vugillya" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
-                                        <span>→</span> Кам’яне вугілля
+                                        <span style={{ flexShrink: 0 }}>→</span> Кам’яне вугілля
                                     </Link>
                                     <Link to="/dostavka" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-orange)', textDecoration: 'none', fontWeight: 500 }}>
-                                        <span>→</span> Доставка по Києву
+                                        <span style={{ flexShrink: 0 }}>→</span> Доставка по Києву
                                     </Link>
                                 </div>
                             </div>
@@ -752,6 +747,26 @@ function FirewoodSeoBlock() {
                     </div>
                 </div>
             </div>
+            <style>{`
+                @media (max-width: 640px) {
+                    .seo-links-group {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        text-align: center;
+                    }
+                    .seo-links-list {
+                        display: flex !important;
+                        flex-direction: column !important;
+                        align-items: flex-start !important;
+                        width: fit-content !important;
+                        margin: 0 auto !important;
+                    }
+                    .seo-links-title {
+                        text-align: center !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 }

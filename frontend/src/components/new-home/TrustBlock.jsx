@@ -73,7 +73,7 @@ export function TrustBlock({ onOrderClick }) {
                             <span style={{ color: "var(--c-orange)" }}>твердого палива з 2013 року</span>
                         </h2>
                         <p style={{ fontSize: "0.9375rem", color: "var(--c-text2)", lineHeight: 1.75, marginBottom: "var(--s-block)", maxWidth: 440 }}>
-                            Щомісяця виконуємо десятки доставок по Києву та області. Понад 12 років працюємо без зривів термінів та невиконаних зобов'язань.
+                            Щомісяця виконуємо десятки доставок по Києву та області. Також для постійних клієнтів працюємо з доставкою по всій Україні.
                         </p>
 
                         <ul style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: "var(--s-header)" }}>

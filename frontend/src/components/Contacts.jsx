@@ -7,6 +7,8 @@ import SEOHead from './SEOHead';
 import { usePageSEO } from '../hooks/usePageSEO';
 import { OrderFormModal } from './new-home/OrderFormModal';
 import { usePhoneInput } from '../hooks/usePhoneInput';
+import FaqSection from './FaqSection';
+import { KyivMap } from './new-home/DeliverySection';
 import api from '../api';
 
 // ─── HERO CONTACTS ────────────────────────────────────────────────
@@ -81,22 +83,45 @@ function HeroContacts({ onOrderClick }) {
                     </div>
 
                     <div className="hero-benefits fade-up fade-up-d4" style={{
-                        display: 'flex', gap: 'clamp(0.35rem, 1.5vw, 2rem)', flexWrap: 'wrap', justifyContent: 'flex-start',
+                        display: 'flex', gap: 'clamp(0.35rem, 1.5vw, 2rem)', flexWrap: 'nowrap', justifyContent: 'flex-start',
                         borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 'clamp(12px, 3vw, 16px)', width: '100%',
-                        fontSize: 'clamp(0.7rem, 2.8vw, 0.9rem)', color: 'rgba(255,255,255,0.7)'
+                        fontSize: 'clamp(0.7rem, 2.8vw, 0.9rem)', color: 'rgba(255,255,255,0.7)', overflowX: 'auto', WebkitOverflowScrolling: 'touch'
                     }}>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
-                            <span style={{ color: '#22C55E' }}>✔</span> швидка доставка
-                        </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)', whiteSpace: 'nowrap', flexShrink: 0 }}>
                             <span style={{ color: '#22C55E' }}>✔</span> чесний складометр
                         </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)', whiteSpace: 'nowrap', flexShrink: 0 }}>
                             <span style={{ color: '#22C55E' }}>✔</span> оплата після отримання
                         </span>
                     </div>
                 </div>
             </div>
+            <style>{`
+                @media (max-width: 768px) {
+                    .hero-section .layout-container {
+                        padding-left: 15px !important;
+                        padding-right: 15px !important;
+                    }
+                    .hero-text {
+                        padding: 1.5rem !important;
+                        width: 100% !important;
+                    }
+                    .hero-h1 {
+                        font-size: 2rem !important;
+                        text-align: left !important;
+                    }
+                    .hero-subtitle {
+                        text-align: left !important;
+                    }
+                    .hero-benefits {
+                        flex-direction: row !important;
+                        flex-wrap: nowrap !important;
+                        align-items: center !important;
+                        gap: 0.75rem !important;
+                        overflow-x: auto !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 }
@@ -107,6 +132,7 @@ function ContactSectionCombined() {
     const [form, setForm] = useState({ name: "" });
     const { phoneProps, rawPhone, resetPhone } = usePhoneInput();
     const [status, setStatus] = useState("idle");
+    const [errors, setErrors] = useState({});
 
     const cards = [
         {
@@ -129,10 +155,30 @@ function ContactSectionCombined() {
         }
     ];
 
-    const setField = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
+    const setField = (k) => (e) => {
+        setForm((p) => ({ ...p, [k]: e.target.value }));
+        if (errors[k]) setErrors((prev) => ({ ...prev, [k]: null }));
+    };
+
+    const validate = () => {
+        const newErrors = {};
+        if (!form.name.trim()) {
+            newErrors.name = "Введіть ваше ім'я";
+        } else if (form.name.trim().length < 2) {
+            newErrors.name = "Ім'я надто коротке";
+        }
+
+        if (rawPhone.length < 9) {
+            newErrors.phone = "Введіть коректний номер телефону";
+        }
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const submit = async (e) => {
         e.preventDefault();
+        if (!validate()) return;
+        
         setStatus("loading");
         try {
             await api.post("/orders/quick", {
@@ -165,6 +211,14 @@ function ContactSectionCombined() {
                         .contact-split-grid { grid-template-columns: 1fr; }
                         .contact-cards-inner { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
                     }
+                    @media (max-width: 640px) {
+                        .contact-card-mobile { position: relative !important; align-items: center !important; }
+                        .contact-card-title { text-align: center !important; }
+                        .contact-card-header-wrap { flex-direction: column !important; align-items: center !important; justify-content: center !important; margin-bottom: 0.5rem !important; }
+                        .contact-icon-mobile { position: absolute !important; left: 1.5rem !important; top: 50% !important; bottom: auto !important; margin: 0 !important; transform: translateY(-50%) !important; }
+                        .contact-text-mobile { display: flex !important; flex-direction: column !important; width: 100% !important; align-items: center !important; padding: 0 40px !important; }
+                        .contact-card-action-wrap { display: flex; justify-content: center !important; width: 100%; }
+                    }
                 `}</style>
 
                 <div className={`reveal ${visible ? 'visible' : ''} contact-split-grid`}>
@@ -172,21 +226,23 @@ function ContactSectionCombined() {
                     {/* Left: Contact Info Cards */}
                     <div className="contact-cards-inner">
                         {cards.map((c, i) => (
-                            <div key={i} className="nh-card hover-glow" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '100%', borderRadius: '16px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                                    <div style={{
+                            <div key={i} className="nh-card hover-glow contact-card-mobile" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '100%', borderRadius: '16px' }}>
+                                <div className="contact-card-header-wrap" style={{ display: 'flex', alignItems: 'center', gap: '1rem', width: '100%', marginBottom: '1rem', minHeight: '48px' }}>
+                                    <div className="contact-icon-mobile" style={{
                                         width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(249,115,22,0.1)',
                                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         border: '1px solid rgba(249,115,22,0.2)', flexShrink: 0
                                     }}>
                                         {c.icon}
                                     </div>
-                                    <div>
-                                        <h3 style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--c-text2)', marginBottom: '0.2rem' }}>{c.title}</h3>
-                                        <p style={{ color: 'var(--c-text)', fontWeight: 700, margin: 0, fontSize: '1.15rem', whiteSpace: 'pre-line' }}>{c.desc}</p>
+                                    <div className="contact-text-mobile" style={{ display: 'flex', flexDirection: 'column', flex: 1, alignItems: 'flex-start' }}>
+                                        <h3 className="contact-card-title" style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--c-text2)', marginBottom: '0.2rem' }}>{c.title}</h3>
+                                        <p className="contact-card-title" style={{ color: 'var(--c-text)', fontWeight: 700, margin: 0, fontSize: '1.15rem', whiteSpace: 'pre-line' }}>{c.desc}</p>
                                     </div>
                                 </div>
-                                {c.action}
+                                <div className="contact-card-action-wrap" style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
+                                    {c.action}
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -227,11 +283,12 @@ function ContactSectionCombined() {
                                         onChange={setField("name")}
                                         required
                                         style={{
-                                            background: "var(--c-surface2)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 12, padding: "14px 16px", color: "var(--c-text)", fontSize: "1rem", outline: "none", transition: "border-color 0.2s", fontFamily: "inherit",
+                                            background: "var(--c-surface2)", border: errors.name ? "1px solid var(--color-danger)" : "1px solid rgba(255,255,255,0.09)", borderRadius: 12, padding: "14px 16px", color: "var(--c-text)", fontSize: "1rem", outline: "none", transition: "border-color 0.2s", fontFamily: "inherit",
                                         }}
-                                        onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(249,115,22,0.45)")}
-                                        onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)")}
+                                        onFocus={(e) => { if (!errors.name) e.currentTarget.style.borderColor = "rgba(249,115,22,0.45)"; }}
+                                        onBlur={(e) => { if (!errors.name) e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)"; }}
                                     />
+                                    {errors.name && <span style={{ color: "var(--color-danger)", fontSize: "0.80rem", marginTop: 4 }}>{errors.name}</span>}
                                 </div>
                                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                                     <label style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--c-text2)" }}>Телефон</label>
@@ -239,11 +296,16 @@ function ContactSectionCombined() {
                                         {...phoneProps}
                                         required
                                         style={{
-                                            background: "var(--c-surface2)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 12, padding: "14px 16px", color: "var(--c-text)", fontSize: "1rem", outline: "none", transition: "border-color 0.2s", fontFamily: "inherit",
+                                            background: "var(--c-surface2)", border: errors.phone ? "1px solid var(--color-danger)" : "1px solid rgba(255,255,255,0.09)", borderRadius: 12, padding: "14px 16px", color: "var(--c-text)", fontSize: "1rem", outline: "none", transition: "border-color 0.2s", fontFamily: "inherit",
                                         }}
-                                        onFocus={(e) => { phoneProps.onFocus(e); e.currentTarget.style.borderColor = "rgba(249,115,22,0.45)"; }}
-                                        onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)")}
+                                        onFocus={(e) => { phoneProps.onFocus?.(e); if (!errors.phone) e.currentTarget.style.borderColor = "rgba(249,115,22,0.45)"; }}
+                                        onBlur={(e) => { phoneProps.onBlur?.(e); if (!errors.phone) e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)"; }}
+                                        onChange={(e) => {
+                                            if (errors.phone) setErrors((prev) => ({ ...prev, phone: null }));
+                                            phoneProps.onChange(e);
+                                        }}
                                     />
+                                    {errors.phone && <span style={{ color: "var(--color-danger)", fontSize: "0.80rem", marginTop: 4 }}>{errors.phone}</span>}
                                 </div>
 
                                 <button
@@ -264,112 +326,91 @@ function ContactSectionCombined() {
 }
 
 // ─── MAP (SVG) ────────────────────────────────────────────────────
-const OBLAST_PATH =
-    "M 78,44 L 108,18 L 152,6 L 200,10 L 250,6 L 300,22 L 348,52 " +
-    "L 376,94 L 380,140 L 365,182 L 334,220 L 292,248 L 248,260 " +
-    "L 200,262 L 152,260 L 108,248 L 68,220 L 38,180 L 22,138 " +
-    "L 26,92 Z";
-
-const SAT_PINS = [
-    { label: "Бровари", cx: 272, cy: 100, beginAnim: "0s" },
-    { label: "Ірпінь", cx: 104, cy: 116, beginAnim: "1.1s" },
-    { label: "Бориспіль", cx: 298, cy: 192, beginAnim: "0.5s" },
-    { label: "Вишневе", cx: 118, cy: 196, beginAnim: "1.7s" },
-];
-
 function ContactMap() {
     const { ref, visible } = useReveal();
 
     return (
         <section ref={ref} style={{ padding: 'clamp(30px, 6vw, 60px) 0' }}>
             <div className="layout-container">
-                <div className={`nh-card reveal ${visible ? 'visible' : ''}`} style={{ padding: '0', borderRadius: '24px', overflow: 'hidden', position: 'relative', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className={`map-split-layout reveal ${visible ? 'visible' : ''}`}>
+                    {/* Text Block */}
+                    <div className="nh-card map-text-block">
+                        <div style={{ maxWidth: 500 }}>
+                            <h3 className="h3 map-overlay-title" style={{ fontSize: '2.25rem', marginBottom: '1.25rem', lineHeight: 1.2 }}>
+                                Безперебійна доставка по <span style={{ color: 'var(--c-orange)' }}>всьому Києву</span> та <span style={{ color: 'var(--c-orange)' }}>області</span>
+                            </h3>
+                            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+                                Наш автопарк та оптимізована логістика дозволяють швидко та вчасно доставляти замовлення. Київ: день в день. Область: 24-48 годин.
+                            </p>
 
-                    <div style={{
-                        width: '100%', height: '450px', background: '#080f0a',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative',
-                    }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
-                            <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%", display: "block", opacity: 0.6 }}>
-                                <defs>
-                                    <filter id="kb-pin-glow" x="-80%" y="-80%" width="260%" height="260%">
-                                        <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
-                                        <feMerge>
-                                            <feMergeNode in="blur" />
-                                            <feMergeNode in="SourceGraphic" />
-                                        </feMerge>
-                                    </filter>
-                                    <radialGradient id="kb-glow" cx="50%" cy="50%" r="50%">
-                                        <stop offset="0%" stopColor="#F97316" stopOpacity="0.45" />
-                                        <stop offset="100%" stopColor="#F97316" stopOpacity="0" />
-                                    </radialGradient>
-                                </defs>
-
-                                {/* Grid */}
-                                {[50, 100, 150, 200, 250].map((y) => (
-                                    <line key={`h${y}`} x1="0" y1={y} x2="400" y2={y} stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
-                                ))}
-                                {[57, 114, 171, 228, 285, 342].map((x) => (
-                                    <line key={`v${x}`} x1={x} y1="0" x2={x} y2="300" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
-                                ))}
-
-                                {/* Oblast Background */}
-                                <path d={OBLAST_PATH} fill="rgba(249,115,22,0.04)" stroke="rgba(249,115,22,0.3)" strokeWidth="1" strokeDasharray="5 4" strokeLinejoin="round" />
-
-                                {/* Suburbs */}
-                                <ellipse cx="200" cy="158" rx="76" ry="60" fill="none" stroke="rgba(249,115,22,0.2)" strokeWidth="1" strokeDasharray="4 5" />
-
-                                {/* Ripples */}
-                                {[0, 0.73, 1.46].map((begin, i) => (
-                                    <circle key={i} cx="200" cy="158" r="22" fill="none" stroke="rgba(249,115,22,0.5)" strokeWidth="1.5">
-                                        <animate attributeName="r" from="22" to="50" dur="2.2s" repeatCount="indefinite" begin={`${begin}s`} />
-                                        <animate attributeName="opacity" from="0.55" to="0" dur="2.2s" repeatCount="indefinite" begin={`${begin}s`} />
-                                    </circle>
-                                ))}
-
-                                {/* Kyiv Main */}
-                                <circle cx="200" cy="158" r={55} fill="url(#kb-glow)" />
-
-                                {/* Pins */}
-                                {SAT_PINS.map((pin) => (
-                                    <g key={pin.label}>
-                                        <circle cx={pin.cx} cy={pin.cy} r="9" fill="rgba(249,115,22,0.12)" />
-                                        <circle cx={pin.cx} cy={pin.cy} r="4.5" fill="#F97316" opacity="0.6" filter="url(#kb-pin-glow)">
-                                            <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3.5s" repeatCount="indefinite" begin={pin.beginAnim} />
-                                        </circle>
-                                    </g>
-                                ))}
-
-                                <g filter="url(#kb-pin-glow)">
-                                    <circle cx="200" cy="158" r="11" fill="#F97316" />
-                                    <circle cx="200" cy="158" r="5" fill="#fff" />
-                                </g>
-                            </svg>
-                        </div>
-
-                        {/* Foreground Text Box overlaying map */}
-                        <div style={{ position: 'relative', zIndex: 2, padding: '3rem', width: '100%', height: '100%', display: 'flex', alignItems: 'center', background: 'linear-gradient(to right, rgba(10,13,20,0.95) 0%, rgba(10,13,20,0.7) 40%, rgba(10,13,20,0) 100%)' }}>
-                            <div style={{ maxWidth: 450 }}>
-                                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--c-orange)', marginBottom: '1rem', fontWeight: 600, fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                                    <MapPin size={16} /> Зона покриття
-                                </div>
-                                <h3 className="h3" style={{ fontSize: '2.25rem', marginBottom: '1.25rem', lineHeight: 1.2 }}>
-                                    Безперебійна доставка по <span style={{ color: 'var(--c-orange)' }}>всьому Києву</span> та <span style={{ color: 'var(--c-orange)' }}>області</span>
-                                </h3>
-                                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
-                                    Наш автопарк та оптимізована логістика дозволяють швидко та вчасно доставляти замовлення. Київ: день в день. Область: 24-48 годин.
-                                </p>
-
-                                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                                    <Link to="/dostavka" className="nh-btn-primary" style={{ padding: '12px 24px', fontSize: '0.95rem', borderRadius: '10px', textDecoration: 'none' }}>
-                                        Детальніше про доставку
-                                    </Link>
-                                </div>
+                            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                                <Link to="/dostavka" className="nh-btn-primary map-overlay-btn" style={{ padding: '12px 24px', fontSize: '0.95rem', borderRadius: '10px', textDecoration: 'none' }}>
+                                    Детальніше про доставку
+                                </Link>
                             </div>
                         </div>
                     </div>
+
+                    {/* Map Visual Block */}
+                    <div className="map-visual-block" style={{
+                        background: 'var(--color-bg-green-card)',
+                        border: '1px solid var(--color-border-orange-lg)',
+                        borderRadius: '24px',
+                        overflow: 'hidden',
+                        position: 'relative'
+                    }}>
+                        <KyivMap />
+                    </div>
                 </div>
             </div>
+            <style>{`
+                .map-split-layout {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 1.5rem;
+                    align-items: stretch;
+                }
+                .map-text-block {
+                    padding: clamp(2rem, 4vw, 3rem);
+                    background: #0a0d14;
+                    border-radius: 24px;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    display: flex;
+                    align-items: center;
+                }
+                .map-visual-block {
+                    aspect-ratio: 4/3;
+                    min-height: 350px;
+                }
+                @media (max-width: 991px) {
+                    .map-split-layout {
+                        grid-template-columns: 1fr;
+                    }
+                    .map-visual-block {
+                        min-height: 300px;
+                        aspect-ratio: auto;
+                    }
+                }
+                @media (max-width: 479px) {
+                    .map-text-block {
+                        padding: 1.5rem;
+                        background: #0a0d14 !important;
+                    }
+                    .map-overlay-title {
+                        font-size: 1.8rem !important;
+                    }
+                    .map-overlay-btn {
+                        width: 100%;
+                        justify-content: center;
+                    }
+                    .map-visual-block {
+                        min-height: 250px;
+                        border-radius: 16px;
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                }
+            `}</style>
         </section>
     );
 }
@@ -419,7 +460,7 @@ function ContactsSeoBlock() {
                     <div style={{ color: 'var(--c-text2)', lineHeight: 1.8, fontSize: '1.05rem', width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '3rem' }}>
                         <div>
                             <p style={{ marginBottom: '1.5rem' }}>
-                                Компанія «КиївБрикет» забезпечує безперебійне постачання твердого палива. Ми спеціалізуємось на <strong>продажу дров</strong>, а також сучасних еко-альтернатив. Ви можете <Link to="/catalog/drova" style={{ color: 'inherit', textDecoration: 'underline', textDecorationColor: 'var(--color-border-medium)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'inherit'; e.currentTarget.style.textDecorationColor = 'var(--color-border-medium)'; }}>купити дрова київ</Link> з безкоштовним розвантаженням та чесним складометром. В наявності дуб, граб, береза та сосна.
+                                Компанія «КиївДрова» забезпечує безперебійне постачання твердого палива. Ми спеціалізуємось на <strong>продажу дров</strong>, а також сучасних еко-альтернатив. Ви можете <Link to="/catalog/drova" style={{ color: 'inherit', textDecoration: 'underline', textDecorationColor: 'var(--color-border-medium)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'inherit'; e.currentTarget.style.textDecorationColor = 'var(--color-border-medium)'; }}>купити дрова київ</Link> з безкоштовним розвантаженням та чесним складометром. В наявності дуб, граб, береза та сосна.
                             </p>
                             <p style={{ marginBottom: 0 }}>
                                 Для власників твердопаливних котлів ми пропонуємо зручне паливо з високою тепловіддачею – <strong>продаж брикетів</strong> типів RUF, Pini Kay та Nestro. Звертайтесь, щоб замовити <Link to="/catalog/brikety" style={{ color: 'inherit', textDecoration: 'underline', textDecorationColor: 'var(--color-border-medium)', textUnderlineOffset: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--c-orange)'; e.currentTarget.style.textDecorationColor = 'var(--c-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = 'inherit'; e.currentTarget.style.textDecorationColor = 'var(--color-border-medium)'; }}>брикети київ</Link> і забезпечити стабільний жар у вашій оселі.
@@ -434,76 +475,6 @@ function ContactsSeoBlock() {
                             </p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-    );
-}
-
-// ─── FAQ ──────────────────────────────────────────────────────────
-function FaqSection() {
-    const { ref, visible } = useReveal();
-    const [openIdx, setOpenIdx] = useState(0);
-
-    const faqs = [
-        { q: "Як замовити дрова?", a: "Ви можете оформити замовлення трьома способами: зателефонувати нам, заповнити форму зворотного зв'язку на цій сторінці або натиснути кнопку 'Замовити' на сторінці конкретного товару." },
-        { q: "Чи можна замовити доставку сьогодні?", a: "Так, за умови оформлення заявки в першій половині дня та наявності вільних машин, доставка по Києву здійснюється 'день у день'." },
-        { q: "Які способи оплати доступні?", a: "Ми приймаємо оплату готівкою при отриманні товару (після розвантаження та перевірки об'єму), а також можливий безготівковий розрахунок за потребою." },
-        { q: "Чи працюєте по Київській області?", a: "Так, ми здійснюємо доставку по всьому Києву та всій Київській області (Бровари, Бориспіль, Ірпінь, Буча, Фастів тощо). Вартість доставки в область розраховується індивідуально." }
-    ];
-
-    return (
-        <section ref={ref} className="faq-mobile-section" style={{ padding: 'clamp(40px, 8vw, 80px) 0' }}>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{
-                __html: JSON.stringify({
-                    "@context": "https://schema.org",
-                    "@type": "FAQPage",
-                    "mainEntity": faqs.map(f => ({
-                        "@type": "Question",
-                        "name": f.q,
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": f.a
-                        }
-                    }))
-                })
-            }} />
-            <div className="layout-container">
-                <div className={`reveal ${visible ? "visible" : ""}`} style={{ textAlign: "center", marginBottom: "3rem" }}>
-                    <h2 className="h2 faq-mobile-h2" style={{ maxWidth: 800, margin: '0 auto' }}>Поширені запитання</h2>
-                </div>
-
-                <div className={`reveal ${visible ? "visible" : ""}`} style={{ transitionDelay: '0.1s' }}>
-                    {faqs.map((faq, idx) => {
-                        const isOpen = openIdx === idx;
-                        return (
-                            <div key={idx} style={{ borderBottom: '1px solid var(--color-border-subtle)', marginBottom: '1rem' }}>
-                                <button
-                                    onClick={() => setOpenIdx(isOpen ? -1 : idx)}
-                                    style={{
-                                        width: '100%', textAlign: 'left', background: 'none', border: 'none',
-                                        padding: '1.5rem 0', display: 'flex', justifyContent: 'space-between',
-                                        alignItems: 'center', cursor: 'pointer', color: 'var(--c-text)',
-                                        fontFamily: 'inherit', fontSize: '1.125rem', fontWeight: 600, gap: '1rem'
-                                    }}
-                                >
-                                    <span style={{ flex: 1 }}>{faq.q}</span>
-                                    <ChevronRight
-                                        size={20}
-                                        style={{
-                                            flexShrink: 0,
-                                            color: 'var(--c-orange)',
-                                            transform: isOpen ? 'rotate(90deg)' : 'none',
-                                            transition: 'transform 0.3s ease'
-                                        }}
-                                    />
-                                </button>
-                                <div style={{ maxHeight: isOpen ? 500 : 0, overflow: 'hidden', transition: 'max-height 0.4s ease', color: 'var(--c-text2)', lineHeight: 1.6 }}>
-                                    <p style={{ paddingBottom: '1.5rem', margin: 0 }}>{faq.a}</p>
-                                </div>
-                            </div>
-                        );
-                    })}
                 </div>
             </div>
         </section>
@@ -540,28 +511,62 @@ function FinalCtaBanner({ onOrderClick }) {
                             Ми готові прийняти ваше замовлення та доставити якісне паливо без передоплат.
                         </p>
 
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                            <a href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`} className="nh-btn-primary" style={{ padding: '16px 32px', fontSize: '1rem', textDecoration: 'none' }}>
+                        <div className="category-bottom-cta-wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                            <a href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`} className="nh-btn-primary category-bottom-btn" style={{ padding: '16px 32px', fontSize: '1rem', textDecoration: 'none' }}>
                                 <Phone size={18} style={{ marginRight: 8 }} /> Подзвонити
                             </a>
-                            <button onClick={onOrderClick} className="nh-btn-ghost" style={{ padding: '16px 32px', fontSize: '1rem', border: '1px solid var(--color-border-medium)', cursor: 'pointer' }}>
+                            <button onClick={onOrderClick} className="nh-btn-ghost category-bottom-btn" style={{ padding: '16px 32px', fontSize: '1rem', border: '1px solid var(--color-border-medium)', cursor: 'pointer' }}>
                                 Замовити доставку
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+            <style>{`
+                @media (max-width: 479px) {
+                    .category-bottom-cta-wrap {
+                        flex-direction: column !important;
+                        width: 100% !important;
+                    }
+                    .category-bottom-btn {
+                        width: 100% !important;
+                        justify-content: center !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 }
 
-// ─── MAIN COMPONENT ──────────────────────────────────────────────
 export default function Contacts() {
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+    const [faqs, setFaqs] = useState([]);
+
+    React.useEffect(() => {
+        api.get('/api/faqs?page=contacts')
+            .then(res => setFaqs(res.data || []))
+            .catch(() => { });
+    }, []);
 
     const { pageData } = usePageSEO('/contacts');
-    const title = pageData?.meta_title || "Контакти КиївБрикет | Замовити дрова, брикети, вугілля";
-    const description = pageData?.meta_description || "Контактна інформація КиївБрикет. Телефони, графік роботи, адреса. Замовляйте дрова, паливні брикети та вугілля з доставкою по Києву та області.";
+    const title = pageData?.meta_title || "Контакти КиївДрова | Замовити дрова, брикети, вугілля";
+    const description = pageData?.meta_description || "Контактна інформація КиївДрова. Телефони, графік роботи, адреса. Замовляйте дрова, паливні брикети та вугілля з доставкою по Києву та області.";
+
+    const schemaList = [];
+    if (faqs.length > 0) {
+        schemaList.push({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faqs.map(faq => ({
+                "@type": "Question",
+                "name": faq.question,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": faq.answer
+                }
+            }))
+        });
+    }
 
     return (
         <div className="new-home-scope" style={{
@@ -574,7 +579,8 @@ export default function Contacts() {
             <SEOHead
                 title={title}
                 description={description}
-                canonical={`https://kievbriket.com/kontakty`}
+                canonical={`https://kievdrova.com.ua/kontakty`}
+                schema={schemaList}
             />
 
             <HeroContacts onOrderClick={() => setIsOrderFormOpen(true)} />
@@ -587,7 +593,7 @@ export default function Contacts() {
 
             <ContactsSeoBlock />
 
-            <FaqSection />
+            <FaqSection pageId="contacts" />
 
             <FinalCtaBanner onOrderClick={() => setIsOrderFormOpen(true)} />
 

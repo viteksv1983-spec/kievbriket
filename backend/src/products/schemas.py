@@ -12,18 +12,22 @@ class ProductBase(BaseModel):
     description: Optional[str] = None
     short_description: Optional[str] = None
     is_active: bool = True
-    in_stock: bool = True
+    is_available: bool = True
     image_url: Optional[str] = None
+    image_url_2: Optional[str] = None
+    image_url_3: Optional[str] = None
     image_alt: Optional[str] = None
     specifications_json: Optional[List[Any]] = None
     faqs_json: Optional[List[Any]] = None
+    delivery_info_json: Optional[Dict[str, Any]] = None
+    order_steps_json: Optional[List[Any]] = None
 
     @model_validator(mode='before')
     @classmethod
     def parse_json_fields(cls, values):
         # Handle dict input (e.g. from JSON payload)
         if isinstance(values, dict):
-            for field in ('specifications_json', 'faqs_json'):
+            for field in ('specifications_json', 'faqs_json', 'delivery_info_json', 'order_steps_json'):
                 val = values.get(field)
                 if isinstance(val, str):
                     try:
@@ -33,7 +37,7 @@ class ProductBase(BaseModel):
             return values
         
         # Handle ORM object input (from_attributes=True)
-        for field in ('specifications_json', 'faqs_json'):
+        for field in ('specifications_json', 'faqs_json', 'delivery_info_json', 'order_steps_json'):
             if hasattr(values, field):
                 val = getattr(values, field)
                 if isinstance(val, str):
@@ -78,6 +82,8 @@ class ProductUpdate(BaseModel):
     short_description: Optional[str] = None
     price: Optional[float] = None
     image_url: Optional[str] = None
+    image_url_2: Optional[str] = None
+    image_url_3: Optional[str] = None
     image_alt: Optional[str] = None
     is_available: Optional[bool] = None
     weight: Optional[float] = None
@@ -88,6 +94,8 @@ class ProductUpdate(BaseModel):
     variants: Optional[List[dict]] = None
     specifications_json: Optional[List[dict]] = None
     faqs_json: Optional[List[dict]] = None
+    delivery_info_json: Optional[Dict[str, Any]] = None
+    order_steps_json: Optional[List[dict]] = None
     meta_title: Optional[str] = None
     meta_description: Optional[str] = None
     meta_keywords: Optional[str] = None
@@ -104,6 +112,8 @@ class CategoryMetadataBase(BaseModel):
     image_url: Optional[str] = None
     description: Optional[str] = None
     seo_text: Optional[str] = None
+    is_available: bool = True
+    label_text: Optional[str] = None
 
     # Advanced SEO fields
     meta_title: Optional[str] = None
@@ -123,6 +133,8 @@ class CategoryMetadataUpdate(BaseModel):
     image_url: Optional[str] = None
     description: Optional[str] = None
     seo_text: Optional[str] = None
+    is_available: Optional[bool] = None
+    label_text: Optional[str] = None
 
     # Advanced SEO fields
     meta_title: Optional[str] = None

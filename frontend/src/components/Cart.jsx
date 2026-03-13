@@ -16,7 +16,7 @@ function Cart() {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  const { phoneProps, rawPhone, digits: phoneDigits } = usePhoneInput();
+  const { phoneProps, rawPhone, digits: phoneDigits, isValid } = usePhoneInput();
   const [customerDetails, setCustomerDetails] = useState({
     name: "",
     deliveryDate: "", // Added for checkout flow
@@ -34,19 +34,19 @@ function Cart() {
 
     if (
       !customerDetails.name ||
-      phoneDigits.length < 10 ||
+      !isValid ||
       !customerDetails.deliveryDate
     ) {
       setError(
-        "Будь ласка, вкажіть ваше ім'я, номер телефону та бажану дату отримання.",
+        "Будь ласка, вкажіть ваше ім'я, дійсний номер телефону та бажану дату отримання.",
       );
       setIsCheckingOut(false);
       return;
     }
 
-    if (phoneDigits.length < 10) {
+    if (!isValid) {
       setError(
-        "Будь ласка, введіть повний номер телефону (10 цифр після +38).",
+        "Будь ласка, введіть дійсний номер телефону (наприклад: +380 50 123 45 67).",
       );
       setIsCheckingOut(false);
       return;

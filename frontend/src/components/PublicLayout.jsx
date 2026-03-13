@@ -17,6 +17,8 @@ export default function PublicLayout() {
                 flexDirection: 'column',
                 color: 'var(--c-text)',
                 fontFamily: 'var(--font-outfit)',
+                backgroundColor: '#0a0a0a',
+                backgroundImage: 'radial-gradient(circle at 50% 0%, rgba(249,115,22,0.1) 0%, transparent 60%)',
             }}
         >
             <SiteHeader onQuickOrderClick={() => setIsOrderFormOpen(true)} />

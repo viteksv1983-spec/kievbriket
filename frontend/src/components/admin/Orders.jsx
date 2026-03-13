@@ -46,7 +46,7 @@ export default function Orders() {
 
     const handleCopyOrder = (order) => {
         const itemsText = order.items.map(item =>
-            `- ${item.product?.name || 'Дрова'} x${item.quantity}${item.flavor ? ` (${item.flavor})` : ''}${item.weight ? ` [${item.weight}кг]` : ''}`
+            `- ${item.product?.name || 'Дрова'} x${item.quantity}${item.flavor ? ` (${item.flavor})` : ''}${item.weight ? ` [${item.weight}${item.product?.category === 'drova' ? 'скл. м' : 'кг'}]` : ''}`
         ).join('\n');
 
         const text = `📦 ЗАМОВЛЕННЯ #${order.id}\n` +
@@ -62,7 +62,14 @@ export default function Orders() {
     };
 
     useEffect(() => {
-        if (token) fetchOrders(statusFilter);
+        let mounted = true;
+        if (token) {
+            fetchOrders(statusFilter).then(() => {
+                if (!mounted) return;
+            });
+        }
+        return () => { mounted = false; };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, statusFilter]);
 
     const formatDate = (dateStr) => {
@@ -109,9 +116,8 @@ export default function Orders() {
                                 <th className="px-6 py-4 w-32">ID & Дата</th>
                                 <th className="px-6 py-4 w-44">Клієнт</th>
                                 <th className="px-6 py-4">Товари</th>
-                                <th className="px-6 py-4 w-36 text-center">Доставка</th>
                                 <th className="px-6 py-4 w-24 text-center">Сума</th>
-                                <th className="px-6 py-4 w-32 text-right">Статус</th>
+                                <th className="px-6 py-4 w-48 text-right">Статус</th>
                                 <th className="px-6 py-4 w-12"></th>
                             </tr>
                         </thead>
@@ -160,16 +166,6 @@ export default function Orders() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-center">
-                                        <div className="flex flex-col items-center gap-1">
-                                            <div className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border ${order.delivery_method === 'uklon'
-                                                ? 'bg-blue-50 text-blue-600 border-blue-100'
-                                                : 'bg-green-50 text-green-600 border-green-100'
-                                                }`}>
-                                                {order.delivery_method === 'uklon' ? '🚕 Uklon' : '🏪 Самовивіз'}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 text-center">
                                         <div className="inline-block px-1.5 py-0.5 bg-gray-50 rounded-lg border border-gray-100 group-hover:border-yellow-200 transition-colors">
                                             <span className="font-bold text-gray-900 text-[13px]">{order.total_price}</span>
                                             <span className="text-[9px] text-gray-400 ml-0.5">₴</span>
@@ -179,7 +175,7 @@ export default function Orders() {
                                         <select
                                             value={order.status}
                                             onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                                            className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border transition-all cursor-pointer focus:outline-none w-full ${order.status === 'completed'
+                                            className={`px-2 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wider border transition-all cursor-pointer focus:outline-none w-full min-w-[120px] text-center ${order.status === 'completed'
                                                 ? 'bg-green-50 text-green-600 border-green-200'
                                                 : order.status === 'processing'
                                                     ? 'bg-blue-50 text-blue-600 border-blue-200'
@@ -250,12 +246,9 @@ export default function Orders() {
                             </div>
 
                             <div className="flex justify-between items-center mb-3">
-                                <div className="flex items-center gap-1.5">
-                                    <FiUser className="w-3.5 h-3.5 text-gray-400" />
-                                    <span className="text-xs font-bold text-gray-700 truncate max-w-[120px]">{order.customer_name || 'Гість'}</span>
-                                </div>
-                                <div className={`text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded border ${order.delivery_method === 'uklon' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-green-50 text-green-600 border-green-100'}`}>
-                                    {order.delivery_method === 'uklon' ? '🚕 Uklon' : '🏪 Самовивіз'}
+                                <div className="flex items-center gap-1.5 min-w-0">
+                                    <FiUser className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+                                    <span className="text-xs font-bold text-gray-700 truncate">{order.customer_name || 'Гість'}</span>
                                 </div>
                             </div>
 
@@ -264,7 +257,7 @@ export default function Orders() {
                                     <select
                                         value={order.status}
                                         onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                                        className={`px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider border transition-all cursor-pointer focus:outline-none ${order.status === 'completed'
+                                        className={`px-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider border transition-all cursor-pointer focus:outline-none min-w-[110px] text-center ${order.status === 'completed'
                                             ? 'bg-green-50 text-green-600 border-green-200'
                                             : order.status === 'processing'
                                                 ? 'bg-blue-50 text-blue-600 border-blue-200'
@@ -346,28 +339,9 @@ export default function Orders() {
                                 </div>
                             </section>
 
-                            {/* Delivery & Items Section */}
+                            {/* Items Section */}
                             <section className="space-y-4">
-                                <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Доставка та Товари</h3>
-
-                                {/* Delivery Card */}
-                                <div className="flex items-center justify-between p-4 rounded-2xl border-2 border-dashed border-gray-100 bg-white shadow-sm">
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${selectedOrder.delivery_method === 'uklon' ? 'bg-blue-50 text-blue-600' : 'bg-green-50 text-green-600'}`}>
-                                            {selectedOrder.delivery_method === 'uklon' ? <FiTruck className="w-5 h-5" /> : <FiPackage className="w-5 h-5" />}
-                                        </div>
-                                        <div>
-                                            <div className="text-xs font-bold text-gray-900 uppercase tracking-tight">
-                                                {selectedOrder.delivery_method === 'uklon' ? 'Таксі Uklon' : 'Самовивіз з цеху'}
-                                            </div>
-                                            <div className="text-[10px] text-gray-500 font-medium">Метод доставки</div>
-                                        </div>
-                                    </div>
-                                    <div className="text-right">
-                                        <div className="text-xs font-bold text-gray-900">{selectedOrder.delivery_date || '-'}</div>
-                                        <div className="text-[10px] text-gray-400 font-medium uppercase tracking-tighter">Дата доставки</div>
-                                    </div>
-                                </div>
+                                <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Товари</h3>
 
                                 {/* Items List */}
                                 <div className="space-y-3">
@@ -393,7 +367,7 @@ export default function Orders() {
                                                     )}
                                                     {item.weight && (
                                                         <span className="text-[8px] font-bold uppercase tracking-wider bg-gray-50 text-gray-500 px-1.5 py-0.5 rounded border border-gray-100">
-                                                            {item.weight} кг
+                                                            {item.weight} {item.product?.category === 'drova' ? 'скл. м' : 'кг'}
                                                         </span>
                                                     )}
                                                 </div>

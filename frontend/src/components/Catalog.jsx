@@ -170,24 +170,24 @@ export default function Catalog({ predefinedCategory }) {
                 >
                     {activeCategorySlug === 'drova' && (
                         <>
-                            <link rel="alternate" hrefLang="uk" href="https://kievbriket.com/catalog/drova" />
-                            <link rel="alternate" hrefLang="x-default" href="https://kievbriket.com/catalog/drova" />
+                            <link rel="alternate" hrefLang="uk" href="https://kievdrova.com.ua/catalog/drova/" />
+                            <link rel="alternate" hrefLang="x-default" href="https://kievdrova.com.ua/catalog/drova/" />
                             <meta name="twitter:card" content="summary_large_image" />
                             <meta name="twitter:title" content="Купити дрова в Києві — колоті дрова з доставкою" />
                             <meta name="twitter:description" content="Дрова дуб, граб, акація, ясен з доставкою по Києву та області." />
-                            <meta name="twitter:image" content="https://kievbriket.com/media/categories/firewood.webp" />
+                            <meta name="twitter:image" content="https://kievdrova.com.ua/media/categories/firewood.webp" />
                             <script type="application/ld+json">
                                 {`
 {
  "@context": "https://schema.org",
  "@type": "CollectionPage",
  "name": "Дрова",
- "url": "https://kievbriket.com/catalog/drova",
+ "url": "https://kievdrova.com.ua/catalog/drova/",
  "description": "Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен.",
  "isPartOf": {
    "@type": "WebSite",
    "name": "КиєвБрикет",
-   "url": "https://kievbriket.com"
+   "url": "https://kievdrova.com.ua"
  }
 }
                                 `}
@@ -196,24 +196,24 @@ export default function Catalog({ predefinedCategory }) {
                     )}
                     {activeCategorySlug === 'brikety' && (
                         <>
-                            <link rel="alternate" hrefLang="uk" href="https://kievbriket.com/catalog/brikety" />
-                            <link rel="alternate" hrefLang="x-default" href="https://kievbriket.com/catalog/brikety" />
+                            <link rel="alternate" hrefLang="uk" href="https://kievdrova.com.ua/catalog/brikety/" />
+                            <link rel="alternate" hrefLang="x-default" href="https://kievdrova.com.ua/catalog/brikety/" />
                             <meta name="twitter:card" content="summary_large_image" />
                             <meta name="twitter:title" content="Паливні брикети купити в Києві — ціна за тонну" />
                             <meta name="twitter:description" content="Pini Kay, RUF, Nestro, торфобрикети та пелети з доставкою по Києву та області." />
-                            <meta name="twitter:image" content="https://kievbriket.com/media/products/ruf.webp" />
+                            <meta name="twitter:image" content="https://kievdrova.com.ua/media/products/ruf.webp" />
                             <script type="application/ld+json">
                                 {`
 {
  "@context": "https://schema.org",
  "@type": "CollectionPage",
  "name": "Паливні брикети",
- "url": "https://kievbriket.com/catalog/brikety",
+ "url": "https://kievdrova.com.ua/catalog/brikety/",
  "description": "Купити паливні брикети в Києві з доставкою. Pini Kay, RUF, Nestro, торфобрикети та пелети.",
  "isPartOf": {
    "@type": "WebSite",
    "name": "КиєвБрикет",
-   "url": "https://kievbriket.com"
+   "url": "https://kievdrova.com.ua"
  }
 }
                                 `}

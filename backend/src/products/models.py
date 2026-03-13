@@ -38,6 +38,8 @@ class Product(Base):
     short_description = Column(String, nullable=True)
     price = Column(Float)
     image_url = Column(String)
+    image_url_2 = Column(String, nullable=True)
+    image_url_3 = Column(String, nullable=True)
     image_alt = Column(String, nullable=True)
     is_available = Column(Boolean, default=True, index=True)
     updated_at = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
@@ -51,6 +53,8 @@ class Product(Base):
     variants = Column(JSON, nullable=True)  # List of dicts: [{"name": "Chopped", "price": 2000}]
     specifications_json = Column(JSONEncodedList, nullable=True)
     faqs_json = Column(JSONEncodedList, nullable=True)
+    delivery_info_json = Column(JSONEncodedList, nullable=True)
+    order_steps_json = Column(JSONEncodedList, nullable=True)
 
     # SEO Fields
     meta_title = Column(String, nullable=True)
@@ -72,6 +76,8 @@ class CategoryMetadata(Base):
     image_url = Column(String, nullable=True)
     description = Column(String, nullable=True)
     seo_text = Column(String, nullable=True)
+    is_available = Column(Boolean, default=True, nullable=False)
+    label_text = Column(String(100), nullable=True)
     created_at = Column(DateTime(timezone=True), default=func.now())
     updated_at = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
 

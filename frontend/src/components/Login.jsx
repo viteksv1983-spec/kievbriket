@@ -1,13 +1,12 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import SEOHead from "./SEOHead";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, loginWithGoogle } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState("");
@@ -30,11 +29,7 @@ function Login() {
   };
 
   return (
-    <GoogleOAuthProvider
-      clientId={
-        import.meta.env.VITE_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID"
-      }
-    >
+    <>
       <div className="min-h-screen flex items-center justify-center bg-[#FDFBF7] py-12 px-4 sm:px-6 lg:px-8">
         <SEOHead
           title="Вхід в особистий кабінет | Firewood"
@@ -139,29 +134,7 @@ function Login() {
               </button>
             </div>
 
-            <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
-              </div>
-              <div className="relative flex justify-center text-xs uppercase tracking-widest font-bold">
-                <span className="bg-white px-4 text-gray-500">
-                  Або за допомогою
-                </span>
-              </div>
-            </div>
 
-            <div className="flex justify-center">
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  loginWithGoogle(credentialResponse.credential);
-                  const redirectPath = location.state?.from || "/";
-                  navigate(redirectPath);
-                }}
-                onError={() => {
-                  setError("Помилка авторизації через Google");
-                }}
-              />
-            </div>
 
             <div className="mt-6 text-center">
               <p className="text-xs text-gray-500 uppercase tracking-widest font-bold">
@@ -177,7 +150,7 @@ function Login() {
           </form>
         </div>
       </div>
-    </GoogleOAuthProvider>
+    </>
   );
 }
 

@@ -1,0 +1,1504 @@
+<!doctype html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/kievbriket.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <!-- Preconnect to Google Fonts for faster DNS/TLS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Preconnect to backend API for faster first request -->
+
+  <!-- Preload LCP hero image for mobile (discoverable from HTML) -->
+  <link rel="preload" as="image" type="image/webp" href="/images/hero-bg.webp" media="(max-width: 767px)"
+    fetchpriority="high" />
+
+  <!-- Preload critical font files to prevent CLS -->
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="https://fonts.gstatic.com/s/oswald/v53/TK3_WkUHHAIjg75cFRf3bXL8LICs1_FvsUZiZQ.woff2" />
+
+  <!-- Font-face fallback with size-adjust to minimize CLS -->
+  <style>
+    @font-face {
+      font-family: 'Oswald Fallback';
+      src: local('Arial');
+      size-adjust: 85%;
+      ascent-override: 110%;
+      descent-override: 30%;
+      line-gap-override: 0%;
+    }
+
+    @font-face {
+      font-family: 'Montserrat Fallback';
+      src: local('Segoe UI'), local('Arial');
+      size-adjust: 113%;
+      ascent-override: 80%;
+      descent-override: 20%;
+      line-gap-override: 0%;
+    }
+
+    @font-face {
+      font-family: 'Outfit Fallback';
+      src: local('Segoe UI'), local('Arial');
+      size-adjust: 100%;
+      ascent-override: 95%;
+      descent-override: 25%;
+      line-gap-override: 0%;
+    }
+  </style>
+
+  <!-- Non-render-blocking fonts: loads as print, swaps to all on load -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet" />
+  </noscript>
+
+  <!-- Basic Fallback Title -->
+  <style>
+    /* Inline Preloader CSS to improve FCP */
+    #global-preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0D1117;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999999;
+      transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    }
+
+    #global-preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .custom-loader {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid #F97316;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .preloader-text {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #F97316;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-BYdp9Qhr.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/ui-vendor-Beoeu4GZ.js">
+  <link rel="modulepreload" crossorigin href="/assets/react-vendor-CHTX_Ota.js">
+  <link rel="modulepreload" crossorigin href="/assets/icon-vendor-B1adcRcb.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-DP7VkbeR.css">
+
+                    <title>КиївБрикет — дрова, брикети та вугілля з доставкою по Києву</title>
+                    <meta name="description" content="Купити колоті дрова, паливні брикети та кам'яне вугілля від виробника. Швидка доставка по Києву та Київській області." />
+                    <link rel="canonical" href="https://kievbriket.com" />
+                    <meta name="robots" content="index, follow" />
+                
+
+<script data-rh="true" type="application/ld+json">[{"@context":"https://schema.org","@type":["LocalBusiness"],"name":"КиївБрикет","image":"https://kievbriket.com/og-image.jpg","url":"https://kievbriket.com/","telephone":"+380 (99) 123-45-67","priceRange":"₴₴","areaServed":{"@type":"City","name":"Kyiv"},"sameAs":["https://www.instagram.com/drova_kiyv_example"],"address":{"@type":"PostalAddress","streetAddress":"вул. Колекторна, 19","addressLocality":"Київ","postalCode":"02000","addressRegion":"Київська область","addressCountry":"UA"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"09:00","closes":"20:00"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Які дрова краще для опалення?","acceptedAnswer":{"@type":"Answer","text":"Для котлів та камінів найчастіше використовують дубові або грабові дрова. Вони мають високу тепловіддачу та довго горять."}},{"@type":"Question","name":"Чи можна оплатити після доставки?","acceptedAnswer":{"@type":"Answer","text":"Так. Ми працюємо без передоплати — оплата можлива після перевірки замовлення."}},{"@type":"Question","name":"Скільки часу займає доставка?","acceptedAnswer":{"@type":"Answer","text":"По Києву доставка можлива в день замовлення. По області — протягом 24 годин."}},{"@type":"Question","name":"Які паливні брикети краще?","acceptedAnswer":{"@type":"Answer","text":"Брикети Pini-Kay мають високу щільність і довго горять, а брикети RUF є більш доступними за ціною."}},{"@type":"Question","name":"Чи доставляєте ви по Київській області?","acceptedAnswer":{"@type":"Answer","text":"Так, доставка здійснюється по Києву та всій Київській області власним транспортом."}}]}]</script>
+</head>
+
+<body>
+  <div id="global-preloader">
+    <div class="custom-loader"></div>
+    <div class="preloader-text">Завантаження...</div>
+  </div>
+  <div id="root"><!--$--><div class="new-home-scope" style="min-height:100vh;display:flex;flex-direction:column;color:var(--c-text);font-family:var(--font-outfit)"><style>
+  .nh-nav-link {
+    position: relative;
+    font-size: 0.9rem;
+    text-decoration: none;
+    font-weight: 500;
+    padding-bottom: 4px;
+    transition: color 0.18s;
+    color: rgba(255,255,255,0.85);
+  }
+  .nh-nav-link:hover {
+    color: #F97316 !important;
+  }
+  .nh-nav-link.active {
+    color: #F97316 !important;
+  }
+  .nh-nav-link .underline-bar {
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: #F97316;
+    opacity: 0;
+    transition: opacity 0.18s;
+  }
+  .nh-nav-link.active .underline-bar {
+    opacity: 1;
+  }
+  .nh-nav-phone {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #ffffff;
+    font-size: 0.875rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.18s;
+  }
+  .nh-nav-phone:hover {
+    color: #F97316 !important;
+  }
+
+  /* Responsive show/hide */
+  .desktop-only { display: flex; }
+  .mobile-only { display: none; }
+  @media (max-width: 768px) {
+    .desktop-only { display: none !important; }
+    .mobile-only { display: flex !important; }
+  }
+
+  /* Mobile menu animation */
+  .mobile-menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 89;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .mobile-menu-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-menu-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 91;
+    width: min(320px, 85vw);
+    background: linear-gradient(180deg, #0f1118 0%, #161926 100%);
+    border-left: 1px solid rgba(255,255,255,0.08);
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-menu-drawer.is-open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    text-decoration: none;
+    color: rgba(255,255,255,0.85);
+    font-size: 1rem;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.2s, color 0.2s;
+  }
+  .mobile-menu-item:active {
+    background: rgba(249,115,22,0.08);
+    color: #F97316;
+  }
+  .mobile-menu-item .menu-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(249,115,22,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .mobile-menu-cta {
+    margin: 16px 20px;
+    padding: 16px 0;
+    border-radius: 14px;
+    background: var(--gradient-accent);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 0.01em;
+    box-shadow: 0 4px 20px rgba(249,115,22,0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .mobile-menu-cta:active {
+    transform: scale(0.97);
+  }
+
+  .mobile-phone-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background 0.2s;
+    border-radius: 12px;
+    margin: 0 12px;
+    background: rgba(249,115,22,0.06);
+    border: 1px solid rgba(249,115,22,0.12);
+  }
+  .mobile-phone-link:active {
+    background: rgba(249,115,22,0.15);
+  }
+</style><header style="position:fixed;top:0;left:0;right:0;z-index:90;transition:background 0.3s, border-color 0.3s, backdrop-filter 0.3s;background:transparent;backdrop-filter:none;border-bottom:1px solid transparent"><div style="max-width:1200px;margin:0 auto;padding:0 1.25rem;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px"><a style="display:flex;align-items:center;gap:10px;text-decoration:none" href="/" data-discover="true"><span style="width:38px;height:38px;border-radius:50%;background:var(--gradient-accent);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px var(--color-accent-glow);flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg></span><span style="line-height:1"><span style="display:block;font-weight:900;font-size:1.2rem;letter-spacing:-0.03em"><span style="color:#ffffff">Київ</span><span style="color:#F97316">Брикет</span></span><span style="display:block;font-size:0.62rem;color:rgba(255,255,255,0.65);letter-spacing:0.04em;margin-top:1px">ТОВ «Київ Брикет»</span></span></a><nav style="display:flex;align-items:center;gap:32px" class="desktop-only"><a class="nh-nav-link" href="/catalog/drova" data-discover="true">Дрова<span class="underline-bar"></span></a><a class="nh-nav-link" href="/catalog/brikety" data-discover="true">Брикети<span class="underline-bar"></span></a><a class="nh-nav-link" href="/catalog/vugillya" data-discover="true">Вугілля<span class="underline-bar"></span></a><a class="nh-nav-link" href="/dostavka" data-discover="true">Доставка<span class="underline-bar"></span></a><a class="nh-nav-link" href="/contacts" data-discover="true">Контакти<span class="underline-bar"></span></a></nav><div class="desktop-only" style="align-items:center;gap:20px"><a href="tel:+380991234567" class="nh-nav-phone"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>+380 (99) 123-45-67</a><button class="nh-btn-primary" style="padding:10px 22px;font-size:0.875rem">Замовити</button></div><div class="mobile-only" style="align-items:center;gap:6px"><a href="tel:+380991234567" aria-label="Зателефонувати" style="width:40px;height:40px;border-radius:10px;background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.2);display:flex;align-items:center;justify-content:center;text-decoration:none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg></a><button style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s" aria-label="Меню"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></header><div class="mobile-menu-overlay"></div><div class="mobile-menu-drawer"><div style="height:64px;display:flex;align-items:center;justify-content:flex-end;padding:0 16px;flex-shrink:0"><button aria-label="Закрити меню" style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div><nav style="flex:1"><a class="mobile-menu-item" href="/catalog/drova" data-discover="true"><span class="menu-icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg></span><span style="flex:1">Дрова</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></a><a class="mobile-menu-item" href="/catalog/brikety" data-discover="true"><span class="menu-icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart" aria-hidden="true"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg></span><span style="flex:1">Брикети</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></a><a class="mobile-menu-item" href="/catalog/vugillya" data-discover="true"><span class="menu-icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart" aria-hidden="true"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg></span><span style="flex:1">Вугілля</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></a><a class="mobile-menu-item" href="/dostavka" data-discover="true"><span class="menu-icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-truck" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg></span><span style="flex:1">Доставка</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></a><a class="mobile-menu-item" href="/contacts" data-discover="true"><span class="menu-icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg></span><span style="flex:1">Контакти</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></a></nav><div style="padding:12px 0 24px;flex-shrink:0"><a href="tel:+380991234567" class="mobile-phone-link"><span style="width:36px;height:36px;border-radius:10px;background:rgba(249,115,22,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg></span><span><span style="display:block;font-size:0.7rem;color:rgba(255,255,255,0.45);margin-bottom:2px">Зателефонувати</span>+380 (99) 123-45-67</span></a><div style="display:flex;align-items:center;gap:12px;margin:8px 12px 0;padding:12px 20px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)"><span style="width:36px;height:36px;border-radius:10px;background:rgba(34,197,94,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span><span><span style="display:block;font-size:0.7rem;color:rgba(255,255,255,0.45);margin-bottom:2px">Режим роботи</span><span style="font-size:0.95rem;color:#fff;font-weight:600">Щодня 09:00 – 20:00</span></span></div><button class="mobile-menu-cta" style="display:block;width:calc(100% - 40px)">🔥 Замовити зараз</button></div></div><main style="flex:1"><section class="hero-section"><div class="glow-orb hero-glow-r" style="width:600px;height:500px;top:-80px;right:-120px;background:radial-gradient(ellipse, rgba(249,115,22,0.10) 0%, transparent 70%);filter:none"></div><div class="layout-container" style="z-index:1"><div class="hero-grid"><div class="hero-text fade-up"><div class="nh-badge hero-badge fade-up"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg>ТОВ «Київ Брикет» · Київ та область</div><h1 class="display hero-h1 fade-up fade-up-d1" style="font-size:clamp(2.5rem, 5vw, 4rem);line-height:1.1">Надійне тверде паливо<br/>з доставкою по Києву<span class="hero-h1-divider" aria-hidden="true"></span><span style="color:var(--c-orange)">та області</span></h1><p class="body hero-sub fade-up fade-up-d2">Дрова, паливні брикети та вугілля для опалення будинку, котлів і камінів.<!-- --> <span style="color:var(--c-text);opacity:0.9">12+<!-- --> років досвіду. Власний транспорт. Гарантія якості.</span></p><div class="hero-ctas fade-up fade-up-d3"><button class="nh-btn-primary hero-btn-main">Замовити зараз<!-- --> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button><a href="tel:+380991234567" class="nh-btn-ghost hero-btn-phone" style="border:1px solid rgba(255,255,255,0.22);color:rgba(255,255,255,0.90)"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg> <!-- -->Подзвонити</a></div><div class="hero-trust-row fade-up fade-up-d3"><span class="hero-trust-item"><span class="hero-trust-check">✔</span>Доставка сьогодні</span><span class="hero-trust-sep"></span><span class="hero-trust-item"><span class="hero-trust-check">✔</span>Оплата після отримання</span><span class="hero-trust-sep"></span><span class="hero-trust-item"><span class="hero-trust-check">✔</span>Чесний складометр</span></div><p class="hero-urgency fade-up fade-up-d3"><span class="hero-dot"></span>Доставка по Києву можлива сьогодні</p><div class="hero-stats fade-up fade-up-d4"><div class="hero-stat"><p class="hero-stat-val" style="color:var(--c-text)">12+</p><p class="hero-stat-label">років досвіду</p></div><div class="hero-stat"><p class="hero-stat-val" style="color:var(--c-orange)">1 000+</p><p class="hero-stat-label">клієнтів</p></div><div class="hero-stat"><p class="hero-stat-val" style="color:rgba(255,255,255,0.92)">24 год</p><p class="hero-stat-label">доставка</p></div></div></div><div class="hero-img-wrap"><picture><source media="(max-width: 600px)" srcSet="/images/hero-bg-mobile.webp"/><img src="/images/hero-bg.webp" alt="Дрова, брикети та вугілля КиївБрикет" title="Купити тверде паливо у Києві" class="hero-img" loading="eager" fetchPriority="high" decoding="sync" width="600" height="750"/></picture><div class="hero-img-overlay"></div><div class="hero-img-badges"><div class="hero-img-badge"><span style="font-size:0.8rem">🔥</span><span class="hero-img-badge-text">Сухе паливо</span></div><div class="hero-img-badge"><span style="font-size:0.8rem">🚚</span><span class="hero-img-badge-text">Доставка по Києву сьогодні</span></div><div class="hero-img-badge"><span style="font-size:0.8rem">⭐</span><span class="hero-img-badge-text">1000+ клієнтів</span></div></div><div class="hero-trust-pill"><div style="display:flex;gap:2px"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--c-orange)" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--c-orange)" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--c-orange)" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--c-orange)" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--c-orange)" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></div><span class="hero-trust-text">4.9 · 320+ відгуків</span></div></div></div></div><style>
+        /* ── Hero section base ───────────────────── */
+        .hero-section {
+          position: relative;
+          overflow: hidden;
+          background: var(--c-bg);
+          padding-top: 84px;
+          padding-bottom: 56px;
+        }
+
+        /* ── Two-column desktop grid ─────────────── */
+        .hero-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 4rem;
+          align-items: center;
+        }
+
+        /* ── Text column ─────────────────────────── */
+        .hero-badge { margin-bottom: 24px; }
+        .hero-h1    { margin-bottom: 20px; }
+        .hero-sub   { max-width: 420px; margin-bottom: 32px; }
+
+        .hero-h1-divider {
+          display: block;
+          width: 48px;
+          height: 3px;
+          background: linear-gradient(
+            90deg,
+            var(--c-orange) 0%,
+            rgba(249, 115, 22, 0.22) 100%
+          );
+          border-radius: 2px;
+          margin: 14px 0 16px;
+        }
+
+        .hero-ctas {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-bottom: 14px;
+        }
+
+        /* Trust indicators row */
+        .hero-trust-row {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 10px 16px;
+          margin-bottom: 16px;
+        }
+        .hero-trust-item {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          font-size: 0.775rem;
+          color: rgba(255,255,255,0.55);
+          font-weight: 500;
+          white-space: nowrap;
+        }
+        .hero-trust-check {
+          color: var(--c-orange);
+          font-size: 0.7rem;
+        }
+        .hero-trust-sep {
+          width: 1px;
+          height: 12px;
+          background: rgba(255,255,255,0.15);
+          display: block;
+          flex-shrink: 0;
+        }
+        @media (max-width: 479px) {
+          .hero-trust-sep { display: none; }
+          .hero-trust-row { gap: 6px 12px; }
+        }
+
+        .hero-urgency {
+          font-size: 0.78rem;
+          color: var(--c-orange);
+          margin-bottom: 32px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .hero-dot {
+          width: 6px; height: 6px;
+          border-radius: 50%;
+          background: var(--c-orange);
+          display: inline-block;
+          box-shadow: 0 0 6px var(--c-orange);
+          flex-shrink: 0;
+        }
+
+        .hero-stats {
+          display: flex;
+          gap: 32px;
+          padding-top: 20px;
+          border-top: 1px solid rgba(255,255,255,0.07);
+          flex-wrap: wrap;
+        }
+        .hero-stat-val {
+          font-size: 1.875rem;
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: -0.03em;
+        }
+        .hero-stat-label {
+          font-size: 0.8rem;
+          color: var(--c-text2);
+          margin-top: 4px;
+        }
+
+        /* ── Image column ────────────────────────── */
+        .hero-img-wrap {
+          border-radius: 22px;
+          overflow: hidden;
+          aspect-ratio: 4 / 5;
+          position: relative;
+          /* Multi-layer premium shadow system */
+          box-shadow:
+            0 0 0 1px rgba(249,115,22,0.15),
+            0 0 0 2px rgba(255,255,255,0.04),
+            0 8px 24px rgba(0,0,0,0.35),
+            0 32px 64px rgba(0,0,0,0.45),
+            0 0 80px rgba(249,115,22,0.08);
+          /* LCP: no fade-up animation — paint immediately */
+          opacity: 1 !important;
+          transform: none !important;
+          animation: none !important;
+        }
+        /* Subtle top-edge shine */
+        .hero-img-wrap::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 10%; right: 10%;
+          height: 1px;
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255,255,255,0.12) 30%,
+            rgba(255,255,255,0.18) 50%,
+            rgba(255,255,255,0.12) 70%,
+            transparent 100%
+          );
+          z-index: 4;
+        }
+        .hero-img {
+          width: 100%; height: 100%;
+          object-fit: cover;
+          filter: brightness(0.88) saturate(1.08) contrast(1.04);
+          display: block;
+        }
+        .hero-img-overlay {
+          position: absolute; inset: 0;
+          background:
+            radial-gradient(
+              ellipse 80% 50% at 50% 80%,
+              rgba(249,115,22,0.06) 0%,
+              transparent 60%
+            ),
+            linear-gradient(
+              to top,
+              rgba(8,12,16,0.85) 0%,
+              rgba(13,17,23,0.30) 45%,
+              rgba(13,17,23,0.08) 65%,
+              transparent 100%
+            );
+        }
+
+        .hero-img-badges {
+          position: absolute; top: 18px; left: 18px;
+          display: flex; flex-direction: column; gap: 8px;
+          z-index: 3;
+        }
+        .hero-img-badge {
+          display: flex; align-items: center; gap: 8px;
+          background: rgba(8,12,16,0.72);
+          backdrop-filter: blur(16px) saturate(1.4);
+          -webkit-backdrop-filter: blur(16px) saturate(1.4);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-left: 2px solid rgba(249,115,22,0.40);
+          border-radius: 10px;
+          padding: 8px 14px;
+          width: fit-content;
+          transition: border-left-color 0.25s ease, background 0.25s ease;
+        }
+        .hero-img-badge:hover {
+          border-left-color: rgba(249,115,22,0.75);
+          background: rgba(8,12,16,0.80);
+        }
+        .hero-img-badge-text {
+          font-size: 0.78rem;
+          color: rgba(241,245,249,0.92);
+          font-weight: 600;
+          white-space: nowrap;
+          letter-spacing: 0.01em;
+        }
+
+        .hero-trust-pill {
+          position: absolute; bottom: 22px; left: 22px;
+          background: rgba(8,12,16,0.78);
+          backdrop-filter: blur(16px) saturate(1.4);
+          -webkit-backdrop-filter: blur(16px) saturate(1.4);
+          border: 1px solid rgba(255,255,255,0.10);
+          border-radius: 14px;
+          padding: 14px 20px;
+          display: flex; align-items: center; gap: 10px;
+          box-shadow:
+            0 8px 24px rgba(0,0,0,0.30),
+            inset 0 1px 0 rgba(255,255,255,0.05);
+          z-index: 3;
+        }
+        .hero-trust-text {
+          font-size: 0.82rem;
+          color: rgba(241,245,249,0.92);
+          font-weight: 600;
+          letter-spacing: 0.01em;
+        }
+
+        /* ── Tablet (640–767px) ──────────────────── */
+        @media (max-width: 767px) {
+          .hero-section { padding-bottom: 48px; }
+          .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+          .hero-img-wrap {
+            aspect-ratio: 16 / 9;
+            border-radius: 16px;
+            max-height: 320px;
+          }
+          .hero-glow-r { display: none; }
+        }
+
+        /* ── Mobile (<=479px) ────────────────────── */
+        @media (max-width: 479px) {
+          .hero-section {
+            padding-top: 76px;
+            padding-bottom: 40px;
+          }
+
+          .hero-badge { margin-bottom: 16px; font-size: 0.75rem; }
+
+          .hero-h1 {
+            margin-bottom: 16px;
+            font-size: clamp(1.75rem, 8.5vw, 2.5rem);
+            letter-spacing: -0.03em;
+          }
+
+          /* Divider compact on mobile */
+          .hero-h1-divider {
+            width: 36px;
+            height: 2px;
+            margin: 10px 0 12px;
+          }
+
+          .hero-sub { margin-bottom: 24px; max-width: 100%; }
+
+          /* Buttons — full-width column on mobile */
+          .hero-ctas {
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 12px;
+          }
+          .hero-btn-main,
+          .hero-btn-phone {
+            width: 100%;
+            justify-content: center;
+            padding: 16px 24px;
+            border-radius: 12px;
+          }
+
+          .hero-urgency { margin-bottom: 24px; }
+
+          /* Stats — compact */
+          .hero-stats { gap: 20px; padding-top: 16px; }
+          .hero-stat-val { font-size: 1.5rem; }
+
+          /* Image — wide/short on mobile */
+          .hero-img-wrap {
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            max-height: 240px;
+          }
+          .hero-img-badges { display: none; }
+          .hero-trust-pill { padding: 8px 12px; }
+          .hero-trust-text { font-size: 0.72rem; }
+        }
+      </style></section><section id="about" style="padding:100px 0;background:var(--c-bg)"><div class="layout-container"><div class="reveal " style="margin-bottom:var(--s-header)"><p class="section-label" style="margin-bottom:var(--s-tight)">Чому обирають нас</p><h2 class="h2" style="max-width:540px">Чому нам довіряють<br/><span style="color:var(--c-orange)">понад 1000 клієнтів</span></h2></div><div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:1.25rem" class="benefits-grid"><div class="nh-card benefit-card reveal " style="padding:1.75rem;transition-delay:0s"><div style="width:48px;height:48px;border-radius:12px;background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.18);display:flex;align-items:center;justify-content:center;color:var(--c-orange);margin-bottom:var(--s-element);box-shadow:none;transition:background 0.22s, box-shadow 0.22s;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></div><h3 class="h3" style="margin-bottom:8px">12+ років на ринку</h3><p class="body-sm">12 років стабільної роботи без затримок, скандалів та невиконаних зобовʼязань.</p></div><div class="nh-card benefit-card reveal " style="padding:1.75rem;transition-delay:0.08s"><div style="width:48px;height:48px;border-radius:12px;background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.18);display:flex;align-items:center;justify-content:center;color:var(--c-orange);margin-bottom:var(--s-element);box-shadow:none;transition:background 0.22s, box-shadow 0.22s;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-truck" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg></div><h3 class="h3" style="margin-bottom:8px">Власний транспорт</h3><p class="body-sm">Власний автопарк — доставляємо без посередників та затримок.</p></div><div class="nh-card benefit-card benefit-hero reveal " style="padding:1.75rem;transition-delay:0.16s"><div style="width:48px;height:48px;border-radius:12px;background:rgba(249,115,22,0.18);border:1px solid rgba(249,115,22,0.45);display:flex;align-items:center;justify-content:center;color:var(--c-orange);margin-bottom:var(--s-element);box-shadow:0 0 18px rgba(249,115,22,0.25);transition:background 0.22s, box-shadow 0.22s;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></div><h3 class="h3" style="margin-bottom:8px">Доставка за 24 години</h3><p class="body-sm">Доставка за 24 години. У межах Києва — в день замовлення.</p></div><div class="nh-card benefit-card reveal " style="padding:1.75rem;transition-delay:0.24s"><div style="width:48px;height:48px;border-radius:12px;background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.18);display:flex;align-items:center;justify-content:center;color:var(--c-orange);margin-bottom:var(--s-element);box-shadow:none;transition:background 0.22s, box-shadow 0.22s;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scale" aria-hidden="true"><path d="M12 3v18"></path><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"></path><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"></path><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"></path><path d="M7 21h10"></path></svg></div><h3 class="h3" style="margin-bottom:8px">Чесна вага та обʼєм</h3><p class="body-sm">Зважуємо та міряємо при вас. Жодного недоважування.</p></div><div class="nh-card benefit-card reveal " style="padding:1.75rem;transition-delay:0.32s"><div style="width:48px;height:48px;border-radius:12px;background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.18);display:flex;align-items:center;justify-content:center;color:var(--c-orange);margin-bottom:var(--s-element);box-shadow:none;transition:background 0.22s, box-shadow 0.22s;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-leaf" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg></div><h3 class="h3" style="margin-bottom:8px">Сухе якісне паливо</h3><p class="body-sm">Вологість дров до 20%. Брикети — лише сертифікована сировина без домішок.</p></div><div class="nh-card benefit-card reveal " style="padding:1.75rem;transition-delay:0.4s"><div style="width:48px;height:48px;border-radius:12px;background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.18);display:flex;align-items:center;justify-content:center;color:var(--c-orange);margin-bottom:var(--s-element);box-shadow:none;transition:background 0.22s, box-shadow 0.22s;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-credit-card" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg></div><h3 class="h3" style="margin-bottom:8px">Оплата при отриманні</h3><p class="body-sm">Ніяких передоплат. Перевіряєте — платите. Просто і чесно.</p></div></div></div><style>
+        @media (max-width: 900px) { .benefits-grid { grid-template-columns: repeat(2,1fr) !important; } }
+        @media (max-width: 560px) { .benefits-grid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 479px) {
+          .benefits-grid { gap: 0.875rem !important; }
+          .benefits-grid .nh-card { padding: 1.25rem !important; }
+        }
+        .benefit-card {
+          transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+        }
+        .benefit-hero {
+          border: 1px solid rgba(249,115,22,0.30) !important;
+          box-shadow: 0 0 0 1px rgba(249,115,22,0.14), 0 0 28px rgba(249,115,22,0.12), inset 0 0 40px rgba(249,115,22,0.04) !important;
+        }
+        .benefit-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 12px 40px rgba(249,115,22,0.18), 0 2px 10px rgba(0,0,0,0.35) !important;
+        }
+        .benefit-hero:hover {
+          box-shadow: 0 12px 44px rgba(249,115,22,0.28), 0 2px 10px rgba(0,0,0,0.35) !important;
+        }
+      </style></section><section id="about-trust" style="padding:var(--s-section) 0;background:var(--c-green-s);position:relative;overflow:hidden"><div style="position:absolute;top:0;left:0;right:0;height:80px;background:var(--gradient-section-fade);pointer-events:none;z-index:0"></div><div style="position:absolute;top:0;left:0;right:0;height:1px;background:var(--gradient-orange-line);z-index:1"></div><div class="layout-container" style="z-index:2"><div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center" class="trust-grid"><div class="reveal " style="border-radius:16px;overflow:hidden;position:relative;box-shadow:0 30px 70px rgba(0,0,0,0.5)"><picture><source media="(max-width: 600px)" srcSet="/assets/trust-delivery-mobile-CUdLdIQI.webp"/><img src="/assets/trust-delivery-BCu0hCWo.webp" alt="Доставка твердого палива" loading="lazy" decoding="async" width="720" height="540" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;filter:brightness(0.80) saturate(1.15) contrast(1.05)"/></picture><div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(13,17,23,0.55) 0%, transparent 50%);pointer-events:none"></div><div style="position:absolute;top:20px;right:20px;background:rgba(13,17,23,0.88);backdrop-filter:blur(12px);border:1px solid rgba(249,115,22,0.20);border-radius:12px;padding:14px 20px;text-align:center"><p style="font-size:2rem;font-weight:900;color:var(--c-orange);line-height:1">12+</p><p style="font-size:0.75rem;color:var(--c-text2);margin-top:4px;font-weight:500">років на ринку</p></div></div><div class="reveal " style="transition-delay:0.15s"><p class="section-label" style="margin-bottom:var(--s-tight)">Про нас</p><h2 class="h2" style="margin-bottom:20px">Стабільний постачальник<br/><span style="color:var(--c-orange)">твердого палива з 2013 року</span></h2><p style="font-size:0.9375rem;color:var(--c-text2);line-height:1.75;margin-bottom:var(--s-block);max-width:440px">Щомісяця виконуємо десятки доставок по Києву та області. Понад 12 років працюємо без зривів термінів та невиконаних зобов&#x27;язань.</p><ul style="display:flex;flex-direction:column;gap:16px;margin-bottom:var(--s-header)"><li style="display:flex;align-items:flex-start;gap:12px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true" style="color:var(--c-orange);flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span style="font-size:0.9rem;color:var(--c-text2);line-height:1.6">Власний автопарк — без затримок</span></li><li style="display:flex;align-items:flex-start;gap:12px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true" style="color:var(--c-orange);flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span style="font-size:0.9rem;color:var(--c-text2);line-height:1.6">Сертифіковане паливо</span></li><li style="display:flex;align-items:flex-start;gap:12px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true" style="color:var(--c-orange);flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span style="font-size:0.9rem;color:var(--c-text2);line-height:1.6">1000+ постійних клієнтів</span></li><li style="display:flex;align-items:flex-start;gap:12px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true" style="color:var(--c-orange);flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span style="font-size:0.9rem;color:var(--c-text2);line-height:1.6">Офіційна діяльність, повний пакет документів</span></li></ul><button class="nh-btn-primary">Замовити з доставкою</button></div></div></div><style>
+        @media (max-width: 840px) { .trust-grid { grid-template-columns: 1fr !important; gap: 2rem !important; } }
+        @media (max-width: 479px) {
+          .trust-grid { gap: 1.5rem !important; }
+        }
+      </style></section><section id="categories" style="padding:var(--s-section) 0;background:var(--c-green-bg);position:relative"><div style="position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(180deg, var(--color-bg-main) 0%, transparent 100%);pointer-events:none;z-index:1"></div><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent 0%, rgba(249,115,22,0.18) 50%, transparent 100%);pointer-events:none;z-index:2"></div><div class="layout-container" style="z-index:3"><div class="reveal " style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:var(--s-header);flex-wrap:wrap;gap:20px"><div><p class="section-label" style="margin-bottom:var(--s-tight)">Асортимент</p><h2 class="h2">Популярні категорії<br/><span style="color:var(--c-orange)">твердого палива</span></h2></div><a style="color:var(--c-text2);font-size:0.9rem;text-decoration:none;font-weight:500;display:flex;align-items:center;gap:6px" href="/catalog/drova" data-discover="true">Всі товари <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></div><div class="cat-grid " style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem"></div></div><style>
+        @media (max-width: 900px) { .cat-grid { grid-template-columns: 1fr !important; max-width: 480px; margin-left: auto; margin-right: auto; } }
+        @media (max-width: 600px) { .cat-grid { max-width: 100% !important; } }
+        @media (max-width: 479px) {
+          .cat-grid article > div:first-child { height: 180px !important; }
+          .cat-grid article > div:last-child { padding: 1.125rem !important; }
+          .cat-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+        }
+        .cat-grid .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease, transform 0.55s ease; }
+        .cat-grid.visible .reveal:nth-child(1) { opacity:1; transform:none; transition-delay:0s; }
+        .cat-grid.visible .reveal:nth-child(2) { opacity:1; transform:none; transition-delay:0.1s; }
+        .cat-grid.visible .reveal:nth-child(3) { opacity:1; transform:none; transition-delay:0.2s; }
+      </style></section><section style="padding:100px 0;background:transparent"><div class="layout-container"><div class="reveal " style="margin-bottom:var(--s-header)"><p class="section-label" style="margin-bottom:var(--s-tight)">Калькулятор палива</p><h2 class="h2" style="max-width:640px">Розрахуйте скільки палива потрібно<!-- --> <span style="color:var(--c-orange)">для вашого будинку</span></h2><p class="body-sm" style="margin-top:12px;max-width:540px;color:var(--c-text2)">Онлайн калькулятор допоможе приблизно визначити об&#x27;єм дров, брикетів або вугілля для опалення вашого дому.</p><p style="font-size:0.75rem;color:var(--c-text3);margin-top:8px;font-style:italic">Середній розрахунок для опалення будинку в кліматі Київської області.</p></div><div class="calc-card reveal "><div class="calc-grid"><div class="calc-inputs"><div class="calc-field"><label class="calc-label" for="calc-area">Площа будинку (м²)</label><input id="calc-area" type="number" class="calc-input" placeholder="120" min="10" max="1000" value=""/><span class="calc-hint">Від 30 до 500 м²</span></div><div class="calc-field"><p class="calc-label">Тип опалення</p><div class="calc-radio-group"><label class="calc-radio "><input type="radio" name="heating" value="stove"/><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg>Піч</label><label class="calc-radio active"><input type="radio" name="heating" checked="" value="boiler"/><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-thermometer" aria-hidden="true"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"></path></svg>Твердопаливний котел</label><label class="calc-radio "><input type="radio" name="heating" value="fireplace"/><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>Камін</label></div></div><div class="calc-field"><p class="calc-label">Рівень утеплення</p><div class="calc-radio-group"><label class="calc-radio "><input type="radio" name="insulation" value="poor"/>Слабке утеплення</label><label class="calc-radio active"><input type="radio" name="insulation" checked="" value="medium"/>Середнє утеплення</label><label class="calc-radio "><input type="radio" name="insulation" value="good"/>Хороше утеплення</label></div></div><div class="calc-field"><p class="calc-label">Тип палива</p><div class="calc-radio-group"><label class="calc-radio active"><input type="radio" name="fuel" checked="" value="drova"/><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tree-pine" aria-hidden="true"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path><path d="M12 22v-3"></path></svg>Дрова</label><label class="calc-radio "><input type="radio" name="fuel" value="brikety"/><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>Паливні брикети</label><label class="calc-radio "><input type="radio" name="fuel" value="vugillya"/><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg>Кам&#x27;яне вугілля</label></div></div><button class="nh-btn-primary calc-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"></rect><line x1="8" x2="16" y1="6" y2="6"></line><line x1="16" x2="16" y1="14" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>Розрахувати</button></div><div class="calc-panel"><div class="calc-panel-state calc-preview"><div class="calc-preview-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"></rect><line x1="8" x2="16" y1="6" y2="6"></line><line x1="16" x2="16" y1="14" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg></div><p class="calc-preview-title">Приклад розрахунку</p><div class="calc-preview-params"><div class="calc-preview-param"><span class="calc-preview-param-label">Будинок</span><span class="calc-preview-param-value">120 м²</span></div><div class="calc-preview-param"><span class="calc-preview-param-label">Опалення</span><span class="calc-preview-param-value">Твердопаливний котел</span></div><div class="calc-preview-param"><span class="calc-preview-param-label">Утеплення</span><span class="calc-preview-param-value">Середнє</span></div></div><div class="calc-preview-result"><p class="calc-preview-result-line"><span class="calc-preview-approx">≈</span><span class="calc-preview-num">7–8</span><span class="calc-preview-unit">м³ дров</span></p><p class="calc-preview-or">або</p><p class="calc-preview-result-line"><span class="calc-preview-approx">≈</span><span class="calc-preview-num">3–4</span><span class="calc-preview-unit">т паливних брикетів</span></p></div><p class="calc-preview-helper">Заповніть параметри зліва та натисніть «Розрахувати» — система порахує точний об&#x27;єм палива для вашого будинку.</p></div></div></div></div><div class="reveal " style="margin-top:var(--s-block);max-width:840px"><h3 class="h3" style="margin-bottom:12px;font-size:1rem">Скільки дров потрібно на опалення будинку</h3><p class="body-sm" style="line-height:1.75">Для опалення будинку 100 м² в Київській області зазвичай потрібно 6–8 складометрів дров за сезон. Будинок 120 м² потребує приблизно 8–10 складометрів, а для 150 м² — близько 10–12 складометрів. Витрати залежать від типу котла, рівня утеплення та породи дерева. Паливні брикети мають вищу теплотворність: для аналогічного будинку витрати брикетів становлять приблизно 3–5 тонн за сезон. Кам&#x27;яне вугілля ще ефективніше — 2–4 тонни забезпечать тепло на весь опалювальний період.</p></div></div><style>
+                /* ── Calculator card ──────────────────────── */
+                .calc-card {
+                    background: linear-gradient(160deg, #101827 0%, #0c1520 100%);
+                    border: 1px solid rgba(255,255,255,0.06);
+                    border-radius: 24px;
+                    box-shadow:
+                        0 12px 48px rgba(0,0,0,0.45),
+                        inset 0 1px 0 rgba(255,255,255,0.04);
+                    padding: 48px;
+                    overflow: hidden;
+                }
+
+                .calc-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 48px;
+                    align-items: start;
+                }
+
+                /* ── Inputs ───────────────────────────────── */
+                .calc-inputs {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 28px;
+                }
+
+                .calc-field {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .calc-label {
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    color: var(--c-text);
+                    margin: 0;
+                }
+
+                .calc-input {
+                    width: 100%;
+                    max-width: 280px;
+                    padding: 14px 16px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    background: rgba(255,255,255,0.03);
+                    color: var(--c-text);
+                    font-size: 1rem;
+                    font-family: inherit;
+                    font-weight: 600;
+                    outline: none;
+                    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+                    -moz-appearance: textfield;
+                }
+                .calc-input::-webkit-outer-spin-button,
+                .calc-input::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                .calc-input::placeholder {
+                    color: rgba(255,255,255,0.25);
+                    font-weight: 400;
+                }
+                .calc-input:focus {
+                    border-color: rgba(249,115,22,0.50);
+                    box-shadow: 0 0 0 3px rgba(249,115,22,0.12), 0 0 20px rgba(249,115,22,0.08);
+                }
+
+                .calc-hint {
+                    font-size: 0.72rem;
+                    color: var(--c-text3);
+                }
+
+                /* ── Radio buttons ────────────────────────── */
+                .calc-radio-group {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                }
+
+                .calc-radio {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 10px 16px;
+                    border-radius: 10px;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    background: rgba(255,255,255,0.025);
+                    color: var(--c-text2);
+                    font-size: 0.8125rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    white-space: nowrap;
+                }
+                .calc-radio input {
+                    display: none;
+                }
+                .calc-radio:hover {
+                    border-color: rgba(255,255,255,0.15);
+                    background: rgba(255,255,255,0.04);
+                }
+                .calc-radio.active {
+                    border-color: rgba(249,115,22,0.45);
+                    background: rgba(249,115,22,0.10);
+                    color: var(--c-orange-lt);
+                    box-shadow: 0 0 16px rgba(249,115,22,0.10);
+                }
+
+                /* ── Calculate button ─────────────────────── */
+                .calc-btn {
+                    align-self: flex-start;
+                    padding: 14px 32px !important;
+                }
+                .calc-btn:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
+
+                /* ══════════════════════════════════════════
+                   RIGHT PANEL — shared wrapper
+                   ══════════════════════════════════════════ */
+                .calc-panel {
+                    border: 1px solid rgba(249,115,22,0.15);
+                    border-radius: 20px;
+                    padding: 40px 28px;
+                    min-height: 460px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    overflow: hidden;
+                    background:
+                        radial-gradient(
+                            600px circle at center,
+                            rgba(249,115,22,0.05),
+                            transparent 70%
+                        ),
+                        rgba(255,255,255,0.015);
+                    box-shadow:
+                        0 0 0 1px rgba(249,115,22,0.08),
+                        0 0 30px rgba(249,115,22,0.06),
+                        inset 0 1px 0 rgba(255,255,255,0.03);
+                }
+
+                /* ── State transition ── */
+                .calc-panel-state {
+                    width: 100%;
+                    animation: calcPanelIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                }
+                @keyframes calcPanelIn {
+                    from { opacity: 0; transform: scale(0.97) translateY(8px); }
+                    to   { opacity: 1; transform: scale(1)    translateY(0); }
+                }
+
+                /* ══════════════════════════════════════════
+                   PREVIEW state
+                   ══════════════════════════════════════════ */
+                .calc-preview-icon {
+                    width: 64px; height: 64px;
+                    border-radius: 18px;
+                    background: rgba(249,115,22,0.12);
+                    border: 1px solid rgba(249,115,22,0.25);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--c-orange);
+                    margin-bottom: 20px;
+                    box-shadow: 0 0 24px rgba(249,115,22,0.10);
+                }
+
+                .calc-preview-title {
+                    font-size: 1.25rem;
+                    font-weight: 650;
+                    color: var(--c-text);
+                    margin: 0 0 20px;
+                }
+
+                .calc-preview-params {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    margin-bottom: 24px;
+                    padding: 16px;
+                    background: rgba(255,255,255,0.025);
+                    border: 1px solid rgba(255,255,255,0.06);
+                    border-radius: 12px;
+                }
+                .calc-preview-param {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    font-size: 0.8125rem;
+                }
+                .calc-preview-param-label {
+                    color: var(--c-text3);
+                }
+                .calc-preview-param-value {
+                    color: var(--c-text);
+                    font-weight: 600;
+                }
+
+                .calc-preview-result {
+                    margin-bottom: 22px;
+                    padding: 16px;
+                    background: rgba(249,115,22,0.05);
+                    border: 1px solid rgba(249,115,22,0.12);
+                    border-radius: 12px;
+                }
+                .calc-preview-result-line {
+                    display: flex;
+                    align-items: baseline;
+                    gap: 6px;
+                    margin: 0;
+                    line-height: 1.4;
+                }
+                .calc-preview-approx {
+                    font-size: 1rem;
+                    color: var(--c-orange);
+                    font-weight: 700;
+                }
+                .calc-preview-num {
+                    font-size: 1.25rem;
+                    color: var(--c-orange);
+                    font-weight: 800;
+                    letter-spacing: -0.02em;
+                }
+                .calc-preview-unit {
+                    font-size: 0.8125rem;
+                    color: var(--c-text2);
+                    font-weight: 500;
+                }
+                .calc-preview-or {
+                    font-size: 0.75rem;
+                    color: var(--c-text3);
+                    margin: 4px 0 4px 24px;
+                }
+
+                .calc-preview-helper {
+                    font-size: 0.8125rem;
+                    color: rgba(255,255,255,0.50);
+                    line-height: 1.65;
+                    margin: 0;
+                }
+
+                /* ══════════════════════════════════════════
+                   LOADING state
+                   ══════════════════════════════════════════ */
+                .calc-loading {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 16px;
+                    min-height: 200px;
+                }
+                .calc-loading-spinner {
+                    width: 56px; height: 56px;
+                    border-radius: 16px;
+                    background: rgba(249,115,22,0.10);
+                    border: 1px solid rgba(249,115,22,0.22);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--c-orange);
+                    animation: calcSpin 0.8s linear infinite;
+                }
+                .calc-loading-spinner svg {
+                    animation: calcSpin 0.8s linear infinite;
+                }
+                @keyframes calcSpin {
+                    from { transform: rotate(0deg); }
+                    to   { transform: rotate(360deg); }
+                }
+                .calc-loading-text {
+                    font-size: 0.9375rem;
+                    font-weight: 600;
+                    color: var(--c-text2);
+                    margin: 0;
+                }
+
+                /* ══════════════════════════════════════════
+                   RESULT state
+                   ══════════════════════════════════════════ */
+                .calc-result-state {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 18px;
+                }
+
+                .calc-res-header {
+                    font-size: 1.125rem;
+                    font-weight: 650;
+                    color: var(--c-text);
+                    margin: 0 0 2px;
+                }
+
+                /* Summary rows */
+                .calc-res-summary {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    padding: 14px 16px;
+                    background: rgba(255,255,255,0.025);
+                    border: 1px solid rgba(255,255,255,0.06);
+                    border-radius: 10px;
+                    font-size: 0.8125rem;
+                }
+                .calc-res-summary-row {
+                    display: flex;
+                    justify-content: space-between;
+                    color: var(--c-text3);
+                }
+                .calc-res-summary-val {
+                    color: var(--c-text);
+                    font-weight: 600;
+                }
+
+                /* Main volume */
+                .calc-res-main {
+                    padding: 16px;
+                    background: rgba(249,115,22,0.05);
+                    border: 1px solid rgba(249,115,22,0.12);
+                    border-radius: 12px;
+                }
+                .calc-res-main-label {
+                    font-size: 0.78rem;
+                    color: var(--c-text3);
+                    margin: 0 0 8px;
+                }
+                .calc-res-main-value {
+                    display: flex;
+                    align-items: baseline;
+                    gap: 8px;
+                    flex-wrap: wrap;
+                }
+                .calc-res-approx {
+                    font-size: 1.375rem;
+                    color: var(--c-orange);
+                    font-weight: 700;
+                }
+                .calc-res-number {
+                    font-size: 1.75rem;
+                    font-weight: 900;
+                    color: var(--c-text);
+                    letter-spacing: -0.03em;
+                    line-height: 1;
+                }
+                .calc-res-unit {
+                    font-size: 0.875rem;
+                    color: var(--c-text2);
+                    font-weight: 500;
+                }
+
+                /* Alternative fuels */
+                .calc-res-alts {
+                    margin-top: 10px;
+                    padding-top: 10px;
+                    border-top: 1px solid rgba(249,115,22,0.10);
+                }
+                .calc-res-alt-line {
+                    display: flex;
+                    align-items: baseline;
+                    gap: 8px;
+                    margin: 0;
+                    font-size: 0.875rem;
+                    line-height: 1.8;
+                }
+                .calc-res-alt-or {
+                    font-size: 0.72rem;
+                    color: var(--c-text3);
+                    min-width: 24px;
+                }
+                .calc-res-alt-num {
+                    color: var(--c-orange);
+                    font-weight: 700;
+                }
+                .calc-res-alt-unit {
+                    color: var(--c-text2);
+                    font-weight: 500;
+                }
+
+                /* Cost */
+                .calc-res-cost {
+                    padding: 14px 16px;
+                    background: rgba(249,115,22,0.06);
+                    border: 1px solid rgba(249,115,22,0.15);
+                    border-radius: 12px;
+                }
+                .calc-res-cost-label {
+                    font-size: 0.78rem;
+                    color: var(--c-text3);
+                    margin: 0 0 4px;
+                }
+                .calc-res-cost-value {
+                    font-size: 1.375rem;
+                    font-weight: 800;
+                    color: var(--c-orange);
+                    margin: 0;
+                    letter-spacing: -0.02em;
+                }
+
+                /* Actions */
+                .calc-res-actions {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    margin-top: 2px;
+                }
+
+                /* ══════════════════════════════════════════
+                   Responsive
+                   ══════════════════════════════════════════ */
+                @media (max-width: 900px) {
+                    .calc-card { padding: 32px 24px; }
+                    .calc-grid {
+                        grid-template-columns: 1fr;
+                        gap: 32px;
+                    }
+                    .calc-panel { min-height: auto; }
+                }
+
+                @media (max-width: 479px) {
+                    .calc-card { padding: 24px 16px; border-radius: 16px; }
+                    .calc-input { max-width: 100%; }
+                    .calc-btn { width: 100%; justify-content: center; }
+                    .calc-panel { padding: 28px 20px; border-radius: 14px; }
+                    .calc-res-number { font-size: 1.5rem; }
+                    .calc-preview-title { font-size: 1.125rem; }
+                }
+            </style></section><section id="delivery" style="padding:100px 0;background:var(--c-bg);position:relative"><div style="position:absolute;top:0;left:0;right:0;height:96px;background:var(--gradient-section-fade);pointer-events:none;z-index:0"></div><div class="layout-container" style="z-index:1"><div class="reveal " style="text-align:center;margin-bottom:var(--s-header)"><p class="section-label" style="margin-bottom:var(--s-tight)">Зона покриття</p><h2 class="h2" style="margin-bottom:12px">Доставляємо по<!-- --> <span style="color:var(--c-orange)">Києву та області</span></h2><p style="font-size:0.9375rem;color:var(--c-text2);max-width:460px;margin:0 auto;margin-bottom:1.5rem">Власний автопарк дозволяє нам контролювати терміни і якість доставки без посередників.</p><div style="display:flex;justify-content:center;gap:0.75rem;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:40px;font-size:0.75rem;font-weight:600;color:var(--c-text)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg> 5000+ доставок</span><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:40px;font-size:0.75rem;font-weight:600;color:var(--c-text)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg> 12 років досвіду</span><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:40px;font-size:0.75rem;font-weight:600;color:var(--c-text)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-truck" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg> власний автопарк</span></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start" class="delivery-grid"><div class="reveal " style="background:var(--color-bg-green-card);border:1px solid var(--color-border-orange-lg);border-radius:16px;overflow:hidden;position:relative;aspect-ratio:4/3"><svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block" aria-label="Карта зони доставки Київ Брикет"><defs><filter id="kb-noise" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.78" numOctaves="4" seed="9" stitchTiles="stitch" result="noise"></feTurbulence><feColorMatrix type="saturate" values="0" in="noise" result="gray"></feColorMatrix><feBlend in="SourceGraphic" in2="gray" mode="overlay" result="blend"></feBlend><feComposite in="blend" in2="SourceGraphic" operator="in"></feComposite></filter><radialGradient id="kb-glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#F97316" stop-opacity="0.30"></stop><stop offset="100%" stop-color="#F97316" stop-opacity="0"></stop></radialGradient><filter id="kb-pin-glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"></feGaussianBlur><feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><radialGradient id="kb-vignette" cx="50%" cy="50%" r="70%"><stop offset="55%" stop-color="rgba(0,0,0,0)"></stop><stop offset="100%" stop-color="rgba(0,0,0,0.42)"></stop></radialGradient><radialGradient id="kb-bg-depth" cx="50%" cy="53%" r="55%"><stop offset="0%" stop-color="#132b1a"></stop><stop offset="100%" stop-color="#080f0a"></stop></radialGradient><clipPath id="kb-clip"><rect width="400" height="300"></rect></clipPath></defs><rect width="400" height="300" fill="#080f0a"></rect><rect width="400" height="300" fill="url(#kb-bg-depth)"></rect><line x1="0" y1="50" x2="400" y2="50" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><line x1="0" y1="100" x2="400" y2="100" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><line x1="0" y1="150" x2="400" y2="150" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><line x1="0" y1="200" x2="400" y2="200" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><line x1="0" y1="250" x2="400" y2="250" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><line x1="57" y1="0" x2="57" y2="300" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><line x1="114" y1="0" x2="114" y2="300" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><line x1="171" y1="0" x2="171" y2="300" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><line x1="228" y1="0" x2="228" y2="300" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><line x1="285" y1="0" x2="285" y2="300" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><line x1="342" y1="0" x2="342" y2="300" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line><rect width="400" height="300" fill="rgba(255,255,255,0.07)" filter="url(#kb-noise)" clip-path="url(#kb-clip)" style="mix-blend-mode:overlay"></rect><path d="M 78,44 L 108,18 L 152,6 L 200,10 L 250,6 L 300,22 L 348,52 L 376,94 L 380,140 L 365,182 L 334,220 L 292,248 L 248,260 L 200,262 L 152,260 L 108,248 L 68,220 L 38,180 L 22,138 L 26,92 Z" fill="rgba(249,115,22,0.025)" stroke="rgba(249,115,22,0.32)" stroke-width="1.5" stroke-dasharray="5 4" stroke-linejoin="round" style="transition:fill 0.35s, stroke 0.35s"></path><ellipse cx="200" cy="158" rx="76" ry="60" fill="none" stroke="rgba(249,115,22,0.18)" stroke-width="1" stroke-dasharray="4 5" style="transition:stroke 0.35s"></ellipse><circle cx="200" cy="158" r="22" fill="none" stroke="rgba(249,115,22,0.70)" stroke-width="1.5"><animate attributeName="r" from="22" to="50" dur="2.2s" repeatCount="indefinite" begin="0s"></animate><animate attributeName="opacity" from="0.55" to="0" dur="2.2s" repeatCount="indefinite" begin="0s"></animate></circle><circle cx="200" cy="158" r="22" fill="none" stroke="rgba(249,115,22,0.70)" stroke-width="1.5"><animate attributeName="r" from="22" to="50" dur="2.2s" repeatCount="indefinite" begin="0.73s"></animate><animate attributeName="opacity" from="0.55" to="0" dur="2.2s" repeatCount="indefinite" begin="0.73s"></animate></circle><circle cx="200" cy="158" r="22" fill="none" stroke="rgba(249,115,22,0.70)" stroke-width="1.5"><animate attributeName="r" from="22" to="50" dur="2.2s" repeatCount="indefinite" begin="1.46s"></animate><animate attributeName="opacity" from="0.55" to="0" dur="2.2s" repeatCount="indefinite" begin="1.46s"></animate></circle><circle cx="200" cy="158" r="52" fill="url(#kb-glow)" style="transition:r 0.4s ease"></circle><g><circle cx="272" cy="100" r="9" fill="rgba(249,115,22,0.12)"></circle><circle cx="272" cy="100" r="4.5" fill="#F97316" opacity="0.75" filter="url(#kb-pin-glow)"><animate attributeName="opacity" values="0.6;1;0.6" dur="3.5s" repeatCount="indefinite" begin="0s"></animate></circle><text x="272" y="119" text-anchor="middle" style="font-family:Inter, sans-serif;font-size:8.5px;font-weight:600;fill:rgba(255,255,255,0.30)">Бровари</text></g><g><circle cx="104" cy="116" r="9" fill="rgba(249,115,22,0.12)"></circle><circle cx="104" cy="116" r="4.5" fill="#F97316" opacity="0.75" filter="url(#kb-pin-glow)"><animate attributeName="opacity" values="0.6;1;0.6" dur="3.5s" repeatCount="indefinite" begin="1.1s"></animate></circle><text x="104" y="135" text-anchor="middle" style="font-family:Inter, sans-serif;font-size:8.5px;font-weight:600;fill:rgba(255,255,255,0.30)">Ірпінь</text></g><g><circle cx="298" cy="192" r="9" fill="rgba(249,115,22,0.12)"></circle><circle cx="298" cy="192" r="4.5" fill="#F97316" opacity="0.75" filter="url(#kb-pin-glow)"><animate attributeName="opacity" values="0.6;1;0.6" dur="3.5s" repeatCount="indefinite" begin="0.5s"></animate></circle><text x="298" y="211" text-anchor="middle" style="font-family:Inter, sans-serif;font-size:8.5px;font-weight:600;fill:rgba(255,255,255,0.30)">Бориспіль</text></g><g><circle cx="118" cy="196" r="9" fill="rgba(249,115,22,0.12)"></circle><circle cx="118" cy="196" r="4.5" fill="#F97316" opacity="0.75" filter="url(#kb-pin-glow)"><animate attributeName="opacity" values="0.6;1;0.6" dur="3.5s" repeatCount="indefinite" begin="1.7s"></animate></circle><text x="118" y="215" text-anchor="middle" style="font-family:Inter, sans-serif;font-size:8.5px;font-weight:600;fill:rgba(255,255,255,0.30)">Вишневе</text></g><g filter="url(#kb-pin-glow)"><circle cx="200" cy="158" r="11" fill="#F97316"></circle><circle cx="200" cy="158" r="5" fill="#fff"></circle></g><text x="200" y="143" text-anchor="middle" style="font-family:Inter, sans-serif;font-size:9px;font-weight:700;fill:rgba(255,255,255,0.55)">Київ</text><rect width="400" height="300" fill="url(#kb-vignette)"></rect><text x="14" y="285" style="font-family:Inter, sans-serif;font-size:9px;font-weight:700;fill:rgba(249,115,22,0.65);letter-spacing:0.07em;text-transform:uppercase">КИЇВ ТА ОБЛАСТЬ</text><text x="200" y="293" text-anchor="middle" style="font-family:Inter, sans-serif;font-size:8px;font-weight:400;fill:rgba(255,255,255,0.20)">Працюємо по всій Київській області</text></svg></div><div class="reveal " style="display:flex;flex-direction:column;gap:1rem;transition-delay:0.12s"><div class="nh-card" style="padding:1.5rem;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;cursor:default;border:1px solid rgba(255,255,255,0.07);transition:border-color 0.25s, transform 0.25s, box-shadow 0.25s;transform:none;box-shadow:none"><div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg><span style="font-weight:700;color:var(--c-text);font-size:0.9375rem">Київ</span></div><p style="font-size:0.85rem;color:var(--c-text2);line-height:1.5">Доставка в день замовлення (до 4 годин)</p></div><div style="background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.20);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;transition:background 0.25s"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><span style="font-size:0.8rem;font-weight:700;color:var(--c-orange)">0–4 год</span></div></div><div class="nh-card" style="padding:1.5rem;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;cursor:default;border:1px solid rgba(255,255,255,0.07);transition:border-color 0.25s, transform 0.25s, box-shadow 0.25s;transform:none;box-shadow:none"><div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg><span style="font-weight:700;color:var(--c-text);font-size:0.9375rem">Ближнє Підмістя</span></div><p style="font-size:0.85rem;color:var(--c-text2);line-height:1.5">Бориспіль, Бровари, Вишневе, Ірпінь, Буча</p></div><div style="background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.20);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;transition:background 0.25s"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><span style="font-size:0.8rem;font-weight:700;color:var(--c-orange)">24 год</span></div></div><div class="nh-card" style="padding:1.5rem;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;cursor:default;border:1px solid rgba(255,255,255,0.07);transition:border-color 0.25s, transform 0.25s, box-shadow 0.25s;transform:none;box-shadow:none"><div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg><span style="font-weight:700;color:var(--c-text);font-size:0.9375rem">Київська область</span></div><p style="font-size:0.85rem;color:var(--c-text2);line-height:1.5">Фастів, Біла Церква, Обухів, Переяслав</p></div><div style="background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.20);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;transition:background 0.25s"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><span style="font-size:0.8rem;font-weight:700;color:var(--c-orange)">24–48 год</span></div></div><div style="padding:1.25rem;background:rgba(249,115,22,0.06);border-radius:12px;border:1px solid rgba(249,115,22,0.15);display:flex;flex-direction:column;gap:12px"><div style="display:flex;gap:12px;align-items:flex-start"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true" style="color:var(--c-orange);flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><p style="font-size:0.875rem;color:var(--c-text2);line-height:1.6">Потрібна доставка за межі Київської обл.?<!-- --> <span style="color:var(--c-text);font-weight:600">Зв&#x27;яжіться з нами</span> — знайдемо рішення.</p></div><a href="#contact" style="display:inline-flex;align-items:center;gap:7px;background:#F97316;color:#fff;border-radius:9px;padding:10px 18px;font-size:0.85rem;font-weight:700;text-decoration:none;align-self:flex-start;box-shadow:0 2px 12px rgba(249,115,22,0.30);transition:background 0.2s, box-shadow 0.2s">Уточнити доставку <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></div></div></div></div><style>
+        @media (max-width: 768px) { .delivery-grid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 479px) {
+          .delivery-grid { gap: 0.875rem !important; }
+          .delivery-grid .nh-card { padding: 1rem !important; }
+        }
+      </style></section><section style="padding:var(--s-section) 0 5rem;background:linear-gradient(180deg, #0D1117 0%, var(--c-green-bg) 30%, var(--c-green-bg) 100%);position:relative"><div class="layout-container"><div class="reveal " style="text-align:center;margin-bottom:var(--s-header)"><p class="section-label" style="margin-bottom:var(--s-tight)">Відгуки клієнтів</p><h2 class="h2" style="margin-bottom:28px">Що кажуть<!-- --> <span style="color:var(--c-orange)">наші клієнти</span></h2><div style="display:inline-flex;align-items:center;gap:20px;background:var(--color-bg-overlay);border:1px solid rgba(249,115,22,0.26);border-radius:16px;padding:18px 36px;box-shadow:0 0 48px rgba(249,115,22,0.10), 0 0 0 1px rgba(249,115,22,0.04), inset 0 1px 0 rgba(255,255,255,0.05)"><div class="rating-stars " style="display:flex;gap:5px"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star rating-star" aria-hidden="true" style="filter:drop-shadow(0 0 6px rgba(249,115,22,0.75));animation-delay:0s"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star rating-star" aria-hidden="true" style="filter:drop-shadow(0 0 6px rgba(249,115,22,0.75));animation-delay:0.08s"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star rating-star" aria-hidden="true" style="filter:drop-shadow(0 0 6px rgba(249,115,22,0.75));animation-delay:0.16s"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star rating-star" aria-hidden="true" style="filter:drop-shadow(0 0 6px rgba(249,115,22,0.75));animation-delay:0.24s"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star rating-star" aria-hidden="true" style="filter:drop-shadow(0 0 6px rgba(249,115,22,0.75));animation-delay:0.32s"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></div><div style="width:1px;height:40px;background:rgba(255,255,255,0.10)"></div><div style="display:flex;flex-direction:column;align-items:flex-start;gap:3px"><div style="display:flex;align-items:baseline;gap:5px;line-height:1"><span style="font-size:2.6rem;font-weight:900;color:var(--color-accent-display);letter-spacing:-0.05em;line-height:1;text-shadow:0 0 30px rgba(249,115,22,0.65), 0 0 60px rgba(249,115,22,0.25)">4.9</span><span style="font-size:1.05rem;color:rgba(249,115,22,0.45);font-weight:600">/ 5</span></div><span style="font-size:0.76rem;color:rgba(255,255,255,0.36);font-weight:400;letter-spacing:0.01em">на основі <span style="color:rgba(255,255,255,0.62);font-weight:600">320+</span> відгуків</span></div></div><div style="margin-top:14px"><a href="#contact" style="font-size:0.82rem;color:rgba(255,255,255,0.32);font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color 0.2s">Переглянути всі відгуки →</a></div></div><div class="reviews-grid " style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem"><div class="nh-card review-card" style="padding:1.75rem;display:flex;flex-direction:column;gap:16px;transition-delay:0s;transform:translateY(0);border:1px solid rgba(255,255,255,0.07);box-shadow:0 6px 24px rgba(0,0,0,0.22);transition:transform 0.25s ease, border-color 0.25s, box-shadow 0.25s"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-quote" aria-hidden="true" style="color:rgba(249,115,22,0.22);transition:color 0.25s"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg><div style="display:flex;gap:3px"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></div><p style="font-size:0.9rem;color:var(--c-text2);line-height:1.7;flex:1">&quot;<!-- -->Замовляємо дрова вже третій рік поспіль. Завжди сухі, чесна вага, привезли точно в домовлений час. Рекомендую всім сусідам по дачному кооперативу.<!-- -->&quot;</p><div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06)"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg, var(--c-orange-dk), var(--c-orange));display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:none;transition:box-shadow 0.25s">ОК</div><div style="flex:1"><p style="font-size:0.875rem;font-weight:700;color:var(--c-text)">Олена Ковальчук</p><p style="font-size:0.75rem;color:var(--c-text3)">Київ, Оболонь</p></div><p style="font-size:0.7rem;color:rgba(255,255,255,0.22);flex-shrink:0">Жовтень 2024</p></div></div><div class="nh-card review-card" style="padding:1.75rem;display:flex;flex-direction:column;gap:16px;transition-delay:0.1s;transform:translateY(0);border:1px solid rgba(255,255,255,0.07);box-shadow:0 6px 24px rgba(0,0,0,0.22);transition:transform 0.25s ease, border-color 0.25s, box-shadow 0.25s"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-quote" aria-hidden="true" style="color:rgba(249,115,22,0.22);transition:color 0.25s"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg><div style="display:flex;gap:3px"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></div><p style="font-size:0.9rem;color:var(--c-text2);line-height:1.7;flex:1">&quot;<!-- -->Брали вугілля антрацит на зиму. Якість відмінна — котел тримає температуру значно краще ніж з попереднього постачальника. Ціна адекватна, доставка швидка. Наступного сезону знову тільки до вас.<!-- -->&quot;</p><div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06)"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg, var(--c-orange-dk), var(--c-orange));display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:none;transition:box-shadow 0.25s">ДМ</div><div style="flex:1"><p style="font-size:0.875rem;font-weight:700;color:var(--c-text)">Дмитро Марченко</p><p style="font-size:0.75rem;color:var(--c-text3)">Ірпінь</p></div><p style="font-size:0.7rem;color:rgba(255,255,255,0.22);flex-shrink:0">Листопад 2024</p></div></div><div class="nh-card review-card" style="padding:1.75rem;display:flex;flex-direction:column;gap:16px;transition-delay:0.2s;transform:translateY(0);border:1px solid rgba(255,255,255,0.07);box-shadow:0 6px 24px rgba(0,0,0,0.22);transition:transform 0.25s ease, border-color 0.25s, box-shadow 0.25s"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-quote" aria-hidden="true" style="color:rgba(249,115,22,0.22);transition:color 0.25s"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg><div style="display:flex;gap:3px"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F97316" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star" aria-hidden="true" style="opacity:0.75;transition:opacity 0.2s;filter:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></div><p style="font-size:0.9rem;color:var(--c-text2);line-height:1.7;flex:1">&quot;<!-- -->Паливні брикети — щось нове для мене, але менеджер детально пояснив різницю між RUF і Pini-Kay. Зупинилась на RUF, задоволена на 100%.<!-- -->&quot;</p><div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06)"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg, var(--c-orange-dk), var(--c-orange));display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:none;transition:box-shadow 0.25s">НБ</div><div style="flex:1"><p style="font-size:0.875rem;font-weight:700;color:var(--c-text)">Наталія Бондаренко</p><p style="font-size:0.75rem;color:var(--c-text3)">Бровари</p></div><p style="font-size:0.7rem;color:rgba(255,255,255,0.22);flex-shrink:0">Грудень 2024</p></div></div></div></div><style>
+        /* Star shimmer animation */
+        @keyframes starPop {
+          0%   { opacity: 0; transform: scale(0.5); }
+          60%  { opacity: 1; transform: scale(1.18); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        .rating-star { opacity: 0; }
+        .stars-visible .rating-star {
+          animation: starPop 0.40s cubic-bezier(0.34,1.56,0.64,1) forwards;
+        }
+
+        @media (max-width: 900px) { .reviews-grid { grid-template-columns: 1fr !important; max-width: 520px; margin: 0 auto; } }
+        @media (max-width: 600px) { .reviews-grid { max-width: 100% !important; } }
+        @media (max-width: 479px) {
+          .rating-pill {
+            flex-direction: column !important;
+            gap: 12px !important;
+            padding: 14px 20px !important;
+            width: 100% !important;
+            max-width: 280px !important;
+          }
+          .rating-pill-divider { display: none !important; }
+          .review-card { padding: 1.25rem !important; }
+        }
+        .reviews-grid .nh-card { opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease, transform 0.55s ease, border-color 0.25s, box-shadow 0.25s; }
+        .reviews-grid.visible .nh-card:nth-child(1) { opacity:1; transform:none; transition-delay:0s; }
+        .reviews-grid.visible .nh-card:nth-child(2) { opacity:1; transform:none; transition-delay:0.1s; }
+        .reviews-grid.visible .nh-card:nth-child(3) { opacity:1; transform:none; transition-delay:0.2s; }
+        .reviews-grid.visible .nh-card:hover { transform: translateY(-6px) !important; }
+      </style></section><section class="faq-mobile-section" style="padding:4rem 0 6rem;background:var(--color-bg-main);position:relative"><div class="layout-container"><h2 class="h2 faq-mobile-h2" style="margin-bottom:2.5rem;text-align:left;font-size:2rem">Поширені питання</h2><div style="display:flex;flex-direction:column;gap:1rem"><div style="background:var(--color-bg-elevated);border:1px solid var(--color-border-subtle);border-radius:16px;overflow:hidden"><button style="width:100%;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;background:transparent;border:none;color:var(--c-text);font-size:1.1rem;font-weight:600;cursor:pointer;text-align:left;gap:1rem;font-family:inherit"><span style="flex:1">Які дрова краще для опалення?</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down" aria-hidden="true" style="flex-shrink:0;transform:rotate(0deg);transition:transform 0.3s ease"><path d="m6 9 6 6 6-6"></path></svg></button><div style="max-height:0;padding:0 1.5rem;opacity:0;overflow:hidden;transition:all 0.3s ease;color:var(--c-text2);font-size:1rem;line-height:1.6">Для котлів та камінів найчастіше використовують дубові або грабові дрова. Вони мають високу тепловіддачу та довго горять.</div></div><div style="background:var(--color-bg-elevated);border:1px solid var(--color-border-subtle);border-radius:16px;overflow:hidden"><button style="width:100%;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;background:transparent;border:none;color:var(--c-text);font-size:1.1rem;font-weight:600;cursor:pointer;text-align:left;gap:1rem;font-family:inherit"><span style="flex:1">Чи можна оплатити після доставки?</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down" aria-hidden="true" style="flex-shrink:0;transform:rotate(0deg);transition:transform 0.3s ease"><path d="m6 9 6 6 6-6"></path></svg></button><div style="max-height:0;padding:0 1.5rem;opacity:0;overflow:hidden;transition:all 0.3s ease;color:var(--c-text2);font-size:1rem;line-height:1.6">Так. Ми працюємо без передоплати — оплата можлива після перевірки замовлення.</div></div><div style="background:var(--color-bg-elevated);border:1px solid var(--color-border-subtle);border-radius:16px;overflow:hidden"><button style="width:100%;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;background:transparent;border:none;color:var(--c-text);font-size:1.1rem;font-weight:600;cursor:pointer;text-align:left;gap:1rem;font-family:inherit"><span style="flex:1">Скільки часу займає доставка?</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down" aria-hidden="true" style="flex-shrink:0;transform:rotate(0deg);transition:transform 0.3s ease"><path d="m6 9 6 6 6-6"></path></svg></button><div style="max-height:0;padding:0 1.5rem;opacity:0;overflow:hidden;transition:all 0.3s ease;color:var(--c-text2);font-size:1rem;line-height:1.6">По Києву доставка можлива в день замовлення. По області — протягом 24 годин.</div></div><div style="background:var(--color-bg-elevated);border:1px solid var(--color-border-subtle);border-radius:16px;overflow:hidden"><button style="width:100%;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;background:transparent;border:none;color:var(--c-text);font-size:1.1rem;font-weight:600;cursor:pointer;text-align:left;gap:1rem;font-family:inherit"><span style="flex:1">Які паливні брикети краще?</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down" aria-hidden="true" style="flex-shrink:0;transform:rotate(0deg);transition:transform 0.3s ease"><path d="m6 9 6 6 6-6"></path></svg></button><div style="max-height:0;padding:0 1.5rem;opacity:0;overflow:hidden;transition:all 0.3s ease;color:var(--c-text2);font-size:1rem;line-height:1.6">Брикети Pini-Kay мають високу щільність і довго горять, а брикети RUF є більш доступними за ціною.</div></div><div style="background:var(--color-bg-elevated);border:1px solid var(--color-border-subtle);border-radius:16px;overflow:hidden"><button style="width:100%;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;background:transparent;border:none;color:var(--c-text);font-size:1.1rem;font-weight:600;cursor:pointer;text-align:left;gap:1rem;font-family:inherit"><span style="flex:1">Чи доставляєте ви по Київській області?</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down" aria-hidden="true" style="flex-shrink:0;transform:rotate(0deg);transition:transform 0.3s ease"><path d="m6 9 6 6 6-6"></path></svg></button><div style="max-height:0;padding:0 1.5rem;opacity:0;overflow:hidden;transition:all 0.3s ease;color:var(--c-text2);font-size:1rem;line-height:1.6">Так, доставка здійснюється по Києву та всій Київській області власним транспортом.</div></div></div></div></section><section class="seo-s1" style="background:var(--c-bg)"><div class="seo-box"><p class="seo-label">Про компанію</p><h2 class="seo-h2">Тверде паливо з доставкою<br/>по Києву та області</h2><div class="seo-grid"><div class="seo-text"><p>Компанія «КиївБрикет» постачає тверде паливо для опалення будинків, котлів та камінів.</p><p>У каталозі представлені<!-- --> <a title="Купити колоті дрова з доставкою по Києву" class="seo-a" href="/catalog/drova" data-discover="true">колоті дрова</a> <!-- -->різних порід,<!-- --> <a title="Купити паливні брикети" class="seo-a" href="/catalog/brikety" data-discover="true">паливні брикети</a> <!-- -->та<!-- --> <a title="Купити кам&#x27;яне вугілля" class="seo-a" href="/catalog/vugillya" data-discover="true">кам&#x27;яне вугілля</a> <!-- -->з доставкою по Києву та Київській області.</p><p>Ми працюємо без посередників та доставляємо паливо власним транспортом. Усі замовлення доставляються у погоджений час із чесним складометром та можливістю оплати після отримання.</p><p>Ви можете замовити дубові, грабові, березові або соснові дрова, екологічні паливні брикети типу RUF, Nestro або Pini-Kay, а також кам&#x27;яне вугілля для котлів і печей.</p></div><div class="seo-strips"><div class="seo-strip"><div class="seo-strip-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-truck" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg></div><div class="seo-strip-body"><p class="seo-strip-title">Доставка по Києву</p><p class="seo-strip-desc">Власний транспорт, доставка в день замовлення</p></div></div><div class="seo-strip"><div class="seo-strip-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ruler" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"></path><path d="m14.5 12.5 2-2"></path><path d="m11.5 9.5 2-2"></path><path d="m8.5 6.5 2-2"></path><path d="m17.5 15.5 2-2"></path></svg></div><div class="seo-strip-body"><p class="seo-strip-title">Чесний складометр</p><p class="seo-strip-desc">Об&#x27;єм перевіряється при вас під час розвантаження</p></div></div><div class="seo-strip"><div class="seo-strip-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg></div><div class="seo-strip-body"><p class="seo-strip-title">Оплата після отримання</p><p class="seo-strip-desc">Без передоплати — ви платите лише після перевірки</p></div></div><div class="seo-strip"><div class="seo-strip-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></div><div class="seo-strip-body"><p class="seo-strip-title">Зручний час доставки</p><p class="seo-strip-desc">Погоджуємо зручний для вас час приїзду</p></div></div></div></div></div></section><div style="padding:0 24px"><hr class="seo-divider" aria-hidden="true"/></div><section class="seo-s2" style="background:transparent"><div class="seo-box"><p class="seo-label">Каталог</p><h2 class="seo-h2">Купити дрова, брикети та вугілля у Києві</h2><div class="seo-grid"><div><div class="seo-text seo-text-wide"><p>Компанія «КиївБрикет» — надійний постачальник твердого палива з доставкою по Києву та Київській області.</p><p>Ми пропонуємо широкий вибір<!-- --> <a title="Купити дрова з доставкою по Києву" class="seo-a" href="/catalog/drova" data-discover="true">дров</a>,<!-- --> <a title="Купити паливні брикети" class="seo-a" href="/catalog/brikety" data-discover="true">паливних брикетів</a> <!-- -->та<!-- --> <a title="Купити кам&#x27;яне вугілля" class="seo-a" href="/catalog/vugillya" data-discover="true">кам&#x27;яного вугілля</a> <!-- -->для ефективного опалення приватних будинків, котлів та камінів.</p></div><ul class="seo-checklist seo-checklist-row"><li><span class="seo-check-icon">✓</span>Доставка по Києву та Київській області</li><li><span class="seo-check-icon">✓</span>Чесний складометр — об&#x27;єм при вас</li><li><span class="seo-check-icon">✓</span>Оплата після отримання, без передоплат</li></ul><a class="seo-cta-btn" href="/catalog/drova" data-discover="true">Обрати паливо<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></a></div><div class="seo-navcards"><a class="seo-navcard-link" href="/catalog/drova" data-discover="true"><div class="seo-navcard"><div class="seo-navcard-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tree-pine" aria-hidden="true"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path><path d="M12 22v-3"></path></svg></div><div class="seo-navcard-body"><p class="seo-navcard-title">Дрова колоті</p><p class="seo-navcard-desc">Дуб, граб, береза, сосна — складометрами</p></div><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right seo-navcard-arrow" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></div></a><a class="seo-navcard-link" href="/catalog/brikety" data-discover="true"><div class="seo-navcard"><div class="seo-navcard-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg></div><div class="seo-navcard-body"><p class="seo-navcard-title">Паливні брикети</p><p class="seo-navcard-desc">RUF, Nestro, Pini-Kay — екологічне паливо</p></div><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right seo-navcard-arrow" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></div></a><a class="seo-navcard-link" href="/catalog/vugillya" data-discover="true"><div class="seo-navcard"><div class="seo-navcard-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg></div><div class="seo-navcard-body"><p class="seo-navcard-title">Кам&#x27;яне вугілля</p><p class="seo-navcard-desc">Антрацит для котлів та печей</p></div><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right seo-navcard-arrow" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></div></a></div></div></div><style>
+/* ── Outer section wrappers ─────────────────────────────── */
+.seo-s1, .seo-s2 {
+    padding: 80px 24px;
+}
+
+/* ── Premium glass container ────────────────────────────── */
+.seo-box {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow:
+        0 12px 48px rgba(0,0,0,0.45),
+        inset 0 1px 0 rgba(255,255,255,0.04),
+        inset 0 -1px 0 rgba(255,255,255,0.02);
+    padding: 64px 72px;
+}
+/* Section boxes — slightly lighter than page bg */
+.seo-s1 .seo-box,
+.seo-s2 .seo-box {
+    background: linear-gradient(160deg, #101827 0%, #0c1520 100%);
+}
+
+/* ── Two-column layout ──────────────────────────────────── */
+.seo-grid {
+    display: grid;
+    grid-template-columns: 55% 1fr;
+    gap: 56px;
+    align-items: start;
+}
+
+/* ── Section label above heading ── */
+.seo-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(251,146,60,0.85);
+    margin-bottom: 20px;
+}
+.seo-label::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: rgba(251,146,60,0.7);
+    border-radius: 2px;
+}
+
+/* ── H2 ─────────────────────────────────────────────────── */
+.seo-h2 {
+    font-size: 41px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    color: #f1f5f9;
+    margin: 0 0 32px;
+}
+
+/* ── Text block ─────────────────────────────────────────── */
+.seo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 560px;
+}
+.seo-text p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: rgba(241,245,249,0.60);
+    margin: 0;
+}
+
+/* ── SEO links — soft orange with border-bottom ─────────── */
+.seo-a {
+    color: #fb923c;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,120,40,0.38);
+    transition:
+        color 0.18s ease,
+        border-bottom-color 0.18s ease;
+    padding-bottom: 1px;
+}
+.seo-a:hover {
+    color: #fed7aa;
+    border-bottom-color: rgba(254,186,96,0.75);
+}
+
+/* ── RIGHT COLUMN — Section 1: feature strips ──────────── */
+.seo-strips {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.seo-strip {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-left: 2px solid rgba(251,146,60,0.35);
+    transition: border-left-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.seo-strip:hover {
+    background: rgba(255,255,255,0.04);
+    border-left-color: rgba(251,146,60,0.75);
+    transform: translateX(3px);
+}
+
+.seo-strip-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(251,146,60,0.12);
+    border: 1px solid rgba(251,146,60,0.28);
+    box-shadow: 0 0 12px rgba(251,146,60,0.18);
+    color: #fb923c;
+}
+
+.seo-strip-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.seo-strip-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin: 0;
+    line-height: 1.3;
+}
+.seo-strip-desc {
+    font-size: 0.8125rem;
+    color: rgba(241,245,249,0.5);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ── RIGHT COLUMN — Section 2: nav category cards ──────── */
+.seo-navcards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Link wrapper resets */
+.seo-navcard-link {
+    display: block;
+    text-decoration: none;
+    border-radius: 16px;
+}
+
+.seo-navcard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.028);
+    border: 1px solid rgba(255,255,255,0.055);
+    cursor: pointer;
+    transition: background 0.22s ease, border-color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+}
+.seo-navcard-link:hover .seo-navcard {
+    background: rgba(255,255,255,0.055);
+    border-color: rgba(251,146,60,0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.38), 0 0 0 1px rgba(251,146,60,0.1);
+}
+.seo-navcard-link:hover .seo-navcard-arrow {
+    color: #fb923c;
+    transform: translateX(4px);
+}
+
+.seo-navcard-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(251,146,60,0.12);
+    border: 1px solid rgba(251,146,60,0.28);
+    box-shadow: 0 0 14px rgba(251,146,60,0.2);
+    color: #fb923c;
+    transition: box-shadow 0.22s ease;
+}
+.seo-navcard-link:hover .seo-navcard-icon {
+    box-shadow: 0 0 22px rgba(251,146,60,0.38);
+}
+
+/* ── Checklist under text ───────────────────────────────── */
+.seo-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 0;
+    list-style: none;
+}
+.seo-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: rgba(241,245,249,0.72);
+    line-height: 1.4;
+}
+.seo-check-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(251,146,60,0.15);
+    border: 1px solid rgba(251,146,60,0.3);
+    color: #fb923c;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.seo-s2-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    margin-top: 28px;
+}
+.seo-text-wide {
+    max-width: 100%;
+}
+.seo-text-wide p + p {
+    margin-top: 14px;
+}
+.seo-checklist-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    margin-top: 20px;
+}
+.seo-checklist-row li {
+    font-size: 0.875rem;
+}
+
+/* ── CTA button ─────────────────────────────────────────── */
+.seo-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    background: rgba(251,146,60,0.12);
+    border: 1px solid rgba(251,146,60,0.3);
+    color: #fb923c;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.seo-cta-btn:hover {
+    background: rgba(251,146,60,0.2);
+    border-color: rgba(251,146,60,0.55);
+    box-shadow: 0 0 24px rgba(251,146,60,0.18);
+    transform: translateY(-2px);
+    color: #fed7aa;
+}
+
+.seo-navcard-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.seo-navcard-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin: 0;
+}
+.seo-navcard-desc {
+    font-size: 0.8125rem;
+    color: rgba(241,245,249,0.5);
+    margin: 0;
+    line-height: 1.5;
+}
+.seo-navcard-arrow {
+    color: rgba(251,146,60,0.5);
+    flex-shrink: 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.seo-navcard:hover .seo-navcard-arrow {
+    color: #fb923c;
+    transform: translateX(4px);
+}
+
+/* ── Divider between the two sections ──────────────────── */
+.seo-divider {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent 100%);
+    border: none;
+}
+
+/* ── Responsive: tablet ─────────────────────────────────── */
+@media (max-width: 960px) {
+    .seo-s1, .seo-s2 { padding: 60px 16px; }
+    .seo-box  { padding: 40px 32px; }
+    .seo-grid { grid-template-columns: 1fr; gap: 36px; }
+    .seo-h2   { font-size: 32px; }
+}
+
+/* ── Responsive: mobile ─────────────────────────────────── */
+@media (max-width: 540px) {
+    .seo-s1, .seo-s2 { padding: 48px 12px; }
+    .seo-box  { padding: 28px 20px; border-radius: 16px; }
+    .seo-h2   { font-size: 26px; letter-spacing: -0.2px; }
+    .seo-text p { font-size: 0.9375rem; }
+    .seo-strip { flex-direction: column; }
+}
+</style></section><section class="seo-content" style="padding:0 24px 60px"><div style="max-width:1200px;margin:0 auto;border-radius:24px;background:linear-gradient(160deg, #101827 0%, #0c1520 100%);border:1px solid rgba(255,255,255,0.06);box-shadow:0 12px 48px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04);padding:clamp(28px, 5vw, 64px) clamp(20px, 5vw, 72px)"><h2 class="seo-h2" style="font-size:clamp(22px, 4vw, 32px);margin-bottom:24px">Купити дрова, паливні брикети та вугілля у Києві</h2><div style="color:rgba(241,245,249,0.60);font-size:1rem;line-height:1.75;display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 400px), 1fr));gap:2rem"><div><p style="margin:0 0 16px">Опалення приватного будинку чи дачі — відповідальне завдання, що потребує якісного палива та надійного постачальника. Компанія «КиївБрикет» працює на ринку твердого палива вже понад 10 років, забезпечуючи мешканців Києва та Київської області дровами, паливними брикетами та кам&#x27;яним вугіллям найвищої якості.</p><p style="margin:0 0 16px"><a class="seo-a" href="/catalog/drova" data-discover="true">Купити дрова у Києві</a> — одне з найпопулярніших рішень для опалення. У нашому каталозі представлені колоті дрова різних порід: дубові, грабові, березові, соснові та ясенові. Кожна порода має свої переваги: дуб та граб дають тривалий жар і максимальну тепловіддачу, береза та сосна легко розпалюються і створюють приємну атмосферу. Усі дрова ретельно висушені до вологості не більше 20%, що забезпечує ефективне горіння без зайвого диму.</p><p style="margin:0 0 16px"><a class="seo-a" href="/catalog/brikety" data-discover="true">Паливні брикети</a> — сучасна альтернатива традиційним дровам. Завдяки технології пресування деревної тирси під високим тиском, брикети мають вологість лише 6–10% та щільність, що в рази перевищує натуральну деревину. Ми пропонуємо три основні типи: RUF — класичні прямокутні брикети з тепловіддачею до 5200 ккал/кг; Pini Kay — преміум восьмигранні брикети з центральним каналом для покращеного горіння; Nestro — доступні циліндричні брикети без хімічних добавок. Одна тонна брикетів замінює 3–4 складометри дров за кількістю тепла.</p></div><div><p style="margin:0 0 16px"><a class="seo-a" href="/catalog/vugillya" data-discover="true">Кам&#x27;яне вугілля</a> залишається незамінним для потужних котельних систем. Антрацит горіх та антрацит насіння забезпечують максимальну теплотворність — до 7500 ккал/кг. Ми також пропонуємо газове вугілля марок ДО та ДПК для промислових та побутових котлів. Низька зольність та мінімальний вміст сірки роблять наше вугілля безпечним для довготривалого використання.</p><p style="margin:0 0 16px">Доставка палива здійснюється власним автопарком по всьому Києву та Київській області. Ми використовуємо ГАЗелі, ЗІЛи та КАМАЗи залежно від обсягу замовлення. Мінімальне замовлення — 1 складометр дров або 1 тонна брикетів/вугілля. Доставка можлива в день замовлення, у зручний для вас час, включаючи вихідні дні.</p><p style="margin:0 0 16px">Ми працюємо без передоплати — ви оплачуєте замовлення лише після отримання та перевірки якості та об&#x27;єму. Чесний складометр, гарантована вологість, сертифіковане вугілля — все це входить у стандарт обслуговування «КиївБрикет». Замовляйте тверде паливо онлайн або за телефоном — ми завжди на зв&#x27;язку.</p></div></div></div></section><section style="position:relative;overflow:hidden;padding:var(--s-section) 1.5rem;display:flex;align-items:center;justify-content:center;clip-path:inset(0 calc(max(0px, 50vw - 600px)) round 24px);margin-bottom:var(--s-section)"><img src="/assets/cta-fireplace-B2KksctH.webp" alt="Тепло вдома" loading="lazy" decoding="async" width="1400" height="933" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 60%;filter:brightness(0.22) saturate(0.75);z-index:0"/><div style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);width:100%;height:100%;background:radial-gradient(ellipse 65% 75% at 50% 50%, rgba(249,115,22,0.14) 0%, rgba(249,115,22,0.04) 50%, transparent 70%);z-index:1;pointer-events:none"></div><div style="position:relative;z-index:2;width:100%;max-width:740px;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center"><div class="reveal " style="width:100%;display:flex;flex-direction:column;align-items:center"><div class="nh-badge" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;margin-bottom:28px"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg>Пропозиція обмежена · Зима 2025/26</div><h2 style="font-size:clamp(2rem, 4vw, 3rem);font-weight:900;line-height:1.1;letter-spacing:-0.03em;color:var(--c-text);margin-bottom:20px;text-align:center">Замовте тверде паливо<br/><span style="color:var(--c-orange)">вже сьогодні</span></h2><p style="font-size:1rem;color:var(--c-text2);line-height:1.75;max-width:480px;text-align:center;margin-bottom:40px">Ціни зростають із першим похолоданням.<!-- --> <span style="color:var(--c-text);font-weight:600">Забронюйте паливо зараз за фіксованою ціною.</span></p><div class="cta-btns"><a href="#contact" class="nh-btn-primary cta-btn-main" style="font-size:1rem;padding:16px 40px">Оформити замовлення <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a><a href="tel:+380991234567" class="cta-btn-phone" style="font-size:1rem;padding:15px 40px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;border:2px solid rgba(249,115,22,0.55);color:#F97316;background:transparent;font-weight:700;letter-spacing:-0.01em;box-shadow:0 0 20px rgba(249,115,22,0.12);text-decoration:none;transition:border-color 0.22s, box-shadow 0.22s, background 0.22s, color 0.22s;cursor:pointer;font-family:inherit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone" aria-hidden="true" style="flex-shrink:0"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>Подзвонити</a></div><div style="margin-top:20px;display:flex;align-items:center;justify-content:center;gap:8px"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--c-orange);box-shadow:0 0 8px var(--c-orange);animation:ctaPulse 2s ease-in-out infinite;flex-shrink:0"></span><span style="font-size:0.78rem;color:rgba(255,255,255,0.55);font-weight:500">Сьогодні ще доступна доставка</span></div></div></div><style>
+        @keyframes ctaPulse {
+          0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--c-orange); }
+          50% { opacity: 0.5; box-shadow: 0 0 3px var(--c-orange); }
+        }
+        .cta-btns {
+          display: flex;
+          gap: 16px;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+        @media (max-width: 479px) {
+          .cta-btns {
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+          }
+          .cta-btn-main,
+          .cta-btn-phone {
+            width: 100% !important;
+            padding: 16px 24px !important;
+            min-width: unset !important;
+            justify-content: center;
+            border-radius: 12px !important;
+          }
+        }
+      </style></section><section id="contact" style="padding:var(--s-section) 0;background:var(--c-bg);position:relative;overflow:hidden"><div style="position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(180deg, var(--color-bg-main) 0%, transparent 100%);pointer-events:none;z-index:0"></div><div style="position:absolute;top:30%;left:50%;transform:translateX(-50%);width:640px;height:420px;background:radial-gradient(ellipse at 50% 50%, rgba(249,115,22,0.07) 0%, transparent 65%);pointer-events:none;z-index:0"></div><div class="layout-container" style="z-index:1"><div style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start" class="contact-grid"><div class="reveal "><p class="section-label" style="margin-bottom:var(--s-tight)">Зв&#x27;язатись з нами</p><h2 class="h2" style="margin-bottom:16px">Замовте паливо<br/><span style="color:var(--c-orange);text-decoration:underline;text-decoration-color:rgba(249,115,22,0.35);text-underline-offset:5px;text-decoration-thickness:2px">сьогодні — без затримок</span></h2><p style="font-size:0.9375rem;color:var(--c-text2);line-height:1.7;margin-bottom:36px;max-width:360px">Передзвонимо протягом 15 хвилин та узгодимо зручний час доставки.</p><div style="display:flex;flex-direction:column;gap:16px;margin-bottom:40px"><a href="tel:+380991234567" style="display:flex;align-items:center;gap:14px;text-decoration:none"><div style="width:48px;height:48px;border-radius:12px;flex-shrink:0;background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.25);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(249,115,22,0.08)"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg></div><div><p style="font-size:0.78rem;color:rgba(255,255,255,0.40);margin-bottom:2px;letter-spacing:0.04em">Телефон</p><p style="font-size:1rem;font-weight:700;color:#FFFFFF">+380 (99) 123-45-67</p></div></a><a href="mailto:info@kievbriket.com" style="display:flex;align-items:center;gap:14px;text-decoration:none"><div style="width:48px;height:48px;border-radius:12px;flex-shrink:0;background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.25);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(249,115,22,0.08)"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg></div><div><p style="font-size:0.78rem;color:rgba(255,255,255,0.40);margin-bottom:2px;letter-spacing:0.04em">Email</p><p style="font-size:1rem;font-weight:700;color:#FFFFFF">info@kievbriket.com</p></div></a><a href="https://maps.google.com/?q=Київ" style="display:flex;align-items:center;gap:14px;text-decoration:none"><div style="width:48px;height:48px;border-radius:12px;flex-shrink:0;background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.25);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(249,115,22,0.08)"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg></div><div><p style="font-size:0.78rem;color:rgba(255,255,255,0.40);margin-bottom:2px;letter-spacing:0.04em">Доставка</p><p style="font-size:1rem;font-weight:700;color:#FFFFFF">Київ та область</p></div></a></div><div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:12px;padding:1.25rem 1.5rem"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><p style="font-size:0.8rem;font-weight:700;color:var(--c-text2);letter-spacing:0.06em;text-transform:uppercase;margin:0">Графік роботи</p><span style="font-size:0.75rem;color:rgba(34,197,94,1);font-weight:700;display:flex;align-items:center;gap:5px"><span style="font-size:0.5rem;display:inline-block;animation:pulse-dot 2s ease-in-out infinite">●</span> <!-- -->Працюємо без вихідних</span></div><div style="display:flex;justify-content:space-between;padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="font-size:0.875rem;color:var(--c-text2)">Пн – Пт</span><span style="font-size:0.875rem;font-weight:600;color:var(--c-text)">09:00 – 20:00</span></div><div style="display:flex;justify-content:space-between;padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="font-size:0.875rem;color:var(--c-text2)">Сб – Нд</span><span style="font-size:0.875rem;font-weight:600;color:var(--c-text)">09:00 – 20:00</span></div></div></div><div class="reveal " style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:18px;padding:2.25rem;transition-delay:0.12s"><form style="display:flex;flex-direction:column;gap:16px"><h3 style="font-size:1.1rem;font-weight:800;color:var(--c-text);margin-bottom:4px">Залишити заявку</h3><p style="font-size:0.85rem;color:var(--c-text2);margin-bottom:2px">Передзвонимо протягом 15 хвилин.</p><p style="font-size:0.82rem;color:rgba(255,255,255,0.42);margin-bottom:16px;display:flex;align-items:center;gap:6px"><span style="color:var(--color-success-glow);font-size:0.65rem">●</span>Без передоплат. Консультація безкоштовна.</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px" class="form-row"><div style="display:flex;flex-direction:column;gap:7px"><label style="font-size:0.8rem;font-weight:600;color:var(--c-text2)">Ваше ім&#x27;я</label><input type="text" placeholder="Іван" style="background:var(--c-surface2);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px 14px;color:var(--c-text);font-size:0.9rem;outline:none;transition:border-color 0.2s;font-family:inherit" value=""/></div><div style="display:flex;flex-direction:column;gap:7px"><label style="font-size:0.8rem;font-weight:600;color:var(--c-text2)">Телефон *</label><input type="tel" placeholder="+38 0XX XXX XX XX" maxLength="13" required="" style="background:var(--c-surface2);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px 14px;color:var(--c-text);font-size:0.9rem;outline:none;transition:border-color 0.2s;font-family:inherit" value="+38"/></div></div><div style="display:flex;flex-direction:column;gap:7px"><label for="contact-fuel" style="font-size:0.8rem;font-weight:600;color:var(--c-text2)">Тип палива</label><select id="contact-fuel" style="background:var(--c-surface2);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px 14px;color:var(--c-text3);font-size:0.9rem;outline:none;cursor:pointer;font-family:inherit;appearance:none"><option value="" selected="">Оберіть вид палива</option><option value="Дрова">Дрова</option><option value="Паливні брикети">Паливні брикети</option><option value="Вугілля">Вугілля</option><option value="Декілька видів">Декілька видів</option></select></div><div style="display:flex;flex-direction:column;gap:7px"><label style="font-size:0.8rem;font-weight:600;color:var(--c-text2)">Коментар (необов&#x27;язково)</label><textarea placeholder="Напр.: потрібно 5 скл. м дубових дров..." rows="3" style="background:var(--c-surface2);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px 14px;color:var(--c-text);font-size:0.9rem;outline:none;resize:vertical;font-family:inherit;transition:border-color 0.2s"></textarea></div><button type="submit" class="nh-btn-primary" style="justify-content:center;margin-top:4px;width:100%;padding:17px 24px">Замовити консультацію</button><p style="font-size:0.74rem;color:rgba(255,255,255,0.30);text-align:center;display:flex;align-items:center;justify-content:center;gap:5px"><span style="color:rgba(249,115,22,0.55);font-size:0.6rem">⏱</span>Передзвонимо протягом 15 хвилин у робочий час</p><p style="font-size:0.75rem;color:var(--c-text3);text-align:center">Натискаючи кнопку, ви погоджуєтесь з обробкою персональних даних</p></form></div></div></div><style>
+        @media (max-width: 840px) { .contact-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; } }
+        @media (max-width: 560px) { .form-row { grid-template-columns: 1fr !important; } }
+        @media (max-width: 479px) {
+          .contact-grid { gap: 2rem !important; }
+          .contact-icon { width: 40px !important; height: 40px !important; border-radius: 10px !important; }
+        }
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(0.75); }
+        }
+      </style></section></main><footer id="contact" style="background:var(--color-bg-deep);border-top:1px solid var(--color-border-subtle)"><div style="max-width:1200px;margin:0 auto;padding:4rem 1.5rem 3rem;display:grid;grid-template-columns:1.8fr 1fr 1.4fr 1fr;gap:3rem" class="footer-grid"><div class="mobile-hidden-block"><a href="/" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px"><span style="width:38px;height:38px;border-radius:50%;background:var(--gradient-accent);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px var(--color-accent-glow);flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg></span><span style="line-height:1"><span style="display:block;font-weight:900;font-size:1.2rem;letter-spacing:-0.03em"><span style="color:#ffffff">Київ</span><span style="color:#F97316">Брикет</span></span><span style="display:block;font-size:0.62rem;color:rgba(255,255,255,0.65);letter-spacing:0.04em;margin-top:1px">ТОВ «Київ Брикет»</span></span></a><p style="font-size:0.875rem;color:var(--c-text2);line-height:1.7;max-width:280px;margin-bottom:12px">ТОВ «Київ Брикет» — постачальник твердого палива з доставкою по Києву та Київській області. Дрова, брикети, вугілля з 2013 року.</p><p style="font-size:0.78rem;color:rgba(249,115,22,1);font-weight:600;margin-bottom:20px;letter-spacing:0.01em">Працюємо з фізичними та юридичними особами</p></div><div><p style="font-size:0.8rem;font-weight:700;color:var(--c-text);margin-bottom:16px;letter-spacing:0.06em;text-transform:uppercase">Каталог</p><ul style="display:flex;flex-direction:column;gap:10px;list-style:none;padding:0;margin:0"><li><a style="font-size:0.875rem;color:var(--c-text2);text-decoration:none;transition:color 0.2s" href="/catalog/drova" data-discover="true">Дрова</a></li><li><a style="font-size:0.875rem;color:var(--c-text2);text-decoration:none;transition:color 0.2s" href="/catalog/brikety" data-discover="true">Паливні брикети</a></li><li><a style="font-size:0.875rem;color:var(--c-text2);text-decoration:none;transition:color 0.2s" href="/catalog/vugillya" data-discover="true">Вугілля</a></li><li><a style="font-size:0.875rem;color:var(--c-text2);text-decoration:none;transition:color 0.2s" href="/dostavka" data-discover="true">Доставка</a></li><li><a href="#contact" style="font-size:0.875rem;color:var(--c-text2);text-decoration:none;transition:color 0.2s">Контакти</a></li></ul></div><div><p style="font-size:0.8rem;font-weight:700;color:var(--c-text);margin-bottom:16px;letter-spacing:0.06em;text-transform:uppercase">Контакти</p><div style="display:flex;flex-direction:column;gap:14px"><a href="tel:+380991234567" class="" style="display:flex;align-items:flex-start;gap:10px;text-decoration:none;color:var(--c-text2);font-size:0.875rem;line-height:1.5;transition:color 0.2s"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone" aria-hidden="true" style="flex-shrink:0;margin-top:2px"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg><div><span style="display:block;font-size:0.72rem;color:var(--c-text2);margin-bottom:1px">Відділ продажу</span>+380 (99) 123-45-67</div></a><a href="tel:+380996657477" class="" style="display:flex;align-items:flex-start;gap:10px;text-decoration:none;color:var(--c-text2);font-size:0.875rem;line-height:1.5;transition:color 0.2s"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone" aria-hidden="true" style="flex-shrink:0;margin-top:2px"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg><div><span style="display:block;font-size:0.72rem;color:var(--c-text2);margin-bottom:1px">Відділ продажу</span>+38 099 665 74 77</div></a><a href="https://maps.google.com/?q=вул.+Колекторна+19+Київ" target="_blank" rel="noopener noreferrer" class="" style="display:flex;align-items:flex-start;gap:10px;text-decoration:none;color:var(--c-text2);font-size:0.875rem;line-height:1.5;transition:color 0.2s"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin" aria-hidden="true" style="flex-shrink:0;margin-top:2px"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg><div><span style="display:block;font-size:0.72rem;color:var(--c-text2);margin-bottom:1px">Адреса</span>вул. Колекторна, 19, Київ</div></a><a href="mailto:info@kievbriket.com" class="mobile-hidden-block" style="display:flex;align-items:flex-start;gap:10px;text-decoration:none;color:var(--c-text2);font-size:0.875rem;line-height:1.5;transition:color 0.2s"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail" aria-hidden="true" style="flex-shrink:0;margin-top:2px"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg><div><span style="display:block;font-size:0.72rem;color:var(--c-text2);margin-bottom:1px">Email</span>info@kievbriket.com</div></a><div class="mobile-schedule-row" style="display:none;align-items:flex-start;gap:10px;color:var(--c-text2);font-size:0.875rem;line-height:1.5"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--c-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><div><span style="display:block;font-size:0.72rem;color:var(--c-text2);margin-bottom:1px">Графік роботи</span>Пн — Нд: 09:00 – 20:00</div></div></div></div><div class="desktop-schedule-col"><p style="font-size:0.8rem;font-weight:700;color:var(--c-text);margin-bottom:16px;letter-spacing:0.06em;text-transform:uppercase">Графік роботи</p><div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:0.82rem;color:var(--c-text2)">Понеділок</span><span style="font-size:0.82rem;color:var(--c-text2);white-space:nowrap">09:00 – 20:00</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:0.82rem;color:var(--c-text2)">Вівторок</span><span style="font-size:0.82rem;color:var(--c-text2);white-space:nowrap">09:00 – 20:00</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:0.82rem;color:var(--c-text2)">Середа</span><span style="font-size:0.82rem;color:var(--c-text2);white-space:nowrap">09:00 – 20:00</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:0.82rem;color:var(--c-text2)">Четвер</span><span style="font-size:0.82rem;color:var(--c-text2);white-space:nowrap">09:00 – 20:00</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:0.82rem;color:var(--c-text2)">П&#x27;ятниця</span><span style="font-size:0.82rem;color:var(--c-text2);white-space:nowrap">09:00 – 20:00</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:0.82rem;color:var(--c-text2)">Субота</span><span style="font-size:0.82rem;color:var(--c-text2);white-space:nowrap">09:00 – 20:00</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:0.82rem;color:var(--c-text2)">Неділя</span><span style="font-size:0.82rem;color:var(--c-text2);white-space:nowrap">09:00 – 20:00</span></div></div></div></div><div style="border-top:1px solid rgba(255,255,255,0.05)"><div style="max-width:1200px;margin:0 auto;padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><p style="font-size:0.8rem;color:var(--c-text2)">© 2013–<!-- -->2026<!-- --> ТОВ «Київ Брикет». Всі права захищені.</p><div style="display:flex;gap:20px"><button style="background:none;border:none;padding:0;cursor:pointer;font-size:0.8rem;color:var(--c-text2);transition:color 0.2s;font-family:inherit">Політика конфіденційності</button></div></div></div></footer><style>
+                /* Desktop: 4 columns, evenly spread */
+                @media (max-width: 900px) {
+                    .footer-grid {
+                        grid-template-columns: 1fr 1fr !important;
+                        gap: 2rem !important;
+                        padding: 2.5rem 1.25rem 2rem !important;
+                    }
+                }
+                /* Mobile: 2 columns, compact */
+                @media (max-width: 540px) {
+                    .footer-grid {
+                        grid-template-columns: 1.2fr 1fr !important;
+                        gap: 1.2rem 1rem !important;
+                        padding: 1.5rem 1rem 1.25rem !important;
+                        align-items: start;
+                    }
+                    .footer-grid > div {
+                        align-self: start;
+                    }
+                    .mobile-hidden-block {
+                        display: none !important;
+                    }
+                    .desktop-schedule-col {
+                        display: none !important;
+                    }
+                    .mobile-schedule-row {
+                        display: flex !important;
+                    }
+                }
+            </style></div><!--/$--></div>
+  <script>
+    // Hide preloader as soon as DOM is parsed — SSR content is already visible
+    document.addEventListener("DOMContentLoaded", function () {
+      var loader = document.getElementById("global-preloader");
+      if (!loader) return;
+      // Let browser paint SSR content first, then fade out the overlay
+      requestAnimationFrame(function () {
+        loader.classList.add("hidden");
+        // Remove from DOM after CSS fade transition (0.5s)
+        setTimeout(function () {
+          loader.remove();
+        }, 500);
+      });
+    });
+  </script>
+</body>
+
+</html>

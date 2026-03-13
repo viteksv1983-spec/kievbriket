@@ -13,7 +13,8 @@ import { TrustBlock } from './new-home/TrustBlock';
 import { CategoriesSection } from './new-home/CategoriesSection';
 import { DeliverySection } from './new-home/DeliverySection';
 import { ReviewsSection } from './new-home/ReviewsSection';
-import { SeoIntroSection, SeoFooterSection, SeoContentBlock, FaqSection } from './new-home/SeoSections';
+import { SeoIntroSection, SeoFooterSection, SeoContentBlock } from './new-home/SeoSections';
+import FaqSection from './FaqSection';
 import { CtaBanner } from './new-home/CtaBanner';
 import { ContactSection } from './new-home/ContactSection';
 import { FuelCalculatorSection } from './new-home/FuelCalculatorSection';
@@ -26,6 +27,8 @@ function Home() {
     const [featuredCakes, setFeaturedCakes] = useState([]);
     const [allCakes, setAllCakes] = useState([]);
     const [orderFormPayload, setOrderFormPayload] = useState(null);
+    const [heroSettings, setHeroSettings] = useState({});
+    const [faqs, setFaqs] = useState([]);
 
     const { pageData } = usePageSEO('/');
 
@@ -44,6 +47,16 @@ function Home() {
             .catch(error => {
                 console.error("Error fetching featured products", error);
             });
+
+        // Fetch hero section settings (public, no auth)
+        api.get('/api/site-settings/hero')
+            .then(res => setHeroSettings(res.data || {}))
+            .catch(() => { /* use defaults */ });
+
+        // Fetch home FAQs for schema generation
+        api.get('/api/faqs?page=home')
+            .then(res => setFaqs(res.data || []))
+            .catch(() => { /* ignore error, component handles it too */ });
     }, []);
 
     const homeSchema = {
@@ -72,54 +85,20 @@ function Home() {
         }
     };
 
-    const faqQuestions = [
-        {
-            "@type": "Question",
-            "name": "Які дрова краще для опалення?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Для котлів та камінів найчастіше використовують дубові або грабові дрова. Вони мають високу тепловіддачу та довго горять."
-            }
-        },
-        {
-            "@type": "Question",
-            "name": "Чи можна оплатити після доставки?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Так. Ми працюємо без передоплати — оплата можлива після перевірки замовлення."
-            }
-        },
-        {
-            "@type": "Question",
-            "name": "Скільки часу займає доставка?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "По Києву доставка можлива в день замовлення. По області — протягом 24 годин."
-            }
-        },
-        {
-            "@type": "Question",
-            "name": "Які паливні брикети краще?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Брикети Pini-Kay мають високу щільність і довго горять, а брикети RUF є більш доступними за ціною."
-            }
-        },
-        {
-            "@type": "Question",
-            "name": "Чи доставляєте ви по Київській області?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Так, доставка здійснюється по Києву та всій Київській області власним транспортом."
-            }
+    const faqSchemaQuestions = faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
         }
-    ];
+    }));
 
-    const faqSchema = {
+    const faqSchema = faqs.length > 0 ? {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        "mainEntity": faqQuestions
-    };
+        "mainEntity": faqSchemaQuestions
+    } : null;
 
     const productSchema = featuredCakes.map(product => ({
         "@context": "https://schema.org",
@@ -136,25 +115,33 @@ function Home() {
         }
     }));
 
-    const combinedSchema = [homeSchema, faqSchema, ...productSchema];
+    const combinedSchema = [homeSchema, ...productSchema];
+    if (faqSchema) {
+        combinedSchema.push(faqSchema);
+    }
 
     return (
         <>
             <SEOHead
-                title={pageData?.meta_title || "Дрова, брикети та вугілля з доставкою по Києву | КиївБрикет"}
+                title={pageData?.meta_title || "Дрова, брикети та вугілля з доставкою по Києву | КиївДрова"}
                 description={pageData?.meta_description || "Купити дрова, паливні брикети та вугілля у Києві. Швидка доставка по Києву та області. Чесний складометр, оплата після отримання."}
                 canonicalUrl={`${shopConfig.domain}/`}
                 schema={combinedSchema}
             />
 
-            <HeroSection onQuickOrderClick={handleQuickOrderDefault} />
+            <HeroSection
+                onQuickOrderClick={handleQuickOrderDefault}
+                heroBadges={heroSettings.hero_badges}
+                heroTrustText={heroSettings.hero_trust_text}
+                heroImageUrl={heroSettings.hero_image_url}
+            />
             <BenefitsSection />
             <TrustBlock onOrderClick={handleQuickOrderDefault} />
             <CategoriesSection categories={categories} />
             <FuelCalculatorSection onQuickOrderClick={handleQuickOrderDefault} />
             <DeliverySection />
             <ReviewsSection />
-            <FaqSection faqs={faqQuestions} />
+            <FaqSection pageId="home" />
 
             <SeoIntroSection />
             <SeoFooterSection />

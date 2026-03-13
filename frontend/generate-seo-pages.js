@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const domain = 'https://kievbriket.com';
+const domain = 'https://kievdrova.com.ua';
 const API_BASE = process.env.VITE_API_URL || 'http://localhost:8000';
 
 const distDir = path.join(__dirname, 'dist');
@@ -116,13 +116,21 @@ async function generatePages() {
             // Generate Manual Tags using pre-fetched data
             let manualTags = '';
             const pathName = route.path;
+            const canonicalPath = pathName === '/' ? '/' : pathName + '/';
+            const canonicalUrl = `${domain}${canonicalPath}`;
 
             if (pathName === '/') {
                 manualTags = `
-                    <title>КиївБрикет — дрова, брикети та вугілля з доставкою по Києву</title>
+                    <title>КиївДрова — дрова, брикети та вугілля з доставкою по Києву</title>
                     <meta name="description" content="Купити колоті дрова, паливні брикети та кам'яне вугілля від виробника. Швидка доставка по Києву та Київській області." />
                     <link rel="canonical" href="${domain}" />
                     <meta name="robots" content="index, follow" />
+                    <meta property="og:title" content="КиївДрова — дрова, брикети та вугілля з доставкою по Києву" />
+                    <meta property="og:description" content="Купити колоті дрова, паливні брикети та кам'яне вугілля від виробника. Швидка доставка по Києву та Київській області." />
+                    <meta property="og:url" content="${domain}" />
+                    <meta property="og:image" content="${domain}/og-image.jpg" />
+                    <meta property="og:site_name" content="КиївДрова" />
+                    <meta property="og:type" content="website" />
                 `;
             } else if (pathName.startsWith('/catalog/')) {
                 const parts = pathName.split('/');
@@ -133,63 +141,63 @@ async function generatePages() {
                         const fallbackDesc = cat.seo_text ? cat.seo_text.replace(/<[^>]*>/g, '').substring(0, 160) : '';
                         if (cSlug === 'drova') {
                             manualTags = `
-                            <title>Купити дрова в Києві — колоті дрова з доставкою | КиївБрикет</title>
+                            <title>Купити дрова в Києві — колоті дрова з доставкою | КиївДрова</title>
                             <meta name="description" content="Купити дрова в Києві з доставкою. Колоті дрова: дуб, граб, акація, ясен. Чесний складометр, власний автопарк — ГАЗель, ЗІЛ, КАМАЗ. Доставка по Києву та області." />
-                            <link rel="canonical" href="${domain}${pathName}" />
+                            <link rel="canonical" href="${canonicalUrl}" />
                             <meta name="robots" content="${cat.meta_robots || 'index, follow'}" />
-                            <meta property="og:title" content="Купити дрова в Києві — колоті дрова з доставкою | КиївБрикет" />
+                            <meta property="og:title" content="Купити дрова в Києві — колоті дрова з доставкою | КиївДрова" />
                             <meta property="og:description" content="Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен. Чесний складометр." />
                             <meta property="og:image" content="${domain}${cat.og_image || cat.image_url}" />
-                            <meta property="og:url" content="${domain}${pathName}" />
+                            <meta property="og:url" content="${canonicalUrl}" />
                             <meta property="og:type" content="website" />
-                            <link rel="alternate" hreflang="uk" href="https://kievbriket.com/catalog/drova" />
-                            <link rel="alternate" hreflang="x-default" href="https://kievbriket.com/catalog/drova" />
+                            <link rel="alternate" hreflang="uk" href="https://kievdrova.com.ua/catalog/drova/" />
+                            <link rel="alternate" hreflang="x-default" href="https://kievdrova.com.ua/catalog/drova/" />
                             <meta name="twitter:card" content="summary_large_image" />
                             <meta name="twitter:title" content="Купити дрова в Києві — колоті дрова з доставкою" />
                             <meta name="twitter:description" content="Дрова дуб, граб, акація, ясен з доставкою по Києву та області." />
-                            <meta name="twitter:image" content="https://kievbriket.com/media/categories/firewood.webp" />
+                            <meta name="twitter:image" content="https://kievdrova.com.ua/media/categories/firewood.webp" />
                             <script type="application/ld+json">
 {
  "@context": "https://schema.org",
  "@type": "CollectionPage",
  "name": "Дрова",
- "url": "https://kievbriket.com/catalog/drova",
+ "url": "https://kievdrova.com.ua/catalog/drova/",
  "description": "Купити дрова в Києві з доставкою. Дуб, граб, акація, ясен.",
  "isPartOf": {
    "@type": "WebSite",
-   "name": "КиївБрикет",
-   "url": "https://kievbriket.com"
+   "name": "КиївДрова",
+   "url": "https://kievdrova.com.ua"
  }
 }
                             </script>
                         `;
                         } else if (cSlug === 'vugillya') {
                             manualTags = `
-                            <title>Купити кам'яне вугілля в Києві — ціна та доставка | КиївБрикет</title>
+                            <title>Купити кам'яне вугілля в Києві — ціна та доставка | КиївДрова</title>
                             <meta name="description" content="Купити кам'яне вугілля в Києві з доставкою. Антрацит, ДГ та інші види вугілля для котлів і печей. Швидка доставка по Києву та області." />
-                            <link rel="canonical" href="${domain}${pathName}" />
+                            <link rel="canonical" href="${canonicalUrl}" />
                             <meta name="robots" content="${cat.meta_robots || 'index, follow'}" />
-                            <meta property="og:title" content="Купити кам'яне вугілля в Києві — доставка | КиївБрикет" />
+                            <meta property="og:title" content="Купити кам'яне вугілля в Києві — доставка | КиївДрова" />
                             <meta property="og:description" content="Якісне кам'яне вугілля для котлів і печей. Доставка по Києву та області." />
-                            <meta property="og:image" content="https://kievbriket.com/media/categories/coal.webp" />
-                            <meta property="og:url" content="${domain}${pathName}" />
+                            <meta property="og:image" content="https://kievdrova.com.ua/media/categories/coal.webp" />
+                            <meta property="og:url" content="${canonicalUrl}" />
                             <meta property="og:type" content="website" />
-                            <meta property="og:site_name" content="КиївБрикет" />
+                            <meta property="og:site_name" content="КиївДрова" />
                             <meta name="twitter:card" content="summary_large_image" />
-                            <meta name="twitter:title" content="Купити кам'яне вугілля в Києві — доставка | КиївБрикет" />
+                            <meta name="twitter:title" content="Купити кам'яне вугілля в Києві — доставка | КиївДрова" />
                             <meta name="twitter:description" content="Якісне кам'яне вугілля для котлів і печей. Доставка по Києву та області." />
-                            <meta name="twitter:image" content="https://kievbriket.com/media/categories/coal.webp" />
+                            <meta name="twitter:image" content="https://kievdrova.com.ua/media/categories/coal.webp" />
                             <script type="application/ld+json">
 {
  "@context": "https://schema.org",
  "@type": "CollectionPage",
  "name": "Кам'яне вугілля",
- "url": "https://kievbriket.com/catalog/vugillya",
+ "url": "https://kievdrova.com.ua/catalog/vugillya/",
  "description": "Купити кам'яне вугілля в Києві з доставкою. Антрацит та інші види вугілля для котлів і печей.",
  "isPartOf": {
    "@type": "WebSite",
-   "name": "КиївБрикет",
-   "url": "https://kievbriket.com"
+   "name": "КиївДрова",
+   "url": "https://kievdrova.com.ua"
  }
 }
                             </script>
@@ -198,11 +206,11 @@ async function generatePages() {
                             manualTags = `
                                 <title>${cat.meta_title || `${cat.name} — купити з доставкою по Києву`}</title>
                                 <meta name="description" content="${cat.meta_description || fallbackDesc}" />
-                                <link rel="canonical" href="${domain}${pathName}" />
+                                <link rel="canonical" href="${canonicalUrl}" />
                                 <meta name="robots" content="${cat.meta_robots || 'index, follow'}" />
                                 <meta property="og:title" content="${cat.meta_title || cat.name}" />
                                 <meta property="og:image" content="${domain}${cat.og_image || cat.image_url}" />
-                                <meta property="og:url" content="${domain}${pathName}" />
+                                <meta property="og:url" content="${canonicalUrl}" />
                                 <meta property="og:type" content="website" />
                             `;
                             if (cat.schema_json) {
@@ -219,7 +227,7 @@ async function generatePages() {
                         const fallbackDesc = prod.description ? prod.description.replace(/<[^>]*>/g, '').substring(0, 160) : '';
                         const metaTitle = prod.meta_title || `${prod.name} — купити в Києві`;
                         const metaDesc = prod.meta_description || fallbackDesc;
-                        const pageUrl = `${domain}${pathName}`;
+                        const pageUrl = `${canonicalUrl}`;
 
                         // Image: always use main domain, never API domain
                         const rawImg = prod.primary_image || prod.image_url || '/og-image.jpg';
@@ -239,7 +247,7 @@ async function generatePages() {
 ${cSlug === 'drova' ? '                            <meta property="og:locale" content="uk_UA" />\n                            <meta property="og:locale:alternate" content="ru_UA" />\n' : ''}\
                             <meta property="og:url" content="${pageUrl}" />
                             <meta property="og:type" content="product" />
-                            <meta property="og:site_name" content="КиївБрикет" />
+                            <meta property="og:site_name" content="КиївДрова" />
 ${prod.price ? `                            <meta property="product:price:amount" content="${prod.price}" />\n                            <meta property="product:price:currency" content="UAH" />\n                            <meta property="product:availability" content="in stock" />\n` : ''}\
                             <meta name="twitter:card" content="summary_large_image" />
                             <meta name="twitter:title" content="${metaTitle}" />
@@ -268,7 +276,7 @@ ${prod.price ? `                            <meta property="product:price:amount
                             "description": metaDesc.substring(0, 300),
                             "image": productImage,
                             "url": pageUrl,
-                            "brand": { "@type": "Brand", "name": "КиївБрикет", "logo": "https://kievbriket.com/kievbriket.svg" },
+                            "brand": { "@type": "Brand", "name": "КиївДрова", "logo": "https://kievdrova.com.ua/kievdrova.svg" },
                             "sku": prod.slug,
                             "mpn": prod.slug,
                             "aggregateRating": {
@@ -308,7 +316,7 @@ ${prod.price ? `                            <meta property="product:price:amount
                                     "price": prod.price,
                                     "priceCurrency": "UAH"
                                 },
-                                "seller": { "@type": "Organization", "name": "КиївБрикет" }
+                                "seller": { "@type": "Organization", "name": "КиївДрова" }
                             };
                             // Removed invalid shippingDetails with shippingRate
                         }
@@ -332,9 +340,9 @@ ${prod.price ? `                            <meta property="product:price:amount
 
                         schemas.push({
                             "@type": "LocalBusiness",
-                            "name": "КиївБрикет",
-                            "url": "https://kievbriket.com",
-                            "logo": "https://kievbriket.com/kievbriket.svg",
+                            "name": "КиївДрова",
+                            "url": "https://kievdrova.com.ua",
+                            "logo": "https://kievdrova.com.ua/kievdrova.svg",
                             "telephone": "+380991234567",
                             "priceRange": "$$",
                             "address": {
@@ -351,9 +359,9 @@ ${prod.price ? `                            <meta property="product:price:amount
 
                         schemas.push({
                             "@type": "Organization",
-                            "name": "КиївБрикет",
-                            "url": "https://kievbriket.com",
-                            "logo": "https://kievbriket.com/kievbriket.svg",
+                            "name": "КиївДрова",
+                            "url": "https://kievdrova.com.ua",
+                            "logo": "https://kievdrova.com.ua/kievdrova.svg",
                             "contactPoint": {
                                 "@type": "ContactPoint",
                                 "telephone": "+380991234567",
@@ -372,17 +380,23 @@ ${prod.price ? `                            <meta property="product:price:amount
                 }
             } else if (pathName === '/dostavka') {
                 manualTags = `
-                    <title>Доставка дров по Києву — брикети та вугілля | КиївБрикет</title>
+                    <title>Доставка дров по Києву — брикети та вугілля | КиївДрова</title>
                     <meta name="description" content="Доставка дров, паливних брикетів та вугілля по Києву та області. Власний автопарк, доставка в день замовлення." />
-                    <link rel="canonical" href="${domain}${pathName}" />
+                    <link rel="canonical" href="${canonicalUrl}" />
                     <meta name="robots" content="index, follow" />
+                    <meta property="og:title" content="Доставка дров по Києву — брикети та вугілля | КиївДрова" />
+                    <meta property="og:description" content="Доставка дров, паливних брикетів та вугілля по Києву та області. Власний автопарк, доставка в день замовлення." />
+                    <meta property="og:url" content="${canonicalUrl}" />
+                    <meta property="og:image" content="${domain}/og-image.jpg" />
+                    <meta property="og:site_name" content="КиївДрова" />
+                    <meta property="og:type" content="website" />
                 `;
             } else if (pathName === '/contacts' || pathName === '/kontakty') {
                 const contactsSchema = JSON.stringify({
                     "@context": "https://schema.org",
                     "@type": "LocalBusiness",
-                    "name": "КиївБрикет",
-                    "url": "https://kievbriket.com",
+                    "name": "КиївДрова",
+                    "url": "https://kievdrova.com.ua",
                     "telephone": "+380991234567",
                     "address": {
                         "@type": "PostalAddress",
@@ -397,10 +411,16 @@ ${prod.price ? `                            <meta property="product:price:amount
                     }
                 });
                 manualTags = `
-                    <title>Контакти КиївБрикет — телефон, адреса, доставка дров у Києві</title>
-                    <meta name="description" content="Контакти інтернет-магазину твердого палива КиївБрикет. Адреса, телефон, графік роботи." />
-                    <link rel="canonical" href="${domain}/contacts" />
+                    <title>Контакти КиївДрова — телефон, адреса, доставка дров у Києві</title>
+                    <meta name="description" content="Контакти інтернет-магазину твердого палива КиївДрова. Адреса, телефон, графік роботи." />
+                    <link rel="canonical" href="${canonicalUrl}" />
                     <meta name="robots" content="index, follow" />
+                    <meta property="og:title" content="Контакти КиївДрова — телефон, адреса, доставка дров у Києві" />
+                    <meta property="og:description" content="Контакти інтернет-магазину твердого палива КиївДрова. Адреса, телефон, графік роботи." />
+                    <meta property="og:url" content="${canonicalUrl}" />
+                    <meta property="og:image" content="${domain}/og-image.jpg" />
+                    <meta property="og:site_name" content="КиївДрова" />
+                    <meta property="og:type" content="website" />
                     <script type="application/ld+json">${contactsSchema}</script>
                 `;
             }

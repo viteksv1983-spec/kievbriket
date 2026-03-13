@@ -1,0 +1,13 @@
+PassengerEnabled on
+PassengerAppType wsgi
+PassengerStartupFile passenger_wsgi.py
+
+RewriteEngine On
+
+# Ensure Passenger DOES NOT intercept requests for existing physical files 
+# (This allows Apache/Nginx to serve index.html, assets, and images directly)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# For all other requests, let Passenger (FastAPI) handle them
+# This covers React CSR routing and API endpoints.

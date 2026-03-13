@@ -205,10 +205,11 @@ export function SiteHeader({ onQuickOrderClick }) {
                     transition: "background 0.3s, border-color 0.3s, backdrop-filter 0.3s",
                     background: scrolled ? "var(--color-bg-overlay)" : "transparent",
                     backdropFilter: scrolled ? "blur(12px)" : "none",
-                    borderBottom: scrolled ? "1px solid var(--color-border-subtle)" : "1px solid transparent",
+                    borderBottom: scrolled ? "1px solid rgba(249,115,22,0.15)" : "1px solid transparent",
+                    boxShadow: scrolled ? "0 4px 30px rgba(249,115,22,0.05)" : "none",
                 }}
             >
-                <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 1.25rem", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+                <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 1.25rem", height: 64, display: "flex", alignItems: "center", justifyContent: location.pathname === "/login" ? "center" : "space-between", gap: 16 }}>
                     {/* Logo */}
                     <Link to="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
                         <span style={{
@@ -223,68 +224,76 @@ export function SiteHeader({ onQuickOrderClick }) {
                         </span>
                         <span style={{ lineHeight: 1 }}>
                             <span style={{ display: "block", fontWeight: 900, fontSize: "1.2rem", letterSpacing: "-0.03em" }}>
-                                <span style={{ color: "#ffffff" }}>Київ</span><span style={{ color: "#F97316" }}>Брикет</span>
+                                <span style={{ color: "#ffffff" }}>Київ</span><span style={{ color: "#F97316" }}>Дрова</span>
                             </span>
                             <span style={{ display: "block", fontSize: "0.62rem", color: "rgba(255,255,255,0.65)", letterSpacing: "0.04em", marginTop: 1 }}>
-                                ТОВ «Київ Брикет»
+                                ТОВ «Київ Дрова»
                             </span>
                         </span>
                     </Link>
 
                     {/* Desktop nav */}
-                    <nav style={{ display: "flex", alignItems: "center", gap: 32 }} className="desktop-only">
-                        {links.map((l) => (
-                            <Link
-                                key={l.to + l.label}
-                                to={l.to}
-                                className={`nh-nav-link${location.pathname === l.to ? " active" : ""}`}
-                            >
-                                {l.label}
-                                <span className="underline-bar" />
-                            </Link>
-                        ))}
-                    </nav>
+                    {location.pathname !== "/login" && (
+                        <nav style={{ display: "flex", alignItems: "center", gap: 32 }} className="desktop-only">
+                            {links.map((l) => (
+                                <Link
+                                    key={l.to + l.label}
+                                    to={l.to}
+                                    className={`nh-nav-link${location.pathname === l.to ? " active" : ""}`}
+                                >
+                                    {l.label}
+                                    <span className="underline-bar" />
+                                </Link>
+                            ))}
+                        </nav>
+                    )}
 
                     {/* Desktop right */}
                     <div className="desktop-only" style={{ alignItems: "center", gap: 20 }}>
-                        <a href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`} className="nh-nav-phone">
-                            <Phone size={14} color="#F97316" />
-                            {shopConfig.contact.phone}
-                        </a>
-                        <button onClick={onQuickOrderClick} className="nh-btn-primary" style={{ padding: "10px 22px", fontSize: "0.875rem" }}>
-                            Замовити
-                        </button>
+                        {location.pathname !== "/login" && (
+                            <>
+                                <a href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`} className="nh-nav-phone">
+                                    <Phone size={14} color="#F97316" />
+                                    {shopConfig.contact.phone}
+                                </a>
+                                <button onClick={onQuickOrderClick} className="nh-btn-primary" style={{ padding: "10px 22px", fontSize: "0.875rem" }}>
+                                    Замовити
+                                </button>
+                            </>
+                        )}
                     </div>
 
                     {/* Mobile: phone shortcut + burger */}
-                    <div className="mobile-only" style={{ alignItems: "center", gap: 6 }}>
-                        <a
-                            href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`}
-                            aria-label="Зателефонувати"
-                            style={{
-                                width: 40, height: 40, borderRadius: 10,
-                                background: "rgba(249,115,22,0.1)",
-                                border: "1px solid rgba(249,115,22,0.2)",
-                                display: "flex", alignItems: "center", justifyContent: "center",
-                                textDecoration: "none",
-                            }}
-                        >
-                            <Phone size={18} color="#F97316" />
-                        </a>
-                        <button
-                            onClick={() => setOpen(!open)}
-                            style={{
-                                width: 40, height: 40, borderRadius: 10,
-                                background: open ? "rgba(249,115,22,0.15)" : "rgba(255,255,255,0.06)",
-                                border: "1px solid rgba(255,255,255,0.1)",
-                                display: "flex", alignItems: "center", justifyContent: "center",
-                                cursor: "pointer", transition: "background 0.2s",
-                            }}
-                            aria-label="Меню"
-                        >
-                            {open ? <X size={20} color="#F97316" /> : <Menu size={20} color="#fff" />}
-                        </button>
-                    </div>
+                    {location.pathname !== "/login" && (
+                        <div className="mobile-only" style={{ alignItems: "center", gap: 6 }}>
+                            <a
+                                href={`tel:${shopConfig.contact.phone.replace(/[^0-9+]/g, '')}`}
+                                aria-label="Зателефонувати"
+                                style={{
+                                    width: 40, height: 40, borderRadius: 10,
+                                    background: "rgba(249,115,22,0.1)",
+                                    border: "1px solid rgba(249,115,22,0.2)",
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                    textDecoration: "none",
+                                }}
+                            >
+                                <Phone size={18} color="#F97316" />
+                            </a>
+                            <button
+                                onClick={() => setOpen(!open)}
+                                style={{
+                                    width: 40, height: 40, borderRadius: 10,
+                                    background: open ? "rgba(249,115,22,0.15)" : "rgba(255,255,255,0.06)",
+                                    border: "1px solid rgba(255,255,255,0.1)",
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                    cursor: "pointer", transition: "background 0.2s",
+                                }}
+                                aria-label="Меню"
+                            >
+                                {open ? <X size={20} color="#F97316" /> : <Menu size={20} color="#fff" />}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </header>
 

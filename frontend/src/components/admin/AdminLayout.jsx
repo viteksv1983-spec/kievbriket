@@ -323,6 +323,54 @@ export default function AdminLayout() {
           )}
 
           <Link
+            to="/admin/hero"
+            onClick={() => setIsSidebarOpen(false)}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/hero")
+              ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium"
+              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+          >
+            <FiHome className="w-5 h-5" />
+            <span>Головна</span>
+          </Link>
+
+          <Link
+            to="/admin/delivery"
+            onClick={() => setIsSidebarOpen(false)}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/delivery")
+              ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium"
+              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+          >
+            <FiPackage className="w-5 h-5" />
+            <span>Транспорт (Доставка)</span>
+          </Link>
+
+          <Link
+            to="/admin/reviews"
+            onClick={() => setIsSidebarOpen(false)}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/reviews")
+              ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium"
+              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+          >
+            <FiMessageCircle className="w-5 h-5" />
+            <span>Відгуки</span>
+          </Link>
+
+          <Link
+            to="/admin/faqs"
+            onClick={() => setIsSidebarOpen(false)}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/faqs")
+              ? "bg-orange-500 text-white shadow-md shadow-orange-100 font-medium"
+              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+          >
+            <FiLayers className="w-5 h-5" />
+            <span>FAQ (Питання)</span>
+          </Link>
+
+          <Link
             to="/admin/telegram"
             onClick={() => setIsSidebarOpen(false)}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive("/admin/telegram")

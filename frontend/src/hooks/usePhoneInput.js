@@ -91,5 +91,7 @@ export function usePhoneInput(initialValue = '') {
 
     const resetPhone = useCallback(() => setDigits(''), []);
 
-    return { phoneValue, phoneProps, rawPhone: phoneValue, setPhone, resetPhone, digits };
+    const isValid = /^0(39|50|63|66|67|68|73|89|91|92|93|94|95|96|97|98|99)\d{7}$/.test(digits);
+
+    return { phoneValue, phoneProps, rawPhone: phoneValue, setPhone, resetPhone, digits, isValid };
 }

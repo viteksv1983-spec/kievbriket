@@ -15,14 +15,11 @@ logger = logging.getLogger("cakeshop.orders")
 # Explicit, no state machine library needed.
 
 ALLOWED_TRANSITIONS = {
-    "new":       ["confirmed", "cancelled"],
-    "confirmed": ["paid", "cancelled"],
-    "paid":      ["shipped", "cancelled"],
-    "shipped":   ["completed"],
-    "completed": [],        # terminal
-    "cancelled": [],        # terminal
-    # Legacy support
-    "pending":   ["confirmed", "paid", "shipped", "completed", "cancelled", "new"],
+    "new":       ["pending", "processing", "completed", "cancelled"],
+    "pending":   ["processing", "completed", "cancelled", "new"],
+    "processing": ["completed", "cancelled", "pending"],
+    "completed": ["processing", "cancelled"], 
+    "cancelled": ["pending", "processing"],
 }
 
 
@@ -116,7 +113,10 @@ class OrderService:
         ).options(joinedload(models.Order.items).joinedload(models.OrderItem.product))
         
         if status:
-            query = query.filter(models.Order.status == status)
+            if status == "pending":
+                query = query.filter(models.Order.status.in_(["pending", "new"]))
+            else:
+                query = query.filter(models.Order.status == status)
             
         if not pagination.sort:
             query = query.order_by(models.Order.id.desc())
@@ -144,7 +144,8 @@ class OrderService:
             order_id=order_id,
             old_status=old_status,
             new_status=new_status,
-            comment=comment
+            comment=comment,
+            changed_at=datetime.utcnow()
         )
         db.add(history)
         

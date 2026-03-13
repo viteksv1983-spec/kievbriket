@@ -23,8 +23,13 @@ export default function SEOHead({ title, description, ogDescription, keywords, h
                     setSeoData(response.data);
                 }
             } catch (error) {
-                // Fail silently, fallback to defaults
-                console.log("No specific SEO data for this route");
+                // Fail silently for SEO misses (404 expected if no custom SEO override is defined)
+                // We use error.response?.status to avoid throwing the raw error to the console
+                if (error.response && error.response.status === 404) {
+                    // Purposefully hidden to keep console clean in PageSpeed Insights
+                } else {
+                    console.log("No specific SEO data for this route");
+                }
             }
         };
 
@@ -43,8 +48,8 @@ export default function SEOHead({ title, description, ogDescription, keywords, h
     const pathForCanonical = canonical || location.pathname;
     // We must strictly enforce NO trailing slashes for canonical URLs
     let formattedPath = pathForCanonical;
-    if (formattedPath !== '/' && formattedPath.endsWith('/')) {
-        formattedPath = formattedPath.slice(0, -1);
+    if (formattedPath !== '/' && !formattedPath.endsWith('/')) {
+        formattedPath = formattedPath + '/';
     }
 
     const currentFullUrl = formattedPath.startsWith('http')

@@ -134,18 +134,29 @@
 
 @media (max-width: 479px) {
   .new-home-scope {
-    --s-section: 4rem;
-    --s-header: 2.25rem;
-    --s-block: 1.5rem;
-    --s-element: 1rem;
-    --s-tight: 0.5rem;
+    --s-section: 2.5rem;
+    --s-header: 1.5rem;
+    --s-block: 1rem;
+    --s-element: 0.75rem;
+    --s-tight: 0.375rem;
   }
 }
 
 @media (min-width: 480px) and (max-width: 767px) {
   .new-home-scope {
-    --s-section: 5rem;
-    --s-header: 3rem;
+    --s-section: 3.5rem;
+    --s-header: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .new-home-scope > section,
+  .new-home-scope section[style] {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+  .new-home-scope .faq-mobile-section {
+    padding-bottom: 40px !important;
   }
 }
 

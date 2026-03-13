@@ -122,7 +122,7 @@ def update_order_status(order_id: int, status_update: dict, db: Session = Depend
     status = status_update.get("status")
     if not status:
         raise HTTPException(status_code=400, detail="Status is required")
-    db_order = OrderService.update_order_status(db, order_id=order_id, status=status)
+    db_order = OrderService.update_order_status(db, order_id=order_id, new_status=status)
     if not db_order:
         raise HTTPException(status_code=404, detail="Order not found")
     return db_order

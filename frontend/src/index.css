@@ -99,6 +99,31 @@ img {
     .product-info-grid {
         grid-template-columns: 1fr !important;
     }
+
+    /* Reset explicit grid positions so items just stack */
+    .product-info-grid > * {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
+
+    /* FAQ inner grid: 1 column on mobile */
+    .product-info-grid ~ .nh-card > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* FAQ 2-col grid → 1 column on mobile (full-width FAQ block) */
+@media (max-width: 768px) {
+    .faq-mobile-h2 + div {
+        grid-template-columns: 1fr !important;
+    }
+}
+/* Trust block: 1 item per row on mobile */
+@media (max-width: 768px) {
+    .trust-block {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
 }
 
 /* Fix mobile alignment issues: Center headlines and fix padding */
@@ -225,10 +250,6 @@ img {
         grid-template-columns: 1fr !important;
     }
 
-    .product-card-image {
-        height: 220px !important;
-    }
-
     .catalog-card>div:last-child {
         align-items: flex-start !important;
         text-align: left !important;
@@ -255,24 +276,46 @@ img {
     }
 
     .catalog-card-btn,
-    .nh-btn-primary {
+    .catalog-card .nh-btn-primary,
+    .product-card-body .nh-btn-primary {
         width: auto !important;
         text-align: center !important;
-        padding: 10px 16px !important;
-        font-size: 0.9rem !important;
+        padding: 12px 30px !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
         margin-left: auto !important;
         flex-shrink: 0;
+    }
+
+    .catalog-card .out-of-stock-btn,
+    .product-card-body .out-of-stock-btn {
+        width: 100% !important;
+        padding: 14px 20px !important;
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        border-radius: 10px !important;
+        white-space: normal !important;
+        letter-spacing: normal !important;
+        margin-top: 5px !important;
+        margin-left: 0 !important;
     }
 }
 
 
-/* Fix mobile display for popular queries bubbles */
 .queries-scroll-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 0.5rem;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.queries-scroll-container::-webkit-scrollbar {
+    display: none;
 }
 
 .query-bubble {
@@ -299,5 +342,25 @@ img {
     .queries-scroll-container {
         padding-left: 0;
         padding-right: 0;
+    }
+}
+
+/* KyivMap Responsive Sizing */
+.kyiv-map-svg {
+    width: 100%;
+    height: 100%;
+    transform-origin: center center;
+    transform: scale(1.15); /* Default scale for desktop */
+}
+
+@media (max-width: 991px) {
+    .kyiv-map-svg {
+        transform: scale(1.05); /* Slightly smaller on tablets */
+    }
+}
+
+@media (max-width: 479px) {
+    .kyiv-map-svg {
+        transform: scale(1.15) translateY(-5%); /* Slightly scaled for mobile without wide shifts that go off screen, move up slightly to center */
     }
 }

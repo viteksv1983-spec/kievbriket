@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Critical path (Home is the landing page)
 import Home from './components/Home';
 import ScrollToTop from './components/ScrollToTop';
+import ScrollToTopButton from './components/ScrollToTopButton';
 import NotFound from './components/NotFound';
 // Critical SEO and Public Pages — statically imported to support SSR/SSG without Suspense fallback mismatch
 import Catalog from './components/Catalog';
@@ -34,14 +35,19 @@ const CategoryManager = React.lazy(() => import('./components/admin/CategoryMana
 const SEOPages = React.lazy(() => import('./components/admin/SEOPages'));
 const TelegramSettings = React.lazy(() => import('./components/admin/TelegramSettings'));
 const SiteSettingsPage = React.lazy(() => import('./components/admin/SiteSettingsPage'));
+const HeroSettingsPage = React.lazy(() => import('./components/admin/HeroSettingsPage'));
+const ReviewSettings = React.lazy(() => import('./components/admin/ReviewSettings'));
+const FaqSettings = React.lazy(() => import('./components/admin/FaqSettings'));
 const UsersManager = React.lazy(() => import('./components/admin/UsersManager'));
 const MyProfile = React.lazy(() => import('./components/admin/MyProfile'));
+const DeliverySettingsPage = React.lazy(() => import('./components/admin/DeliverySettingsPage'));
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
         <ScrollToTop />
+        <ScrollToTopButton />
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-[#A0153E] border-t-transparent rounded-full animate-spin" /></div>}>
           <Routes>
             <Route element={<PublicLayout />}>
@@ -74,6 +80,10 @@ function App() {
                 <Route path="categories" element={<CategoryManager />} />
                 <Route path="telegram" element={<TelegramSettings />} />
                 <Route path="settings" element={<SiteSettingsPage />} />
+                <Route path="hero" element={<HeroSettingsPage />} />
+                <Route path="delivery" element={<DeliverySettingsPage />} />
+                <Route path="reviews" element={<ReviewSettings />} />
+                <Route path="faqs" element={<FaqSettings />} />
                 <Route path="users" element={<UsersManager />} />
                 <Route path="profile" element={<MyProfile />} />
               </Route>

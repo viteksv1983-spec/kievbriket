@@ -65,19 +65,7 @@ export function CtaBanner() {
             >
                 <div className={`reveal ${visible ? "visible" : ""}`} style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
 
-                    <div
-                        className="nh-badge"
-                        style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: 6,
-                            marginBottom: 28,
-                        }}
-                    >
-                        <Flame size={13} />
-                        Пропозиція обмежена · Зима 2025/26
-                    </div>
+
 
                     <h2
                         style={{
@@ -161,21 +149,7 @@ export function CtaBanner() {
                         </a>
                     </div>
 
-                    {/* Urgency micro-text */}
-                    <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-                        <span style={{
-                            display: 'inline-block',
-                            width: 7, height: 7,
-                            borderRadius: '50%',
-                            background: 'var(--c-orange)',
-                            boxShadow: '0 0 8px var(--c-orange)',
-                            animation: 'ctaPulse 2s ease-in-out infinite',
-                            flexShrink: 0,
-                        }} />
-                        <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.55)', fontWeight: 500 }}>
-                            Сьогодні ще доступна доставка
-                        </span>
-                    </div>
+
 
                 </div>
             </div>

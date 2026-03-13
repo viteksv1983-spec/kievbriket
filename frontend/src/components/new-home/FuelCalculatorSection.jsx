@@ -99,6 +99,7 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
     const [fuel, setFuel] = useState(defaultFuelType);
     const [result, setResult] = useState(null);
     const [panelState, setPanelState] = useState(PANEL_PREVIEW);
+    const [areaError, setAreaError] = useState('');
     const [currentPrices, setCurrentPrices] = useState(FUEL_CONVERSION);
     const resultRef = useRef(null);
 
@@ -124,7 +125,15 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
 
     const handleCalculate = () => {
         const numArea = parseInt(area, 10);
-        if (!numArea || numArea < 10 || numArea > 1000) return;
+        if (!numArea || isNaN(numArea)) {
+            setAreaError('Введіть площу будинку');
+            return;
+        }
+        if (numArea < 30 || numArea > 500) {
+            setAreaError('Вкажіть площу від 30 до 500 м²');
+            return;
+        }
+        setAreaError('');
 
         // Phase 1: Loading
         setPanelState(PANEL_LOADING);
@@ -193,13 +202,18 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
                                     type="number"
                                     className="calc-input"
                                     placeholder="120"
-                                    min="10"
-                                    max="1000"
+                                    min="30"
+                                    max="500"
                                     value={area}
-                                    onChange={(e) => setArea(e.target.value)}
+                                    onChange={(e) => { setArea(e.target.value); setAreaError(''); }}
                                     onKeyDown={handleKeyDown}
+                                    style={areaError ? { borderColor: '#ef4444', boxShadow: '0 0 0 3px rgba(239,68,68,0.15)' } : {}}
                                 />
-                                <span className="calc-hint">Від 30 до 500 м²</span>
+                                {areaError ? (
+                                    <span className="calc-hint" style={{ color: '#ef4444', fontWeight: 600 }}>{areaError}</span>
+                                ) : (
+                                    <span className="calc-hint">Від 30 до 500 м²</span>
+                                )}
                             </div>
 
                             {/* Heating type */}
@@ -278,12 +292,13 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
                             {/* ── STATE 1: Preview ── */}
                             {panelState === PANEL_PREVIEW && (
                                 <div className="calc-panel-state calc-preview">
-                                    {/* Icon */}
-                                    <div className="calc-preview-icon">
-                                        <Calculator size={28} />
+                                    {/* Header: Icon + Title */}
+                                    <div className="calc-preview-header-wrap">
+                                        <div className="calc-preview-icon">
+                                            <Calculator size={28} />
+                                        </div>
+                                        <p className="calc-preview-title">Приклад розрахунку</p>
                                     </div>
-
-                                    <p className="calc-preview-title">Приклад розрахунку</p>
 
                                     {/* Example params */}
                                     <div className="calc-preview-params">
@@ -428,7 +443,7 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
                 {/* ── SEO hidden text ── */}
                 <div
                     className={`reveal ${visible ? 'visible' : ''}`}
-                    style={{ marginTop: 'var(--s-block)', maxWidth: 840 }}
+                    style={{ marginTop: 'var(--s-block)' }}
                 >
                     <h3 className="h3" style={{ marginBottom: 12, fontSize: '1rem' }}>
                         Скільки дров потрібно на опалення будинку
@@ -604,6 +619,13 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
                 /* ══════════════════════════════════════════
                    PREVIEW state
                    ══════════════════════════════════════════ */
+                .calc-preview-header-wrap {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    margin-bottom: 20px;
+                }
+
                 .calc-preview-icon {
                     width: 64px; height: 64px;
                     border-radius: 18px;
@@ -613,15 +635,15 @@ export function FuelCalculatorSection({ onQuickOrderClick, defaultFuelType = 'dr
                     align-items: center;
                     justify-content: center;
                     color: var(--c-orange);
-                    margin-bottom: 20px;
                     box-shadow: 0 0 24px rgba(249,115,22,0.10);
+                    flex-shrink: 0;
                 }
 
                 .calc-preview-title {
                     font-size: 1.25rem;
                     font-weight: 650;
                     color: var(--c-text);
-                    margin: 0 0 20px;
+                    margin: 0;
                 }
 
                 .calc-preview-params {

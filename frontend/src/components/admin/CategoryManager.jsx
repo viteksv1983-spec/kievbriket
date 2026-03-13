@@ -17,7 +17,7 @@ export default function CategoryManager() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     // Form state for Add/Edit
-    const emptyForm = { slug: '', name: '', description: '', seo_text: '', meta_title: '', meta_description: '', seo_h1: '', og_title: '', og_description: '', og_image: '', is_indexable: true, canonical_url: '' };
+    const emptyForm = { slug: '', name: '', description: '', seo_text: '', label_text: '', is_available: true, meta_title: '', meta_description: '', seo_h1: '', og_title: '', og_description: '', og_image: '', is_indexable: true, canonical_url: '' };
     const [formData, setFormData] = useState(emptyForm);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSeo, setShowSeo] = useState(false);
@@ -148,6 +148,8 @@ export default function CategoryManager() {
             name: cat.name,
             description: cat.description || '',
             seo_text: cat.seo_text || '',
+            label_text: cat.label_text || '',
+            is_available: cat.is_available !== false,
             meta_title: cat.meta_title || '',
             meta_description: cat.meta_description || '',
             seo_h1: cat.seo_h1 || '',
@@ -243,6 +245,30 @@ export default function CategoryManager() {
                                     value={formData.description}
                                     onChange={e => setFormData({ ...formData, description: e.target.value })}
                                 />
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Лейбл на картці (Хіт продажу, тощо)</label>
+                                    <input
+                                        type="text"
+                                        className="w-full px-3 py-2 border rounded-xl"
+                                        placeholder="Наприклад: В наявності"
+                                        value={formData.label_text || ''}
+                                        onChange={e => setFormData({ ...formData, label_text: e.target.value })}
+                                    />
+                                </div>
+                                <div className="flex items-center mt-6">
+                                    <label className="flex items-center gap-3 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            className="w-5 h-5 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+                                            checked={formData.is_available}
+                                            onChange={e => setFormData({ ...formData, is_available: e.target.checked })}
+                                        />
+                                        <span className="text-sm font-bold text-gray-700">Відображати на сайті (В наявності)</span>
+                                    </label>
+                                </div>
                             </div>
 
                             <div>
@@ -382,6 +408,17 @@ export default function CategoryManager() {
                             ) : (
                                 <div className="text-xs text-orange-500 flex items-center gap-1 mb-4 font-bold bg-orange-50 w-fit px-2 py-1 rounded"><FiX /> SEO-текст відсутній</div>
                             )}
+                            
+                            <div className="flex gap-2 mb-4">
+                                {cat.is_available === false ? (
+                                    <span className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold">Немає в наявності</span>
+                                ) : (
+                                    <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">В наявності</span>
+                                )}
+                                {cat.label_text && (
+                                    <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-bold font-mono">"{cat.label_text}"</span>
+                                )}
+                            </div>
 
                             {/* Actions */}
                             <div className="flex flex-wrap items-center gap-2 mt-auto pt-4 border-t border-gray-100">

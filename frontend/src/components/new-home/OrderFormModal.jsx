@@ -5,10 +5,16 @@ import { usePhoneInput } from "../../hooks/usePhoneInput";
 
 const fuelOptions = ["Дрова", "Паливні брикети", "Вугілля", "Декілька видів"];
 
-export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }) {
-    const [form, setForm] = useState({ name: "", fuel: "", message: "", quantity: 1 });
-    const { phoneValue, phoneProps, rawPhone, resetPhone, digits: phoneDigits } = usePhoneInput();
+export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef, initialQuantity = 1 }) {
+    const [form, setForm] = useState({ name: "", fuel: "", message: "", quantity: initialQuantity });
+    const { phoneValue, phoneProps, rawPhone, resetPhone, digits: phoneDigits, isValid } = usePhoneInput();
     const [status, setStatus] = useState("idle");
+
+    useEffect(() => {
+        if (isOpen && !defaultRef?.isFromCalculator) {
+            setForm(prev => ({ ...prev, quantity: initialQuantity }));
+        }
+    }, [isOpen, initialQuantity, defaultRef]);
 
     const setField = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
 
@@ -26,7 +32,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
             // Reset form when closed
             setTimeout(() => {
                 setStatus("idle");
-                setForm({ name: "", fuel: "", message: "", quantity: 1 });
+                setForm({ name: "", fuel: "", message: "", quantity: initialQuantity });
                 resetPhone();
             }, 300);
         } else if (isOpen && defaultRef && defaultRef.isFromCalculator) {
@@ -51,8 +57,8 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
     const submit = async (e) => {
         e.preventDefault();
 
-        if (phoneDigits.length < 10) {
-            alert("Будь ласка, введіть повний номер телефону (наприклад: +380 50 123 45 67).");
+        if (!isValid) {
+            alert("Будь ласка, введіть дійсний номер телефону (наприклад: +380 50 123 45 67).");
             return;
         }
 
@@ -77,7 +83,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
 
             await api.post('/orders/quick', payload);
             setStatus("success");
-            setForm({ name: "", fuel: "", message: "", quantity: 1 });
+            setForm({ name: "", fuel: "", message: "", quantity: initialQuantity });
             resetPhone();
         } catch (error) {
             console.error("Order submission failed:", error);
@@ -190,7 +196,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
                 ) : (
                     <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                         <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#fff", marginBottom: 2, paddingRight: 32 }}>
-                            Залишити заявку
+                            {product && product.is_available === false ? "Повідомити про появу" : "Залишити заявку"}
                         </h3>
                         <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.50)", marginBottom: 0 }}>
                             Передзвонимо протягом 15 хвилин.
@@ -206,7 +212,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
                                 <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>Ваше ім'я</label>
                                 <input
                                     type="text"
-                                    placeholder="Іван"
+                                    placeholder="Ім'я"
                                     value={form.name}
                                     onChange={setField("name")}
                                     style={inputStyle}
@@ -237,7 +243,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
                             </div>
                         ) : (
                             <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                                <label htmlFor="ofm-fuel" style={{ fontSize: "0.8rem", fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>Тип палива</label>
+                                <label htmlFor="ofm-fuel" style={{ fontSize: "0.8rem", fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>Тип палива (необов'язково)</label>
                                 <select
                                     id="ofm-fuel"
                                     value={form.fuel}
@@ -318,7 +324,7 @@ export function OrderFormModal({ isOpen, onClose, product, variant, defaultRef }
                             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 28px rgba(249,115,22,0.45), 0 8px 24px rgba(0,0,0,0.30)"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 18px rgba(249,115,22,0.25)"; }}
                         >
-                            {status === "loading" ? <><Loader2 size={16} className="animate-spin" /> Надсилаємо...</> : "Замовити"}
+                            {status === "loading" ? <><Loader2 size={16} className="animate-spin" /> Надсилаємо...</> : (product && product.is_available === false ? "Повідомити" : "Замовити")}
                         </button>
 
                         <p style={{ fontSize: "0.74rem", color: "rgba(255,255,255,0.30)", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>

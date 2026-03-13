@@ -52,9 +52,17 @@ export const getImageUrl = (imagePath, baseURL) => {
 
     // If baseURL is just '/api' (local Vite proxy), we need the real host for images
     // In production, envApiUrl (e.g. https://kievbriket-api.onrender.com) is the real backend URL.
+    // On shared hosting, images are served from the same origin (no separate port).
     let base = baseURL;
-    if (!base || base === '/api') {
-        base = envApiUrl || `http://${hostFallback}:8000`;
+    if (!base || base === '/api' || base === '/api/v1') {
+        if (envApiUrl) {
+            base = envApiUrl;
+        } else if (typeof window !== 'undefined' && window.location) {
+            // On production hosting, use same origin (no port 8000!)
+            base = window.location.origin;
+        } else {
+            base = `http://${hostFallback}:8000`;
+        }
     }
 
     // Ensure no double slashes between base and path

@@ -40,6 +40,79 @@ app = FastAPI(
     version=settings.app_version,
 )
 
+# ─── Temporary Diagnostic Endpoint ──────────────────────────
+import sqlite3 as _sqlite3
+from fastapi.responses import JSONResponse as _JSONResponse
+
+@app.get("/api/v1/diag")
+
+@app.get("/api/v1/routes")
+def _list_routes():
+    routes = []
+    for route in app.routes:
+        if hasattr(route, "path"):
+            routes.append({"path": route.path, "name": getattr(route, "name", "")})
+    return routes
+
+@app.get("/api/v1/diag")
+def _diag_endpoint():
+    """Temporary diagnostic: check UID, DB ownership, write capability."""
+    import pwd as _pwd
+    from backend.src.core.database import SQLALCHEMY_DATABASE_URL
+
+    results = {}
+    results["uid"] = os.getuid()
+    results["euid"] = os.geteuid()
+    results["gid"] = os.getgid()
+    try:
+        results["username"] = _pwd.getpwuid(os.getuid()).pw_name
+    except:
+        results["username"] = "unknown"
+    results["cwd"] = os.getcwd()
+    results["sys_executable"] = sys.executable
+    results["sqlalchemy_url"] = SQLALCHEMY_DATABASE_URL
+
+    # Resolve the actual DB path
+    db_url = SQLALCHEMY_DATABASE_URL
+    if db_url.startswith("sqlite:///"):
+        db_path = db_url.replace("sqlite:///", "")
+    else:
+        db_path = "N/A"
+    results["db_path"] = db_path
+
+    if db_path != "N/A" and os.path.exists(db_path):
+        st = os.stat(db_path)
+        results["db_uid"] = st.st_uid
+        results["db_gid"] = st.st_gid
+        results["db_mode"] = oct(st.st_mode)
+        results["db_writable"] = os.access(db_path, os.W_OK)
+        results["db_size"] = st.st_size
+
+        parent = os.path.dirname(db_path)
+        pst = os.stat(parent)
+        results["parent_dir"] = parent
+        results["parent_uid"] = pst.st_uid
+        results["parent_writable"] = os.access(parent, os.W_OK)
+        results["parent_mode"] = oct(pst.st_mode)
+    elif db_path != "N/A":
+        results["db_exists"] = False
+
+    # Raw sqlite write test
+    try:
+        conn = _sqlite3.connect(db_path)
+        conn.execute("CREATE TABLE IF NOT EXISTS _diag_test (id INTEGER)")
+        conn.execute("INSERT INTO _diag_test VALUES (1)")
+        conn.commit()
+        conn.execute("DROP TABLE _diag_test")
+        conn.commit()
+        conn.close()
+        results["raw_sqlite_write"] = "SUCCESS"
+    except Exception as e:
+        results["raw_sqlite_write"] = str(e)
+
+    return _JSONResponse(content=results)
+# ─── End Diagnostic ─────────────────────────────────────────
+
 # ─── Error Handlers ─────────────────────────────────────────
 from backend.src.core.errors import setup_error_handlers
 setup_error_handlers(app)
@@ -132,6 +205,92 @@ app.add_middleware(SlowAPIMiddleware)
 
 
 # ─── MIGRATION SCRIPT (TEMPORARY) ─────────────────────────────────
+
+@app.get("/api/seed-all-live")
+def seed_all_live(db: Session = Depends(get_db)):
+    """One-click endpoint to seed Reviews, FAQs, and Delivery Transport on production.
+    Open in browser: https://kievdrova.com.ua/api/seed-all-live
+    """
+    import json
+    import sqlalchemy as sa
+    from backend.src.admin.models import Review, FAQ, SiteSettings
+
+    results = {}
+
+    # 1. Ensure delivery_transport column + seed
+    try:
+        try:
+            r = db.execute(sa.text("PRAGMA table_info(site_settings)"))
+            existing_cols = {row[1] for row in r.fetchall()}
+        except Exception:
+            existing_cols = set()
+        if "delivery_transport" not in existing_cols:
+            try:
+                db.execute(sa.text("ALTER TABLE site_settings ADD COLUMN delivery_transport TEXT"))
+                db.commit()
+            except Exception:
+                pass
+        settings = db.query(SiteSettings).filter(SiteSettings.id == 1).first()
+        if settings:
+            if not settings.delivery_transport:
+                settings.delivery_transport = json.dumps([
+                    {"type": "ГАЗель (бус)", "vol": "4-5 складометрів", "price": "1 500 грн", "desc": "Швидка доставка невеликих замовлень", "category": "standard", "image": "/images/delivery/gazel-dostavka-driv-kyiv.webp"},
+                    {"type": "ЗІЛ самоскид", "vol": "4 складометри", "price": "3 000 грн", "desc": "Оптимально для приватних будинків", "category": "standard", "image": "/images/delivery/zil-dostavka-driv-kyiv.webp"},
+                    {"type": "КАМАЗ самоскид", "vol": "8 складометрів", "price": "4 000 грн", "desc": "Великі обсяги палива", "category": "standard", "image": "/images/delivery/kamaz-dostavka-driv-kyiv.webp"},
+                    {"type": "Кран-маніпулятор", "vol": "Складні умови", "price": "від 4 500 грн", "desc": "Для розвантаження у складних умовах", "category": "special", "image": "/images/delivery/manipulator-dostavka-kyiv.webp"},
+                    {"type": "Гідроборт / рокла", "vol": "Складні умови", "price": "від 4 500 грн", "desc": "Для розвантаження палет", "category": "special", "image": "/images/delivery/gidrobort-rokla-dostavka-kyiv.webp"},
+                    {"type": "Фура", "vol": "22-24 складометри", "price": "за домовленістю", "desc": "Поставка напряму з лісгоспу", "category": "table_only", "image": ""}
+                ], ensure_ascii=False)
+                db.commit()
+                results["delivery_transport"] = "seeded"
+            else:
+                results["delivery_transport"] = "already exists"
+        else:
+            results["delivery_transport"] = "no settings row"
+    except Exception as e:
+        results["delivery_transport"] = f"error: {str(e)}"
+
+    # 2. Seed Reviews
+    try:
+        rc = db.query(Review).count()
+        if rc == 0:
+            revs = [
+                Review(name="Олександр", city="Київ", date="2024-11-15", stars=5, text="Замовляв дубові дрова. Привезли швидко, обсяг чесний. Дрова сухі, горять відмінно. Рекомендую!", is_active=True, sort_order=1),
+                Review(name="Олена", city="Бровари", date="2024-12-02", stars=5, text="Дуже задоволена обслуговуванням. Водій допоміг розвантажити, все акуратно. Брикети РУФ якісні.", is_active=True, sort_order=2),
+                Review(name="Іван", city="Ірпінь", date="2025-01-20", stars=4, text="Купував пелети для котла. Зольність низька, тепловіддача хороша. Буду замовляти ще.", is_active=True, sort_order=3),
+                Review(name="Марина", city="Вишневе", date="2025-02-10", stars=5, text="Брикети Pini Kay — просто вогонь! Горять довго, жар рівномірний. Замовляю вже другий раз.", is_active=True, sort_order=4),
+                Review(name="Сергій", city="Буча", date="2025-02-28", stars=5, text="Замовляли КАМАЗ дров на зиму. Привезли точно в обіцяний час. Якість дерева відмінна, все сухе.", is_active=True, sort_order=5),
+            ]
+            db.add_all(revs)
+            db.commit()
+            results["reviews"] = f"seeded {len(revs)}"
+        else:
+            results["reviews"] = f"already has {rc}"
+    except Exception as e:
+        results["reviews"] = f"error: {str(e)}"
+
+    # 3. Seed FAQs
+    try:
+        fc = db.query(FAQ).count()
+        if fc == 0:
+            faqs = [
+                FAQ(page="home", question="Чи працюєте ви на вихідних?", answer="Так, ми працюємо без вихідних, щоб забезпечити вас паливом у зручний для вас час.", is_active=True, sort_order=1),
+                FAQ(page="home", question="Як швидко ви доставляєте?", answer="Доставка зазвичай здійснюється в день замовлення або на наступний день.", is_active=True, sort_order=2),
+                FAQ(page="home", question="Чи є мінімальне замовлення?", answer="Мінімальне замовлення дров — від 2 складометрів, брикетів та пелет — від 1 тонни. Можливий самовивіз будь-якої кількості.", is_active=True, sort_order=3),
+                FAQ(page="home", question="Як оплатити замовлення?", answer="Оплата здійснюється після отримання та перевірки товару готівкою або на картку.", is_active=True, sort_order=4),
+                FAQ(page="delivery", question="Які авто використовуються для доставки?", answer="Ми використовуємо ГАЗелі, ЗІЛи, КАМАЗи та маніпулятори в залежності від обсягу замовлення та умов розвантаження.", is_active=True, sort_order=1),
+                FAQ(page="delivery", question="Чи можна замовити доставку з маніпулятором?", answer="Так, ми маємо власні маніпулятори для розвантаження палет з брикетами або мішків з вугіллям у складних умовах.", is_active=True, sort_order=2),
+            ]
+            db.add_all(faqs)
+            db.commit()
+            results["faqs"] = f"seeded {len(faqs)}"
+        else:
+            results["faqs"] = f"already has {fc}"
+    except Exception as e:
+        results["faqs"] = f"error: {str(e)}"
+
+    return {"status": "success", "results": results}
+
 @app.get("/api/migrate-slugs-live")
 def migrate_slugs_live(db: Session = Depends(get_db)):
     """Temporary endpoint to migrate English category slugs to Ukrainian locally or on Render."""
@@ -202,7 +361,7 @@ def seed_briquettes_live(db: Session = Depends(get_db)):
                     {"q": "Чи можна використовувати їх для камінів?", "a": "Так, вони ідеальні для камінів. Вони не 'стріляють' іскрами, не виділяють багато диму та згоряють майже повністю, залишаючи чисте скло топки."},
                     {"q": "Як замовити доставку по Києву?", "a": "Ви можете обрати потрібну кількість на цій сторінці й натиснути 'Замовити', або зателефонувати нам. Ми здійснюємо швидку доставку власним автопарком."}
                 ], ensure_ascii=False),
-                'meta_title': 'Купити брикети RUF (дуб) у Києві — доставка | КиївБрикет',
+                'meta_title': 'Купити брикети RUF (дуб) у Києві — доставка | КиївДрова',
                 'meta_description': 'Якісні паливні брикети RUF з дубової тирси. Висока тепловіддача, мінімум попелу. Замовляйте дубові брикети з доставкою по Києву та області просто зараз!',
                 'image_alt': 'паливні брикети ruf дуб купити київ',
                 'schema_json': json.dumps({
@@ -247,7 +406,7 @@ def seed_briquettes_live(db: Session = Depends(get_db)):
                     {"q": "Як правильно зберігати євродрова Піні Кей?", "a": "Завдяки термічній обробці (обпалюванню) зовні, вони є досить стійкими до атмосферної вологи. Однак найкраще їх зберігати у сухому, провітрюваному приміщенні під навісом."},
                     {"q": "Скільки займає доставка цих брикетів?", "a": "Зазвичай ми доставляємо брикети в день замовлення або на наступний день по Києву та області. Наші машини обладнані маніпуляторами для легкого розвантаження."}
                 ], ensure_ascii=False),
-                'meta_title': 'Купити брикети Pini Kay у Києві — євродрова Піні Кей | КиївБрикет',
+                'meta_title': 'Купити брикети Pini Kay у Києві — євродрова Піні Кей | КиївДрова',
                 'meta_description': 'Купити паливні брикети Pini Kay (Піні Кей) для камінів та котлів. Восьмигранні євродрова з отвором. Доставка брикетів по Києву та області за вигідною ціною.',
                 'image_alt': 'паливні брикети піні кей pini kay купити київ',
                 'schema_json': json.dumps({
@@ -288,7 +447,7 @@ def seed_briquettes_live(db: Session = Depends(get_db)):
                     {"q": "Як швидко згоряє брикет Nestro?", "a": "Залежно від налаштувань тяги в котлі, вони здатні горіти до 3-5 годин, забезпечуючи рівномірне і стабільне виділення тепла без різких перепадів температур."},
                     {"q": "Чи можна замовити тестову партію брикетів?", "a": "Так, ви можете замовити кілька паковань для тесту. Ми доставимо їх, і ви зможете переконатись у високій якості нашого палива."}
                 ], ensure_ascii=False),
-                'meta_title': 'Брикети Nestro купити в Києві — циліндричні брикети | КиївБрикет',
+                'meta_title': 'Брикети Nestro купити в Києві — циліндричні брикети | КиївДрова',
                 'meta_description': 'Якісні циліндричні паливні брикети Nestro з тирси. Відмінна тепловіддача, підходять для котлів тривалого горіння. Доставка маніпулятором по Києву!',
                 'image_alt': 'циліндричні брикети нестро nestro купити київ',
                 'schema_json': json.dumps({
@@ -329,7 +488,7 @@ def seed_briquettes_live(db: Session = Depends(get_db)):
                     {"q": "Чи багато залишку (шлаку) від вугільних брикетів?", "a": "Сучасні вугільні брикети мають контрольовану зольність (близько 10%). Шлаку від них значно менше порівняно з рядовим вугіллям невідомого походження."},
                     {"q": "Як швидко виставляється доставка?", "a": "Ми доставляємо замовлення по Києву та області зазвичай наступного дня або навіть у день замовлення власним автопарком."}
                 ], ensure_ascii=False),
-                'meta_title': 'Купити вугільні брикети у Києві — довготривале горіння | КиївБрикет',
+                'meta_title': 'Купити вугільні брикети у Києві — довготривале горіння | КиївДрова',
                 'meta_description': 'Якісні вугільні (углеродні) брикети. Найвища тепловіддача, зручне фасування, відсутність пилу. Замовляйте з швидкою доставкою по Києву.',
                 'image_alt': 'вугільні брикети углеродний брикет купити київ',
                 'schema_json': json.dumps({
@@ -370,7 +529,7 @@ def seed_briquettes_live(db: Session = Depends(get_db)):
                     {"q": "Чи мають торфобрикети специфічний запах?", "a": "Під час горіння торф може мати легкий, характерний запах палаючої землі або диму. У закритих котлах із нормальною тягою він абсолютно не відчувається в приміщенні."},
                     {"q": "Чим вигідніше палити: дровами чи торфом?", "a": "Торфобрикети горять у 2-3 рази довше за дрова завдяки режиму тління. Це забезпечує величезну зручність вночі, тому багато клієнтів купують обидва типи палива разом."}
                 ], ensure_ascii=False),
-                'meta_title': 'Купити торфобрикети в Києві — вигідна ціна за тонну | КиївБрикет',
+                'meta_title': 'Купити торфобрикети в Києві — вигідна ціна за тонну | КиївДрова',
                 'meta_description': 'Якісні торфобрикети для печей та твердопаливних котлів. Понад 8 годин горіння! Замовляйте доставку торфобрикетів по Києву та області за кращою ціною.',
                 'image_alt': 'торфобрикети купити київ торф брикети',
                 'schema_json': json.dumps({
@@ -411,7 +570,7 @@ def seed_briquettes_live(db: Session = Depends(get_db)):
                     {"q": "Чи зручно їх розпалювати?", "a": "Так, завдяки внутрішньому отвору тяга відмінна. Але оскільки вони щільні і великі, для розпалу краще використовувати кілька дрібних трісочок."},
                     {"q": "Як швидко виставляється доставка?", "a": "Ми доставляємо брикети максимально швидко — зазвичай у день замовлення або наступного дня, машинами з міцними маніпуляторами."}
                 ], ensure_ascii=False),
-                'meta_title': 'Брикети Pini Kay XL купити в Києві — збільшені євродрова | КиївБрикет',
+                'meta_title': 'Брикети Pini Kay XL купити в Києві — збільшені євродрова | КиївДрова',
                 'meta_description': 'Якісні збільшені паливні брикети Pini Kay XL для котлів і камінів. Тривале горіння, висока калорійність. Доставка паливних брикетів по Києву.',
                 'image_alt': 'паливні брикети pini kay xl піні кей великі купити київ',
                 'schema_json': json.dumps({
@@ -480,11 +639,26 @@ def upgrade_db_schema(db: Session = Depends(get_db)):
 
 # ─── Static Files ───────────────────────────────────────────
 import mimetypes
+import os
 mimetypes.add_type("image/webp", ".webp")
 
-STATIC_DIR = Path(__file__).parent / "static"
-MEDIA_DIR = Path(__file__).parent / "media"
+APP_DIR = Path(__file__).parent 
+# On hosting: /www/backend
+
+# Robust search for FRONTEND_DIR
+FRONTEND_DIR = APP_DIR # fallback
+if (APP_DIR.parent / "index.html").exists():
+    FRONTEND_DIR = APP_DIR.parent
+elif (APP_DIR / "index.html").exists():
+    FRONTEND_DIR = APP_DIR
+elif (APP_DIR.parent / "frontend" / "dist" / "index.html").exists():
+    FRONTEND_DIR = APP_DIR.parent / "frontend" / "dist"
+
+MEDIA_DIR = APP_DIR / "media"
+STATIC_DIR = APP_DIR / "static"
+
 MEDIA_DIR.mkdir(parents=True, exist_ok=True)
+STATIC_DIR.mkdir(parents=True, exist_ok=True)
 
 class CachedStaticFiles(StaticFiles):
     async def get_response(self, path, scope):
@@ -495,6 +669,42 @@ class CachedStaticFiles(StaticFiles):
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 app.mount("/media", CachedStaticFiles(directory=str(MEDIA_DIR)), name="media")
 
+# Check if assets directory exists before mounting to avoid startup crash if not built yet
+assets_dir = FRONTEND_DIR / "assets"
+if assets_dir.exists() and assets_dir.is_dir():
+    app.mount("/assets", CachedStaticFiles(directory=str(assets_dir)), name="assets")
+
+# Add direct mounts for proxy pass-through from Host Ukraine
+app.mount("/api/v1/static", StaticFiles(directory=str(STATIC_DIR)), name="api_v1_static")
+app.mount("/api/v1/media", CachedStaticFiles(directory=str(MEDIA_DIR)), name="api_v1_media")
+
+# ─── Media Mirror for Shared Hosting ─────────────────────────
+# Apache serves /media/ from /www/media/, but uploads go to /backend/media/.
+# This middleware copies new files after each upload so they're immediately accessible.
+import shutil as _shutil
+
+_WWW_MEDIA = APP_DIR.parent / "media"
+if _WWW_MEDIA.is_dir() and APP_DIR.name == "backend":
+    from starlette.middleware.base import BaseHTTPMiddleware
+    from starlette.requests import Request as StarletteRequest
+
+    class MediaMirrorMiddleware(BaseHTTPMiddleware):
+        async def dispatch(self, request: StarletteRequest, call_next):
+            response = await call_next(request)
+            # After successful upload, sync any new files
+            if request.url.path.endswith("/admin/upload") and request.method == "POST" and response.status_code == 200:
+                try:
+                    for f in MEDIA_DIR.iterdir():
+                        dst = _WWW_MEDIA / f.name
+                        if f.is_file() and not dst.exists():
+                            _shutil.copy2(str(f), str(dst))
+                except Exception as e:
+                    logger.error(f"MediaMirror failed: {e}")
+            return response
+
+    app.add_middleware(MediaMirrorMiddleware)
+    logger.info("MediaMirrorMiddleware enabled: syncing /backend/media -> /www/media")
+
 
 # ─── Include Routers ────────────────────────────────────────
 
@@ -503,21 +713,6 @@ from backend.src.products.router import router as products_router
 from backend.src.orders.router import router as orders_router
 from backend.src.users.router import router as users_router
 from backend.src.admin.router import router as admin_router
-
-# API v1 — versioned prefix for all API routes
-api_v1 = APIRouter(prefix="/api/v1")
-api_v1.include_router(products_router)
-api_v1.include_router(orders_router)
-api_v1.include_router(users_router)
-api_v1.include_router(admin_router)
-app.include_router(api_v1)
-
-# Backward compatibility — keep old routes working (no prefix)
-app.include_router(products_router)
-app.include_router(orders_router)
-app.include_router(users_router)
-app.include_router(admin_router)
-
 
 # ─── Public Pages Endpoints ─────────────────────────────────
 
@@ -548,7 +743,20 @@ def list_custom_pages(db: Session = Depends(get_db)):
         if p.route_path not in CORE_ROUTES
     ]
 
-app.include_router(pages_public_router)
+# API v1 — versioned prefix for all API routes
+api_v1 = APIRouter(prefix="/api/v1")
+api_v1.include_router(products_router)
+api_v1.include_router(orders_router)
+api_v1.include_router(users_router)
+api_v1.include_router(admin_router)
+api_v1.include_router(pages_public_router)
+app.include_router(api_v1)
+
+# Backward compatibility — keep old routes working (no prefix)
+app.include_router(products_router)
+app.include_router(orders_router)
+app.include_router(users_router)
+app.include_router(admin_router)
 
 
 # ─── SEO Endpoints ──────────────────────────────────────────
@@ -567,6 +775,104 @@ def robots():
 
 # ─── Startup ────────────────────────────────────────────────
 
+def _migrate_site_settings(db):
+    """Auto-migrate: add missing columns to site_settings and seed reviews/faqs if empty."""
+    import sqlalchemy as sa
+    import json
+    from backend.src.admin.models import Review, FAQ, SiteSettings
+
+    engine_ref = db.get_bind()
+
+    # 1. Ensure delivery_transport column exists in site_settings
+    try:
+        result = db.execute(sa.text("PRAGMA table_info(site_settings)"))
+        existing = {row[1] for row in result.fetchall()}
+    except Exception:
+        existing = set()
+
+    if "delivery_transport" not in existing:
+        try:
+            db.execute(sa.text("ALTER TABLE site_settings ADD COLUMN delivery_transport TEXT"))
+            db.commit()
+            logger.info("Added column 'delivery_transport' to site_settings")
+        except Exception as e:
+            logger.warning("Could not add column 'delivery_transport': %s", e)
+
+    # 2. Populate delivery_transport default if empty
+    try:
+        settings = db.query(SiteSettings).filter(SiteSettings.id == 1).first()
+        if settings and not settings.delivery_transport:
+            settings.delivery_transport = json.dumps([
+                {"type": "ГАЗель (бус)", "vol": "4–5 складометрів", "price": "1 500 грн", "desc": "Швидка доставка невеликих замовлень", "category": "standard", "image": "/images/delivery/gazel-dostavka-driv-kyiv.webp"},
+                {"type": "ЗІЛ самоскид", "vol": "4 складометри", "price": "3 000 грн", "desc": "Оптимально для приватних будинків", "category": "standard", "image": "/images/delivery/zil-dostavka-driv-kyiv.webp"},
+                {"type": "КАМАЗ самоскид", "vol": "8 складометрів", "price": "4 000 грн", "desc": "Великі обсяги палива", "category": "standard", "image": "/images/delivery/kamaz-dostavka-driv-kyiv.webp"},
+                {"type": "Кран-маніпулятор", "vol": "Складні умови", "price": "від 4 500 грн", "desc": "Для розвантаження у складних умовах", "category": "special", "image": "/images/delivery/manipulator-dostavka-kyiv.webp"},
+                {"type": "Гідроборт / рокла", "vol": "Складні умови", "price": "від 4 500 грн", "desc": "Для розвантаження палет", "category": "special", "image": "/images/delivery/gidrobort-rokla-dostavka-kyiv.webp"},
+                {"type": "Фура", "vol": "22–24 складометри", "price": "за домовленістю", "desc": "Поставка напряму з лісгоспу", "category": "table_only", "image": ""}
+            ], ensure_ascii=False)
+            db.commit()
+            logger.info("Auto-populated delivery_transport defaults in site_settings")
+    except Exception as e:
+        logger.warning("Could not populate delivery_transport: %s", e)
+
+    # 3. Seed Reviews table if empty
+    try:
+        review_count = db.query(Review).count()
+        if review_count == 0:
+            default_reviews = [
+                Review(name="Олександр", city="Київ", date="2024-11-15", stars=5,
+                       text="Замовляв дубові дрова. Привезли швидко, обсяг чесний. Дрова сухі, горять відмінно. Рекомендую!",
+                       is_active=True, sort_order=1),
+                Review(name="Олена", city="Бровари", date="2024-12-02", stars=5,
+                       text="Дуже задоволена обслуговуванням. Водій допоміг розвантажити, все акуратно. Брикети РУФ якісні.",
+                       is_active=True, sort_order=2),
+                Review(name="Іван", city="Ірпінь", date="2025-01-20", stars=4,
+                       text="Купував пелети для котла. Зольність низька, тепловіддача хороша. Буду замовляти ще.",
+                       is_active=True, sort_order=3),
+                Review(name="Марина", city="Вишневе", date="2025-02-10", stars=5,
+                       text="Брикети Pini Kay — просто вогонь! Горять довго, жар рівномірний. Замовляю вже другий раз.",
+                       is_active=True, sort_order=4),
+                Review(name="Сергій", city="Буча", date="2025-02-28", stars=5,
+                       text="Замовляли КАМАЗ дров на зиму. Привезли точно в обіцяний час. Якість дерева відмінна, все сухе.",
+                       is_active=True, sort_order=5),
+            ]
+            db.add_all(default_reviews)
+            db.commit()
+            logger.info("Seeded %d default reviews", len(default_reviews))
+    except Exception as e:
+        logger.warning("Could not seed reviews: %s", e)
+
+    # 4. Seed FAQs table if empty
+    try:
+        faq_count = db.query(FAQ).count()
+        if faq_count == 0:
+            default_faqs = [
+                FAQ(page="home", question="Чи працюєте ви на вихідних?",
+                    answer="Так, ми працюємо без вихідних, щоб забезпечити вас паливом у зручний для вас час.",
+                    is_active=True, sort_order=1),
+                FAQ(page="home", question="Як швидко ви доставляєте?",
+                    answer="Доставка зазвичай здійснюється в день замовлення або на наступний день.",
+                    is_active=True, sort_order=2),
+                FAQ(page="home", question="Чи є мінімальне замовлення?",
+                    answer="Мінімальне замовлення дров — від 2 складометрів, брикетів та пелет — від 1 тонни. Можливий самовивіз будь-якої кількості.",
+                    is_active=True, sort_order=3),
+                FAQ(page="home", question="Як оплатити замовлення?",
+                    answer="Оплата здійснюється після отримання та перевірки товару готівкою або на картку.",
+                    is_active=True, sort_order=4),
+                FAQ(page="delivery", question="Які авто використовуються для доставки?",
+                    answer="Ми використовуємо ГАЗелі, ЗІЛи, КАМАЗи та маніпулятори в залежності від обсягу замовлення та умов розвантаження.",
+                    is_active=True, sort_order=1),
+                FAQ(page="delivery", question="Чи можна замовити доставку з маніпулятором?",
+                    answer="Так, ми маємо власні маніпулятори для розвантаження палет з брикетами або мішків з вугіллям у складних умовах.",
+                    is_active=True, sort_order=2),
+            ]
+            db.add_all(default_faqs)
+            db.commit()
+            logger.info("Seeded %d default FAQs", len(default_faqs))
+    except Exception as e:
+        logger.warning("Could not seed FAQs: %s", e)
+
+
 @app.on_event("startup")
 async def startup_event():
     logger.info("Application startup — seeding database if empty")
@@ -574,17 +880,17 @@ async def startup_event():
     try:
         auto_seed.check_and_seed_data(db)
         logger.info("Database seed check complete")
+        _migrate_site_settings(db)
+        logger.info("Site settings migration complete")
     except Exception as e:
-        logger.error("Failed to seed database: %s", e)
+        logger.error("Failed during startup: %s", e)
     finally:
         db.close()
 
 
 # ─── Root / Health ───────────────────────────────────────────
 
-@app.get("/")
-def read_root():
-    return {"message": "KievBriket API is running"}
+
 
 @app.get("/health")
 def health_check():
@@ -607,6 +913,43 @@ from fastapi.responses import FileResponse, RedirectResponse
 import os
 from backend.src.products.service import CategoryMetadataService, ProductService
 from backend.src.pages.service import PageService
+@app.get("/api/debug-db-path")
+def debug_db_path():
+    """Returns the absolute path of the current database file."""
+    from backend.src.core.database import SQLALCHEMY_DATABASE_URL
+    import os
+    
+    path = SQLALCHEMY_DATABASE_URL.replace("sqlite:///", "")
+    exists = os.path.exists(path)
+    
+    # Try finding any db file if the configured one doesn't exist
+    found_dbs = []
+    if not exists:
+        try:
+            for root, dirs, files in os.walk(os.path.dirname(os.path.dirname(__file__))):
+                for f in files:
+                    if f.endswith('.db') or f.endswith('.sqlite'):
+                        found_dbs.append(os.path.join(root, f))
+        except Exception:
+            pass
+            
+    return {
+        "configured_url": SQLALCHEMY_DATABASE_URL,
+        "resolved_path": path,
+        "exists": exists,
+        "cwd": os.getcwd(),
+        "file_dir": os.path.dirname(__file__),
+        "found_dbs": found_dbs
+    }
+
+@app.get("/api/debug-routes")
+def debug_routes():
+    """Returns all registered paths."""
+    routes = []
+    for r in app.routes:
+        if hasattr(r, 'path'):
+            routes.append(r.path)
+    return {"routes": routes}
 
 @app.api_route("/{path_name:path}", methods=["GET"])
 async def catch_all(path_name: str, db: Session = Depends(get_db)):
@@ -616,11 +959,32 @@ async def catch_all(path_name: str, db: Session = Depends(get_db)):
     will return the React app, allowing React Router to handle it.
     IMPORTANT: Returns proper 404 status code for unknown routes to satisfy SEO requirements.
     """
-    index_file = os.path.join(STATIC_DIR, "index.html")
+    path = "/" + path_name.strip("/")
+
+    # Never intercept API routes — let FastAPI routers handle them
+    if path.startswith("/api/"):
+        from fastapi.responses import JSONResponse
+        return JSONResponse({"detail": "Not Found"}, status_code=404)
+
+    index_file = os.path.join(FRONTEND_DIR, "index.html")
     if not os.path.isfile(index_file):
         return {"message": "KievBriket API (React frontend not built)"}
-        
-    path = "/" + path_name.strip("/")
+    
+    
+    # Securely check if the requested path corresponds to an existing static file (e.g. /images/... or /favicon.svg)
+    safe_path = os.path.normpath(path_name.strip("/"))
+    if not safe_path.startswith(".."):
+        file_path = os.path.join(FRONTEND_DIR, safe_path)
+        if os.path.isfile(file_path) and not os.path.isdir(file_path):
+            # Known static assets from Vite public folder
+            import mimetypes
+            content_type, _ = mimetypes.guess_type(file_path)
+            # Apply long-lived caching to images/assets
+            headers = {}
+            if safe_path.startswith("images/") or safe_path.startswith("assets/"):
+                headers["Cache-Control"] = "public, max-age=31536000, immutable"
+            return FileResponse(file_path, media_type=content_type, headers=headers)
+
     if path == "/":
         return FileResponse(index_file)
 
